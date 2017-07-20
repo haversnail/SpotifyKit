@@ -1,0 +1,8 @@
+# Project Settings
+xcuserdata/
+
+# Carthage
+Carthage/
+
+# CocoaPods
+Pods/
