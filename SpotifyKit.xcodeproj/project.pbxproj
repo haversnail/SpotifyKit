@@ -33,6 +33,7 @@
 		113D08481F208BEC00BECB27 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		113D08531F208C4700BECB27 /* .gitignore */ = {isa = PBXFileReference; explicitFileType = text.script; path = .gitignore; sourceTree = "<group>"; };
 		113D08541F208C4700BECB27 /* Cartfile */ = {isa = PBXFileReference; explicitFileType = text.script; path = Cartfile; sourceTree = "<group>"; };
+		1190C5DB1F2237B800F2C8DE /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		119A294A1F20985C009D4A88 /* SpotifyAudioPlayback.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SpotifyAudioPlayback.framework; path = "Carthage/Checkouts/ios-sdk/SpotifyAudioPlayback.framework"; sourceTree = "<group>"; };
 		119A294B1F20985C009D4A88 /* SpotifyAuthentication.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SpotifyAuthentication.framework; path = "Carthage/Checkouts/ios-sdk/SpotifyAuthentication.framework"; sourceTree = "<group>"; };
 		11FB6D8F1F20D33500ADAA90 /* modulemaps.sh */ = {isa = PBXFileReference; lastKnownFileType = text.script.sh; path = modulemaps.sh; sourceTree = "<group>"; };
@@ -62,6 +63,7 @@
 		113D082E1F208BEB00BECB27 = {
 			isa = PBXGroup;
 			children = (
+				1190C5DB1F2237B800F2C8DE /* README.md */,
 				113D083A1F208BEC00BECB27 /* SpotifyKit */,
 				113D08451F208BEC00BECB27 /* SpotifyKitTests */,
 				113D08391F208BEC00BECB27 /* Products */,
