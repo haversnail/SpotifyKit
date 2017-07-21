@@ -1,4 +1,5 @@
-# ![Logo](Logo/SpotifyKit.png) SpotifyKit
+![Logo](Logo/SpotifyKit.png)
+# ⏤ SpotifyKit ⏤
 A complete [Spotify Web API][API] and [iOS SDK][SDK] bundle, tailored for Swift.
 
 [API]: https://developer.spotify.com/web-api/
@@ -8,7 +9,6 @@ A complete [Spotify Web API][API] and [iOS SDK][SDK] bundle, tailored for Swift.
 [![Carthage](https://img.shields.io/badge/Carthage-compatible-4BC51D.svg "Carthage compatible")](https://github.com/Carthage/Carthage)
 [![SDK](https://img.shields.io/badge/SDK-beta--25-blue.svg "Spotify iOS SDK release")](https://github.com/spotify/ios-sdk)
 ![platforms](https://img.shields.io/badge/platform-iOS-lightgrey.svg "platforms")
-</p>
 
 ## Getting Started
 
