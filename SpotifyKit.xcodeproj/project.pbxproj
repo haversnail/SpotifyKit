@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		11179A271F22D11600376AFD /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 11179A261F22D11600376AFD /* SystemConfiguration.framework */; };
+		11179A291F22D12300376AFD /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 11179A281F22D12300376AFD /* AVFoundation.framework */; };
 		113D08421F208BEC00BECB27 /* SpotifyKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 113D08381F208BEC00BECB27 /* SpotifyKit.framework */; };
 		113D08471F208BEC00BECB27 /* SpotifyKitTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 113D08461F208BEC00BECB27 /* SpotifyKitTests.swift */; };
 		113D08491F208BEC00BECB27 /* SpotifyKit.h in Headers */ = {isa = PBXBuildFile; fileRef = 113D083B1F208BEC00BECB27 /* SpotifyKit.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -25,6 +27,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		11179A261F22D11600376AFD /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
+		11179A281F22D12300376AFD /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
 		113D08381F208BEC00BECB27 /* SpotifyKit.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = SpotifyKit.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		113D083B1F208BEC00BECB27 /* SpotifyKit.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SpotifyKit.h; sourceTree = "<group>"; };
 		113D083C1F208BEC00BECB27 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -44,6 +48,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				11179A291F22D12300376AFD /* AVFoundation.framework in Frameworks */,
+				11179A271F22D11600376AFD /* SystemConfiguration.framework in Frameworks */,
 				119A294C1F20985C009D4A88 /* SpotifyAudioPlayback.framework in Frameworks */,
 				119A294D1F20985C009D4A88 /* SpotifyAuthentication.framework in Frameworks */,
 			);
@@ -112,6 +118,8 @@
 		119A29491F20985C009D4A88 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				11179A281F22D12300376AFD /* AVFoundation.framework */,
+				11179A261F22D11600376AFD /* SystemConfiguration.framework */,
 				119A294A1F20985C009D4A88 /* SpotifyAudioPlayback.framework */,
 				119A294B1F20985C009D4A88 /* SpotifyAuthentication.framework */,
 			);
