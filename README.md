@@ -32,7 +32,7 @@ github "ahavermale/spotifykit" ~> 1.0
 ```
 and run `carthage update` to check out and build **SpotifyKit** and its dependencies.
 
-> ⚠️ As a dependency, Carthage will attempt to build the `spotify/ios-sdk` repository. Since their repository does not contain a buildable Xcode project for these frameworks, but rather pre-compiled binaries, **expect Carthage to generate an error during the build process.** It will not affect installation.
+> As a dependency, Carthage will attempt to build the `spotify/ios-sdk` repository. Since their repository does not contain a buildable Xcode project for these frameworks, but rather pre-compiled binaries, **expect Carthage to generate an error during the build process.** It will not affect installation.
 
 After the **SpotifyKit** framework has been built, follow the rest of the [installation steps](https://github.com/Carthage/Carthage#if-youre-building-for-ios-tvos-or-watchos) and make sure you've linked the following frameworks to your project, taking note of where the different binaries are located:
 
@@ -41,6 +41,7 @@ After the **SpotifyKit** framework has been built, follow the rest of the [insta
 | `SpotifyKit.framework`            | `Carthage/Build/iOS/SpotifyKit/`  |
 | `SpotifyAudioPlayback.framework`  | `Carthage/Checkouts/ios-sdk/`     |
 | `SpotifyAuthentication.framework` | `Carthage/Checkouts/ios-sdk/`     |
+
 And don't forget to link the `AVFoundation.framework` if you intend to use the Spotify Audio Playback interface.
 
 #### CocoaPods
@@ -58,14 +59,14 @@ And don't forget to link the `AVFoundation.framework` if you intend to use the S
 chmod +x modulemaps.sh
 ./modulemaps.sh
 ```
-This creates module maps for the Spotify [iOS SDK][SDK] frameworks, which should eliminate any initial "missing module" errors encountered in the Xcode project.
+This creates module maps for the newly checked-out [iOS SDK][SDK] frameworks, which should eliminate any initial "missing module" errors encountered in the Xcode project.
 
 4. Open the Xcode project select **"Product" > "Build" (⌘B)**. Voilà.
 
----
-
-> #### 📝 A Note on Module Maps
-> Unfortunately, as of their `beta-25` release, Spotify's pre-compiled [iOS SDK][SDK] frameworks have not been built as importable modules (i.e., their `DEFINES_MODULE` build setting was not set), which prevents Swift targets from using them out-of-the-box. However, **SpotifyKit** provides a fix-it by checking for and/or creating module maps for each framework before building the project. They look something like this:
+> #### A Note on Module Maps
+> Unfortunately, as of their `beta-25` release, Spotify's pre-compiled [iOS SDK][SDK] frameworks have not been built as importable modules (i.e., their `DEFINES_MODULE` build setting was not set), which prevents Swift targets from using them out-of-the-box. However, **SpotifyKit** provides a fix-it by checking for and/or creating module maps for each framework before each build by running the `modulemaps.sh` script. As explained above, you can run this script yourself if you come across any "missing module" errors while working with the [SDK][SDK]'s frameworks.
+>
+> Alternatively, you can manually create these module maps by browsing to the respective `.framework` file, creating a `Modules` folder, and within that folder, creating a file called `module.modulemap` with the following contents:
 
 ```swift
 framework module SpotifyAudioPlayback {
