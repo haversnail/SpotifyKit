@@ -8,7 +8,7 @@
 
 import Foundation
 
-public struct Paging<Object/*: Codable*/> { // TODO: Make JSON Codable.
+public struct Paging<Object: Decodable>: JSONDecodable { // TODO: Make JSON Codable.
         
     /// A link to the Web API endpoint returning the full result of the request.
     public let href: URL

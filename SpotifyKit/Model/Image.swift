@@ -8,7 +8,7 @@
 
 import Foundation
 
-public struct SKImage { // TODO: Make JSON Codable.
+public struct SKImage: JSONDecodable { // TODO: Make JSON Codable.
     
     /// The source URL of the image.
     public let url: URL

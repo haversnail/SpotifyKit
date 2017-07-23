@@ -8,7 +8,7 @@
 
 import Foundation
 
-public struct SKAlbum { // TODO: Make JSON Codable.
+public struct SKAlbum: JSONDecodable { // TODO: Make JSON Codable.
     
     // MARK: - Embedded Types
     
@@ -36,23 +36,25 @@ public struct SKAlbum { // TODO: Make JSON Codable.
         
         /// The copyright text for this album.
         public let text: String
-        /// The type of copyright. See `SKCopyright.CopyrightType` for more details.
+        /// The type of copyright. See `SKCopyright.CopyrightType` for possible values.
         public let type: CopyrightType
     }
     
     // MARK: - Object Properties (Simplified)
     
-    /// The type of album. See `SKAlbum.AlbumType` for more details.
+    /// The type of album. See `SKAlbum.AlbumType` for possible values.
     public let albumType: AlbumType
     
     /// The artists of the album. Each artist object includes a link in `href` to more detailed information about the artist.
     public let artists: [SKArtist]
     
     /// The markets in which the album is available: [ISO 3166-1 alpha-2 country codes](http://en.wikipedia.org/wiki/ISO_3166-1_alpha-2). Note that an album is considered available in a market when at least 1 of its tracks is available in that market.
-    public let availableMarkets: [String] // String will only always hold two characters. TODO: Change to a more performant data type.
+    ///
+    /// This property may be `nil` if the API request already specified a specific market from which to retrieve the album.
+    public let availableMarkets: [String]? // String will only always hold two characters. TODO: Change to a more performant data type.
     
     /// Known external URLs for this album. See ["external URL object"](https://developer.spotify.com/web-api/object-model/#external-id-object) for more details.
-    public let externalURLs: [String: URL]
+    public let externalURLs: [String: String] // FIXME: Change to [String: URL(?)] once JSONDecoder bug is fixed.
     
     /// A link to the Web API endpoint providing full details of the album.
     public let href: URL
@@ -90,13 +92,26 @@ public struct SKAlbum { // TODO: Make JSON Codable.
     public let popularity: Int?
     
     /// The date the album was first released, for example `"1981-12-15"`. Depending on the precision, it might be shown as `"1981"` or `"1981-12"`.
-    public let releaseDate: Date? // TODO: Custom format during the decoding process.
+    public let releaseDate: String? //Date? // TODO: Custom format during the decoding process.
     
-    /// The precision with which `releaseDate` value is known. See `SKAlbum.DatePrecision` for more details.
+    /// The precision with which `releaseDate` value is known. See `SKAlbum.DatePrecision` for possible values.
     public let releaseDatePrecision: DatePrecision?
     
     /// The tracks of the album.
     public let tracks: Paging<SKTrack>?
+    
+    /// A boolean value indicating whether this `SKAlbum` instance is a simplified version of the Spotify album object (i.e., it does *not* contain any of the values unique to the full version of the object).
+    public var isSimplified: Bool {
+        return
+            copyrights == nil &&
+            externalIDs == nil &&
+            genres == nil &&
+            label == nil &&
+            popularity == nil &&
+            releaseDate == nil &&
+            releaseDatePrecision == nil &&
+            tracks == nil
+    }
     
     // MARK: - Keys
     

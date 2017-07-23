@@ -21,12 +21,34 @@ class ObjectModelTests: XCTestCase {
         super.tearDown()
     }
     
-    func testAlbumFull() {
-        
+    func testAlbum() {
+        let album = SKAlbum(data: kAlbumData)
+        XCTAssertNotNil(album, "object could not be initialized from the given JSON data")
+        XCTAssertEqual(album?.name, "El Camino")
     }
     
-    func testAlbumSimplified() {
-        
+//    func testAlbumSimplified() {
+//
+//    }
+    
+    func testArtist() {
+        let artist = SKArtist(data: kArtistData)
+        XCTAssertNotNil(artist, "object could not be initialized from the given JSON data")
+        XCTAssertEqual(artist?.name, "Cold War Kids")
     }
+    
+//    func testArtistSimplified() {
+//
+//    }
+    
+    func testTrack() {
+        let track = SKTrack(data: kTrackData)
+        XCTAssertNotNil(track, "object could not be initialized from the given JSON data")
+        XCTAssertEqual(track?.name, "My Thing")
+    }
+    
+//    func testTrackSimplified() {
+//
+//    }
     
 }
