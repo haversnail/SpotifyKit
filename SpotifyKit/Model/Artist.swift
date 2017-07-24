@@ -16,7 +16,7 @@ public struct SKArtist: JSONDecodable { // TODO: Make JSON Codable.
     public let externalURLs: [String: String] // FIXME: Change to [String: URL(?)] once JSONDecoder bug is fixed.
     
     /// A link to the Web API endpoint providing full details of the artist.
-    public let href: URL
+    public let url: URL
     
     /// The [Spotify ID](https://developer.spotify.com/web-api/user-guide/#spotify-uris-and-ids) for the artist.
     public let id: String
@@ -59,7 +59,7 @@ public struct SKArtist: JSONDecodable { // TODO: Make JSON Codable.
         case externalURLs = "external_urls"
         case followers
         case genres
-        case href
+        case url = "href"
         case id
         case images
         case name

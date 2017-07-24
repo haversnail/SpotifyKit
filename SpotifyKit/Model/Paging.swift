@@ -11,7 +11,7 @@ import Foundation
 public struct Paging<Object: Decodable>: JSONDecodable { // TODO: Make JSON Codable.
         
     /// A link to the Web API endpoint returning the full result of the request.
-    public let href: URL
+    public let url: URL
     
     /// The array of objects.
     public let items: [Object] // TODO: Change scope to private once Collection conformance is finished.
@@ -34,7 +34,7 @@ public struct Paging<Object: Decodable>: JSONDecodable { // TODO: Make JSON Coda
     // MARK: - Keys
     
     private enum CodingKeys: String, CodingKey {
-        case href
+        case url = "href"
         case items
         case limit
         case next

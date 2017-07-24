@@ -45,7 +45,7 @@ public struct SKAlbum: JSONDecodable { // TODO: Make JSON Codable.
     /// The type of album. See `SKAlbum.AlbumType` for possible values.
     public let albumType: AlbumType
     
-    /// The artists of the album. Each artist object includes a link in `href` to more detailed information about the artist.
+    /// The artists of the album. Each artist object includes a link in `url` to more detailed information about the artist.
     public let artists: [SKArtist]
     
     /// The markets in which the album is available: [ISO 3166-1 alpha-2 country codes](http://en.wikipedia.org/wiki/ISO_3166-1_alpha-2). Note that an album is considered available in a market when at least 1 of its tracks is available in that market.
@@ -57,7 +57,7 @@ public struct SKAlbum: JSONDecodable { // TODO: Make JSON Codable.
     public let externalURLs: [String: String] // FIXME: Change to [String: URL(?)] once JSONDecoder bug is fixed.
     
     /// A link to the Web API endpoint providing full details of the album.
-    public let href: URL
+    public let url: URL
     
     /// The [Spotify ID](https://developer.spotify.com/web-api/user-guide/#spotify-uris-and-ids) for the album.
     public let id: String
@@ -140,7 +140,7 @@ public struct SKAlbum: JSONDecodable { // TODO: Make JSON Codable.
         case externalIDs = "external_ids"
         case externalURLs = "external_urls"
         case genres
-        case href
+        case url = "href"
         case id
         case images
         case label

@@ -14,7 +14,7 @@ public struct SKTrackLink: JSONDecodable { // TODO: Make JSON Codable.
     public let externalURLs: [String: String] // FIXME: Change to [String: URL(?)] once JSONDecoder bug is fixed.
     
     /// A link to the Web API endpoint providing full details of the track.
-    public let href: URL
+    public let url: URL
     
     /// The [Spotify ID](https://developer.spotify.com/web-api/user-guide/#spotify-uris-and-ids) for the track.
     public let id: String
@@ -29,7 +29,7 @@ public struct SKTrackLink: JSONDecodable { // TODO: Make JSON Codable.
     
     private enum CodingKeys: String, CodingKey {
         case externalURLs = "external_urls"
-        case href
+        case url = "href"
         case id
         //case type
         case uri

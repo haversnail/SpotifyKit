@@ -18,7 +18,7 @@ public struct SKTrack: JSONDecodable { // TODO: Make JSON Codable.
     
     // MARK: - Object Properties (Simplified)
 
-    /// The artists who performed the track. Each artist object includes a link in `href` to more detailed information about the artist.
+    /// The artists who performed the track. Each artist object includes a link in `url` to more detailed information about the artist.
     public let artists: [SKArtist]
     
     /// A list of the countries in which the track can be played, identified by their [ISO 3166-1 alpha-2](http://en.wikipedia.org/wiki/ISO_3166-1_alpha-2) code.
@@ -53,7 +53,7 @@ public struct SKTrack: JSONDecodable { // TODO: Make JSON Codable.
     public let externalURLs: [String: String] // FIXME: Change to [String: URL(?)] once JSONDecoder bug is fixed.
     
     /// A link to the Web API endpoint providing full details of the track.
-    public let href: URL
+    public let url: URL
     
     /// The [Spotify ID](https://developer.spotify.com/web-api/user-guide/#spotify-uris-and-ids) for the track.
     public let id: String
@@ -81,7 +81,7 @@ public struct SKTrack: JSONDecodable { // TODO: Make JSON Codable.
     
     // MARK: - Object Properties (Full)
     
-    /// The album on which the track appears. The album object includes a link in `href` to full information about the album. 
+    /// The album on which the track appears. The album object includes a link in `url` to full information about the album.
     public let album: SKAlbum?
     
     /// Known external IDs for the track.
@@ -113,7 +113,7 @@ public struct SKTrack: JSONDecodable { // TODO: Make JSON Codable.
         case _isExplicit = "explicit"
         case externalIDs = "external_ids"
         case externalURLs = "external_urls"
-        case href
+        case url = "href"
         case id
         case isPlayable = "is_playable"
         case linkedTrack = "linked_from"
