@@ -92,7 +92,24 @@ public struct SKAlbum: JSONDecodable { // TODO: Make JSON Codable.
     public let popularity: Int?
     
     /// The date the album was first released, for example `"1981-12-15"`. Depending on the precision, it might be shown as `"1981"` or `"1981-12"`.
-    public let releaseDate: String? //Date? // TODO: Custom format during the decoding process.
+    /// - Note: Since this date string must be formatted conditionally, this property is maintained at the `private` scope and is used in conjunction with `releaseDatePrecision` to provide an accurate public `Date` object representation of this value.
+    private let _releaseDate: String?
+    
+    /// The date the album was first released. The precision for this value is provided by the `releaseDatePrecision` property.
+    public var releaseDate: Date? {
+        get {
+            guard _releaseDate != nil, releaseDatePrecision != nil else { return nil }
+            
+            let formatter = DateFormatter()
+            switch releaseDatePrecision! {
+                case .year: formatter.dateFormat = "yyyy"
+                case .month: formatter.dateFormat = "yyyy-MM" // TODO: Test for single-digit months.
+                case .day: formatter.dateFormat = "yyyy-MM-dd" // TODO: Test for single-digit months and days.
+            }
+            formatter.timeZone = TimeZone(secondsFromGMT: 0)
+            return formatter.date(from: _releaseDate!)
+        }
+    }
     
     /// The precision with which `releaseDate` value is known. See `SKAlbum.DatePrecision` for possible values.
     public let releaseDatePrecision: DatePrecision?
@@ -108,7 +125,7 @@ public struct SKAlbum: JSONDecodable { // TODO: Make JSON Codable.
             genres == nil &&
             label == nil &&
             popularity == nil &&
-            releaseDate == nil &&
+            _releaseDate == nil &&
             releaseDatePrecision == nil &&
             tracks == nil
     }
@@ -129,7 +146,7 @@ public struct SKAlbum: JSONDecodable { // TODO: Make JSON Codable.
         case label
         case name
         case popularity
-        case releaseDate = "release_date"
+        case _releaseDate = "release_date"
         case releaseDatePrecision = "release_date_precision"
         case tracks
         //case type
