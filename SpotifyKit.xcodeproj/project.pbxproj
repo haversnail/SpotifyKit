@@ -140,8 +140,8 @@
 			isa = PBXGroup;
 			children = (
 				1122F9B01F248BB700A9AD89 /* ModelStubs */,
-				113D08461F208BEC00BECB27 /* SpotifyKitTests.swift */,
 				119DC3D91F239DDB003DB3BD /* ObjectModelTests.swift */,
+				113D08461F208BEC00BECB27 /* SpotifyKitTests.swift */,
 				113D08481F208BEC00BECB27 /* Info.plist */,
 			);
 			path = SpotifyKitTests;

@@ -103,8 +103,8 @@ public struct SKAlbum: JSONDecodable { // TODO: Make JSON Codable.
             let formatter = DateFormatter()
             switch releaseDatePrecision! {
                 case .year: formatter.dateFormat = "yyyy"
-                case .month: formatter.dateFormat = "yyyy-MM" // TODO: Test for single-digit months.
-                case .day: formatter.dateFormat = "yyyy-MM-dd" // TODO: Test for single-digit months and days.
+                case .month: formatter.dateFormat = "yyyy-MM"
+                case .day: formatter.dateFormat = "yyyy-MM-dd"
             }
             formatter.timeZone = TimeZone(secondsFromGMT: 0)
             return formatter.date(from: _releaseDate!)

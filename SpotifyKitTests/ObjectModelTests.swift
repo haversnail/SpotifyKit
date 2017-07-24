@@ -23,32 +23,29 @@ class ObjectModelTests: XCTestCase {
     
     func testAlbum() {
         let album = SKAlbum(data: kAlbumData)
-        XCTAssertNotNil(album, "object could not be initialized from the given JSON data")
+        XCTAssertNotNil(album, "object could not be initialized from the given JSON data.")
         XCTAssertEqual(album?.name, "El Camino")
+        // Test computed vars:
+        XCTAssertEqual(album?.releaseDate?.description(with: nil), "2011-12-06 00:00:00 +0000")
+        XCTAssertEqual(album?.isSimplified, false)
     }
-    
-//    func testAlbumSimplified() {
-//
-//    }
     
     func testArtist() {
         let artist = SKArtist(data: kArtistData)
-        XCTAssertNotNil(artist, "object could not be initialized from the given JSON data")
+        XCTAssertNotNil(artist, "object could not be initialized from the given JSON data.")
         XCTAssertEqual(artist?.name, "Cold War Kids")
+        // Test computed vars:
+        XCTAssertEqual(artist?.isSimplified, false)
     }
-    
-//    func testArtistSimplified() {
-//
-//    }
-    
+
     func testTrack() {
         let track = SKTrack(data: kTrackData)
-        XCTAssertNotNil(track, "object could not be initialized from the given JSON data")
+        XCTAssertNotNil(track, "object could not be initialized from the given JSON data.")
         XCTAssertEqual(track?.name, "My Thing")
+        // Test computed vars:
+        XCTAssertEqual(track?.duration, TimeInterval(157.666))
+        XCTAssertEqual(track?.contentRating, .clean)
+        XCTAssertEqual(track?.isSimplified, false)
     }
-    
-//    func testTrackSimplified() {
-//
-//    }
-    
+
 }
