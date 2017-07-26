@@ -25,6 +25,9 @@ public struct Paging/* PagingCollection / PagedCollection / PaginatedCollection 
     /// URL to the previous page of items (`nil` if none).
     public let previous: URL?
     
+    /// The cursors used to find the next set of items. See The [Spotify Web API Object Model](https://developer.spotify.com/web-api/object-model/#cursor-object) for reference.
+    public let cursors: [String: String]?
+    
     /// The total number of items available to return.
     /// - Note: To retrieve the number of items currently returned by the paging object, see "`count`" instead.
     public var total: Int
@@ -41,6 +44,7 @@ public struct Paging/* PagingCollection / PagedCollection / PaginatedCollection 
         case next
         case offset
         case previous
+        case cursors
         case total
     }
 }
