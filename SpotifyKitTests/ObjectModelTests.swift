@@ -52,6 +52,11 @@ class ObjectModelTests: XCTestCase {
         // Test computed var:
         XCTAssertEqual(audioFeatures?.duration, TimeInterval(203.782))
     }
+    
+    func testCategory() {
+        let category = SKCategory(data: categoryData)
+        XCTAssertNotNil(category, "object could not be initialized from the given JSON data.")
+    }
 
     func testTrack() {
         let track = SKTrack(data: trackData)

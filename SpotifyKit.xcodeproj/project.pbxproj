@@ -30,6 +30,8 @@
 		119DC3D41F239A92003DB3BD /* Paging.swift in Sources */ = {isa = PBXBuildFile; fileRef = 119DC3D31F239A92003DB3BD /* Paging.swift */; };
 		119DC3D61F239B93003DB3BD /* Track.swift in Sources */ = {isa = PBXBuildFile; fileRef = 119DC3D51F239B93003DB3BD /* Track.swift */; };
 		119DC3DA1F239DDB003DB3BD /* ObjectModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 119DC3D91F239DDB003DB3BD /* ObjectModelTests.swift */; };
+		11F196271F28954B007D3718 /* Category.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11F196261F28954B007D3718 /* Category.swift */; };
+		11F196291F289CFA007D3718 /* Category.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11F196281F289CFA007D3718 /* Category.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -70,6 +72,8 @@
 		119DC3D31F239A92003DB3BD /* Paging.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Paging.swift; sourceTree = "<group>"; };
 		119DC3D51F239B93003DB3BD /* Track.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Track.swift; sourceTree = "<group>"; };
 		119DC3D91F239DDB003DB3BD /* ObjectModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ObjectModelTests.swift; sourceTree = "<group>"; };
+		11F196261F28954B007D3718 /* Category.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Category.swift; sourceTree = "<group>"; };
+		11F196281F289CFA007D3718 /* Category.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Category.swift; sourceTree = "<group>"; };
 		11FB6D8F1F20D33500ADAA90 /* modulemaps.sh */ = {isa = PBXFileReference; lastKnownFileType = text.script.sh; path = modulemaps.sh; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -104,6 +108,7 @@
 				1122F9B11F248D6800A9AD89 /* Album.swift */,
 				1122F9B51F248F9100A9AD89 /* Artist.swift */,
 				113C5F6A1F260DA4005D1DC6 /* AudioFeatures.swift */,
+				11F196281F289CFA007D3718 /* Category.swift */,
 				1122F9B71F24929800A9AD89 /* Track.swift */,
 			);
 			path = ModelStubs;
@@ -179,6 +184,7 @@
 				119DC3CD1F2392AA003DB3BD /* Album.swift */,
 				119DC3D11F2397FD003DB3BD /* Artist.swift */,
 				1122F9BF1F25F73A00A9AD89 /* AudioFeatures.swift */,
+				11F196261F28954B007D3718 /* Category.swift */,
 				1122F9B91F24A23D00A9AD89 /* Followers.swift */,
 				119DC3CF1F23948F003DB3BD /* Image.swift */,
 				119DC3D31F239A92003DB3BD /* Paging.swift */,
@@ -306,6 +312,7 @@
 				1122F9BE1F24AA1200A9AD89 /* TrackLink.swift in Sources */,
 				119DC3CE1F2392AA003DB3BD /* Album.swift in Sources */,
 				119DC3D01F23948F003DB3BD /* Image.swift in Sources */,
+				11F196271F28954B007D3718 /* Category.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -317,6 +324,7 @@
 				1122F9B81F24929800A9AD89 /* Track.swift in Sources */,
 				113D08471F208BEC00BECB27 /* SpotifyKitTests.swift in Sources */,
 				113C5F6B1F260DA4005D1DC6 /* AudioFeatures.swift in Sources */,
+				11F196291F289CFA007D3718 /* Category.swift in Sources */,
 				1122F9B61F248F9100A9AD89 /* Artist.swift in Sources */,
 				1122F9B21F248D6800A9AD89 /* Album.swift in Sources */,
 			);
