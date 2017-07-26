@@ -28,6 +28,12 @@ class ObjectModelTests: XCTestCase {
         // Test computed vars:
         XCTAssertEqual(album?.releaseDate?.description(with: nil), "2011-12-06 00:00:00 +0000")
         XCTAssertEqual(album?.isSimplified, false)
+        // Test paging collection operations:
+        XCTAssertEqual(album?.tracks?.startIndex, 0)
+        XCTAssertEqual(album?.tracks?.endIndex, 11)
+        XCTAssertEqual(album?.tracks?[3].name, "Little Black Submarines")
+        XCTAssertEqual(album?.tracks?.index(after: 1), 2)
+        XCTAssertEqual(album?.tracks?.index(before: 11), 10)
     }
     
     func testArtist() {
