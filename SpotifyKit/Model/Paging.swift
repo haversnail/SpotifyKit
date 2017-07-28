@@ -8,7 +8,7 @@
 
 import Foundation
 
-public struct Paging/* PagingCollection / PagedCollection / PaginatedCollection */<Object: Decodable>: JSONDecodable { // TODO: Make JSON Codable.
+public struct PagedCollection<Object: Decodable>: JSONDecodable { // TODO: Make JSON Codable.
     
     /// The array of objects.
     private let _items: [Object]
@@ -17,13 +17,13 @@ public struct Paging/* PagingCollection / PagedCollection / PaginatedCollection 
     public let limit: Int
     
     /// URL to the next page of items (`nil` if none).
-    public let next: URL?
+    public let nextURL: URL?
     
     /// The offset of the items returned (as set in the query or by default).
     public let offset: Int
     
     /// URL to the previous page of items (`nil` if none).
-    public let previous: URL?
+    public let previousURL: URL?
     
     /// The cursors used to find the next set of items. See The [Spotify Web API Object Model](https://developer.spotify.com/web-api/object-model/#cursor-object) for reference.
     public let cursors: [String: String]?
@@ -41,17 +41,17 @@ public struct Paging/* PagingCollection / PagedCollection / PaginatedCollection 
         case url = "href"
         case _items = "items"
         case limit
-        case next
+        case nextURL = "next"
         case offset
-        case previous
+        case previousURL = "previous"
         case cursors
         case total
     }
 }
 
-// MARK: - Paging + Collection Conformance
+// MARK: - Collection Conformance
 
-extension Paging: Collection { // Forwards Collection logic to the Paging structure for convenience.
+extension PagedCollection: Collection { // Forwards Collection logic to the PagedCollection structure for convenience.
     
     public typealias Index = Array<Object>.Index
 
@@ -72,11 +72,11 @@ extension Paging: Collection { // Forwards Collection logic to the Paging struct
     }
 }
 
-extension Paging: BidirectionalCollection { // Extends support for backward as well as forward index traversal.
+extension PagedCollection: BidirectionalCollection { // Extends support for backward as well as forward index traversal.
     
     public func index(before i: Index) -> Index {
         return _items.index(before: i)
     }
 }
 
-extension Paging: RandomAccessCollection {} // Significantly improves efficiency for operations requiring index distance measurement.
+extension PagedCollection: RandomAccessCollection {} // Significantly improves efficiency for operations requiring index distance measurement.

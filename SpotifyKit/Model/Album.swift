@@ -115,7 +115,7 @@ public struct SKAlbum: JSONDecodable { // TODO: Make JSON Codable.
     public let releaseDatePrecision: DatePrecision?
     
     /// The tracks of the album.
-    public let tracks: Paging<SKTrack>?
+    public let tracks: PagedCollection<SKTrack>?
     
     /// A boolean value indicating whether this `SKAlbum` instance is a simplified version of the Spotify album object (i.e., it does *not* contain any of the values unique to the full version of the object).
     public var isSimplified: Bool {
