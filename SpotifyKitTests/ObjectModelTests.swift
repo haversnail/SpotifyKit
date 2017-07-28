@@ -21,9 +21,30 @@ class ObjectModelTests: XCTestCase {
         super.tearDown()
     }
     
+    func initTestObject<T: JSONDecodable>(of type: T.Type, from jsonData: Data) -> T? {
+        do {
+            return try type.init(from: jsonData)
+        } catch DecodingError.dataCorrupted(let context) {
+            print(context.debugDescription, context.codingPath)
+            return nil
+        } catch DecodingError.keyNotFound(let key, let context) {
+            print(context.debugDescription, "A matching JSON key couldn't be found for the \"\(key)\" coding key.")
+            return nil
+        } catch DecodingError.typeMismatch(_, let context) {
+            print(context.debugDescription, context.codingPath)
+            return nil
+        } catch DecodingError.valueNotFound(_, let context) {
+            print(context.debugDescription, context.codingPath)
+            return nil
+        } catch {
+            print("Untyped error:", error)
+            return nil
+        }
+    }
+    
     func testAlbum() {
-        let album = SKAlbum(data: albumData)
-        XCTAssertNotNil(album, "object could not be initialized from the given JSON data.")
+        let album = initTestObject(of: SKAlbum.self, from: albumData)
+        XCTAssertNotNil(album, "object could not be initialized from the given JSON data (see console).")
         XCTAssertEqual(album?.name, "El Camino")
         // Test computed vars:
         XCTAssertEqual(album?.releaseDate?.description(with: nil), "2011-12-06 00:00:00 +0000")
@@ -37,16 +58,16 @@ class ObjectModelTests: XCTestCase {
     }
     
     func testArtist() {
-        let artist = SKArtist(data: artistData)
-        XCTAssertNotNil(artist, "object could not be initialized from the given JSON data.")
+        let artist = initTestObject(of: SKArtist.self, from: artistData)
+        XCTAssertNotNil(artist, "object could not be initialized from the given JSON data (see console).")
         XCTAssertEqual(artist?.name, "Cold War Kids")
         // Test computed vars:
         XCTAssertEqual(artist?.isSimplified, false)
     }
     
     func testAudioFeatures() {
-        let audioFeatures = SKAudioFeatures(data: audioFeaturesData)
-        XCTAssertNotNil(audioFeatures, "object could not be initialized from the given JSON data.")
+        let audioFeatures = initTestObject(of: SKAudioFeatures.self, from: audioFeaturesData)
+        XCTAssertNotNil(audioFeatures, "object could not be initialized from the given JSON data (see console).")
         XCTAssertEqual(audioFeatures?.key, .Bb)
         XCTAssertEqual(audioFeatures?.mode, .minor)
         // Test computed var:
@@ -54,18 +75,21 @@ class ObjectModelTests: XCTestCase {
     }
     
     func testCategory() {
-        let category = SKCategory(data: categoryData)
-        XCTAssertNotNil(category, "object could not be initialized from the given JSON data.")
+        let category = initTestObject(of: SKCategory.self, from: categoryData)
+        XCTAssertNotNil(category, "object could not be initialized from the given JSON data (see console).")
     }
 
     func testTrack() {
-        let track = SKTrack(data: trackData)
-        XCTAssertNotNil(track, "object could not be initialized from the given JSON data.")
+        let track = initTestObject(of: SKTrack.self, from: trackData)
+        XCTAssertNotNil(track, "object could not be initialized from the given JSON data (see console).")
         XCTAssertEqual(track?.name, "My Thing")
         // Test computed vars:
         XCTAssertEqual(track?.duration, TimeInterval(157.666))
         XCTAssertEqual(track?.contentRating, .clean)
         XCTAssertEqual(track?.isSimplified, false)
+        // Test the returned "simplified" album object properties (for code coverage):
+        XCTAssertEqual(track?.album?.isSimplified, true)
+        XCTAssertNil(track?.album?.releaseDate)
     }
 
 }

@@ -14,35 +14,16 @@ public typealias JSONCodable = JSONDecodable & JSONEncodable
 public protocol JSONDecodable: Decodable {
     
     /// Creates and returns a SpotifyKit object from the specified JSON data.
-    /// - Parameter data: The data object containing the JSON-encoded Spotify data.
-    init?(data: Data)
+    /// - Note: The default implementation of this method decodes date values using the ISO 8601 timestamp format [specified by the Web API](https://developer.spotify.com/web-api/user-guide/#timestamps). If your need another date decoding strategy, you must provide your own custom implementation.
+    /// - Parameter jsonData: The data object containing the JSON-encoded Spotify data.
+    init(from jsonData: Data) throws
 }
 
 extension JSONDecodable {
-    
-    public init?(data: Data) {
-        
+    public init(from jsonData: Data) throws {
         let decoder = JSONDecoder()
         decoder.dateDecodingStrategy = .iso8601
-        
-        do {
-            self = try decoder.decode(Self.self, from: data)
-        } catch DecodingError.dataCorrupted(let context) {
-            print(context.debugDescription, context.codingPath)
-            return nil
-        } catch DecodingError.keyNotFound(let key, let context) {
-            print(context.debugDescription, "A matching JSON key couldn't be found for the \"\(key)\" coding key.")
-            return nil
-        } catch DecodingError.typeMismatch(_, let context) {
-            print(context.debugDescription, context.codingPath)
-            return nil
-        } catch DecodingError.valueNotFound(_, let context) {
-            print(context.debugDescription, context.codingPath)
-            return nil
-        } catch {
-            print("Untyped error:", error)
-            return nil
-        }
+        self = try decoder.decode(Self.self, from: jsonData)
     }
 }
 
