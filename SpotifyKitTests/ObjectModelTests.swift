@@ -78,6 +78,11 @@ class ObjectModelTests: XCTestCase {
         let category = initTestObject(of: SKCategory.self, from: categoryData)
         XCTAssertNotNil(category, "object could not be initialized from the given JSON data (see console).")
     }
+    
+    func testPlaylist() {
+        let playlist = initTestObject(of: SKPlaylist.self, from: playlistData)
+        XCTAssertNotNil(playlist, "object could not be initialized from the given JSON data (see console).")
+    }
 
     func testTrack() {
         let track = initTestObject(of: SKTrack.self, from: trackData)
