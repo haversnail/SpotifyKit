@@ -91,5 +91,10 @@ class ObjectModelTests: XCTestCase {
         XCTAssertEqual(track?.album?.isSimplified, true)
         XCTAssertNil(track?.album?.releaseDate)
     }
+    
+    func testUser() {
+        let user = initTestObject(of: SKUser.self, from: userData)
+        XCTAssertNotNil(user, "object could not be initialized from the given JSON data (see console).")
+    }
 
 }
