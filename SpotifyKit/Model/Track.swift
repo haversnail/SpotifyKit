@@ -18,6 +18,34 @@ public struct SKTrack: JSONDecodable { // TODO: Make JSON Codable.
         case unknown
     }
     
+    public struct TrackLink: Codable {
+        
+        /// Known external URLs for this track. See ["external URL object"](https://developer.spotify.com/web-api/object-model/#external-id-object) for more details.
+        public let externalURLs: [String: String] // FIXME: Change to [String: URL(?)] once JSONDecoder bug is fixed.
+        
+        /// A link to the Web API endpoint providing full details of the track.
+        public let url: URL
+        
+        /// The [Spotify ID](https://developer.spotify.com/web-api/user-guide/#spotify-uris-and-ids) for the track.
+        public let id: String
+        
+        // The object type: "track"
+        //public let type: SKTrack.Type
+        
+        /// The [Spotify URI](https://developer.spotify.com/web-api/user-guide/#spotify-uris-and-ids) for the track.
+        public let uri: String
+        
+        // MARK: Keys
+        
+        private enum CodingKeys: String, CodingKey {
+            case externalURLs = "external_urls"
+            case url = "href"
+            case id
+            //case type
+            case uri
+        }
+    }
+    
     // MARK: - Object Properties (Simplified)
 
     /// The artists who performed the track. Each artist object includes a link in `url` to more detailed information about the artist.
@@ -63,8 +91,8 @@ public struct SKTrack: JSONDecodable { // TODO: Make JSON Codable.
     /// Part of the object when [Track Relinking](https://developer.spotify.com/web-api/track-relinking-guide/) is applied. If `true`, the track is playable in the given market. Otherwise `false`.
     public let isPlayable: Bool?
     
-    /// Part of the object when [Track Relinking](https://developer.spotify.com/web-api/track-relinking-guide/) is applied and is only part of the object if the track linking, in fact, exists. The requested track has been replaced with a different track. The track in the `SKTrackLink` object contains information about the originally requested track.
-    public let linkedTrack: SKTrackLink?
+    /// Part of the object when [Track Relinking](https://developer.spotify.com/web-api/track-relinking-guide/) is applied and is only part of the object if the track linking, in fact, exists (meaning that the requested track has been replaced with a different track). The resource identifiers and locators in the `TrackLink` object contain information about the originally requested track.
+    public let linkedTrack: TrackLink?
     
     /// The name of the track.
     public let name: String

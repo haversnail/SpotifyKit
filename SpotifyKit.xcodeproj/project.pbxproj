@@ -16,7 +16,6 @@
 		1122F9B61F248F9100A9AD89 /* Artist.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1122F9B51F248F9100A9AD89 /* Artist.swift */; };
 		1122F9B81F24929800A9AD89 /* Track.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1122F9B71F24929800A9AD89 /* Track.swift */; };
 		1122F9BA1F24A23D00A9AD89 /* Followers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1122F9B91F24A23D00A9AD89 /* Followers.swift */; };
-		1122F9BE1F24AA1200A9AD89 /* TrackLink.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1122F9BD1F24AA1200A9AD89 /* TrackLink.swift */; };
 		1122F9C01F25F73A00A9AD89 /* AudioFeatures.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1122F9BF1F25F73A00A9AD89 /* AudioFeatures.swift */; };
 		113C5F6B1F260DA4005D1DC6 /* AudioFeatures.swift in Sources */ = {isa = PBXBuildFile; fileRef = 113C5F6A1F260DA4005D1DC6 /* AudioFeatures.swift */; };
 		113D08421F208BEC00BECB27 /* SpotifyKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 113D08381F208BEC00BECB27 /* SpotifyKit.framework */; };
@@ -52,7 +51,6 @@
 		1122F9B51F248F9100A9AD89 /* Artist.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Artist.swift; sourceTree = "<group>"; };
 		1122F9B71F24929800A9AD89 /* Track.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Track.swift; sourceTree = "<group>"; };
 		1122F9B91F24A23D00A9AD89 /* Followers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Followers.swift; sourceTree = "<group>"; };
-		1122F9BD1F24AA1200A9AD89 /* TrackLink.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackLink.swift; sourceTree = "<group>"; };
 		1122F9BF1F25F73A00A9AD89 /* AudioFeatures.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioFeatures.swift; sourceTree = "<group>"; };
 		113C5F6A1F260DA4005D1DC6 /* AudioFeatures.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioFeatures.swift; sourceTree = "<group>"; };
 		113D08381F208BEC00BECB27 /* SpotifyKit.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = SpotifyKit.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -189,7 +187,6 @@
 				119DC3CF1F23948F003DB3BD /* Image.swift */,
 				119DC3D31F239A92003DB3BD /* Paging.swift */,
 				119DC3D51F239B93003DB3BD /* Track.swift */,
-				1122F9BD1F24AA1200A9AD89 /* TrackLink.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -309,7 +306,6 @@
 				119DC3D61F239B93003DB3BD /* Track.swift in Sources */,
 				1122F9AD1F24698A00A9AD89 /* JSONCodable.swift in Sources */,
 				119DC3D41F239A92003DB3BD /* Paging.swift in Sources */,
-				1122F9BE1F24AA1200A9AD89 /* TrackLink.swift in Sources */,
 				119DC3CE1F2392AA003DB3BD /* Album.swift in Sources */,
 				119DC3D01F23948F003DB3BD /* Image.swift in Sources */,
 				11F196271F28954B007D3718 /* Category.swift in Sources */,
