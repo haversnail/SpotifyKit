@@ -153,3 +153,7 @@ public struct SKAlbum: JSONDecodable { // TODO: Make JSON Codable.
         case uri
     }
 }
+
+// MARK: - User Savable Extension
+
+extension SKAlbum: UserSavable {}

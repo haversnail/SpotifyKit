@@ -155,3 +155,7 @@ public struct SKTrack: JSONDecodable { // TODO: Make JSON Codable.
         case uri
     }
 }
+
+// MARK: - User Savable Extension
+
+extension SKTrack: UserSavable {}
