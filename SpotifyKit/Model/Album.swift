@@ -100,7 +100,7 @@ public struct SKAlbum: JSONDecodable { // TODO: Make JSON Codable.
         get {
             guard _releaseDate != nil, releaseDatePrecision != nil else { return nil }
             
-            let formatter = DateFormatter()
+            let formatter = DateFormatter() // - Note: Keep in mind this approach allocates memory for a new DateFormatter every time this variable is computed. It would be a lot of boilerplate, but the more performant way to handle this would be to set it from the get-go by customizing the Decodable initializer.
             switch releaseDatePrecision! {
                 case .year: formatter.dateFormat = "yyyy"
                 case .month: formatter.dateFormat = "yyyy-MM"

@@ -10,6 +10,8 @@ import Foundation
 
 public struct SKTrack: JSONDecodable { // TODO: Make JSON Codable.
     
+    // MARK: - Embedded Types
+    
     public enum ContentRating: Int {
         case explicit
         case clean
@@ -38,7 +40,7 @@ public struct SKTrack: JSONDecodable { // TODO: Make JSON Codable.
     
     /// From the [Web API](https://developer.spotify.com/web-api/object-model/#track-object-simplified) docs: "Whether or not the track has explicit lyrics (`true` = yes it does; `false` = no it does not OR unknown)."
     /// - Note: Because this property's respective JSON value could be `NULL` or "unknown," an optionally-wrapped Boolean type for this attribute seems confusing. Instead, this property is maintained at the `private` scope and is used to provide a more expressive, type-safe "Content Rating" property. See `SKTrack.ContentRating` for possible values.
-    private let _isExplicit: Bool?
+    private let _isExplicit: Bool? // TODO: Test for "unknown" values.
     
     /// The content rating of the track, indicating whether the lyrics are explicit. See `SKTrack.ContentRating` for possible values.
     public var contentRating: ContentRating {

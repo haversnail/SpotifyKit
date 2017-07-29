@@ -8,6 +8,9 @@
 
 import Foundation
 
+/// A generic structure representing a paginated container for an array of Spotify objects.
+///
+/// This collection can either be *offset-based* or *cursor-based* depending on the [type of paging object](https://developer.spotify.com/web-api/object-model/#paging-object) returned by the Spotify Web API.
 public struct PagedCollection<Object: Decodable>: JSONDecodable { // TODO: Make JSON Codable.
     
     /// The array of objects.
