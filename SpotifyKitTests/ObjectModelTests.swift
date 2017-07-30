@@ -79,6 +79,18 @@ class ObjectModelTests: XCTestCase {
         XCTAssertNotNil(category, "object could not be initialized from the given JSON data (see console).")
     }
     
+    func testError() {
+        let error = initTestObject(of: SKError.self, from: errorData)
+        XCTAssertNotNil(error, "object could not be initialized from the given JSON data (see console).")
+        XCTAssertEqual(error?.localizedDescription, "Receieved a 401 error: The access token expired.")
+    }
+    
+    func testAuthError() {
+        let error = initTestObject(of: SKAuthenticationError.self, from: authenticationErrorData)
+        XCTAssertNotNil(error, "object could not be initialized from the given JSON data (see console).")
+        XCTAssertEqual(error?.localizedDescription, "Received a \"invalid_client\" error: Invalid client secret.")
+    }
+    
     func testPlaylist() {
         let playlist = initTestObject(of: SKPlaylist.self, from: playlistData)
         XCTAssertNotNil(playlist, "object could not be initialized from the given JSON data (see console).")
