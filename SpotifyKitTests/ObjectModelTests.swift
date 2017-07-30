@@ -96,6 +96,11 @@ class ObjectModelTests: XCTestCase {
         XCTAssertNotNil(playlist, "object could not be initialized from the given JSON data (see console).")
     }
     
+    func testRecommendations() {
+        let recommendations = initTestObject(of: SKRecommendations.self, from: recommendationsData)
+        XCTAssertNotNil(recommendations, "object could not be initialized from the given JSON data (see console).")
+    }
+    
     func testSavedAlbums() {
         let savedAlbums = initTestObject(of: PagedCollection<SavedItem<SKAlbum>>.self, from: savedAlbumData)
         XCTAssertNotNil(savedAlbums, "object could not be initialized from the given JSON data (see console).")

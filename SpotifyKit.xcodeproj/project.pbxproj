@@ -38,6 +38,8 @@
 		11EC89FA1F2C56850066A5F0 /* SavedAlbums.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11EC89F91F2C56850066A5F0 /* SavedAlbums.swift */; };
 		11EC89FE1F2D86D00066A5F0 /* Error.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11EC89FD1F2D86D00066A5F0 /* Error.swift */; };
 		11EC8A001F2D8D740066A5F0 /* Errors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11EC89FF1F2D8D740066A5F0 /* Errors.swift */; };
+		11EC8A021F2DE2340066A5F0 /* Recommendations.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11EC8A011F2DE2340066A5F0 /* Recommendations.swift */; };
+		11EC8A041F2DE7AE0066A5F0 /* Recommendations.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11EC8A031F2DE7AE0066A5F0 /* Recommendations.swift */; };
 		11F196271F28954B007D3718 /* Category.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11F196261F28954B007D3718 /* Category.swift */; };
 		11F196291F289CFA007D3718 /* Category.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11F196281F289CFA007D3718 /* Category.swift */; };
 /* End PBXBuildFile section */
@@ -88,6 +90,8 @@
 		11EC89F91F2C56850066A5F0 /* SavedAlbums.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SavedAlbums.swift; sourceTree = "<group>"; };
 		11EC89FD1F2D86D00066A5F0 /* Error.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Error.swift; sourceTree = "<group>"; };
 		11EC89FF1F2D8D740066A5F0 /* Errors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Errors.swift; sourceTree = "<group>"; };
+		11EC8A011F2DE2340066A5F0 /* Recommendations.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Recommendations.swift; sourceTree = "<group>"; };
+		11EC8A031F2DE7AE0066A5F0 /* Recommendations.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Recommendations.swift; sourceTree = "<group>"; };
 		11F196261F28954B007D3718 /* Category.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Category.swift; sourceTree = "<group>"; };
 		11F196281F289CFA007D3718 /* Category.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Category.swift; sourceTree = "<group>"; };
 		11FB6D8F1F20D33500ADAA90 /* modulemaps.sh */ = {isa = PBXFileReference; lastKnownFileType = text.script.sh; path = modulemaps.sh; sourceTree = "<group>"; };
@@ -126,10 +130,11 @@
 				113C5F6A1F260DA4005D1DC6 /* AudioFeatures.swift */,
 				11F196281F289CFA007D3718 /* Category.swift */,
 				11EC89FF1F2D8D740066A5F0 /* Errors.swift */,
-				1122F9B71F24929800A9AD89 /* Track.swift */,
 				113C5F6E1F26C73F005D1DC6 /* Playlist.swift */,
+				11EC8A031F2DE7AE0066A5F0 /* Recommendations.swift */,
 				11EC89F91F2C56850066A5F0 /* SavedAlbums.swift */,
 				1119FD0B1F272DFE00EE47E2 /* SavedTracks.swift */,
+				1122F9B71F24929800A9AD89 /* Track.swift */,
 				11EC89F71F2C511F0066A5F0 /* User.swift */,
 			);
 			path = ModelStubs;
@@ -211,8 +216,9 @@
 				119DC3CF1F23948F003DB3BD /* Image.swift */,
 				119DC3D31F239A92003DB3BD /* Paging.swift */,
 				113C5F6C1F26C235005D1DC6 /* Playlist.swift */,
-				119DC3D51F239B93003DB3BD /* Track.swift */,
+				11EC8A011F2DE2340066A5F0 /* Recommendations.swift */,
 				1119FD091F26E2F400EE47E2 /* SavedItem.swift */,
+				119DC3D51F239B93003DB3BD /* Track.swift */,
 				113C5F721F26CB37005D1DC6 /* User.swift */,
 			);
 			path = Model;
@@ -330,6 +336,7 @@
 				1122F9C01F25F73A00A9AD89 /* AudioFeatures.swift in Sources */,
 				119DC3D21F2397FD003DB3BD /* Artist.swift in Sources */,
 				1122F9BA1F24A23D00A9AD89 /* Followers.swift in Sources */,
+				11EC8A021F2DE2340066A5F0 /* Recommendations.swift in Sources */,
 				119DC3D61F239B93003DB3BD /* Track.swift in Sources */,
 				1122F9AD1F24698A00A9AD89 /* JSONCodable.swift in Sources */,
 				119DC3D41F239A92003DB3BD /* Paging.swift in Sources */,
@@ -347,6 +354,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				11EC8A041F2DE7AE0066A5F0 /* Recommendations.swift in Sources */,
 				119DC3DA1F239DDB003DB3BD /* ObjectModelTests.swift in Sources */,
 				1122F9B81F24929800A9AD89 /* Track.swift in Sources */,
 				113D08471F208BEC00BECB27 /* SpotifyKitTests.swift in Sources */,

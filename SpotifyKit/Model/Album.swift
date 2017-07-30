@@ -93,23 +93,24 @@ public struct SKAlbum: JSONDecodable { // TODO: Make JSON Codable.
     
     /// The date the album was first released, for example `"1981-12-15"`. Depending on the precision, it might be shown as `"1981"` or `"1981-12"`.
     /// - Note: Since this date string must be formatted conditionally, this property is maintained at the `private` scope and is used in conjunction with `releaseDatePrecision` to provide an accurate public `Date` object representation of this value.
-    private let _releaseDate: String?
+    //private let _releaseDate: String?
     
     /// The date the album was first released. The precision for this value is provided by the `releaseDatePrecision` property.
-    public var releaseDate: Date? {
-        get {
-            guard _releaseDate != nil, releaseDatePrecision != nil else { return nil }
-            
-            let formatter = DateFormatter() // - Note: Keep in mind this approach allocates memory for a new DateFormatter every time this variable is computed. It would be a lot of boilerplate, but the more performant way to handle this would be to set it from the get-go by customizing the Decodable initializer.
-            switch releaseDatePrecision! {
-                case .year: formatter.dateFormat = "yyyy"
-                case .month: formatter.dateFormat = "yyyy-MM"
-                case .day: formatter.dateFormat = "yyyy-MM-dd"
-            }
-            formatter.timeZone = TimeZone(secondsFromGMT: 0)
-            return formatter.date(from: _releaseDate!)
-        }
-    }
+    public let releaseDate: Date?
+//    public var releaseDate: Date? {
+//        get {
+//            guard _releaseDate != nil, releaseDatePrecision != nil else { return nil }
+//
+//            let formatter = DateFormatter() // - Note: Keep in mind this approach allocates memory for a new DateFormatter every time this variable is computed. It would be a lot of boilerplate, but the more performant way to handle this would be to set it from the get-go by customizing the Decodable initializer.
+//            switch releaseDatePrecision! {
+//                case .year: formatter.dateFormat = "yyyy"
+//                case .month: formatter.dateFormat = "yyyy-MM"
+//                case .day: formatter.dateFormat = "yyyy-MM-dd"
+//            }
+//            formatter.timeZone = TimeZone(secondsFromGMT: 0)
+//            return formatter.date(from: _releaseDate!)
+//        }
+//    }
     
     /// The precision with which `releaseDate` value is known. See `SKAlbum.DatePrecision` for possible values.
     public let releaseDatePrecision: DatePrecision?
@@ -125,7 +126,7 @@ public struct SKAlbum: JSONDecodable { // TODO: Make JSON Codable.
             genres == nil &&
             label == nil &&
             popularity == nil &&
-            _releaseDate == nil &&
+            releaseDate == nil && // _releaseDate
             releaseDatePrecision == nil &&
             tracks == nil
     }
@@ -146,11 +147,53 @@ public struct SKAlbum: JSONDecodable { // TODO: Make JSON Codable.
         case label
         case name
         case popularity
-        case _releaseDate = "release_date"
+        case releaseDate = "release_date" // _releaseDate
         case releaseDatePrecision = "release_date_precision"
         case tracks
         //case type
         case uri
+    }
+}
+
+// MARK: - Custom Decoding
+
+extension SKAlbum: Decodable {
+    public init(from decoder: Decoder) throws {
+        let values = try decoder.container(keyedBy: CodingKeys.self)
+        
+        // Object Properties (Simplified)
+        albumType = try values.decode(AlbumType.self, forKey: .albumType, toCase: .lowercase) // converts any uppercased values (e.g., "ALBUM") to match enum case.
+        artists = try values.decode([SKArtist].self, forKey: .artists)
+        availableMarkets = try values.decodeIfPresent([String].self, forKey: .availableMarkets)
+        externalURLs = try values.decode([String: String].self, forKey: .externalURLs) // FIXME: Change to [String: URL?]
+        url = try values.decode(URL.self, forKey: .url)
+        id = try values.decode(String.self, forKey: .id)
+        images = try values.decode([SKImage].self, forKey: .images)
+        name = try values.decode(String.self, forKey: .name)
+        uri = try values.decode(String.self, forKey: .uri)
+
+        // Object Properties (Full)
+        copyrights = try values.decodeIfPresent([Copyright].self, forKey: .copyrights)
+        externalIDs = try values.decodeIfPresent([String: String].self, forKey: .externalIDs)
+        genres = try values.decodeIfPresent([String].self, forKey: .genres)
+        label = try values.decodeIfPresent(String.self, forKey: .label)
+        popularity = try values.decodeIfPresent(Int.self, forKey: .popularity)
+        releaseDatePrecision = try values.decodeIfPresent(DatePrecision.self, forKey: .releaseDatePrecision)
+        tracks = try values.decodeIfPresent(PagedCollection<SKTrack>.self, forKey: .tracks)
+
+        // Release Date
+        guard let dateString = try values.decodeIfPresent(String.self, forKey: .releaseDate) else {
+            releaseDate = nil
+            return
+        }
+        let formatter = DateFormatter()
+        switch releaseDatePrecision! {
+            case .year: formatter.dateFormat = "yyyy"
+            case .month: formatter.dateFormat = "yyyy-MM"
+            case .day: formatter.dateFormat = "yyyy-MM-dd"
+        }
+        formatter.timeZone = TimeZone(secondsFromGMT: 0)
+        releaseDate = formatter.date(from: dateString)
     }
 }
 
