@@ -35,7 +35,14 @@ public protocol JSONEncodable: Encodable {
 }
 
 // MARK: - Keyed Decoding Container + Raw Value Case Conversion
-
+//
+// In some instances, certain objects returned by the Web API contain strings
+// whose formatting differs from their expected or documented values. For
+// example, when requesting "recommendations based on seeds," cartain fields
+// that are otherwise always lowercased strings are returned in all caps —
+// making raw representable types based on these fields hard to instantiate.
+// These methods, when used in a custom decoding initializer, provide better,
+// more precise control over how these enum-dependent raw values are decoded.
 extension KeyedDecodingContainer {
     
     enum StringDecodingStrategy {
@@ -53,7 +60,7 @@ extension KeyedDecodingContainer {
     /// - throws: `DecodingError.dataCorrupted` if the encountered value is an invalid raw value for the given type.
     func decode<T: Decodable>(_ type: T.Type, forKey key: K, toCase case: StringDecodingStrategy? = nil) throws -> T where T: RawRepresentable, T.RawValue == String {
         
-        let decoded = try decode(String.self, forKey: key)
+        let decoded = try self.decode(String.self, forKey: key)
         
         let rawValue: String
         switch `case` {
@@ -64,7 +71,7 @@ extension KeyedDecodingContainer {
         }
         
         guard let value = type.init(rawValue: rawValue) else {
-            throw DecodingError.dataCorrupted(DecodingError.Context(codingPath: [key], debugDescription: "Cannot initialize \(T.self) from invalid \(T.RawValue.self) value \(decoded)"))
+            throw DecodingError.dataCorrupted(DecodingError.Context(codingPath: self.codingPath + [key], debugDescription: "Cannot initialize \(T.self) from invalid \(T.RawValue.self) value \"\(decoded)\" or any case-sensitive variant"))
         }
         
         return value
