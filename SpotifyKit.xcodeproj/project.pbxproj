@@ -19,6 +19,8 @@
 		1122F9B81F24929800A9AD89 /* Track.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1122F9B71F24929800A9AD89 /* Track.swift */; };
 		1122F9BA1F24A23D00A9AD89 /* Followers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1122F9B91F24A23D00A9AD89 /* Followers.swift */; };
 		1122F9C01F25F73A00A9AD89 /* AudioFeatures.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1122F9BF1F25F73A00A9AD89 /* AudioFeatures.swift */; };
+		11353BF51F2EDA4D00F9924E /* PlayedTrack.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11353BF41F2EDA4D00F9924E /* PlayedTrack.swift */; };
+		11353BF71F2EDD4A00F9924E /* PlayedTracks.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11353BF61F2EDD4A00F9924E /* PlayedTracks.swift */; };
 		113C5F6B1F260DA4005D1DC6 /* AudioFeatures.swift in Sources */ = {isa = PBXBuildFile; fileRef = 113C5F6A1F260DA4005D1DC6 /* AudioFeatures.swift */; };
 		113C5F6D1F26C235005D1DC6 /* Playlist.swift in Sources */ = {isa = PBXBuildFile; fileRef = 113C5F6C1F26C235005D1DC6 /* Playlist.swift */; };
 		113C5F6F1F26C73F005D1DC6 /* Playlist.swift in Sources */ = {isa = PBXBuildFile; fileRef = 113C5F6E1F26C73F005D1DC6 /* Playlist.swift */; };
@@ -65,6 +67,8 @@
 		1122F9B71F24929800A9AD89 /* Track.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Track.swift; sourceTree = "<group>"; };
 		1122F9B91F24A23D00A9AD89 /* Followers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Followers.swift; sourceTree = "<group>"; };
 		1122F9BF1F25F73A00A9AD89 /* AudioFeatures.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioFeatures.swift; sourceTree = "<group>"; };
+		11353BF41F2EDA4D00F9924E /* PlayedTrack.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayedTrack.swift; sourceTree = "<group>"; };
+		11353BF61F2EDD4A00F9924E /* PlayedTracks.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayedTracks.swift; sourceTree = "<group>"; };
 		113C5F6A1F260DA4005D1DC6 /* AudioFeatures.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioFeatures.swift; sourceTree = "<group>"; };
 		113C5F6C1F26C235005D1DC6 /* Playlist.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Playlist.swift; sourceTree = "<group>"; };
 		113C5F6E1F26C73F005D1DC6 /* Playlist.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Playlist.swift; sourceTree = "<group>"; };
@@ -130,6 +134,7 @@
 				113C5F6A1F260DA4005D1DC6 /* AudioFeatures.swift */,
 				11F196281F289CFA007D3718 /* Category.swift */,
 				11EC89FF1F2D8D740066A5F0 /* Errors.swift */,
+				11353BF61F2EDD4A00F9924E /* PlayedTracks.swift */,
 				113C5F6E1F26C73F005D1DC6 /* Playlist.swift */,
 				11EC8A031F2DE7AE0066A5F0 /* Recommendations.swift */,
 				11EC89F91F2C56850066A5F0 /* SavedAlbums.swift */,
@@ -215,6 +220,7 @@
 				1122F9B91F24A23D00A9AD89 /* Followers.swift */,
 				119DC3CF1F23948F003DB3BD /* Image.swift */,
 				119DC3D31F239A92003DB3BD /* Paging.swift */,
+				11353BF41F2EDA4D00F9924E /* PlayedTrack.swift */,
 				113C5F6C1F26C235005D1DC6 /* Playlist.swift */,
 				11EC8A011F2DE2340066A5F0 /* Recommendations.swift */,
 				1119FD091F26E2F400EE47E2 /* SavedItem.swift */,
@@ -341,6 +347,7 @@
 				1122F9AD1F24698A00A9AD89 /* JSONCodable.swift in Sources */,
 				119DC3D41F239A92003DB3BD /* Paging.swift in Sources */,
 				119DC3CE1F2392AA003DB3BD /* Album.swift in Sources */,
+				11353BF51F2EDA4D00F9924E /* PlayedTrack.swift in Sources */,
 				113C5F731F26CB37005D1DC6 /* User.swift in Sources */,
 				1119FD0A1F26E2F400EE47E2 /* SavedItem.swift in Sources */,
 				119DC3D01F23948F003DB3BD /* Image.swift in Sources */,
@@ -358,6 +365,7 @@
 				119DC3DA1F239DDB003DB3BD /* ObjectModelTests.swift in Sources */,
 				1122F9B81F24929800A9AD89 /* Track.swift in Sources */,
 				113D08471F208BEC00BECB27 /* SpotifyKitTests.swift in Sources */,
+				11353BF71F2EDD4A00F9924E /* PlayedTracks.swift in Sources */,
 				11EC89FA1F2C56850066A5F0 /* SavedAlbums.swift in Sources */,
 				11EC8A001F2D8D740066A5F0 /* Errors.swift in Sources */,
 				113C5F6F1F26C73F005D1DC6 /* Playlist.swift in Sources */,

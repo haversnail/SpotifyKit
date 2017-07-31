@@ -91,6 +91,11 @@ class ObjectModelTests: XCTestCase {
         XCTAssertEqual(error?.localizedDescription, "Received a \"invalid_client\" error: Invalid client secret.")
     }
     
+    func testPlayHistory() {
+        let playedTracks = initTestObject(of: PagedCollection<SKPlayedTrack>.self, from: playedTrackData)
+        XCTAssertNotNil(playedTracks, "object could not be initialized from the given JSON data (see console).")
+    }
+    
     func testPlaylist() {
         let playlist = initTestObject(of: SKPlaylist.self, from: playlistData)
         XCTAssertNotNil(playlist, "object could not be initialized from the given JSON data (see console).")

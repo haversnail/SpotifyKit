@@ -13,6 +13,20 @@ import Foundation
 /// This collection can either be *offset-based* or *cursor-based* depending on the [type of paging object](https://developer.spotify.com/web-api/object-model/#paging-object) returned by the Spotify Web API.
 public struct PagedCollection<Object: Decodable>: JSONDecodable { // TODO: Make JSON Codable.
     
+    // MARK: - Embedded Types
+    
+    /// Contains paging cursors used to find the adjacent pages of items.
+    public struct Cursors: Decodable {
+        
+        /// The cursor to use as a key to find the previous page of items.
+        public let before: String?
+        
+        /// The cursor to use as a key to find the next page of items.
+        public let after: String?
+    }
+    
+    // MARK: - Object Properties
+    
     /// The array of objects.
     private let _items: [Object]
     
@@ -22,18 +36,18 @@ public struct PagedCollection<Object: Decodable>: JSONDecodable { // TODO: Make 
     /// URL to the next page of items (`nil` if none).
     public let nextURL: URL?
     
-    /// The offset of the items returned (as set in the query or by default).
-    public let offset: Int
+    /// The offset of the items returned (as set in the query or by default). This property will be `nil` if the collection is a cursor-based paging object.
+    public let offset: Int?
     
     /// URL to the previous page of items (`nil` if none).
     public let previousURL: URL?
     
     /// The cursors used to find the next set of items. See The [Spotify Web API Object Model](https://developer.spotify.com/web-api/object-model/#cursor-object) for reference.
-    public let cursors: [String: String]?
+    public let cursors: Cursors?
     
-    /// The total number of items available to return.
+    /// The total number of items available to return. Note that not all paging objects return this value (for example, when fetching a list of recently played tracks).
     /// - Note: To retrieve the number of items currently returned by the paging object, see "`count`" instead.
-    public var total: Int
+    public var total: Int?
     
     /// A link to the Web API endpoint returning the full result of the request.
     public let url: URL
