@@ -91,26 +91,8 @@ public struct SKAlbum: JSONDecodable { // TODO: Make JSON Codable.
     /// The popularity of the album. The value will be between 0 and 100, with 100 being the most popular. The popularity is calculated from the popularity of the album's individual tracks.
     public let popularity: Int?
     
-    /// The date the album was first released, for example `"1981-12-15"`. Depending on the precision, it might be shown as `"1981"` or `"1981-12"`.
-    /// - Note: Since this date string must be formatted conditionally, this property is maintained at the `private` scope and is used in conjunction with `releaseDatePrecision` to provide an accurate public `Date` object representation of this value.
-    //private let _releaseDate: String?
-    
-    /// The date the album was first released. The precision for this value is provided by the `releaseDatePrecision` property.
+    /// The date the album was first released, for example `"1981-12-15"`. Depending on the precision, the date may have been returned as `"1981"` or `"1981-12"`. The precision for this value is provided by the `releaseDatePrecision` property.
     public let releaseDate: Date?
-//    public var releaseDate: Date? {
-//        get {
-//            guard _releaseDate != nil, releaseDatePrecision != nil else { return nil }
-//
-//            let formatter = DateFormatter() // - Note: Keep in mind this approach allocates memory for a new DateFormatter every time this variable is computed. It would be a lot of boilerplate, but the more performant way to handle this would be to set it from the get-go by customizing the Decodable initializer.
-//            switch releaseDatePrecision! {
-//                case .year: formatter.dateFormat = "yyyy"
-//                case .month: formatter.dateFormat = "yyyy-MM"
-//                case .day: formatter.dateFormat = "yyyy-MM-dd"
-//            }
-//            formatter.timeZone = TimeZone(secondsFromGMT: 0)
-//            return formatter.date(from: _releaseDate!)
-//        }
-//    }
     
     /// The precision with which `releaseDate` value is known. See `SKAlbum.DatePrecision` for possible values.
     public let releaseDatePrecision: DatePrecision?
@@ -162,7 +144,7 @@ extension SKAlbum: Decodable {
         let values = try decoder.container(keyedBy: CodingKeys.self)
         
         // Object Properties (Simplified)
-        albumType = try values.decode(AlbumType.self, forKey: .albumType, toCase: .lowercase) // converts any uppercased values (e.g., "ALBUM") to match enum case.
+        albumType = try values.decode(AlbumType.self, forKey: .albumType)//, toCase: .lowercase)
         artists = try values.decode([SKArtist].self, forKey: .artists)
         availableMarkets = try values.decodeIfPresent([String].self, forKey: .availableMarkets)
         externalURLs = try values.decode([String: String].self, forKey: .externalURLs) // FIXME: Change to [String: URL?]

@@ -58,17 +58,3 @@ public struct SKSeed: JSONDecodable { // TODO: Make JSON Codable.
         case type
     }
 }
-
-// MARK: Custom Decoding
-
-extension SKSeed: Decodable {
-    public init(from decoder: Decoder) throws {
-        let values = try decoder.container(keyedBy: CodingKeys.self)
-        afterFilteringSize = try values.decode(Int.self, forKey: .afterFilteringSize)
-        afterRelinkingSize = try values.decode(Int.self, forKey: .afterRelinkingSize)
-        initialPoolSize = try values.decode(Int.self, forKey: .initialPoolSize)
-        type = try values.decode(SeedType.self, forKey: .type, toCase: .lowercase) // converts any uppercased values (e.g., "ARTIST") to match enum case.
-        url = try values.decodeIfPresent(URL.self, forKey: .url)
-        id = try values.decode(String.self, forKey: .id)
-    }
-}
