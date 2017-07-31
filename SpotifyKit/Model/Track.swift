@@ -18,7 +18,7 @@ public struct SKTrack: JSONDecodable { // TODO: Make JSON Codable.
         case unknown
     }
     
-    public struct TrackLink: Codable {
+    public struct TrackLink: Decodable {
         
         /// Known external URLs for this track. See ["external URL object"](https://developer.spotify.com/web-api/object-model/#external-id-object) for more details.
         public let externalURLs: [String: String] // FIXME: Change to [String: URL(?)] once JSONDecoder bug is fixed.

@@ -24,7 +24,7 @@ public struct SKAlbum: JSONDecodable { // TODO: Make JSON Codable.
         case day
     }
     
-    public struct Copyright: Codable {
+    public struct Copyright: Decodable {
         
         /// The types of copyrights that are provided by an `SKCopyright` object.
         public enum CopyrightType: String, Codable {

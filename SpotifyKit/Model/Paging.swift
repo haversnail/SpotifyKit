@@ -52,7 +52,7 @@ public struct PagedCollection<Object: Decodable>: JSONDecodable { // TODO: Make 
     /// A link to the Web API endpoint returning the full result of the request.
     public let url: URL
     
-    // MARK: - Keys
+    // MARK: Keys
     
     private enum CodingKeys: String, CodingKey {
         case url = "href"
@@ -96,4 +96,4 @@ extension PagedCollection: BidirectionalCollection { // Extends support for back
     }
 }
 
-extension PagedCollection: RandomAccessCollection {} // Significantly improves efficiency for operations requiring index distance measurement.
+extension PagedCollection: RandomAccessCollection {} // Guarantees O(1) efficiency for operations requiring index distance measurement.

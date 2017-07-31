@@ -86,7 +86,7 @@ public struct SKUser: JSONDecodable { // TODO: Make JSON Codable.
         case uri
     }
     
-    // MARK: - Custom JSONDecodable Initializer
+    // MARK: - Custom JSON Decoding
     
     public init(from jsonData: Data) throws {
         let decoder = JSONDecoder()

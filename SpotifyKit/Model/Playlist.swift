@@ -12,7 +12,7 @@ public struct SKPlaylist: JSONDecodable { // TODO: Make JSON Codable.
     
     // MARK: - Embedded Types
     
-    public struct PlaylistTrack: Decodable { // Rename to PlaylistItem? // TODO: Make Codable.
+    public struct PlaylistTrack: Decodable { // Rename to PlaylistItem?
         
         /// The date and time the track was added.
         /// - Note: Some very old playlists may return `nil` in this field.

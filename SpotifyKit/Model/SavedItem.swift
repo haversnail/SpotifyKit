@@ -32,7 +32,7 @@ public struct SavedItem<Object: UserSavable & Decodable> { // TODO: Make Codable
     }
 }
 
-// MARK: - Custom Decodable Initializer
+// MARK: - Custom Decoding
 
 extension SavedItem: Decodable {
     public init(from decoder: Decoder) throws {
@@ -43,7 +43,7 @@ extension SavedItem: Decodable {
             case is SKAlbum.Type: _item = try values.decode(SKAlbum.self, forKey: .album)
             case is SKTrack.Type: _item = try values.decode(SKTrack.self, forKey: .track)
             default:
-                let context = DecodingError.Context(codingPath: [], debugDescription: "Type does not match any possible user-saveable object types.")
+                let context = DecodingError.Context(codingPath: values.codingPath, debugDescription: "Type does not match any possible user-saveable object types.")
                 throw DecodingError.typeMismatch(Object.self, context)
         }
     }

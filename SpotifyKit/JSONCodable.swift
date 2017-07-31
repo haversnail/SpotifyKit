@@ -88,7 +88,7 @@ extension KeyedDecodingContainer {
     /// - throws: `DecodingError.dataCorrupted` if the encountered value is an invalid raw value for the given type.
     func decodeIfPresent<T: Decodable>(_ type: T.Type, forKey key: K, toCase case: StringDecodingStrategy? = nil) throws -> T? where T: RawRepresentable, T.RawValue == String {
         
-        guard let decoded = try decodeIfPresent(String.self, forKey: key) else { return nil }
+        guard let decoded = try self.decodeIfPresent(String.self, forKey: key) else { return nil }
         
         let rawValue: String
         switch `case` {
@@ -99,7 +99,7 @@ extension KeyedDecodingContainer {
         }
         
         guard let value = type.init(rawValue: rawValue) else {
-            throw DecodingError.dataCorrupted(DecodingError.Context(codingPath: [key], debugDescription: "Cannot initialize \(T.self) from invalid \(T.RawValue.self) value \(decoded)"))
+            throw DecodingError.dataCorrupted(DecodingError.Context(codingPath: self.codingPath + [key], debugDescription: "Cannot initialize \(T.self) from invalid \(T.RawValue.self) value \"\(decoded)\" or any case-sensitive variant"))
         }
         
         return value
