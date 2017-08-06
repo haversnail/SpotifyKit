@@ -68,9 +68,6 @@ public struct SKAudioFeatures: JSONDecodable { // TODO: Make JSON Codable.
     /// A link to the Web API endpoint providing full details of the track.
     public let trackURL: URL
     
-    // The object type: "audio_features"
-    //public let type: SKAudioFeatures.Type
-    
     /// The Spotify URI for the track.
     public let uri: String
     

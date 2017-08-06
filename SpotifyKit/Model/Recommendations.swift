@@ -24,9 +24,9 @@ public struct SKRecommendations: JSONDecodable { // TODO: Make JSON Codable.
 public struct SKSeed: JSONDecodable { // TODO: Make JSON Codable.
     
     public enum SeedType: String, Codable {
-        case artist// = "ARTIST"
-        case genre// = "GENRE"
-        case track// = "TRACK"
+        case artist
+        case genre
+        case track
     }
 
     /// The number of tracks available after `min*` and `max*` filters have been applied.

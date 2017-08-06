@@ -9,7 +9,7 @@
 import Foundation
 
 /// A structure representing a recently played track object. See [Play History](https://developer.spotify.com/web-api/object-model/#play-history-object) object for more details.
-public struct SKPlayedTrack/* PlayedItem<Object: Decodable> */ {
+public struct SKPlayedTrack/* PlayedItem<Object: Decodable> */ { // SKRecentTrack
     
     // MARK: - Embedded Types
     

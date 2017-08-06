@@ -38,6 +38,8 @@ extension SKError: Decodable {
     }
 }
 
+// MARK: Error Localization
+
 extension SKError: LocalizedError {
     public var errorDescription: String? { return "Receieved a \(status.rawValue) error: \(message)." }
 }
@@ -57,6 +59,8 @@ public struct SKAuthenticationError: Error, JSONDecodable {
         case errorDetails = "error_description" // Renamed to avoid confusion with the `LocalizedError` protocol property.
     }
 }
+
+// MARK: Error Localization
 
 extension SKAuthenticationError: LocalizedError {
     public var errorDescription: String? { return "Received a \"\(error)\" error: \(errorDetails)." }

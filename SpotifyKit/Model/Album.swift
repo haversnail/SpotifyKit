@@ -68,9 +68,6 @@ public struct SKAlbum: JSONDecodable { // TODO: Make JSON Codable.
     /// The name of the album. In case of an album takedown, the value may be an empty string.
     public let name: String
     
-    // The object type: "album"
-    //public let type: SKAlbum.Type
-    
     /// The [Spotify URI](https://developer.spotify.com/web-api/user-guide/#spotify-uris-and-ids) for the album.
     public let uri: String
     

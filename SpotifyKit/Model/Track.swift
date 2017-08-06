@@ -103,9 +103,6 @@ public struct SKTrack: JSONDecodable { // TODO: Make JSON Codable.
     /// The number of the track. If an album has several discs, the track number is the number on the specified disc.
     public let trackNumber: Int
     
-    // The object type: "track"
-    //public let type: SKTrack.Type
-    
     /// The [Spotify URI](https://developer.spotify.com/web-api/user-guide/#spotify-uris-and-ids) for the track.
     public let uri: String
     

@@ -71,9 +71,6 @@ public struct SKPlaylist: JSONDecodable { // TODO: Make JSON Codable.
     /// A collection containing a link (`url`) to the Web API endpoint where full details of the playlist's tracks can be retrieved, along with the total number of tracks in the playlist.
     public let tracks: PagedCollection<PlaylistTrack> // Change to `playlistItems`? `tracks` seems like a bit of a misnomer. // TODO: Consider renaming.
     
-    // The object type: "playlist"
-    //public let type: SKPlaylist.Typem
-    
     /// The [Spotify URI](https://developer.spotify.com/web-api/user-guide/#spotify-uris-and-ids) for the playlist.
     public let uri: String
     

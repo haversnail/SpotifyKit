@@ -24,9 +24,6 @@ public struct SKArtist: JSONDecodable { // TODO: Make JSON Codable.
     /// The name of the artist.
     public let name: String
     
-    // The object type: "artist"
-    //public let type: SKArtist.Type
-    
     /// The [Spotify URI](https://developer.spotify.com/web-api/user-guide/#spotify-uris-and-ids) for the album.
     public let uri: String
     

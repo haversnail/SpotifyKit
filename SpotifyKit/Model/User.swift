@@ -32,9 +32,6 @@ public struct SKUser: JSONDecodable { // TODO: Make JSON Codable.
     /// - Note: User objects that are part of a Playlist object don't return this property.
     public let images: [SKImage]?
     
-    // The object type: "user"
-    //public let type: SKUser.Type
-    
     /// The [Spotify URI](https://developer.spotify.com/web-api/user-guide/#spotify-uris-and-ids) for this user.
     public let uri: String
     
@@ -43,17 +40,6 @@ public struct SKUser: JSONDecodable { // TODO: Make JSON Codable.
     /// The user's date-of-birth.
     /// - Note: This field is only available when the current user has granted access to the `user-read-birthdate` scope. See [Using Scopes](https://developer.spotify.com/web-api/using-scopes/) for more details.
     public let birthdate: Date?
-//    private let _birthdate: String?
-//
-//    public var birthdate: Date? { // Since this struct contains no ISO 8601-formatted date values, we can just set this in a custom JSONDecoder initializer.
-//        get {
-//            guard _birthdate != nil else { return nil }
-//            let formatter = DateFormatter()
-//            formatter.dateFormat = "yyyy-MM-dd"
-//            formatter.timeZone = TimeZone(secondsFromGMT: 0)
-//            return formatter.date(from: _birthdate!)
-//        }
-//    }
     
     /// The country of the user, as set in the user's account profile. This value returns an [ISO 3166-1 alpha-2 country code](http://en.wikipedia.org/wiki/ISO_3166-1_alpha-2).
     /// - Note: This field is only available when the current user has granted access to the `user-read-private` scope. See [Using Scopes](https://developer.spotify.com/web-api/using-scopes/) for more details.
@@ -71,7 +57,6 @@ public struct SKUser: JSONDecodable { // TODO: Make JSON Codable.
     // MARK: - Keys
 
     private enum CodingKeys: String, CodingKey {
-        //case _birthdate = "birthdate"
         case birthdate
         case country
         case displayName = "display_name"

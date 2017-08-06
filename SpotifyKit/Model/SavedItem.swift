@@ -51,7 +51,7 @@ extension SavedItem: Decodable {
 
 // MARK: - Type-Constrained Extensions
 
-extension SavedItem where Object == SKAlbum { // FIXME: Using concrete type constraint doesn't "hide" properties like protocol constraints do.
+extension SavedItem where Object == SKAlbum { // Using concrete type constraint doesn't "hide" properties like protocol constraints do. // FIXME: Consider protocol conformance.
     /// Information about the album.
     /// - Note: This property is only available when the saved item is of type `SKAlbum`.
     public var album: SKAlbum { return _item as! SKAlbum }

@@ -59,7 +59,7 @@ And don't forget to link the `AVFoundation.framework` if you intend to use the S
 chmod +x modulemaps.sh
 ./modulemaps.sh
 ```
-    * This creates module maps for the newly checked-out [iOS SDK][SDK] frameworks, which should eliminate any initial "missing module" errors encountered in the Xcode project.
+    This creates module maps for the newly checked-out [iOS SDK][SDK] frameworks, which should eliminate any initial "missing module" errors encountered in the Xcode project.
 
 4. Open the Xcode project select **"Product" > "Build" (⌘B)**. Voilà.
 
