@@ -170,9 +170,9 @@
 			isa = PBXGroup;
 			children = (
 				113D083B1F208BEC00BECB27 /* SpotifyKit.h */,
-				1122F9AC1F24698A00A9AD89 /* JSONCodable.swift */,
 				113D083C1F208BEC00BECB27 /* Info.plist */,
 				119DC3D81F239D5A003DB3BD /* Model */,
+				1165D1BE1F305AD90076C340 /* Helpers */,
 			);
 			path = SpotifyKit;
 			sourceTree = "<group>";
@@ -196,6 +196,14 @@
 				113D08541F208C4700BECB27 /* Cartfile */,
 			);
 			name = Configuration;
+			sourceTree = "<group>";
+		};
+		1165D1BE1F305AD90076C340 /* Helpers */ = {
+			isa = PBXGroup;
+			children = (
+				1122F9AC1F24698A00A9AD89 /* JSONCodable.swift */,
+			);
+			path = Helpers;
 			sourceTree = "<group>";
 		};
 		119A29491F20985C009D4A88 /* Frameworks */ = {
