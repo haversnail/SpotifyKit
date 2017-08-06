@@ -30,6 +30,7 @@
 		113D08491F208BEC00BECB27 /* SpotifyKit.h in Headers */ = {isa = PBXBuildFile; fileRef = 113D083B1F208BEC00BECB27 /* SpotifyKit.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		119A294C1F20985C009D4A88 /* SpotifyAudioPlayback.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 119A294A1F20985C009D4A88 /* SpotifyAudioPlayback.framework */; };
 		119A294D1F20985C009D4A88 /* SpotifyAuthentication.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 119A294B1F20985C009D4A88 /* SpotifyAuthentication.framework */; };
+		119C68E01F371D5A005CDADF /* Request.swift in Sources */ = {isa = PBXBuildFile; fileRef = 119C68DF1F371D5A005CDADF /* Request.swift */; };
 		119DC3CE1F2392AA003DB3BD /* Album.swift in Sources */ = {isa = PBXBuildFile; fileRef = 119DC3CD1F2392AA003DB3BD /* Album.swift */; };
 		119DC3D01F23948F003DB3BD /* Image.swift in Sources */ = {isa = PBXBuildFile; fileRef = 119DC3CF1F23948F003DB3BD /* Image.swift */; };
 		119DC3D21F2397FD003DB3BD /* Artist.swift in Sources */ = {isa = PBXBuildFile; fileRef = 119DC3D11F2397FD003DB3BD /* Artist.swift */; };
@@ -84,6 +85,7 @@
 		1190C5DB1F2237B800F2C8DE /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		119A294A1F20985C009D4A88 /* SpotifyAudioPlayback.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SpotifyAudioPlayback.framework; path = "Carthage/Checkouts/ios-sdk/SpotifyAudioPlayback.framework"; sourceTree = "<group>"; };
 		119A294B1F20985C009D4A88 /* SpotifyAuthentication.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SpotifyAuthentication.framework; path = "Carthage/Checkouts/ios-sdk/SpotifyAuthentication.framework"; sourceTree = "<group>"; };
+		119C68DF1F371D5A005CDADF /* Request.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Request.swift; sourceTree = "<group>"; };
 		119DC3CD1F2392AA003DB3BD /* Album.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Album.swift; sourceTree = "<group>"; };
 		119DC3CF1F23948F003DB3BD /* Image.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Image.swift; sourceTree = "<group>"; };
 		119DC3D11F2397FD003DB3BD /* Artist.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Artist.swift; sourceTree = "<group>"; };
@@ -171,6 +173,7 @@
 			children = (
 				113D083B1F208BEC00BECB27 /* SpotifyKit.h */,
 				113D083C1F208BEC00BECB27 /* Info.plist */,
+				119C68DF1F371D5A005CDADF /* Request.swift */,
 				119DC3D81F239D5A003DB3BD /* Model */,
 				1165D1BE1F305AD90076C340 /* Helpers */,
 			);
@@ -348,6 +351,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				1122F9C01F25F73A00A9AD89 /* AudioFeatures.swift in Sources */,
+				119C68E01F371D5A005CDADF /* Request.swift in Sources */,
 				119DC3D21F2397FD003DB3BD /* Artist.swift in Sources */,
 				1122F9BA1F24A23D00A9AD89 /* Followers.swift in Sources */,
 				11EC8A021F2DE2340066A5F0 /* Recommendations.swift in Sources */,
