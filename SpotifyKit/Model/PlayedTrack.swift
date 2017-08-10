@@ -22,7 +22,7 @@ public struct SKPlayedTrack/* PlayedItem<Object: Decodable> */ { // SKRecentTrac
         }
         
         /// Known external URLs for this context. See ["external URL object"](https://developer.spotify.com/web-api/object-model/#external-id-object) for more details.
-        public let externalURLs: [String: String] // FIXME: Change to [String: URL(?)] once JSONDecoder bug is fixed.
+        public let externalURLs: [String: URL]
         
         /// A link to the Web API endpoint providing full details of the context object.
         public let url: URL

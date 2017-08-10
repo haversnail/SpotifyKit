@@ -54,7 +54,7 @@ public struct SKAlbum: JSONDecodable { // TODO: Make JSON Codable.
     public let availableMarkets: [String]? // String will only always hold two characters. TODO: Change to a more performant data type.
     
     /// Known external URLs for this album. See ["external URL object"](https://developer.spotify.com/web-api/object-model/#external-id-object) for more details.
-    public let externalURLs: [String: String] // FIXME: Change to [String: URL(?)] once JSONDecoder bug is fixed.
+    public let externalURLs: [String: URL]
     
     /// A link to the Web API endpoint providing full details of the album.
     public let url: URL
@@ -144,7 +144,7 @@ extension SKAlbum: Decodable {
         albumType = try values.decode(AlbumType.self, forKey: .albumType)//, toCase: .lowercase)
         artists = try values.decode([SKArtist].self, forKey: .artists)
         availableMarkets = try values.decodeIfPresent([String].self, forKey: .availableMarkets)
-        externalURLs = try values.decode([String: String].self, forKey: .externalURLs) // FIXME: Change to [String: URL?]
+        externalURLs = try values.decode([String: URL].self, forKey: .externalURLs) // FIXME: Change to [String: URL?]
         url = try values.decode(URL.self, forKey: .url)
         id = try values.decode(String.self, forKey: .id)
         images = try values.decode([SKImage].self, forKey: .images)

@@ -16,7 +16,7 @@ public struct SKUser: JSONDecodable { // TODO: Make JSON Codable.
     public let displayName: String?
     
     /// Known external URLs for this user. See ["external URL object"](https://developer.spotify.com/web-api/object-model/#external-id-object) for more details.
-    public let externalURLs: [String: String] // FIXME: Change to [String: URL(?)] once JSONDecoder bug is fixed.
+    public let externalURLs: [String: URL]
 
     /// Information about the followers of this user.
     /// - Note: User objects that are part of a Playlist or Playlist Track object don't return this property.

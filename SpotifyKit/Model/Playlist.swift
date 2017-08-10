@@ -44,7 +44,7 @@ public struct SKPlaylist: JSONDecodable { // TODO: Make JSON Codable.
     public let isCollaborative: Bool
     
     /// Known external URLs for this playlist.
-    public let externalURLs: [String: String] // FIXME: Change to [String: URL(?)] once JSONDecoder bug is fixed.
+    public let externalURLs: [String: URL]
 
     /// A link to the Web API endpoint providing full details of the playlist.
     public let url: URL
