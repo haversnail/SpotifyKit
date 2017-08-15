@@ -8,7 +8,7 @@
 
 import Foundation
 
-/// A Spotify object type that a user can save to his or her library.
+/// A Spotify object type that a user can save to his or her library. Because the `UserSavable` protocol has no requirements of its own, you can declare conformance on any type that Spotify supports with no additional code.
 public protocol UserSavable {}
 
 /// A generic structure representing a Spotify media item that has been saved to the user's library.

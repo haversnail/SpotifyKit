@@ -82,48 +82,47 @@ public enum HTTPStatusCode: Int, Codable {
 public enum SKScope: String, Codable {
     
     /// Read access to user's private playlists.
-    case playlistReadPrivate = "playlist-read-private"
     
+    case readPrivatePlaylists = "playlist-read-private"
     /// Include collaborative playlists when requesting a user's playlists.
-    case playlistReadCollaborative = "playlist-read-collaborative"
     
+    case readCollaborativePlaylists = "playlist-read-collaborative"
     /// Write access to a user's public playlists.
-    case playlistModifyPublic = "playlist-modify-public"
     
+    case modifyPublicPlaylists = "playlist-modify-public"
     /// Write access to a user's private playlists.
-    case playlistModifyPrivate = "playlist-modify-private"
     
+    case modifyPrivatePlaylists = "playlist-modify-private"
     /// Control playback of a Spotify track. This scope is currently only available to Spotify native SDKs (for example, the [iOS SDK](https://developer.spotify.com/technologies/spotify-ios-sdk/) and the [Android SDK](https://developer.spotify.com/technologies/spotify-android-sdk/)). The user must have a Spotify Premium account.
     case streaming
     
     /// Upload a playlist cover image.
-    case ugcImageUpload = "ugc-image-upload"
     
+    case uploadUGCImage = "ugc-image-upload"
     /// Write/delete access to the list of artists and other users that the user follows.
-    case userFollowModify = "user-follow-modify"
     
+    case modifyUserFollows = "user-follow-modify"
     /// Read access to the list of artists and other users that the user follows.
-    case userFollowRead = "user-follow-read"
     
+    case readUserFollows = "user-follow-read"
     /// Read access to a user's "Your Music" library.
-    case userLibraryRead = "user-library-read"
     
+    case readUserLibrary = "user-library-read"
     /// Write/delete access to a user's "Your Music" library.
-    case userLibraryModify = "user-library-modify"
     
+    case modifyUserLibrary = "user-library-modify"
     /// Read access to user’s subscription details (type of user account).
-    case userReadPrivate = "user-read-private"
     
+    case readUserPrivate = "user-read-private"
     // user-read-recently-played?
     
     /// Read access to the user's birthdate.
-    case userReadBirthdate = "user-read-birthdate"
     
     /// Read access to user’s email address.
-    case userReadEmail = "user-read-email"
     
+    case readUserEmail = "user-read-email"
     /// Read access to a user's top artists and tracks.
-    case userTopRead = "user-top-read"
+    case readUserTopContent = "user-top-read"
 }
 
 
