@@ -18,7 +18,7 @@ class RequestTests: XCTestCase {
         // Put setup code here. This method is called before the invocation of each test method in the class.
         // FIXME: Request a new access token if this one is expired.
         // https://developer.spotify.com/web-api/console/
-        let accessToken = "BQDv2a24cTr7dNCGEsT2OlSQONyKGRf9BcdpyxL4CXMd_uaNwpCzK99C4pZkqrmGE0cQuXhdPsQNUxXbGOcB-qtFMGQrj0eK81jzzRlGLZMJRe6L7jyAB1Eex-sKnUuZBhECirU2dAb-KJHsHK9bxZ16XUdKJSV28Vbin38mcwu4Ps4kz5u5dcsW8Vul2CJzrbJvi_KKEpVW3QckIA-hUTuStqq9ibIw-4160D2sQa3JeD2mm4YyQ1g86qDKSgOXggjuXJQIbVqRtMIwAKC_LDmy"
+        let accessToken = "BQBvH4blDT_EbTmxVAmWyVCnRu9TZo57ugXy-_MQFrzjHrw6Ekfxjc8R_Lf2kS7nkTqf9GcCx1enHHm60L2pzsoZIOzh7H3ehseo1GUnAyGAeml4ilmrcLiYjmeS3NrrtyoHVRFDM-O621b_VYkwu1wWTUUhUljp6FrNCva0GRmkz48sDTKQqjSsBLtFANUgA7CzMzmYFEyNggNHHKGZeEuqLDfMODicI7AhWy8dfI--BG6B-H8J891y5TjfQOwtseQDqHXdyrQseHTN9LKsKalJ"
         
         apiSession = SPTSession(userName: "haversnail",
                                 accessToken: accessToken,
@@ -176,6 +176,43 @@ class RequestTests: XCTestCase {
             XCTAssertEqual(apiError.status, .unauthorized)
             promise.fulfill()
         }
+        
+        let result = XCTWaiter.wait(for: [promise], timeout: 5)
+        if result == .timedOut {
+            XCTFail("the request timed out.")
+        }
+    }
+    
+    func testSPTSessionExtension() {
+        
+        // Arrange:
+        let url = URL(string: "https://api.spotify.com/v1/albums/5DLhV9yOvZ7IxVmljMXtNm")!
+        
+        let promise = expectation(description: "request returned the expected data.")
+        promise.expectedFulfillmentCount = 2 // Make sure both requests finish successfully.
+        
+        let handler: SKRequestHandler = { (data, error) in
+            
+            // Assert:
+            XCTAssertNil(error, "\"error\" was not nil.")
+            XCTAssertNotNil(data, "\"data\" was nil.")
+            
+            guard data != nil else { return }
+            
+            do {
+                let _ = try SKAlbum(from: data!)
+            } catch {
+                XCTFail("could not initialize the SpotifyKit object from the given data (see console).")
+                print(error)
+                return
+            }
+            
+            promise.fulfill()
+        }
+        
+        // Act:
+        apiSession.performRequest(.GET, url: url, handler: handler)
+        apiSession.performRequest(.GET, endpoint: url.path, handler: handler)
         
         let result = XCTWaiter.wait(for: [promise], timeout: 5)
         if result == .timedOut {
