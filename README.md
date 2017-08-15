@@ -138,10 +138,22 @@ Any notable differences and deviations between **SpotifyKit** and the [Spotify W
 ![release](https://img.shields.io/badge/release-v1.0.0-blue.svg "Current stable release")
 
 ##### Pending Swift 4 final release:
-- [ ] "Conditional conformance" feature:
-    - `Array: JSONCodable where Element: JSONCodable { ... }`
+- [ ] *[Conditional conformance](https://github.com/apple/swift-evolution/blob/master/proposals/0143-conditional-conformances.md)* → extending `JSONCodable` and `Equatable` protocols.
+    - This feature would allow for things like:
 
-- [ ] JSONDecoder bug:
+```swift
+extension Array: JSONCodable where Element: JSONCodable {
+    // Conforming Arrays to JSONCodable when its Elements do.
+}
+```
+
+or:
+
+```swift
+extension PagedCollection: Equatable where Object: Equatable {
+    // Conforming PagedCollection to Equatable when its Objects do.
+}
+```
 
 ## Contributing
 
