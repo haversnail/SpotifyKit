@@ -11,8 +11,8 @@ A complete [Spotify Web API][API] and [iOS SDK][SDK] bundle, tailored for Swift.
 
 #### "Why Should I Use This?"
 
-##### The entire [Spotify library](https://developer.spotify.com/web-api/object-model/), at your disposal.
-* **SpotifyKit** is a [Spotify Web API][API] Object Model wrapper with *value-type semantics* that adheres to the Swift [API Design Guidelines](https://swift.org/documentation/api-design-guidelines/), providing streamlined interoperability between your Swift app and the Spotify library.
+##### The entire Spotify catalog, at your disposal.
+* **SpotifyKit** is a [Spotify Web API][API] [Object Model][OM] wrapper with *value-type semantics* that adheres to the Swift [API Design Guidelines](https://swift.org/documentation/api-design-guidelines/), providing streamlined interoperability between your Swift app and the Spotify catalog.
 
 ##### Compatible with Spotify's [iOS SDK][SDK].
 * In addition to accessing library content, **SpotifyKit** plays nicely with the official [iOS SDK][SDK], providing extensions and convenience methods for using SpotifyKit objects with the Audio Playback and Authentication interface.
@@ -34,7 +34,7 @@ and run `carthage update` to check out and build **SpotifyKit** and its dependen
 
 > As a dependency, Carthage will attempt to build the `spotify/ios-sdk` repository. Since their repository does not contain a buildable Xcode project for these frameworks, but rather pre-compiled binaries, **expect Carthage to generate an error during the build process.** It will not affect installation.
 
-After the **SpotifyKit** framework has been built, follow the rest of the [installation steps](https://github.com/Carthage/Carthage#if-youre-building-for-ios-tvos-or-watchos) and make sure you've linked the following frameworks to your project, taking note of where the different binaries are located:
+After the **SpotifyKit** framework has been built, follow the rest of the Carthage [installation steps](https://github.com/Carthage/Carthage#if-youre-building-for-ios-tvos-or-watchos) and make sure you've linked the following frameworks to your project, taking note of where the different binaries are located:
 
 | Framework                         | Path                              |
 | --------------------------------- | --------------------------------- |
@@ -81,6 +81,68 @@ framework module SpotifyAudioPlayback {
 
 ### Examples
 
+## Significant API Changes
+Any notable differences and deviations between **SpotifyKit** and the [Spotify Web API][API] are listed below. All changes have been carefully considered and are intended to better standardize **SpotifyKit** and conform its model and methods to match Apple/Swift convention.
+#### Model Changes
+* __*Object types:*__
+    * **[Paging object][OM-paging]** → "`PagedCollection`," a generic structure that's strongly typed with the kind of objects it contains, containing properties for both [offset-based][OM-paging] and [cursor-based][OM-cursor-paging] paging.
+
+        * `PagedCollection` also conforms to the Swift Standard Library’s `Collection` protocol, forwarding all the functionality of the underlying collection of items to the paging structure itself.
+
+    * **[Saved Track][OM-saved-track]/[Saved Album][OM-saved-album] objects** → "`SavedItem`," a generic structure that's strongly typed with the kind of saved item it contains. Compatible types like Albums and Tracks conform to the `UserSavable` protocol, which ensures that the compiler will warn you ahead-of-time if you provide a media type that Spotify hasn’t (yet) made savable by the user.
+
+    * Objects in the [Object Model][API] that do not have fixed key names or that have a variable or number of keys are decoded as `[String : *]` dictionary objects (e.g., [External ID object][OM-external-id], [External URL object][OM-external-url], etc.).
+
+    * Embedded struct types for simple API objects (e.g., [Copyright object][OM-copyright], [Track Link object][OM-track-link], etc.).
+
+    * Embedded enum types for standardized `String` values (e.g., Album types, Date precision, etc.).
+
+* __*Object properties:*__
+    * Renamed all `href` → `url`.
+
+    * Properties whose names originally ended in prepositions (e.g., `added_at`, `linked_from`, etc.) are given more descriptive names read as nouns (e.g., `dateAdded`, `trackLinks`, etc.).
+
+    * All Boolean properties are prefixed by a linking verb (e.g. “is,” “has,” etc.) asserting the condition about the given object.
+
+    * Where appropriate, all strings representing dates or timestamps are converted to a formatted `Date` type, each with their respective level of precision.
+
+    * All `duration` properties are standardized as `TimeInterval` types and converted to seconds (maintaining millisecond precision).
+
+#### Additions
+
+* __*Object extensions:*__
+
+    * All objects that are represented by both “simplified" and “full” versions in the [Web API][API] conform to the `Extendable` protocol, which provides a method for fetching and returning the more detailed version of the simplified object.
+
+* __*SDK extensions:*__
+
+    * [**SPTSession**](https://spotify.github.io/ios-sdk/Classes/SPTSession.html) includes convenience methods for making API requests, encapsulating an `SKRequest` instance and providing a callback handler for the response.
+
+    * _**TODO**: Existing SDK object extensions._
+
+#### Deletions
+
+* __*Object properties:*__
+    * For many objects, you'll find that the `type` property has been omitted. As an already strongly-typed language, representing these objects as distinct types in Swift renders the `type` property redundant. Thus, the following values will be omitted when decoding **SpotifyKit** objects from their JSON counterparts:
+
+        * "`album`" ([Simplified][OM-album-simplified] / [Full][OM-album-full])
+        * "`artist`" ([Simplified][OM-artist-simplified] / [Full][OM-artist-full])
+        * "`audio_features`"
+        * "`playlist`" ([Simplified][OM-playlist-simplified] / [Full][OM-playlist-full])
+        * "`track`" ([Simplified][OM-track-simplified] / [Full][OM-track-full] / [Track Link][OM-track-link])
+        * "`user`" ([Public][OM-user-public] / [Private][OM-user-private])
+
+## Roadmap
+
+##### Current stable release:
+![release](https://img.shields.io/badge/release-v1.0.0-blue.svg "Current stable release")
+
+##### Pending Swift 4 final release:
+- [ ] "Conditional conformance" feature:
+    - `Array: JSONCodable where Element: JSONCodable { ... }`
+
+- [ ] JSONDecoder bug:
+
 ## Contributing
 
 ## Credits
@@ -94,3 +156,24 @@ framework module SpotifyAudioPlayback {
 [Swift]: https://swift.org
 [Carthage]: https://github.com/Carthage/Carthage
 [CocoaPods]: https://cocoapods.org/
+
+[OM]: https://developer.spotify.com/web-api/object-model/
+[OM-album-simplified]: https://developer.spotify.com/web-api/object-model/#album-object-simplified
+[OM-album-full]: https://developer.spotify.com/web-api/object-model/#album-object-full
+[OM-artist-simplified]: https://developer.spotify.com/web-api/object-model/#artist-object-simplified
+[OM-artist-full]: https://developer.spotify.com/web-api/object-model/#artist-object-full
+[OM-audio-features]: https://developer.spotify.com/web-api/object-model/#audio-features-object
+[OM-copyright]: https://developer.spotify.com/web-api/object-model/#copyright-object
+[OM-external-id]: https://developer.spotify.com/web-api/object-model/#external-id-object
+[OM-external-url]: https://developer.spotify.com/web-api/object-model/#external-url-object
+[OM-paging]: https://developer.spotify.com/web-api/object-model/#paging-object
+[OM-cursor-paging]: https://developer.spotify.com/web-api/object-model/#cursor-based-paging-object
+[OM-playlist-simplified]: https://developer.spotify.com/web-api/object-model/#playlist-object-simplified
+[OM-playlist-full]: https://developer.spotify.com/web-api/object-model/#playlist-object-full
+[OM-saved-track]: https://developer.spotify.com/web-api/object-model/#saved-track-object
+[OM-saved-album]: https://developer.spotify.com/web-api/object-model/#saved-album-object
+[OM-track-simplified]: https://developer.spotify.com/web-api/object-model/#track-object-simplified
+[OM-track-full]: https://developer.spotify.com/web-api/object-model/#track-object-full
+[OM-track-link]: https://developer.spotify.com/web-api/object-model/#track-link
+[OM-user-private]: https://developer.spotify.com/web-api/object-model/#user-object-private
+[OM-user-public]: https://developer.spotify.com/web-api/object-model/#user-object-public
