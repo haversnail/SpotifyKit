@@ -79,6 +79,11 @@ class ObjectModelTests: XCTestCase {
         XCTAssertNotNil(category, "object could not be initialized from the given JSON data (see console).")
     }
     
+    func testDevice() {
+        let device = initTestObject(of: SKDevice.self, from: deviceData)
+        XCTAssertNotNil(device, "object could not be initialized from the given JSON data (see console).")
+    }
+    
     func testError() {
         let error = initTestObject(of: SKError.self, from: errorData)
         XCTAssertNotNil(error, "object could not be initialized from the given JSON data (see console).")
