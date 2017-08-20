@@ -68,13 +68,19 @@ public struct SKPlaylist: JSONDecodable { // TODO: Make JSON Codable.
     /// The version identifier for the current playlist. Can be supplied in other requests to target a specific playlist version.
     public let snapshotID: String?
     
-    /// A collection containing a link (`url`) to the Web API endpoint where full details of the playlist's tracks can be retrieved, along with the total number of tracks in the playlist.
-    public let tracks: PagedCollection<PlaylistTrack> // Change to `playlistItems`? `tracks` seems like a bit of a misnomer. // TODO: Consider renaming.
+    /// A link to the Web API endpoint where full details of the playlist's tracks can be retrieved.
+    public let tracksURL: URL
+    
+    /// The total number of tracks in the playlist.
+    public let totalTracks: Int
     
     /// The [Spotify URI](https://developer.spotify.com/web-api/user-guide/#spotify-uris-and-ids) for the playlist.
     public let uri: String
     
     // MARK: - Object Properties (Full)
+    
+    /// A collection containing information about the tracks of the playlist.
+    public let tracks: PagedCollection<PlaylistTrack>?
     
     /// The playlist description. Only returned for modified, verified playlists, otherwise `nil`.
     public let userDescription: String?
@@ -99,5 +105,47 @@ public struct SKPlaylist: JSONDecodable { // TODO: Make JSON Codable.
         case tracks
         //case type
         case uri
+    }
+}
+
+// MARK: - Custom Decoding
+
+extension SKPlaylist: Decodable {
+    
+    /// Used for simplified playlist objects, when the entire collection of tracks is not returned.
+    private struct SimplifiedTracks: Decodable {
+        
+        /// A link to the Web API endpoint where full details of the playlist's tracks can be retrieved.
+        public let url: URL
+        
+        /// The total number of tracks in the playlist.
+        public let total: Int
+        
+        private enum CodingKeys: String, CodingKey {
+            case url = "href"
+            case total
+        }
+    }
+    
+    public init(from decoder: Decoder) throws {
+        let values = try decoder.container(keyedBy: CodingKeys.self)
+        
+        isCollaborative = try values.decode(Bool.self, forKey: .isCollaborative)
+        externalURLs = try values.decode([String: URL].self, forKey: .externalURLs)
+        url = try values.decode(URL.self, forKey: .url)
+        uri = try values.decode(String.self, forKey: .uri)
+        id = try values.decode(String.self, forKey: .id)
+        images = try values.decode([SKImage].self, forKey: .images)
+        name = try values.decode(String.self, forKey: .name)
+        owner = try values.decode(SKUser.self, forKey: .owner)
+        isPublic = try values.decodeIfPresent(Bool.self, forKey: .isPublic)
+        snapshotID = try values.decodeIfPresent(String.self, forKey: .snapshotID)
+        userDescription = try values.decodeIfPresent(String.self, forKey: .userDescription)
+        followers = try values.decodeIfPresent(SKFollowers.self, forKey: .followers)
+        
+        // Handle both simplified and full "tracks" objects:
+        tracks = try? values.decode(PagedCollection<PlaylistTrack>.self, forKey: .tracks)
+        tracksURL = try tracks?.url ?? values.decode(SimplifiedTracks.self, forKey: .tracks).url
+        totalTracks = try tracks?.total ?? values.decode(SimplifiedTracks.self, forKey: .tracks).total
     }
 }

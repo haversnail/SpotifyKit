@@ -110,6 +110,10 @@ Any notable differences and deviations between **SpotifyKit** and the [Spotify W
 
 #### Additions
 
+* __*Object properties:*__
+
+    * _**TODO**: Simplified Playlist properties._
+
 * __*Object extensions:*__
 
     * All objects that are represented by both “simplified" and “full” versions in the [Web API][API] conform to the `Extendable` protocol, which provides a method for fetching and returning the more detailed version of the simplified object.
