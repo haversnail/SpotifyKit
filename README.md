@@ -116,7 +116,7 @@ Any notable differences and deviations between **SpotifyKit** and the [Spotify W
 
 * __*Object extensions:*__
 
-    * All objects that are represented by both “simplified" and “full” versions in the [Web API][API] conform to the `Extendable` protocol, which provides a method for fetching and returning the more detailed version of the simplified object.
+    * All objects that are represented by both "simplified" and "full" versions in the [Web API][API] conform to the `Expandable` protocol, which provides a method for fetching and returning the more detailed version of the simplified object.
 
 * __*SDK extensions:*__
 

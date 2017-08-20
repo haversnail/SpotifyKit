@@ -15,6 +15,7 @@ public struct SKAlbum: JSONDecodable { // TODO: Make JSON Codable.
     public enum AlbumType: String, Codable {
         case album
         case single
+        case appearance = "appears_on"
         case compilation
     }
     

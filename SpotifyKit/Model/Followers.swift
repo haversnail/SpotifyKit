@@ -14,12 +14,12 @@ public struct SKFollowers: JSONDecodable { // TODO: Make JSON Codable.
     public let url: URL?
     
     /// The total number of followers.
-    public let count: Int
+    public let total: Int
 
     // MARK: - Keys
     
     private enum CodingKeys: String, CodingKey {
         case url = "href"
-        case count = "total"
+        case total
     }
 }
