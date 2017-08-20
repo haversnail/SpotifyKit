@@ -149,3 +149,15 @@ extension SKPlaylist: Decodable {
         totalTracks = try tracks?.total ?? values.decode(SimplifiedTracks.self, forKey: .tracks).total
     }
 }
+
+// MARK: - Expandable Conformance
+
+extension SKPlaylist: Expandable {
+    
+    public var isSimplified: Bool {
+        return
+            userDescription == nil &&
+            followers == nil &&
+            tracks == nil
+    }
+}

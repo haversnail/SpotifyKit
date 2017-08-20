@@ -454,3 +454,32 @@ extension SPTSession {
         request?.perform(handler: handler)
     }
 }
+
+
+
+// MARK: - Expandable Objects
+
+/// A type that is represented in the [Spotify Web API](https://developer.spotify.com/web-api/) by both "simplified" and "full" versions of the object, and that can be expanded from a simplified instance to a detailed one.
+public protocol Expandable {
+    
+    /// **Required**. A link to the [Web API endpoint](https://developer.spotify.com/web-api/endpoint-reference/) providing full details of the object.
+    var url: URL { get }
+    
+    /// A boolean value indicating whether this instance represents a "simplified" version of the "full" Spotify object (i.e., all values unique to the full object are `nil`).
+    var isSimplified: Bool { get }
+    
+    /// Performs a request for the detailed version of the given object.
+    ///
+    /// - Parameter handler: The callback handler for this request, providing the detailed object if successful, and an error object identifying if and why the request or decoding failed if unsuccessful.
+    func getFullObject(handler: @escaping (Self?, Error?) -> Void)
+}
+
+extension Expandable where Self: JSONDecodable {
+    public func getFullObject(handler: @escaping (Self?, Error?) -> Void) {
+        
+        guard isSimplified else { return }
+        
+        let request = SKRequest(method: .GET, url: url)
+        request?.perform(handler: handler)
+    }
+}

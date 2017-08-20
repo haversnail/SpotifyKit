@@ -219,4 +219,40 @@ class RequestTests: XCTestCase {
             XCTFail("the request timed out.")
         }
     }
+    
+    func testExpandableExtension() {
+        
+        // Arrange:
+        let artist = SKArtist(externalURLs: ["Spotify" : URL(string: "https://open.spotify.com/artist/6VDdCwrBM4qQaGxoAyxyJC")!],
+                              url: URL(string: "https://api.spotify.com/v1/artists/6VDdCwrBM4qQaGxoAyxyJC")!,
+                              id: "6VDdCwrBM4qQaGxoAyxyJC",
+                              name: "Cold War Kids",
+                              uri: "spotify:artist:6VDdCwrBM4qQaGxoAyxyJC",
+                              followers: nil,
+                              genres: nil,
+                              images: nil,
+                              popularity: nil)
+        
+        let promise = expectation(description: "method returned the full object.")
+        
+        // Set the default SPTAuth object's session:
+        SPTAuth.defaultInstance().session = apiSession
+        
+        // Act:
+        artist.getFullObject { (artist, error) in
+           
+            // Assert:
+            XCTAssertNil(error, "\"error\" was not nil.")
+            XCTAssertNotNil(artist, "object was nil.")
+            XCTAssertNotNil(artist?.popularity, "field should be populated.")
+            print(artist?.popularity ?? 0)
+            
+            promise.fulfill()
+        }
+        
+        let result = XCTWaiter.wait(for: [promise], timeout: 5)
+        if result == .timedOut {
+            XCTFail("the request timed out.")
+        }
+    }
 }

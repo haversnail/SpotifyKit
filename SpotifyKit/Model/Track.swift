@@ -120,14 +120,6 @@ public struct SKTrack: JSONDecodable { // TODO: Make JSON Codable.
     ///
     /// Generally speaking, songs that are being played a lot now will have a higher popularity than songs that were played a lot in the past. Duplicate tracks (e.g. the same track from a single and an album) are rated independently. Artist and album popularity is derived mathematically from track popularity. Note that the popularity value may lag actual popularity by a few days: the value is not updated in real time.
     public let popularity: Int?
-    
-    /// A boolean value indicating whether this `SKTrack` instance is a simplified version of the Spotify track object (i.e., it does *not* contain any of the values unique to the full version of the object).
-    public var isSimplified: Bool {
-        return
-            album == nil &&
-            externalIDs == nil &&
-            popularity == nil
-    }
 
     // MARK: - Keys
     
@@ -150,6 +142,18 @@ public struct SKTrack: JSONDecodable { // TODO: Make JSON Codable.
         case trackNumber = "track_number"
         //case type
         case uri
+    }
+}
+
+// MARK: - Expandable Conformance
+
+extension SKTrack: Expandable {
+    
+    public var isSimplified: Bool {
+        return
+            album == nil &&
+            externalIDs == nil &&
+            popularity == nil
     }
 }
 

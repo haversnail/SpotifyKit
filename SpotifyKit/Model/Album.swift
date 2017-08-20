@@ -97,19 +97,6 @@ public struct SKAlbum: JSONDecodable { // TODO: Make JSON Codable.
     /// The tracks of the album.
     public let tracks: PagedCollection<SKTrack>?
     
-    /// A boolean value indicating whether this `SKAlbum` instance is a simplified version of the Spotify album object (i.e., it does *not* contain any of the values unique to the full version of the object).
-    public var isSimplified: Bool {
-        return
-            copyrights == nil &&
-            externalIDs == nil &&
-            genres == nil &&
-            label == nil &&
-            popularity == nil &&
-            releaseDate == nil && // _releaseDate
-            releaseDatePrecision == nil &&
-            tracks == nil
-    }
-    
     // MARK: - Keys
     
     private enum CodingKeys: String, CodingKey {
@@ -173,6 +160,23 @@ extension SKAlbum: Decodable {
         }
         formatter.timeZone = TimeZone(secondsFromGMT: 0)
         releaseDate = formatter.date(from: dateString)
+    }
+}
+
+// MARK: - Expandable Conformance
+
+extension SKAlbum: Expandable {
+    
+    public var isSimplified: Bool {
+        return
+            copyrights == nil &&
+            externalIDs == nil &&
+            genres == nil &&
+            label == nil &&
+            popularity == nil &&
+            releaseDate == nil && // _releaseDate
+            releaseDatePrecision == nil &&
+            tracks == nil
     }
 }
 

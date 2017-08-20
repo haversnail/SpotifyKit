@@ -41,15 +41,6 @@ public struct SKArtist: JSONDecodable { // TODO: Make JSON Codable.
     /// The popularity of the artist. The value will be between 0 and 100, with 100 being the most popular. The artist's popularity is calculated from the popularity of all the artist's tracks.
     public let popularity: Int?
     
-    /// A boolean value indicating whether this `SKArtist` instance is a simplified version of the Spotify artist object (i.e., it does *not* contain any of the values unique to the full version of the object).
-    public var isSimplified: Bool {
-        return
-            followers == nil &&
-            genres == nil &&
-            images == nil &&
-            popularity == nil
-    }
-    
     // MARK: - Keys
     
     private enum CodingKeys: String, CodingKey {
@@ -63,5 +54,18 @@ public struct SKArtist: JSONDecodable { // TODO: Make JSON Codable.
         case popularity
         //case type
         case uri
+    }
+}
+
+// MARK: - Expandable Conformance
+
+extension SKArtist: Expandable {
+    
+    public var isSimplified: Bool {
+        return
+            followers == nil &&
+            genres == nil &&
+            images == nil &&
+            popularity == nil
     }
 }
