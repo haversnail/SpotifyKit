@@ -1,5 +1,5 @@
 //
-//  PlayedTracks.swift
+//  RecentTracks.swift
 //  SpotifyKitTests
 //
 //  Created by Alexander Havermale on 7/31/17.
@@ -9,7 +9,7 @@
 import Foundation
 
 extension ObjectModelTests {
-    var playedTrackData: Data {
+    var recentTrackData: Data {
         return """
         {
           "items" : [ {

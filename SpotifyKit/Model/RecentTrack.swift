@@ -9,7 +9,7 @@
 import Foundation
 
 /// A structure representing a recently played track object. See [Play History](https://developer.spotify.com/web-api/object-model/#play-history-object) object for more details.
-public struct SKPlayedTrack/* PlayedItem<Object: Decodable> */ { // SKRecentTrack
+public struct SKRecentTrack/* PlayedItem<Object: Decodable> */ { // SKPlayedTrack
     
     // MARK: - Embedded Types
     
@@ -21,7 +21,7 @@ public struct SKPlayedTrack/* PlayedItem<Object: Decodable> */ { // SKRecentTrac
             case playlist
         }
         
-        /// Known external URLs for this context. See ["external URL object"](https://developer.spotify.com/web-api/object-model/#external-id-object) for more details.
+        /// Known external URLs for this context. See ["external URL object"](https://developer.spotify.com/web-api/object-model/#external-url-object) for more details.
         public let externalURLs: [String: URL]
         
         /// A link to the Web API endpoint providing full details of the context object.
@@ -61,7 +61,7 @@ public struct SKPlayedTrack/* PlayedItem<Object: Decodable> */ { // SKRecentTrac
 
 // MARK: - Custom Decoding
 
-extension SKPlayedTrack: Decodable {
+extension SKRecentTrack: Decodable {
     public init(from decoder: Decoder) throws {
         let values = try decoder.container(keyedBy: CodingKeys.self)
         context = try values.decode(PlaybackContext.self, forKey: .context)
@@ -70,6 +70,7 @@ extension SKPlayedTrack: Decodable {
         
         let formatter = DateFormatter()
         formatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSSZ" // Accounts for milliseconds returned in string.
+        formatter.timeZone = TimeZone(secondsFromGMT: 0)
         
         guard let date = formatter.date(from: dateString) else {
             throw DecodingError.dataCorrupted(DecodingError.Context(codingPath: values.codingPath + [CodingKeys.playbackDate], debugDescription: "Cannot initialize \(Date.self) from invalid \(String.self) value \(dateString)"))
