@@ -136,6 +136,13 @@ public enum SKScope: String, Codable {
 ///     - error: An error object identifying if and why the request failed, or `nil` if the response was successful.
 public typealias SKRequestHandler = (_ data: Data?, /*_ status: HTTPStatusCode?, */_ error: Error?) -> Void // or `SKRequest.ResponseHandler`?
 
+/// The callback handler for a request.
+///
+/// - Parameters:
+///     - object: The object decoded from the JSON data returned by the request. If the object could not be decoded from the data received, the `error` parameter will provide details.
+///     - error: An error object identifying if and why the request or decoding failed, or `nil` if the response was successful.
+public typealias SKDecodedRequestHandler<T: JSONDecodable> = (_ object: T?, _ error: Error?) -> Void
+
 
 
 // MARK: - Request Class
@@ -330,7 +337,7 @@ public class SKRequest { // Inheriting from NSObject causes buildtime error: cla
     ///
     /// - Parameter handler: The callback handler for this request. The parameters for this handler are:
     ///     - `data`: The data (typically an encoded JSON object) returned by the request, if any.
-    ///     - `error`: An error object identifying if and why the request failed, or `nil` if the response was successful.
+    ///     - `error`: An error object identifying if and why the request or decoding failed, or `nil` if the response was successful.
     public func perform(handler: @escaping SKRequestHandler) {
 
         //let urlSession = URLSession(configuration: .default)
@@ -378,6 +385,30 @@ public class SKRequest { // Inheriting from NSObject causes buildtime error: cla
 
         task.resume()
         //urlSession.finishTasksAndInvalidate()
+    }
+    
+    /// Performs the request, decoding the JSON data returned by the request to the given type and calling the specified handler when complete.
+    ///
+    /// - Parameter handler: The callback handler for this request. The parameters for this handler are:
+    ///     - `object`: The object decoded from the JSON data returned by the request.
+    ///     - `error`: An error object identifying if and why the request failed, or `nil` if the response was successful.
+    public func perform<T: JSONDecodable>(handler: @escaping SKDecodedRequestHandler<T>) {
+
+        perform { (data, error) in
+            guard data != nil, error == nil else {
+                handler(nil, error)
+                return
+            }
+            
+            do {
+                let object = try T.init(from: data!)
+                handler(object, nil)
+                return
+            } catch {
+                handler(nil, error)
+                return
+            }
+        }
     }
 }
 
