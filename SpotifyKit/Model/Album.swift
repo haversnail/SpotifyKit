@@ -53,7 +53,7 @@ public struct SKAlbum: JSONDecodable { // TODO: Make JSON Codable.
     /// This property may be `nil` if the API request already specified a specific market from which to retrieve the album.
     public let availableMarkets: [String]? // String will only always hold two characters. TODO: Change to a more performant data type.
     
-    /// Known external URLs for this album. See ["external URL object"](https://developer.spotify.com/web-api/object-model/#external-id-object) for more details.
+    /// Known external URLs for this album. See ["external URL object"](https://developer.spotify.com/web-api/object-model/#external-url-object) for more details.
     public let externalURLs: [String: URL]
     
     /// A link to the Web API endpoint providing full details of the album.

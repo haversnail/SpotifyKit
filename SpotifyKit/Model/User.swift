@@ -15,7 +15,7 @@ public struct SKUser: JSONDecodable { // TODO: Make JSON Codable.
     /// The name displayed on the user's profile. `nil` if not available.
     public let displayName: String?
     
-    /// Known external URLs for this user. See ["external URL object"](https://developer.spotify.com/web-api/object-model/#external-id-object) for more details.
+    /// Known external URLs for this user. See ["external URL object"](https://developer.spotify.com/web-api/object-model/#external-url-object) for more details.
     public let externalURLs: [String: URL]
 
     /// Information about the followers of this user.

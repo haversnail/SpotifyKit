@@ -12,7 +12,7 @@ public struct SKArtist: JSONDecodable { // TODO: Make JSON Codable.
     
     // MARK: - Object Properties (Simplified)
     
-    /// Known external URLs for this artist. See ["external URL object"](https://developer.spotify.com/web-api/object-model/#external-id-object) for more details.
+    /// Known external URLs for this artist. See ["external URL object"](https://developer.spotify.com/web-api/object-model/#external-url-object) for more details.
     public let externalURLs: [String: URL]
     
     /// A link to the Web API endpoint providing full details of the artist.
