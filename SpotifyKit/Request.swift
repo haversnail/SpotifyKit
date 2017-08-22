@@ -162,11 +162,19 @@ public class SKRequest { // Inheriting from NSObject causes buildtime error: cla
         static let baseURL = URL(string: "https://api.spotify.com")!
         static let accountsURL = URL(string: "https://accounts.spotify.com")!
         static let tokenType = "Bearer"
-        struct HeaderKeys {
+        struct HeaderFields {
             private init() {}
             static let authorization = "Authorization"
             static let contentType = "Content-Type"
             //static let matchETag = "If-None-Match"
+        }
+        struct QueryParameters {
+            private init() {}
+            static let query = "q"
+            static let market = "market"
+            static let limit = "limit"
+            static let offset = "offset"
+            static let itemType = "type"
         }
         //struct ContentTypes {
         //    private init() {}
@@ -260,18 +268,18 @@ public class SKRequest { // Inheriting from NSObject causes buildtime error: cla
 
             // Add the OAuth access token to the request header:
             if let token = apiSession?.accessToken {
-                request.addValue("\(Constants.tokenType) \(token)", forHTTPHeaderField: Constants.HeaderKeys.authorization)
+                request.addValue("\(Constants.tokenType) \(token)", forHTTPHeaderField: Constants.HeaderFields.authorization)
             }
             
             // Add any multipart content, if provided:
             if let body = requestBody {
                 request.httpBody = body.data
-                request.addValue(body.type.rawValue, forHTTPHeaderField: Constants.HeaderKeys.contentType)
+                request.addValue(body.type.rawValue, forHTTPHeaderField: Constants.HeaderFields.contentType)
             }
             
             // TODO: Handle Conditional Requests.
             //if let eTag = entityTag {
-            //    request.addValue(eTag, forHTTPHeaderField: Constants.HeaderKeys.matchETag)
+            //    request.addValue(eTag, forHTTPHeaderField: Constants.HeaderFields.matchETag)
             //}
 
             return request
@@ -415,6 +423,252 @@ public class SKRequest { // Inheriting from NSObject causes buildtime error: cla
                 return
             }
         }
+    }
+}
+
+
+
+// MARK: - Search Requests
+
+/// The callback handler for a search request.
+///
+/// - Parameters:
+///     - results: An `SKSearchResults` object containing paged results for any albums, artists, tracks, or playlists returned by the search.
+///     - error: An error object identifying if and why the request failed, or `nil` if the request was successful.
+public typealias SKSearchResultsHandler = (_ results: SKSearchResults?, _ error: Error?) -> Void
+
+/// An object containing paged results for any albums, artists, tracks, or playlists returned by a search request.
+public struct SKSearchResults: JSONDecodable {
+    public let albums: PagedCollection<SKAlbum>?
+    public let artists: PagedCollection<SKArtist>?
+    public let tracks: PagedCollection<SKTrack>?
+    public let playlists: PagedCollection<SKPlaylist>?
+}
+
+/// An enumeration representing the types of SpotifyKit objects returned by a search request.
+public enum SKSearchResultType: String, URLEncodable {
+    case album
+    case artist
+    case track
+    case playlist
+}
+
+/// The fields by which a search request can be filtered.
+public enum SKSearchFieldFilter { // Convert this to a struct? Store string conversion as a closure-typed var?
+    case album(String)
+    case artist(String)
+    case track(String)
+    case genre(String)
+    case year(DateInterval)
+    case tag(SKSearchTag)
+    case isrc(String)
+    case upc(String)
+}
+
+/// The tags available when filtering a search request.
+public enum SKSearchTag: String {
+    
+    /// Retrieves albums released within the last two weeks.
+    case new
+    
+    /// Retrieves albums with the lowest 10% popularity.
+    case hipster
+}
+
+extension SKRequest {
+    
+    /// Creates an API request for searching the Spotify catalog.
+    ///
+    /// - Parameters:
+    ///   - types: The types of objects to filter results by. Possible values are `album`, `artist`, `track`, and `playlist`.
+    ///   - keywords: The search term to match results against. Keyword matching is *not* case-sensitive.
+    ///   - alternate: An alternate search term used to broaden the search. The default value is an empty string.
+    ///   - unwanted: Unwanted keywords to exclude from the search. The default value is an empty string.
+    ///   - inOrder: When `false`, keywords will be matched in any order; when `true`, the search will maintain exact keyword order. The default value is `false`.
+    ///   - filters: An optional list of field filters to narrow the search. For available filters, see `SKSearchFieldFilter`.
+    ///   - limit: The number of items to limit results by. When no value is provided, the default limit is 20 items.
+    ///   - offset: The number of items to offset results by. When no value is provided, the default returns the first set of items.
+    ///
+    /// - Returns: an `SKRequest` object containing the prepared URL request.
+    public static func searchRequest(for types: [SKSearchResultType],
+                                     matching keywords: String,
+                                     or alternate: String = "",
+                                     excluding unwanted: String = "",
+                                     inOrder: Bool = false,
+                                     filteredBy filters: [SKSearchFieldFilter] = [],
+                                     limit: Int? = nil,
+                                     offset: Int? = nil) -> SKRequest {
+        
+        var query: String = inOrder ? "\"" + keywords.lowercased() + "\"" : keywords.lowercased()
+        
+        if !alternate.isEmpty {
+            query.append(" OR \(alternate.lowercased())")
+        }
+        
+        if !unwanted.isEmpty {
+            query.append(" NOT \(unwanted.lowercased())")
+        }
+        
+        if !filters.isEmpty {
+            
+            for filter in filters {
+                
+                switch filter {
+                case let .album(keywords):
+                    query.append(" album:\"\(keywords)\"")
+                    
+                case let .artist(keywords):
+                    query.append(" artist:\"\(keywords)\"")
+                    
+                case let .track(keywords):
+                    query.append(" track:\"\(keywords)\"")
+                    
+                case let .genre(keywords):
+                    guard types.contains(.artist) || types.contains(.track) else { break }
+                    query.append(" genre:\"\(keywords)\"")
+                    
+                case let .tag(tag):
+                    guard types.contains(.album) else { break }
+                    query.append(" tag:\(tag.rawValue)")
+                    
+                case let .upc(code):
+                    guard types.contains(.album) else { break }
+                    query.append(" upc:\(code)")
+                    
+                case let .isrc(code):
+                    guard types.contains(.track) else { break }
+                    query.append(" isrc:\(code)") // .trimmingCharacters(in: CharacterSet.alphanumerics.inverted)
+                    
+                case let .year(range):
+                    let encoder = URLEncoder()
+                    encoder.rangeSeparator = "-"
+                    encoder.dateFormatter = {
+                        let formatter = DateFormatter()
+                        formatter.dateFormat = "yyyy"
+                        return formatter
+                    }()
+                    query.append(" year:\(range.urlEncodedString(using: encoder))")
+                }
+            }
+        }
+        
+        var parameters = [String: Any]()
+        parameters[Constants.QueryParameters.query] = query
+        parameters[Constants.QueryParameters.itemType] = types
+        parameters[Constants.QueryParameters.market] = "from_token" // Consider removing constant.
+        parameters[Constants.QueryParameters.limit] = limit
+        parameters[Constants.QueryParameters.offset] = offset
+        
+        print(parameters)
+        
+        return SKRequest(method: .GET, endpoint: "/v1/search", parameters: parameters)! // Consider moving endpoint constant.
+    }
+    
+    /// Creates an API request for searching the Spotify catalog.
+    ///
+    /// - Parameters:
+    ///   - types: The types of objects to filter results by. Possible values are `album`, `artist`, `track`, and `playlist`.
+    ///   - keywords: The search term to match results against. Keyword matching is *not* case-sensitive.
+    ///   - alternate: An alternate search term used to broaden the search. The default value is an empty string.
+    ///   - unwanted: Unwanted keywords to exclude from the search. The default value is an empty string.
+    ///   - inOrder: When `false`, keywords will be matched in any order; when `true`, the search will maintain exact keyword order. The default value is `false`.
+    ///   - fieldFilters: An optional list of field filters to narrow the search. For available filters, see `SKSearchFieldFilter`.
+    ///   - limit: The number of items to limit results by. When no value is provided, the default limit is 20 items.
+    ///   - offset: The number of items to offset results by. When no value is provided, the default returns the first set of items.
+    ///
+    /// - Returns: an `SKRequest` object containing the prepared URL request.
+    public static func searchRequest(for types: SKSearchResultType...,
+                                     matching keywords: String,
+                                     or alternate: String = "",
+                                     excluding unwanted: String = "",
+                                     inOrder: Bool = false,
+                                     filteredBy filters: [SKSearchFieldFilter] = [],
+                                     limit: Int? = nil,
+                                     offset: Int? = nil) -> SKRequest {
+        
+        return searchRequest(for: types,
+                             matching: keywords,
+                             or: alternate,
+                             excluding: unwanted,
+                             inOrder: inOrder,
+                             filteredBy: filters,
+                             limit: limit,
+                             offset: offset)
+    }
+    
+    
+    /// Performs a search request to the [Spotify Web API](https://developer.spotify.com/web-api/).
+    ///
+    /// - Note: This request uses the default `SPTAuth` session to authenticate the URL request.
+    ///
+    /// - Parameters:
+    ///   - types: The types of objects to filter results by. Possible values are `album`, `artist`, `track`, and `playlist`.
+    ///   - keywords: The search term to match results against. Keyword matching is *not* case-sensitive.
+    ///   - alternate: An alternate search term used to broaden the search. The default value is an empty string.
+    ///   - unwanted: Unwanted keywords to exclude from the search. The default value is an empty string.
+    ///   - inOrder: When `false`, keywords will be matched in any order; when `true`, the search will maintain exact keyword order. The default value is `false`.
+    ///   - fieldFilters: An optional list of field filters to narrow the search. For available filters, see `SKSearchFieldFilter`.
+    ///   - limit: The number of items to limit results by. When no value is provided, the default limit is 20 items.
+    ///   - offset: The number of items to offset results by. When no value is provided, the default returns the first set of items.
+    ///   - resultsHandler: The callback handler for this request. The parameters for this handler are:
+    ///       - `results`: An `SKSearchResults` object containing paged results for any albums, artists, tracks, or playlists returned by the search.
+    ///       - `error`: An error object identifying if and why the request failed, or `nil` if the request was successful.
+    public static func search(for types: [SKSearchResultType],
+                              matching keywords: String,
+                              or alternate: String = "",
+                              excluding unwanted: String = "",
+                              inOrder: Bool = false,
+                              filteredBy filters: [SKSearchFieldFilter] = [],
+                              limit: Int? = nil,
+                              offset: Int? = nil,
+                              resultsHandler: @escaping SKSearchResultsHandler) {
+        
+        SKRequest.searchRequest(for: types,
+                                matching: keywords,
+                                or: alternate,
+                                excluding: unwanted,
+                                inOrder: inOrder,
+                                filteredBy: filters,
+                                limit: limit,
+                                offset: offset)
+            .perform(handler: resultsHandler)
+    }
+    
+    /// Performs a search request to the [Spotify Web API](https://developer.spotify.com/web-api/).
+    ///
+    /// - Note: This request uses the default `SPTAuth` session to authenticate the URL request.
+    ///
+    /// - Parameters:
+    ///   - types: The types of objects to filter results by. Possible values are `album`, `artist`, `track`, and `playlist`.
+    ///   - keywords: The search term to match results against. Keyword matching is *not* case-sensitive.
+    ///   - alternate: An alternate search term used to broaden the search. The default value is an empty string.
+    ///   - unwanted: Unwanted keywords to exclude from the search. The default value is an empty string.
+    ///   - inOrder: When `false`, keywords will be matched in any order; when `true`, the search will maintain exact keyword order. The default value is `false`.
+    ///   - fieldFilters: An optional list of field filters to narrow the search. For available filters, see `SKSearchFieldFilter`.
+    ///   - limit: The number of items to limit results by. When no value is provided, the default limit is 20 items.
+    ///   - offset: The number of items to offset results by. When no value is provided, the default returns the first set of items.
+    ///   - resultsHandler: The callback handler for this request. The parameters for this handler are:
+    ///       - `results`: An `SKSearchResults` object containing paged results for any albums, artists, tracks, or playlists returned by the search.
+    ///       - `error`: An error object identifying if and why the request failed, or `nil` if the request was successful.
+    public static func search(for types: SKSearchResultType...,
+                              matching keywords: String,
+                              or alternate: String = "",
+                              excluding unwanted: String = "",
+                              inOrder: Bool = false,
+                              filteredBy filters: [SKSearchFieldFilter] = [],
+                              limit: Int? = nil,
+                              offset: Int? = nil,
+                              resultsHandler: @escaping SKSearchResultsHandler) {
+        
+        search(for: types,
+               matching: keywords,
+               or: alternate,
+               excluding: unwanted,
+               inOrder: inOrder,
+               filteredBy: filters,
+               limit: limit,
+               offset: offset,
+               resultsHandler: resultsHandler)
     }
 }
 

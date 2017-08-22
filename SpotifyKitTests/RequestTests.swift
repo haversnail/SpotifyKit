@@ -18,7 +18,7 @@ class RequestTests: XCTestCase {
         // Put setup code here. This method is called before the invocation of each test method in the class.
         // FIXME: Request a new access token if this one is expired.
         // https://developer.spotify.com/web-api/console/
-        let accessToken = "BQBvH4blDT_EbTmxVAmWyVCnRu9TZo57ugXy-_MQFrzjHrw6Ekfxjc8R_Lf2kS7nkTqf9GcCx1enHHm60L2pzsoZIOzh7H3ehseo1GUnAyGAeml4ilmrcLiYjmeS3NrrtyoHVRFDM-O621b_VYkwu1wWTUUhUljp6FrNCva0GRmkz48sDTKQqjSsBLtFANUgA7CzMzmYFEyNggNHHKGZeEuqLDfMODicI7AhWy8dfI--BG6B-H8J891y5TjfQOwtseQDqHXdyrQseHTN9LKsKalJ"
+        let accessToken = "BQDHM9eEkqUaERZLymyo8uTtXtjlHF1TWlsGTOmQsGMxXgK6KA3OkyfUG6dLbY87LcDRGfQgZXOXOZea1QEoTy2E8gPIxwgzxW9opUiMlL3jZW_GrTvlh-du7lpvG6lBQkTBcgTT73Iw3kagks0tHPTr3yAM2OGLqnJ73lX130brDLXuq_mjmse8ad2k-pkBcmbrLevr0EzYSkWuq1DY9arRk0oZ01m8JfUaKHcU_p7b_roH-hT5USSTouUzYYAirELXw0TMb7mNh_-uB712KUEH"
         
         apiSession = SPTSession(userName: "haversnail",
                                 accessToken: accessToken,
@@ -27,6 +27,7 @@ class RequestTests: XCTestCase {
     
     override func tearDown() {
         // Put teardown code here. This method is called after the invocation of each test method in the class.
+        SPTAuth.defaultInstance().session = nil
         apiSession = nil
         super.tearDown()
     }
@@ -175,6 +176,64 @@ class RequestTests: XCTestCase {
             
             XCTAssertEqual(apiError.status, .unauthorized)
             promise.fulfill()
+        }
+        
+        let result = XCTWaiter.wait(for: [promise], timeout: 5)
+        if result == .timedOut {
+            XCTFail("the request timed out.")
+        }
+    }
+    
+    func testSearchRequest() {
+        
+        // Arrange:
+        let formatter = ISO8601DateFormatter()
+        let startDate = formatter.date(from: "2010-05-05T09:30:00Z")!
+        let endDate = formatter.date(from: "2017-06-05T09:30:00Z")!
+        let filters: [SKSearchFieldFilter] = [
+            .genre("soundtrack"), // Should not be added to the query, since we'll only be requesting albums and playlists ("genre" applies to artists/tracks).
+            .year(DateInterval(start: startDate, end: endDate))
+        ]
+        
+        let promise = expectation(description: "results were returned by the search.")
+        let request = SKRequest.searchRequest(for: .album, .playlist, matching: "Game of", excluding: "Thrones", inOrder: true, filteredBy: filters, limit: 3)
+        
+        guard let query = request.preparedURLRequest.url?.query else {
+            XCTFail("no query was found in the prepared URL request.")
+            return
+        }
+        
+        // Assert what the query string should look like:
+        print(query)
+        XCTAssert(query.contains("q=%22game+of%22+NOT+thrones+year:2010-2017"))
+        XCTAssert(query.contains("type=album,playlist"))
+        XCTAssert(query.contains("market=from_token"))
+        XCTAssert(query.contains("limit=3"))
+        
+        request.apiSession = apiSession
+        
+        // Act:
+        request.perform { (results: SKSearchResults?, error) in
+            
+            // Assert:
+            XCTAssertNil(error, "\"error\" was not nil.")
+            XCTAssertNotNil(results, "results were nil.")
+            
+            promise.fulfill()
+            
+            XCTAssertNotNil(results?.albums)
+            XCTAssertNotNil(results?.playlists)
+            XCTAssertNil(results?.artists)
+            XCTAssertNil(results?.tracks)
+            
+            guard let albums = results?.albums else { return }
+            
+            for album in albums {
+                print(album.name)
+                XCTAssert(album.name.localizedCaseInsensitiveContains("game of"), "one of the albums does not contain the expected keywords.")
+                XCTAssert(!album.name.localizedCaseInsensitiveContains("thrones"), "one of the albums contains unwanted keywords.")
+            }
+            
         }
         
         let result = XCTWaiter.wait(for: [promise], timeout: 5)
