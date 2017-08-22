@@ -9,6 +9,17 @@
 import Foundation
 
 public struct SKUser: JSONDecodable { // TODO: Make JSON Codable.
+    
+    // MARK: - Embedded Types
+    
+    /// - SeeAlso: https:/spotify.github.io/ios-sdk/Constants/SPTProduct.html
+    public enum ProductType: String, Codable {
+        case free
+        case open // TODO: Test for this case.
+        case premium
+        case unlimited
+        case unknown // TODO: Test for this case.
+    }
 
     // MARK: - Object Properties (Public User)
     
@@ -52,7 +63,7 @@ public struct SKUser: JSONDecodable { // TODO: Make JSON Codable.
     
     /// The user's Spotify subscription level: "premium", "free", etc. (The subscription level "open" can be considered the same as "free".)
     /// - Note: This field is only available when the current user has granted access to the `user-read-private` scope. See [Using Scopes](https://developer.spotify.com/web-api/using-scopes/) for more details.
-    public let product: String? // TODO: Try building an enumerated type for these.
+    public let product: ProductType?
     
     // MARK: - Keys
 

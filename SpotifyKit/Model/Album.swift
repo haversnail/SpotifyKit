@@ -12,6 +12,7 @@ public struct SKAlbum: JSONDecodable { // TODO: Make JSON Codable.
     
     // MARK: - Embedded Types
     
+    /// - SeeAlso: https://spotify.github.io/ios-sdk/Constants/SPTAlbumType.html
     public enum AlbumType: String, Codable {
         case album
         case single
