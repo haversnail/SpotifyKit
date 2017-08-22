@@ -14,11 +14,11 @@ internal protocol URLEncodable {
 
 internal class URLEncoder {
     
-    internal static var `default` = URLEncoder()
+    internal static var `default` = URLEncoder() // shared
     
     internal var listSeparator: String = ","
-    
     internal var spaceSeparator: String = "+"
+    internal var rangeSeparator: String = "-"
     
     internal var dateFormatter: DateFormatter = {
         let formatter = DateFormatter()
@@ -64,11 +64,27 @@ extension URLEncodable where Self: LosslessStringConvertible { // Bool/Double/Fl
     }
 }
 
+extension Bool: URLEncodable {}
+//extension Double: URLEncodable {}
+extension Float: URLEncodable {}
+extension Float80: URLEncodable {}
+extension Substring: URLEncodable {}
+
 extension URLEncodable where Self: FixedWidthInteger { // DoubleWidth/Int/Int*/UInt/UInt*
     internal func urlEncodedString(using encoder: URLEncoder) -> String {
         return String(self)
     }
 }
+
+extension Int: URLEncodable {}
+extension Int8: URLEncodable {}
+extension Int16: URLEncodable {}
+extension Int32: URLEncodable {}
+extension Int64: URLEncodable {}
+extension UInt8: URLEncodable {}
+extension UInt16: URLEncodable {}
+extension UInt32: URLEncodable {}
+extension UInt64: URLEncodable {}
 
 extension TimeInterval: URLEncodable {
     internal func urlEncodedString(using encoder: URLEncoder) -> String {
@@ -79,6 +95,23 @@ extension TimeInterval: URLEncodable {
     }
 }
 
+extension DateInterval: URLEncodable {
+    internal func urlEncodedString(using encoder: URLEncoder) -> String {
+        guard start != end, duration > 0 else {             // If we know that the start and end dates are exactly the same,
+            return start.urlEncodedString(using: encoder)   // then just return the start date now and be done.
+        }
+        
+        let fromDate = start.urlEncodedString(using: encoder)
+        let toDate = end.urlEncodedString(using: encoder)
+        
+        guard fromDate != toDate else { // If the decoded strings end up looking the same (e.g. same year),
+            return fromDate             // then just return the first value.
+        }
+        
+        return fromDate + encoder.rangeSeparator + toDate
+    }
+}
+
 extension Array: URLEncodable/* where Element: URLEncodable */{ // FIXME: Uncomment when conditional conformance is available.
     internal func urlEncodedString(using encoder: URLEncoder) -> String {
 
@@ -86,12 +119,30 @@ extension Array: URLEncodable/* where Element: URLEncodable */{ // FIXME: Uncomm
             preconditionFailure("\(type(of: self)) does not conform to `URLEncodable` because \(Element.self) does not conform to `URLEncodable`")
         }
         
-        return self.flatMap({ ($0 as! URLEncodable).urlEncodedString(using: encoder) }).joined(separator: encoder.listSeparator)
+        return self.flatMap { ($0 as! URLEncodable).urlEncodedString(using: encoder) }.joined(separator: encoder.listSeparator)
+    }
+}
+
+extension ClosedRange: URLEncodable/* where Bound: URLEncodable */{ // FIXME: Uncomment when conditional conformance is available.
+    internal func urlEncodedString(using encoder: URLEncoder) -> String {
+        
+        guard Bound.self is URLEncodable.Type else {
+            preconditionFailure("\(type(of: self)) does not conform to `URLEncodable` because \(Bound.self) does not conform to `URLEncodable`")
+        }
+        
+        let start = (lowerBound as! URLEncodable).urlEncodedString(using: encoder)
+        let end = (upperBound as! URLEncodable).urlEncodedString(using: encoder)
+        
+        guard start != end else {   // If the decoded strings end up looking the same (e.g. rounded-up values),
+            return start            // then just return the first value.
+        }
+        
+        return start + encoder.rangeSeparator + end
     }
 }
 
 extension RawRepresentable where RawValue: URLEncodable, Self: URLEncodable { // Must apply `URLEncodable` to every RawRepresentable type until conditional conformance is available.
-    internal func string(using encoder: URLEncoder) -> String {
+    internal func urlEncodedString(using encoder: URLEncoder) -> String {
         return self.rawValue.urlEncodedString(using: encoder)
     }
 }
