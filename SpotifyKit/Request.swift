@@ -8,7 +8,7 @@
 
 import Foundation
 
-/// The HTTP [REST] verbs used for API requests. See [Requests] for more details.
+/// The HTTP [REST] verbs used for API requests. See the API [Requests] guide for more details.
 ///
 /// [REST]: http://en.wikipedia.org/wiki/Representational_state_transfer
 /// [Requests]: https://developer.spotify.com/web-ai/user-guide/#requests
@@ -190,7 +190,7 @@ public class SKRequest { // Inheriting from NSObject causes buildtime error: cla
     
     // MARK: - Request Properties
 
-    /// The method to use for this request.
+    /// The HTTP method used for this request.
     public let method: HTTPRequestMethod
 
     /// The destination URL for this request.
@@ -216,6 +216,8 @@ public class SKRequest { // Inheriting from NSObject causes buildtime error: cla
     fileprivate var requestBody: (data: Data, type: ContentType)? = nil
 
     /// The prepared URL used by the URL request, comprised of the initial URL and the query containing the URL-encodable elements in `parameters`.
+    ///
+    /// - Complexity: O(*n*), where *n* is the number of elements in `parameters`.
     private var preparedURL: URL {
         get {
             if parameters.isEmpty {
@@ -237,6 +239,7 @@ public class SKRequest { // Inheriting from NSObject causes buildtime error: cla
             // 1. filtering out those values that aren't URL-encodable,
             // 2. mapping the remaining key/value pairs to a new `URLQueryItem`, encoding the value as a URL-compatible string.
             components?.queryItems = parameters
+                .lazy
                 .filter { $0.value is URLEncodable }
                 .map { return URLQueryItem(name: $0.key, value: ($0.value as! URLEncodable).urlEncodedString(using: .`default`)) }
             
@@ -247,6 +250,8 @@ public class SKRequest { // Inheriting from NSObject causes buildtime error: cla
     /// The authorized URL request.
     ///
     /// - Important: Set the API session property beforehand to ensure this request is accompanied by the appropriate OAuth access token.
+    ///
+    /// - Complexity: O(*n*), where *n* is the number of elements in `parameters`.
     public var preparedURLRequest: URLRequest {
         get {
             var request = URLRequest(url: preparedURL)
@@ -274,7 +279,7 @@ public class SKRequest { // Inheriting from NSObject causes buildtime error: cla
 
     // MARK: - Initializing Requests
 
-    /// Initializes a newly created request object with the specified properties.
+    /// Creates a new request with the specified properties.
     ///
     /// If the URL provided does not contain either the Web API base URL (`https://api.spotify.com`), or the Web API accounts service URL (`https://accounts.spotify.com`), this initializer will fail.
     ///
@@ -301,7 +306,7 @@ public class SKRequest { // Inheriting from NSObject causes buildtime error: cla
         self.parameters = parameters
     }
 
-    /// Initializes a newly created request by specifying the API endpoint from which to request data.
+    /// Creates a new request by specifying the API endpoint from which to request.
     ///
     /// If a valid API URL cannot be derived from the given endpoint, this initializer will fail.
     ///
@@ -421,7 +426,7 @@ extension SPTSession {
     /// A convenience method that performs an authorized request to the [Spotify Web API](https://developer.spotify.com/web-api/).
     ///
     /// - Parameters:
-    ///     - method: The HTTP request method: `GET`, `PUT`, `POST`, or `DELETE`.
+    ///     - method: The HTTP verb to use for this request: `GET`, `PUT`, `POST`, or `DELETE`.
     ///     - url: The destination URL for this request.
     ///     - parameters: The parameters for this request, if any.
     ///     - requestBody: A tuple value comprised of multipart data and its respective content type, if any.
@@ -439,7 +444,7 @@ extension SPTSession {
     /// A convenience method that performs an authorized request to the [Spotify Web API](https://developer.spotify.com/web-api/).
     ///
     /// - Parameters:
-    ///     - method: The HTTP request method: `GET`, `PUT`, `POST`, or `DELETE`.
+    ///     - method: The HTTP verb to use for this request: `GET`, `PUT`, `POST`, or `DELETE`.
     ///     - endpoint: The destination endpoint for this request.
     ///     - parameters: The parameters for this request, if any.
     ///     - requestBody: A tuple value comprised of multipart data and its respective content type, if any.
@@ -469,6 +474,8 @@ public protocol Expandable {
     var isSimplified: Bool { get }
     
     /// Performs a request for the detailed version of the given object.
+    ///
+    /// - Note: This request uses the default `SPTAuth` session to authenticate the URL request.
     ///
     /// - Parameter handler: The callback handler for this request, providing the detailed object if successful, and an error object identifying if and why the request or decoding failed if unsuccessful.
     func getFullObject(handler: @escaping (Self?, Error?) -> Void)
