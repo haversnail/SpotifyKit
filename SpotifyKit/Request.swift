@@ -134,14 +134,14 @@ public enum SKScope: String, Codable {
 ///
 /// - Parameters:
 ///     - data: The data (typically an encoded JSON object) returned by the request, if any. If the data returned represents an API-specific error object, that object will be provided via the `error` parameter instead.
-///     - error: An error object identifying if and why the request failed, or `nil` if the response was successful.
+///     - error: An error object identifying if and why the request failed, or `nil` if the request was successful.
 public typealias SKRequestHandler = (_ data: Data?, /*_ status: HTTPStatusCode?, */_ error: Error?) -> Void // or `SKRequest.ResponseHandler`?
 
 /// The callback handler for a request.
 ///
 /// - Parameters:
 ///     - object: The object decoded from the JSON data returned by the request. If the object could not be decoded from the data received, the `error` parameter will provide details.
-///     - error: An error object identifying if and why the request or decoding failed, or `nil` if the response was successful.
+///     - error: An error object identifying if and why the request or decoding failed, or `nil` if the request was successful.
 public typealias SKDecodedRequestHandler<T: JSONDecodable> = (_ object: T?, _ error: Error?) -> Void
 
 
@@ -343,7 +343,7 @@ public class SKRequest { // Inheriting from NSObject causes buildtime error: cla
     ///
     /// - Parameter handler: The callback handler for this request. The parameters for this handler are:
     ///     - `data`: The data (typically an encoded JSON object) returned by the request, if any.
-    ///     - `error`: An error object identifying if and why the request or decoding failed, or `nil` if the response was successful.
+    ///     - `error`: An error object identifying if and why the request or decoding failed, or `nil` if the request was successful.
     public func perform(handler: @escaping SKRequestHandler) {
 
         //let urlSession = URLSession(configuration: .default)
@@ -397,7 +397,7 @@ public class SKRequest { // Inheriting from NSObject causes buildtime error: cla
     ///
     /// - Parameter handler: The callback handler for this request. The parameters for this handler are:
     ///     - `object`: The object decoded from the JSON data returned by the request.
-    ///     - `error`: An error object identifying if and why the request failed, or `nil` if the response was successful.
+    ///     - `error`: An error object identifying if and why the request failed, or `nil` if the request was successful.
     public func perform<T: JSONDecodable>(handler: @escaping SKDecodedRequestHandler<T>) {
 
         perform { (data, error) in
@@ -433,7 +433,7 @@ extension SPTSession {
     ///     - requestBody: A tuple value comprised of multipart data and its respective content type, if any.
     ///     - handler: The callback handler for this request. The parameters for this handler are:
     ///         - `data`: The data (typically an encoded JSON object) returned by the request, if any.
-    ///         - `error`: An error object identifying if and why the request failed, or `nil` if the response was successful.
+    ///         - `error`: An error object identifying if and why the request failed, or `nil` if the request was successful.
     public func performRequest(_ method: HTTPRequestMethod, url: URL, parameters: [String: Any] = [:], requestBody: (Data, SKRequest.ContentType)? = nil, handler: @escaping SKRequestHandler) {
         
         let request = SKRequest(method: method, url: url, parameters: parameters)
@@ -451,7 +451,7 @@ extension SPTSession {
     ///     - requestBody: A tuple value comprised of multipart data and its respective content type, if any.
     ///     - handler: The callback handler for this request. The parameters for this handler are:
     ///         - `data`: The data (typically an encoded JSON object) returned by the request, if any.
-    ///         - `error`: An error object identifying if and why the request failed, or `nil` if the response was successful.
+    ///         - `error`: An error object identifying if and why the request failed, or `nil` if the request was successful.
     public func performRequest(_ method: HTTPRequestMethod, endpoint: String, parameters: [String: Any] = [:], requestBody: (Data, SKRequest.ContentType)? = nil, handler: @escaping SKRequestHandler) {
         
         let request = SKRequest(method: method, endpoint: endpoint, parameters: parameters)
