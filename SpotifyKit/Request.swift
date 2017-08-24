@@ -148,11 +148,11 @@ public typealias SKDecodedRequestHandler<T: JSONDecodable> = (_ object: T?, _ er
 
 // MARK: - Request Class
 
-/// The `SKRequest` object encapsulates the properties of an HTTP request, providing a convenient template for you to make requests to the [Spotify Web API][API].
+/// The `SKRequest` object encapsulates the properties of an HTTP request, providing a convenient template for you to make requests to the [Spotify Web API].
 ///
-/// This class is inspired by the [Social] Framework's [SLRequest] class, and aims to mimic its structure and functionality in order to provide a comparable service for interacting with the Spotify [Web API].
+/// This class is inspired by the [Social] Framework's [SLRequest] class, and aims to mimic its structure and functionality in order to provide a comparable service for interacting with the [Spotify Web API].
 ///
-/// [API]: https://developer.spotify.com/web-api/
+/// [Spotify Web API]: https://developer.spotify.com/web-api/
 /// [Social]: apple-reference-documentation://cssocial
 /// [SLRequest]: apple-reference-documentation://hsp4_7YsJD
 public class SKRequest { // Inheriting from NSObject causes buildtime error: class conflicts with StoreKit's `SKRequest` class.

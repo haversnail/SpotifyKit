@@ -61,7 +61,7 @@ chmod +x modulemaps.sh
 ```
     This creates module maps for the newly checked-out [iOS SDK][SDK] frameworks, which should eliminate any initial "missing module" errors encountered in the Xcode project.
 
-4. Open the Xcode project select **"Product" > "Build" (⌘B)**. Voilà.
+4. Open the Xcode project and select **"Product" > "Build" (⌘B)**. Voilà.
 
 > #### A Note on Module Maps
 > Unfortunately, as of their `beta-25` release, Spotify's pre-compiled [iOS SDK][SDK] frameworks have not been built as importable modules (i.e., their `DEFINES_MODULE` build setting was not set), which prevents Swift targets from using them out-of-the-box. However, **SpotifyKit** provides a fix-it by checking for and creating module maps for each framework before each build by running the `modulemaps.sh` script. As explained above, you can run this script yourself if you come across any "missing module" errors while working with the [SDK][SDK]'s frameworks.
