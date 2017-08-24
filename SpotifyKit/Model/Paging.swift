@@ -64,6 +64,31 @@ public struct PagedCollection<Object: Decodable>: JSONDecodable { // TODO: Make 
         case cursors
         case total
     }
+
+    // MARK: - Custom JSON Decoding
+
+    public init(from jsonData: Data) throws {
+        
+        let decoder = JSONDecoder()
+        decoder.dateDecodingStrategy = .iso8601
+
+        // First try decoding a paged collection object as normal:
+        do { self = try decoder.decode(PagedCollection<Object>.self, from: jsonData) }
+        
+        // If we're not finding the keys we're expecting,
+        catch DecodingError.keyNotFound(_, let context) {
+            // then try decoding as a paged collection wrapped in a single key-value pair dictionary,
+            guard let collection = try decoder.decode([String: PagedCollection<Object>].self, from: jsonData).first?.value else {
+                // throwing an error if the dictionary object is empty:
+                throw DecodingError.dataCorruptedError(atCodingPath: context.codingPath, debugDescription: "JSON object is empty.")
+            }
+            
+            self = collection
+        }
+        
+        // Otherwise throwing any other errors encountered:
+        catch { throw error }
+    }
 }
 
 // MARK: - Collection Conformance

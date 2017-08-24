@@ -46,10 +46,10 @@ class ObjectModelTests: XCTestCase {
         let album = initTestObject(of: SKAlbum.self, from: albumData)
         XCTAssertNotNil(album, "object could not be initialized from the given JSON data (see console).")
         XCTAssertEqual(album?.name, "El Camino")
-        // Test computed vars:
+        // Assert computed vars:
         XCTAssertEqual(album?.releaseDate?.description(with: nil), "2011-12-06 00:00:00 +0000")
         XCTAssertEqual(album?.isSimplified, false)
-        // Test paging collection operations:
+        // Assert paging collection operations:
         XCTAssertEqual(album?.tracks?.startIndex, 0)
         XCTAssertEqual(album?.tracks?.endIndex, 11)
         XCTAssertEqual(album?.tracks?[3].name, "Little Black Submarines")
@@ -57,11 +57,18 @@ class ObjectModelTests: XCTestCase {
         XCTAssertEqual(album?.tracks?.index(before: 11), 10)
     }
     
+    func testSeveralAlbums() {
+        let albums = initTestObject(of: [SKAlbum].self, from: albumArrayData)
+        XCTAssertNotNil(albums, "array could not be initialized from the given JSON data (see console).")
+        // Assert array:
+        XCTAssertEqual(albums?.count, 2)
+    }
+    
     func testArtist() {
         let artist = initTestObject(of: SKArtist.self, from: artistData)
         XCTAssertNotNil(artist, "object could not be initialized from the given JSON data (see console).")
         XCTAssertEqual(artist?.name, "Cold War Kids")
-        // Test computed vars:
+        // Assert computed vars:
         XCTAssertEqual(artist?.isSimplified, false)
     }
     
@@ -70,7 +77,7 @@ class ObjectModelTests: XCTestCase {
         XCTAssertNotNil(audioFeatures, "object could not be initialized from the given JSON data (see console).")
         XCTAssertEqual(audioFeatures?.key, .Bb)
         XCTAssertEqual(audioFeatures?.mode, .minor)
-        // Test computed var:
+        // Assert computed var:
         XCTAssertEqual(audioFeatures?.duration, TimeInterval(203.782))
     }
     
@@ -127,11 +134,11 @@ class ObjectModelTests: XCTestCase {
         let track = initTestObject(of: SKTrack.self, from: trackData)
         XCTAssertNotNil(track, "object could not be initialized from the given JSON data (see console).")
         XCTAssertEqual(track?.name, "My Thing")
-        // Test computed vars:
+        // Assert computed vars:
         XCTAssertEqual(track?.duration, TimeInterval(157.666))
         XCTAssertEqual(track?.contentRating, .clean)
         XCTAssertEqual(track?.isSimplified, false)
-        // Test the returned "simplified" album object properties (for code coverage):
+        // Assert the returned "simplified" album object properties (for code coverage):
         XCTAssertEqual(track?.album?.isSimplified, true)
         XCTAssertNil(track?.album?.releaseDate)
     }
