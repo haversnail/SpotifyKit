@@ -22,30 +22,45 @@ public struct SavedItem<Object: UserSavable & Decodable> { // TODO: Make Codable
     ///
     /// Although Spotify confines this object type to only albums and tracks for now, this "saved item" model for Spotify Library content could easily include other media items in the future. This approach provides a more scalable solution that avoids polluting the module's namespace each time a new type becomes savable.
     private let _item: Any // UserSavable & Decodable
-    
-    // MARK: Keys
-    
-    private enum CodingKeys: String, CodingKey {
-        case dateAdded = "added_at"
-        case album
-        case track
-    }
 }
 
 // MARK: - Custom Decoding
 
 extension SavedItem: Decodable {
-    public init(from decoder: Decoder) throws {
-        let values = try decoder.container(keyedBy: CodingKeys.self)
-        dateAdded = try values.decode(Date.self, forKey: .dateAdded)
+    
+    // MARK: Keys
+    
+    fileprivate struct ItemKey: CodingKey {
+        static var dateAdded: ItemKey { return ItemKey(stringValue: "added_at")! } // The compiler won't let us create stored static vars for generic objects. :(
         
-        switch Object.self {
-            case is SKAlbum.Type: _item = try values.decode(SKAlbum.self, forKey: .album)
-            case is SKTrack.Type: _item = try values.decode(SKTrack.self, forKey: .track)
-            default:
-                let context = DecodingError.Context(codingPath: values.codingPath, debugDescription: "Type does not match any possible user-saveable object types.")
-                throw DecodingError.typeMismatch(Object.self, context)
+        var stringValue: String
+        init?(stringValue: String) { self.stringValue = stringValue }
+        
+        var intValue: Int? { return nil }
+        init?(intValue: Int) { return nil }
+    }
+    
+    // MARK: Initializer
+    
+    public init(from decoder: Decoder) throws {
+        let values = try decoder.container(keyedBy: ItemKey.self)
+        
+        assert(values.allKeys.count == 2, "There should be exactly two keys in any Saved Item object!")
+        
+        // Knowing there are only two keys, get the one that isn't "dateAdded":
+        guard let itemKey = values.allKeys.first(where: { $0 != .dateAdded }) else {
+            // and throw an error if we can't:
+            throw DecodingError.dataCorruptedError(atCodingPath: values.codingPath, debugDescription: "No object key could be found in the encoded payload.")
         }
+
+        dateAdded = try values.decode(Date.self, forKey: .dateAdded)
+        _item = try values.decode(Object.self, forKey: itemKey)
+    }
+}
+
+extension SavedItem.ItemKey: Equatable {
+    static func ==(lhs: SavedItem.ItemKey, rhs: SavedItem.ItemKey) -> Bool {
+        return lhs.stringValue == rhs.stringValue && lhs.intValue == rhs.intValue
     }
 }
 
