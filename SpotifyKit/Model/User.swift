@@ -12,6 +12,7 @@ public struct SKUser: JSONDecodable {
     
     // MARK: - Embedded Types
     
+    /// An enum representing the expected `type` value for a user object.
     private enum ObjectType: String, Codable { case user }
     
     /// - SeeAlso: https:/spotify.github.io/ios-sdk/Constants/SPTProduct.html

@@ -12,6 +12,7 @@ public struct SKAlbum: JSONDecodable {
     
     // MARK: - Embedded Types
     
+    /// An enum representing the expected `type` value for an album object.
     private enum ObjectType: String, Codable { case album }
     
     /// - SeeAlso: https://spotify.github.io/ios-sdk/Constants/SPTAlbumType.html

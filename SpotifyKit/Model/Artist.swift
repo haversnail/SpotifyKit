@@ -12,6 +12,7 @@ public struct SKArtist: JSONDecodable {
     
     // MARK: - Embedded Types
     
+    /// An enum representing the expected `type` value for an artist object.
     private enum ObjectType: String, Codable { case artist }
     
     // MARK: - Object Properties (Simplified)

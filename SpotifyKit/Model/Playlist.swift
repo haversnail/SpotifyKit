@@ -12,6 +12,7 @@ public struct SKPlaylist: JSONDecodable { // TODO: Make JSON Codable.
     
     // MARK: - Embedded Types
     
+    /// An enum representing the expected `type` value for a playlist object.
     private enum ObjectType: String, Codable { case playlist }
     
     public struct PlaylistTrack: Decodable { // Rename to PlaylistItem?

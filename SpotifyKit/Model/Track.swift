@@ -12,6 +12,7 @@ public struct SKTrack: JSONDecodable {
     
     // MARK: - Embedded Types
     
+    /// An enum representing the expected `type` value for a track object.
     private enum ObjectType: String, Codable { case track }
     
     public enum ContentRating: Int {

@@ -15,7 +15,7 @@ A complete [Spotify Web API][API] and [iOS SDK][SDK] bundle, tailored for Swift.
 * **SpotifyKit** is a [Spotify Web API][API] [Object Model][OM] wrapper with *value-type semantics* that adheres to the Swift [API Design Guidelines](https://swift.org/documentation/api-design-guidelines/), providing streamlined interoperability between your Swift app and the Spotify catalog.
 
 ##### Compatible with Spotify's [iOS SDK][SDK].
-* In addition to accessing library content, **SpotifyKit** plays nicely with the official [iOS SDK][SDK], providing extensions and convenience methods for using SpotifyKit objects with the Audio Playback and Authentication interface.
+* In addition to accessing catalog content, **SpotifyKit** plays nicely with Spotify's [iOS SDK][SDK], providing extensions and convenience methods for using SpotifyKit objects with the Audio Playback and Authentication interface.
 
 ##### Integrate with ease.
 * **SpotifyKit** also streamlines the inclusion of the [iOS SDK][SDK]'s pre-compiled frameworks in your Swift application: just embed the dependencies into your project, include `SpotifyKit` in your code, and you're good to go. No bridging headers or frustrating [compatibility issues](https://github.com/spotify/ios-sdk/issues/811) to deal with.
@@ -139,12 +139,13 @@ Any notable differences and deviations between **SpotifyKit** and the [Spotify W
     * The *"`type`"* property in action:
 
 ```swift
-public struct SKAlbum: JSONCodable {
+public struct SKAlbum: JSONDecodable {
 
     // An enum representing the expected `type` value for an album object.
     private enum ObjectType: String, Codable { case album }
 
-    private let type: ObjectType
+    // The object's type: "album"
+    private let type: ObjectType // <- decoded value is "album" or else initializer fails.
 
     // ...
 }

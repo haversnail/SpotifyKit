@@ -10,6 +10,7 @@ import Foundation
 
 public struct SKAudioFeatures: JSONDecodable { // TODO: Make JSON Codable?
     
+    /// An enum representing the expected `type` value for an audio features object.
     private enum ObjectType: String, Codable { case audioFeatures = "audio_features" }
     
     public enum PitchClass: Int, Codable {
