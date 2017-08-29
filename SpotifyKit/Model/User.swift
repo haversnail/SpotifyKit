@@ -8,9 +8,11 @@
 
 import Foundation
 
-public struct SKUser: JSONDecodable { // TODO: Make JSON Codable.
+public struct SKUser: JSONDecodable {
     
     // MARK: - Embedded Types
+    
+    private enum ObjectType: String, Codable { case user }
     
     /// - SeeAlso: https:/spotify.github.io/ios-sdk/Constants/SPTProduct.html
     public enum ProductType: String, Codable {
@@ -21,7 +23,7 @@ public struct SKUser: JSONDecodable { // TODO: Make JSON Codable.
         case unknown // TODO: Test for this case.
     }
 
-    // MARK: - Object Properties (Public User)
+    // MARK: - Object Properties (Public)
     
     /// The name displayed on the user's profile. `nil` if not available.
     public let displayName: String?
@@ -46,7 +48,10 @@ public struct SKUser: JSONDecodable { // TODO: Make JSON Codable.
     /// The [Spotify URI](https://developer.spotify.com/web-api/user-guide/#spotify-uris-and-ids) for this user.
     public let uri: String
     
-    // MARK: - Object Properties (Private User)
+    /// The object type: `"user"`.
+    private let type: ObjectType
+    
+    // MARK: - Object Properties (Private)
     
     /// The user's date-of-birth.
     /// - Note: This field is only available when the current user has granted access to the `user-read-birthdate` scope. See [Using Scopes](https://developer.spotify.com/web-api/using-scopes/) for more details.
@@ -78,7 +83,7 @@ public struct SKUser: JSONDecodable { // TODO: Make JSON Codable.
         case id
         case images
         case product
-        //case type
+        case type
         case uri
     }
     

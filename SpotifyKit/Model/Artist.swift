@@ -8,7 +8,11 @@
 
 import Foundation
 
-public struct SKArtist: JSONDecodable { // TODO: Make JSON Codable.
+public struct SKArtist: JSONDecodable {
+    
+    // MARK: - Embedded Types
+    
+    private enum ObjectType: String, Codable { case artist }
     
     // MARK: - Object Properties (Simplified)
     
@@ -26,6 +30,9 @@ public struct SKArtist: JSONDecodable { // TODO: Make JSON Codable.
     
     /// The [Spotify URI](https://developer.spotify.com/web-api/user-guide/#spotify-uris-and-ids) for the album.
     public let uri: String
+    
+    /// The object type: `"artist"`.
+    private let type: ObjectType
     
     // MARK: - Object Properties (Full)
     
@@ -52,7 +59,7 @@ public struct SKArtist: JSONDecodable { // TODO: Make JSON Codable.
         case images
         case name
         case popularity
-        //case type
+        case type
         case uri
     }
 }

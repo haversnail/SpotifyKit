@@ -282,23 +282,29 @@ class RequestTests: XCTestCase {
     func testExpandableExtension() {
         
         // Arrange:
-        let artist = SKArtist(externalURLs: ["Spotify" : URL(string: "https://open.spotify.com/artist/6VDdCwrBM4qQaGxoAyxyJC")!],
-                              url: URL(string: "https://api.spotify.com/v1/artists/6VDdCwrBM4qQaGxoAyxyJC")!,
-                              id: "6VDdCwrBM4qQaGxoAyxyJC",
-                              name: "Cold War Kids",
-                              uri: "spotify:artist:6VDdCwrBM4qQaGxoAyxyJC",
-                              followers: nil,
-                              genres: nil,
-                              images: nil,
-                              popularity: nil)
+        let artistData = """
+        {
+          "external_urls" : {
+            "spotify" : "https://open.spotify.com/artist/6VDdCwrBM4qQaGxoAyxyJC"
+          },
+          "href" : "https://api.spotify.com/v1/artists/6VDdCwrBM4qQaGxoAyxyJC",
+          "id" : "6VDdCwrBM4qQaGxoAyxyJC",
+          "name" : "Cold War Kids",
+          "type" : "artist",
+          "uri" : "spotify:artist:6VDdCwrBM4qQaGxoAyxyJC"
+        }
+        """.data(using: .utf8)!
         
+        let artist = try? SKArtist(from: artistData)
         let promise = expectation(description: "method returned the full object.")
+        
+        XCTAssertNotNil(artist, "object could not be initialized.")
         
         // Set the default SPTAuth object's session:
         SPTAuth.defaultInstance().session = apiSession
         
         // Act:
-        artist.getFullObject { (artist, error) in
+        artist?.getFullObject { (artist, error) in
            
             // Assert:
             XCTAssertNil(error, "\"error\" was not nil.")

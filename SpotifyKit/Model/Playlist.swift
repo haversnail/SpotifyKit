@@ -12,6 +12,8 @@ public struct SKPlaylist: JSONDecodable { // TODO: Make JSON Codable.
     
     // MARK: - Embedded Types
     
+    private enum ObjectType: String, Codable { case playlist }
+    
     public struct PlaylistTrack: Decodable { // Rename to PlaylistItem?
         
         /// The date and time the track was added.
@@ -77,6 +79,9 @@ public struct SKPlaylist: JSONDecodable { // TODO: Make JSON Codable.
     /// The [Spotify URI](https://developer.spotify.com/web-api/user-guide/#spotify-uris-and-ids) for the playlist.
     public let uri: String
     
+    /// The object type: `"playlist"`.
+    private let type: ObjectType
+    
     // MARK: - Object Properties (Full)
     
     /// A collection containing information about the tracks of the playlist.
@@ -103,7 +108,7 @@ public struct SKPlaylist: JSONDecodable { // TODO: Make JSON Codable.
         case isPublic = "public"
         case snapshotID = "snapshot_id"
         case tracks
-        //case type
+        case type
         case uri
     }
 }
@@ -130,6 +135,9 @@ extension SKPlaylist: Decodable {
     public init(from decoder: Decoder) throws {
         let values = try decoder.container(keyedBy: CodingKeys.self)
         
+        // Verify the type of object we're decoding first:
+        type = try values.decode(ObjectType.self, forKey: .type)
+
         isCollaborative = try values.decode(Bool.self, forKey: .isCollaborative)
         externalURLs = try values.decode([String: URL].self, forKey: .externalURLs)
         url = try values.decode(URL.self, forKey: .url)

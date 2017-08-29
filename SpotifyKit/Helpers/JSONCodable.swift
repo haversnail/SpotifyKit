@@ -24,7 +24,7 @@ public protocol JSONDecodable: Decodable {
 }
 
 extension JSONDecodable {
-    public init(from jsonData: Data/*, decoder: JSONDecoder? = nil*/) throws {
+    public init(from jsonData: Data) throws {
         let decoder = JSONDecoder()
         decoder.dateDecodingStrategy = .iso8601
         self = try decoder.decode(Self.self, from: jsonData)
@@ -63,7 +63,7 @@ extension Array: JSONDecodable/* where Element: JSONDecodable */{ // FIXME: Unco
             self = array
         }
         
-        // Otherwise throwing any other errors encountered:
+        // Otherwise, throw any other errors encountered:
         catch { throw error }
     }
 }
@@ -81,8 +81,8 @@ extension DecodingError {
     /// - Parameters:
     ///   - codingPath: The path of `CodingKeys` taken to get to the point of the failing decode call.
     ///   - debugDescription: A description of what went wrong, for debugging purposes.
-    internal static func dataCorruptedError(atCodingPath codingPath: [CodingKey], debugDescription: String) -> DecodingError {
-        return DecodingError.dataCorrupted(Context(codingPath: codingPath, debugDescription: debugDescription))
+    internal static func dataCorruptedError(atCodingPath codingPath: [CodingKey], debugDescription: String, underlyingError: Error? = nil) -> DecodingError {
+        return .dataCorrupted(Context(codingPath: codingPath, debugDescription: debugDescription, underlyingError: underlyingError))
     }
 }
 

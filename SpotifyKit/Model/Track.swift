@@ -8,9 +8,11 @@
 
 import Foundation
 
-public struct SKTrack: JSONDecodable { // TODO: Make JSON Codable.
+public struct SKTrack: JSONDecodable {
     
     // MARK: - Embedded Types
+    
+    private enum ObjectType: String, Codable { case track }
     
     public enum ContentRating: Int {
         case explicit
@@ -29,8 +31,8 @@ public struct SKTrack: JSONDecodable { // TODO: Make JSON Codable.
         /// The [Spotify ID](https://developer.spotify.com/web-api/user-guide/#spotify-uris-and-ids) for the track.
         public let id: String
         
-        // The object type: "track"
-        //public let type: SKTrack.Type
+        /// The object type: `"track"`.
+        private let type: ObjectType
         
         /// The [Spotify URI](https://developer.spotify.com/web-api/user-guide/#spotify-uris-and-ids) for the track.
         public let uri: String
@@ -41,7 +43,7 @@ public struct SKTrack: JSONDecodable { // TODO: Make JSON Codable.
             case externalURLs = "external_urls"
             case url = "href"
             case id
-            //case type
+            case type
             case uri
         }
     }
@@ -106,6 +108,9 @@ public struct SKTrack: JSONDecodable { // TODO: Make JSON Codable.
     /// The [Spotify URI](https://developer.spotify.com/web-api/user-guide/#spotify-uris-and-ids) for the track.
     public let uri: String
     
+    /// The object type: `"track"`.
+    private let type: ObjectType
+    
     // MARK: - Object Properties (Full)
     
     /// The album on which the track appears. The album object includes a link in `url` to full information about the album.
@@ -140,7 +145,7 @@ public struct SKTrack: JSONDecodable { // TODO: Make JSON Codable.
         case popularity
         case previewURL = "preview_url"
         case trackNumber = "track_number"
-        //case type
+        case type
         case uri
     }
 }

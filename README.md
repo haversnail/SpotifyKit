@@ -127,14 +127,22 @@ Any notable differences and deviations between **SpotifyKit** and the [Spotify W
 #### Deletions
 
 * __*Object properties:*__
-    * For many objects, you'll find that the `type` property has been omitted. As an already strongly-typed language, representing these objects as distinct types in Swift renders the `type` property redundant. Thus, the following values will be omitted when decoding **SpotifyKit** objects from their JSON counterparts:
+    * For the **SpotifyKit** types listed below, there is no publicly-available property for the corresponding `type` JSON attribute. Instead, these types implement a private `type` property that uses a single-case enumeration to assert that the attribute's string value exactly matches what's expected for this kind of **SpotifyKit** type.
 
-        * "`album`" ([Simplified][OM-album-simplified] / [Full][OM-album-full])
-        * "`artist`" ([Simplified][OM-artist-simplified] / [Full][OM-artist-full])
-        * "`audio_features`"
-        * "`playlist`" ([Simplified][OM-playlist-simplified] / [Full][OM-playlist-full])
-        * "`track`" ([Simplified][OM-track-simplified] / [Full][OM-track-full] / [Track Link][OM-track-link])
-        * "`user`" ([Public][OM-user-public] / [Private][OM-user-private])
+    ```swift
+    private enum ObjectType: String, Codable { case album }
+
+    private let type: ObjectType   
+    ```
+
+    For example, with types like `SKArtist` and `SKUser`, whose only non-optional properties match those found in other **SpotifyKit** types, one could mistakenly decode an [album object][OM-album-simplified] payload as an `SKArtist` or `SKUser` without ever encountering an error. Including this enumeration mechanism not only ensures that improper use-cases like this throw an appropriate error, but also reduces boilerplate code and eliminates the need to manually define an already-synthesized decodable initializer just to verify the type.
+
+        * `SKAlbum` ([Simplified][OM-album-simplified] / [Full][OM-album-full])
+        * `SKArtist` ([Simplified][OM-artist-simplified] / [Full][OM-artist-full])
+        * `SKAudioFeatures`
+        * `SKPlaylist` ([Simplified][OM-playlist-simplified] / [Full][OM-playlist-full])
+        * `SKTrack` ([Simplified][OM-track-simplified] / [Full][OM-track-full] / [Track Link][OM-track-link])
+        * `SKUser` ([Public][OM-user-public] / [Private][OM-user-private])
 
 ## Roadmap
 

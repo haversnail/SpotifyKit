@@ -8,9 +8,11 @@
 
 import Foundation
 
-public struct SKAlbum: JSONDecodable { // TODO: Make JSON Codable.
+public struct SKAlbum: JSONDecodable {
     
     // MARK: - Embedded Types
+    
+    private enum ObjectType: String, Codable { case album }
     
     /// - SeeAlso: https://spotify.github.io/ios-sdk/Constants/SPTAlbumType.html
     public enum AlbumType: String, Codable {
@@ -73,6 +75,9 @@ public struct SKAlbum: JSONDecodable { // TODO: Make JSON Codable.
     /// The [Spotify URI](https://developer.spotify.com/web-api/user-guide/#spotify-uris-and-ids) for the album.
     public let uri: String
     
+    /// The object type: `"album"`.
+    private let type: ObjectType
+    
     // MARK: - Object Properties (Full)
 
     /// The copyright statements of the album.
@@ -118,7 +123,7 @@ public struct SKAlbum: JSONDecodable { // TODO: Make JSON Codable.
         case releaseDate = "release_date" // _releaseDate
         case releaseDatePrecision = "release_date_precision"
         case tracks
-        //case type
+        case type
         case uri
     }
 }
@@ -129,11 +134,14 @@ extension SKAlbum: Decodable {
     public init(from decoder: Decoder) throws {
         let values = try decoder.container(keyedBy: CodingKeys.self)
         
+        // Verify the type of object we're decoding first:
+        type = try values.decode(ObjectType.self, forKey: .type)
+        
         // Object Properties (Simplified)
         albumType = try values.decode(AlbumType.self, forKey: .albumType)//, toCase: .lowercase)
         artists = try values.decode([SKArtist].self, forKey: .artists)
         availableMarkets = try values.decodeIfPresent([String].self, forKey: .availableMarkets)
-        externalURLs = try values.decode([String: URL].self, forKey: .externalURLs) // FIXME: Change to [String: URL?]
+        externalURLs = try values.decode([String: URL].self, forKey: .externalURLs)
         url = try values.decode(URL.self, forKey: .url)
         id = try values.decode(String.self, forKey: .id)
         images = try values.decode([SKImage].self, forKey: .images)
