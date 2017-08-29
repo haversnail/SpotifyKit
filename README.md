@@ -127,15 +127,7 @@ Any notable differences and deviations between **SpotifyKit** and the [Spotify W
 #### Deletions
 
 * __*Object properties:*__
-    * For the **SpotifyKit** types listed below, there is no publicly-available property for the corresponding `type` JSON attribute. Instead, these types implement a private `type` property that uses a single-case enumeration to assert that the attribute's string value exactly matches what's expected for this kind of **SpotifyKit** type.
-
-    ```swift
-    private enum ObjectType: String, Codable { case album }
-
-    private let type: ObjectType   
-    ```
-
-    For example, with types like `SKArtist` and `SKUser`, whose only non-optional properties match those found in other **SpotifyKit** types, one could mistakenly decode an [album object][OM-album-simplified] payload as an `SKArtist` or `SKUser` without ever encountering an error. Including this enumeration mechanism not only ensures that improper use-cases like this throw an appropriate error, but also reduces boilerplate code and eliminates the need to manually define an already-synthesized decodable initializer just to verify the type.
+    * For the **SpotifyKit** types listed below, there is no public property for the corresponding JSON object's `type` attribute. Instead, these types implement a private `type` property that uses a single-case enumeration to assert that the attribute's value exactly matches what's expected for this kind of **SpotifyKit** type (see code snippet below). For example, with types like `SKArtist` and `SKUser`, whose only non-optional properties match those found in other **SpotifyKit** types, one could mistakenly decode an [album object][OM-album-simplified] payload as an `SKArtist` or `SKUser` without ever encountering an error. Including this enum mechanism not only ensures that cases like this will throw, but also reduces boilerplate code and eliminates the need to manually define an already-synthesized initializer just to verify the type.
 
         * `SKAlbum` ([Simplified][OM-album-simplified] / [Full][OM-album-full])
         * `SKArtist` ([Simplified][OM-artist-simplified] / [Full][OM-artist-full])
@@ -143,6 +135,20 @@ Any notable differences and deviations between **SpotifyKit** and the [Spotify W
         * `SKPlaylist` ([Simplified][OM-playlist-simplified] / [Full][OM-playlist-full])
         * `SKTrack` ([Simplified][OM-track-simplified] / [Full][OM-track-full] / [Track Link][OM-track-link])
         * `SKUser` ([Public][OM-user-public] / [Private][OM-user-private])
+
+    * The *"`type`"* property in action:
+
+```swift
+public struct SKAlbum: JSONCodable {
+
+    // An enum representing the expected `type` value for an album object.
+    private enum ObjectType: String, Codable { case album }
+
+    private let type: ObjectType
+
+    // ...
+}
+```
 
 ## Roadmap
 
@@ -155,7 +161,7 @@ Any notable differences and deviations between **SpotifyKit** and the [Spotify W
 
 ```swift
 extension Array: JSONCodable where Element: JSONCodable {
-    // Conforming Arrays to JSONCodable when its Elements do.
+    // Conforming Arrays to JSONCodable where its Elements are.
 }
 ```
 
@@ -163,7 +169,7 @@ or:
 
 ```swift
 extension PagedCollection: Equatable where Object: Equatable {
-    // Conforming PagedCollection to Equatable when its Objects do.
+    // Conforming PagedCollection to Equatable where its Objects are.
 }
 ```
 
