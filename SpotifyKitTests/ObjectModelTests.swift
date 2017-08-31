@@ -104,7 +104,7 @@ class ObjectModelTests: XCTestCase {
     }
     
     func testPlayHistory() {
-        let recentTracks = initTestObject(of: PagedCollection<SKRecentTrack>.self, from: recentTrackData)
+        let recentTracks = initTestObject(of: PagedCollection<SKPlaybackEvent>.self, from: recentTrackData)
         XCTAssertNotNil(recentTracks, "object could not be initialized from the given JSON data (see console).")
     }
     

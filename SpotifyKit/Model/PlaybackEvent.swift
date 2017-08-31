@@ -1,5 +1,5 @@
 //
-//  PlayedTrack.swift
+//  PlaybackEvent.swift
 //  SpotifyKit
 //
 //  Created by Alexander Havermale on 7/31/17.
@@ -8,8 +8,8 @@
 
 import Foundation
 
-/// A structure representing a recently played track object. See [Play History](https://developer.spotify.com/web-api/object-model/#play-history-object) object for more details.
-public struct SKRecentTrack/* PlayedItem<Object: Decodable> */ { // SKPlayedTrack
+/// A structure representing the recent playback of an audio track. See the [Play History](https://developer.spotify.com/web-api/object-model/#play-history-object) object for more details.
+public struct SKPlaybackEvent {
     
     // MARK: - Embedded Types
     
@@ -61,7 +61,7 @@ public struct SKRecentTrack/* PlayedItem<Object: Decodable> */ { // SKPlayedTrac
 
 // MARK: - Custom Decoding
 
-extension SKRecentTrack: Decodable {
+extension SKPlaybackEvent: Decodable {
     public init(from decoder: Decoder) throws {
         let values = try decoder.container(keyedBy: CodingKeys.self)
         context = try values.decode(PlaybackContext.self, forKey: .context)
