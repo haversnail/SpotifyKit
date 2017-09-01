@@ -447,10 +447,16 @@ public struct SKSearchResults: JSONDecodable {
 
 /// An enumeration representing the types of SpotifyKit objects returned by a search request.
 public enum SKSearchResultType: String, URLEncodable {
-    case album
-    case artist
-    case track
-    case playlist
+    case albums = "album"
+    case artists = "artist"
+    case tracks = "track"
+    case playlists = "playlist"
+}
+
+extension Array where Element == SKSearchResultType {
+
+    /// A convenience property containing all possible search result types: `.album`, `.artist`, `.track`, and `.playlist`.
+    public static let all: [SKSearchResultType] = [.albums, .artists, .tracks, .playlists] // Consider using an OptionSet instead.
 }
 
 /// The fields by which a search request can be filtered.
@@ -480,7 +486,7 @@ extension SKRequest {
     /// Creates an API request for searching the Spotify catalog.
     ///
     /// - Parameters:
-    ///   - types: The types of objects to filter results by. Possible values are `album`, `artist`, `track`, and `playlist`.
+    ///   - types: The types of objects to filter results by. Possible values are `.album`, `.artist`, `.track`, and `.playlist`, and can be provided individually or as an array. The static constant `.all` can also be used to represent an array containing all search result types.
     ///   - keywords: The search term to match results against. Keyword matching is *not* case-sensitive.
     ///   - alternate: An alternate search term used to broaden the search. The default value is an empty string.
     ///   - unwanted: Unwanted keywords to exclude from the search. The default value is an empty string.
@@ -524,19 +530,19 @@ extension SKRequest {
                     query.append(" track:\"\(keywords)\"")
                     
                 case let .genre(keywords):
-                    guard types.contains(.artist) || types.contains(.track) else { break }
+                    guard types.contains(.artists) || types.contains(.tracks) else { break }
                     query.append(" genre:\"\(keywords)\"")
                     
                 case let .tag(tag):
-                    guard types.contains(.album) else { break }
+                    guard types.contains(.albums) else { break }
                     query.append(" tag:\(tag.rawValue)")
                     
                 case let .upc(code):
-                    guard types.contains(.album) else { break }
+                    guard types.contains(.albums) else { break }
                     query.append(" upc:\(code)")
                     
                 case let .isrc(code):
-                    guard types.contains(.track) else { break }
+                    guard types.contains(.tracks) else { break }
                     query.append(" isrc:\(code)") // .trimmingCharacters(in: CharacterSet.alphanumerics.inverted)
                     
                 case let .year(range):
@@ -567,12 +573,12 @@ extension SKRequest {
     /// Creates an API request for searching the Spotify catalog.
     ///
     /// - Parameters:
-    ///   - types: The types of objects to filter results by. Possible values are `album`, `artist`, `track`, and `playlist`.
+    ///   - types: The types of objects to filter results by. Possible values are `.album`, `.artist`, `.track`, and `.playlist`, and can be provided individually or as an array. The static constant `.all` can also be used to represent an array containing all search result types.
     ///   - keywords: The search term to match results against. Keyword matching is *not* case-sensitive.
     ///   - alternate: An alternate search term used to broaden the search. The default value is an empty string.
     ///   - unwanted: Unwanted keywords to exclude from the search. The default value is an empty string.
     ///   - inOrder: When `false`, keywords will be matched in any order; when `true`, the search will maintain exact keyword order. The default value is `false`.
-    ///   - fieldFilters: An optional list of field filters to narrow the search. For available filters, see `SKSearchFieldFilter`.
+    ///   - filters: An optional list of field filters to narrow the search. For available filters, see `SKSearchFieldFilter`.
     ///   - limit: The number of items to limit results by. When no value is provided, the default limit is 20 items.
     ///   - offset: The number of items to offset results by. When no value is provided, the default returns the first set of items.
     ///
@@ -602,12 +608,12 @@ extension SKRequest {
     /// - Note: This request uses the default `SPTAuth` session to authenticate the URL request.
     ///
     /// - Parameters:
-    ///   - types: The types of objects to filter results by. Possible values are `album`, `artist`, `track`, and `playlist`.
+    ///   - types: The types of objects to filter results by. Possible values are `.album`, `.artist`, `.track`, and `.playlist`, and can be provided individually or as an array. The static constant `.all` can also be used to represent an array containing all search result types.
     ///   - keywords: The search term to match results against. Keyword matching is *not* case-sensitive.
     ///   - alternate: An alternate search term used to broaden the search. The default value is an empty string.
     ///   - unwanted: Unwanted keywords to exclude from the search. The default value is an empty string.
     ///   - inOrder: When `false`, keywords will be matched in any order; when `true`, the search will maintain exact keyword order. The default value is `false`.
-    ///   - fieldFilters: An optional list of field filters to narrow the search. For available filters, see `SKSearchFieldFilter`.
+    ///   - filters: An optional list of field filters to narrow the search. For available filters, see `SKSearchFieldFilter`.
     ///   - limit: The number of items to limit results by. When no value is provided, the default limit is 20 items.
     ///   - offset: The number of items to offset results by. When no value is provided, the default returns the first set of items.
     ///   - resultsHandler: The callback handler for this request. The parameters for this handler are:
@@ -639,12 +645,12 @@ extension SKRequest {
     /// - Note: This request uses the default `SPTAuth` session to authenticate the URL request.
     ///
     /// - Parameters:
-    ///   - types: The types of objects to filter results by. Possible values are `album`, `artist`, `track`, and `playlist`.
+    ///   - types: The types of objects to filter results by. Possible values are `.album`, `.artist`, `.track`, and `.playlist`, and can be provided individually or as an array. The static constant `.all` can also be used to represent an array containing all search result types.
     ///   - keywords: The search term to match results against. Keyword matching is *not* case-sensitive.
     ///   - alternate: An alternate search term used to broaden the search. The default value is an empty string.
     ///   - unwanted: Unwanted keywords to exclude from the search. The default value is an empty string.
     ///   - inOrder: When `false`, keywords will be matched in any order; when `true`, the search will maintain exact keyword order. The default value is `false`.
-    ///   - fieldFilters: An optional list of field filters to narrow the search. For available filters, see `SKSearchFieldFilter`.
+    ///   - filters: An optional list of field filters to narrow the search. For available filters, see `SKSearchFieldFilter`.
     ///   - limit: The number of items to limit results by. When no value is provided, the default limit is 20 items.
     ///   - offset: The number of items to offset results by. When no value is provided, the default returns the first set of items.
     ///   - resultsHandler: The callback handler for this request. The parameters for this handler are:

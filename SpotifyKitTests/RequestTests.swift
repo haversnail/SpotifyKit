@@ -17,8 +17,9 @@ class RequestTests: XCTestCase {
         super.setUp()
         // Put setup code here. This method is called before the invocation of each test method in the class.
         // FIXME: Request a new access token if this one is expired.
+        // Note: Be sure to request all scopes when retrieving a new token, as some tests perform API requests that require access to private user data.
         // https://developer.spotify.com/web-api/console/
-        let accessToken = "BQDHM9eEkqUaERZLymyo8uTtXtjlHF1TWlsGTOmQsGMxXgK6KA3OkyfUG6dLbY87LcDRGfQgZXOXOZea1QEoTy2E8gPIxwgzxW9opUiMlL3jZW_GrTvlh-du7lpvG6lBQkTBcgTT73Iw3kagks0tHPTr3yAM2OGLqnJ73lX130brDLXuq_mjmse8ad2k-pkBcmbrLevr0EzYSkWuq1DY9arRk0oZ01m8JfUaKHcU_p7b_roH-hT5USSTouUzYYAirELXw0TMb7mNh_-uB712KUEH"
+        let accessToken = "BQAeWTR9YCvYOhvcC1wOAQcRrEcfR5myIVq14FupNoUs0doLGXMcHchSofJAhZeHXOOTLrP_2ypOCzBON-KqpQaKoyUi6pwf7OSV3YAQVjNaNpXUg_W6b2VmbiaF-mEcHFO3eCBDj0Qjov4jTyCWZifX5PqIJWWNzg"
         
         apiSession = SPTSession(userName: "haversnail",
                                 accessToken: accessToken,
@@ -195,8 +196,13 @@ class RequestTests: XCTestCase {
             .year(DateInterval(start: startDate, end: endDate))
         ]
         
-        let promise = expectation(description: "results were returned by the search.")
-        let request = SKRequest.searchRequest(for: .album, .playlist, matching: "Game of", excluding: "Thrones", inOrder: true, filteredBy: filters, limit: 3)
+        let promise = expectation(description: "the request handlers were called.")
+        promise.expectedFulfillmentCount = 2
+        
+        // Set the default SPTAuth object's session for all requests:
+        SPTAuth.defaultInstance().session = apiSession
+        
+        let request = SKRequest.searchRequest(for: .albums, .playlists, matching: "Game of", excluding: "Thrones", inOrder: true, filteredBy: filters, limit: 3)
         
         guard let query = request.preparedURLRequest.url?.query else {
             XCTFail("no query was found in the prepared URL request.")
@@ -210,35 +216,49 @@ class RequestTests: XCTestCase {
         XCTAssert(query.contains("market=from_token"))
         XCTAssert(query.contains("limit=3"))
         
-        request.apiSession = apiSession
-        
         // Act:
         request.perform { (results: SKSearchResults?, error) in
-            
-            // Assert:
-            XCTAssertNil(error, "\"error\" was not nil.")
-            XCTAssertNotNil(results, "results were nil.")
-            
             promise.fulfill()
             
-            XCTAssertNotNil(results?.albums)
-            XCTAssertNotNil(results?.playlists)
-            XCTAssertNil(results?.artists)
-            XCTAssertNil(results?.tracks)
+            // Assert:
+            guard results != nil, error == nil else {
+                XCTFail("\"results\" is nil. \(error!.localizedDescription)")
+                return
+            }
             
-            guard let albums = results?.albums else { return }
+            XCTAssertNotNil(results!.albums, "results should have contained album objects.")
+            XCTAssertNotNil(results!.playlists, "results should have contained playlist objects.")
+            XCTAssertNil(results!.artists, "results should not have contained artist objects.")
+            XCTAssertNil(results!.tracks, "results should not have contained track objects.")
+            
+            guard let albums = results!.albums else { return }
             
             for album in albums {
                 print(album.name)
-                XCTAssert(album.name.localizedCaseInsensitiveContains("game of"), "one of the albums does not contain the expected keywords.")
-                XCTAssert(!album.name.localizedCaseInsensitiveContains("thrones"), "one of the albums contains unwanted keywords.")
+                XCTAssert(album.name.localizedCaseInsensitiveContains("game of"), "one or more albums does not contain the expected keywords.")
+                XCTAssert(!album.name.localizedCaseInsensitiveContains("thrones"), "one or more albums contains unwanted keywords.")
             }
-            
         }
         
-        let result = XCTWaiter.wait(for: [promise], timeout: 5)
+        // Test `search` method:
+        SKRequest.search(for: .all, matching: "Soundtrack") { (results, error) in
+            promise.fulfill()
+            
+            // Assert:
+            guard results != nil, error == nil else {
+                XCTFail("\"results\" is nil. \(error!.localizedDescription)")
+                return
+            }
+            
+            XCTAssertNotNil(results!.albums, "results should have contained all object types.")
+            XCTAssertNotNil(results!.playlists, "results should have contained all object types.")
+            XCTAssertNotNil(results!.artists, "results should have contained all object types.")
+            XCTAssertNotNil(results!.tracks, "results should have contained all object types.")
+        }
+        
+        let result = XCTWaiter.wait(for: [promise], timeout: 10)
         if result == .timedOut {
-            XCTFail("the request timed out.")
+            XCTFail("the requests timed out.")
         }
     }
     

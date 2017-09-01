@@ -41,7 +41,7 @@ extension SKError: Decodable {
 // MARK: Error Localization
 
 extension SKError: LocalizedError {
-    public var errorDescription: String? { return "Receieved a \(status.rawValue) error: \(message)." }
+    public var errorDescription: String? { return "Received a \(status.rawValue) (\(status)) error: \(message)." }
 }
 
 // MARK: - Authentication Error Object
