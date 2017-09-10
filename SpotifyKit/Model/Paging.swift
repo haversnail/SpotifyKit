@@ -8,12 +8,53 @@
 
 import Foundation
 
+/// A structure representing the parameters for pagingating the elements of a larger collection.
+public struct Page { // Pag(e/ing)/PageIndex/PageIterator/PageParameters/PageOptions/PageConstraints
+    
+    /// The number of items to be contained in the page.
+    public var limit: Int // count/capacity
+    
+    /// The index of the first item to be contained in the page. If `nil` or no value is supplied, then the first item in the page will represent the first item in the overall collection (i.e., the item at index `0`).
+    public var offset: Int? = nil // index
+    
+    
+    /// Creates a set of page parameters based on limit and offset.
+    ///
+    /// - Parameters:
+    ///   - limit: The number of items to be contained in the page.
+    ///   - offset: The index of the first item contained in the page. The default value is `nil`, meaning that the first item in the overall collection will be the first item in the page (i.e., the item at index `0`).
+    public init(limit: Int, offset: Int? = nil) {
+        self.limit = limit
+        self.offset = offset
+    }
+    
+    /// Creates a set of page parameters based on limit and page number.
+    ///
+    /// - Parameters:
+    ///   - limit: The number of items to be contained in the page.
+    ///   - page: The page number of items to contain, based on the number of items in each page. For example, with limit of `20`, page `1` would contain items at indices `0-19`, page `2` would contain items at indices `20-39`, and so on.
+    public init(limit: Int, page: Int) {
+        self.limit = limit
+        self.offset = page > 1 ? limit * (page - 1) : nil
+    }
+    
+//    func advancing(by numberOfPages: Int = 1) -> Page {
+//        return Page(limit: limit, offset: (offset ?? 0) + (limit * numberOfPages))
+//    }
+//
+//    mutating func advance(by numberOfPages: Int = 1) {
+//        offset = (offset ?? 0) + (limit * numberOfPages)
+//    }
+}
+
+
+
+// MARK: - Collection
+
 /// A generic structure representing a paginated container for an array of Spotify objects.
 ///
 /// This collection can either be *offset-based* or *cursor-based* depending on the [type of paging object](https://developer.spotify.com/web-api/object-model/#paging-object) returned by the Spotify Web API.
-public struct PagedCollection<Object: Decodable>: JSONDecodable { // TODO: Make JSON Codable.
-    
-    // MARK: - Embedded Types
+public struct PagedCollection<Object: Decodable>: JSONDecodable {
     
     /// Contains paging cursors used to find the adjacent pages of items.
     public struct Cursors: Decodable {
@@ -24,8 +65,6 @@ public struct PagedCollection<Object: Decodable>: JSONDecodable { // TODO: Make 
         /// The cursor to use as a key to find the next page of items.
         public let after: String?
     }
-    
-    // MARK: - Object Properties
     
     /// The array of objects.
     private let _items: [Object]
@@ -52,8 +91,6 @@ public struct PagedCollection<Object: Decodable>: JSONDecodable { // TODO: Make 
     /// A link to the Web API endpoint returning the full result of the request.
     public let url: URL
     
-    // MARK: Keys
-    
     private enum CodingKeys: String, CodingKey {
         case url = "href"
         case _items = "items"
@@ -64,8 +101,6 @@ public struct PagedCollection<Object: Decodable>: JSONDecodable { // TODO: Make 
         case cursors
         case total
     }
-
-    // MARK: - Custom JSON Decoding
 
     public init(from jsonData: Data) throws {
         
@@ -86,7 +121,7 @@ public struct PagedCollection<Object: Decodable>: JSONDecodable { // TODO: Make 
             self = collection
         }
         
-        // Otherwise throwing any other errors encountered:
+        // Otherwise, throw any other errors encountered:
         catch { throw error }
     }
 }
