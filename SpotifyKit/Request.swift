@@ -487,13 +487,13 @@ extension SKRequest {
     ///
     /// - Parameters:
     ///   - types: The types of objects to filter results by. Possible values are `.album`, `.artist`, `.track`, and `.playlist`, and can be provided individually or as an array. The static constant `.all` can also be used to represent an array containing all search result types.
-    ///   - keywords: The search term to match results against. Keyword matching is *not* case-sensitive.
+    ///   - keywords: The search term against which to match results. **Note**: Keyword matching is *not* case-sensitive.
     ///   - alternate: An alternate search term used to broaden the search. The default value is an empty string.
     ///   - unwanted: Unwanted keywords to exclude from the search. The default value is an empty string.
     ///   - inOrder: When `false`, keywords will be matched in any order; when `true`, the search will maintain exact keyword order. The default value is `false`.
-    ///   - filters: An optional list of field filters to narrow the search. For available filters, see `SKSearchFieldFilter`.
-    ///   - limit: The number of items to limit results by. When no value is provided, the default limit is 20 items.
-    ///   - offset: The number of items to offset results by. When no value is provided, the default returns the first set of items.
+    ///   - filters: An optional list of field filters by which to narrow the search. For available filters, see `SKSearchFieldFilter`. The default value is an empty array.
+    ///   - locale: The locale-specific catalog in which to search. The default value is `Locale.current`, which represents the user's region settings at the time the method is called.
+    ///   - page: A page value containing parameters for pagingating the results. The default value is `nil`, with the default limit returning 20 items per page.
     ///
     /// - Returns: an `SKRequest` object containing the prepared URL request.
     public static func searchRequest(for types: [SKSearchResultType],
@@ -502,8 +502,8 @@ extension SKRequest {
                                      excluding unwanted: String = "",
                                      inOrder: Bool = false,
                                      filteredBy filters: [SKSearchFieldFilter] = [],
-                                     limit: Int? = nil,
-                                     offset: Int? = nil) -> SKRequest {
+                                     in locale: Locale? = Locale.current,
+                                     page: Page? = nil) -> SKRequest {
         
         var query: String = inOrder ? "\"" + keywords.lowercased() + "\"" : keywords.lowercased()
         
@@ -561,61 +561,26 @@ extension SKRequest {
         var parameters = [String: Any]()
         parameters[Constants.QueryParameters.query] = query
         parameters[Constants.QueryParameters.itemType] = types
-        parameters[Constants.QueryParameters.market] = "from_token" // Consider removing constant.
-        parameters[Constants.QueryParameters.limit] = limit
-        parameters[Constants.QueryParameters.offset] = offset
+        parameters[Constants.QueryParameters.market] = locale?.regionCode // TODO: Find a way to include the "from_token" value.
+        parameters[Constants.QueryParameters.limit] = page?.limit
+        parameters[Constants.QueryParameters.offset] = page?.offset
         
-        print(parameters)
-        
-        return SKRequest(method: .GET, endpoint: "/v1/search", parameters: parameters)! // Consider moving endpoint constant.
+        return SKRequest(method: .GET, endpoint: Constants.Endpoints.search, parameters: parameters)!
     }
-    
-    /// Creates an API request for searching the Spotify catalog.
-    ///
-    /// - Parameters:
-    ///   - types: The types of objects to filter results by. Possible values are `.album`, `.artist`, `.track`, and `.playlist`, and can be provided individually or as an array. The static constant `.all` can also be used to represent an array containing all search result types.
-    ///   - keywords: The search term to match results against. Keyword matching is *not* case-sensitive.
-    ///   - alternate: An alternate search term used to broaden the search. The default value is an empty string.
-    ///   - unwanted: Unwanted keywords to exclude from the search. The default value is an empty string.
-    ///   - inOrder: When `false`, keywords will be matched in any order; when `true`, the search will maintain exact keyword order. The default value is `false`.
-    ///   - filters: An optional list of field filters to narrow the search. For available filters, see `SKSearchFieldFilter`.
-    ///   - limit: The number of items to limit results by. When no value is provided, the default limit is 20 items.
-    ///   - offset: The number of items to offset results by. When no value is provided, the default returns the first set of items.
-    ///
-    /// - Returns: an `SKRequest` object containing the prepared URL request.
-    public static func searchRequest(for types: SKSearchResultType...,
-                                     matching keywords: String,
-                                     or alternate: String = "",
-                                     excluding unwanted: String = "",
-                                     inOrder: Bool = false,
-                                     filteredBy filters: [SKSearchFieldFilter] = [],
-                                     limit: Int? = nil,
-                                     offset: Int? = nil) -> SKRequest {
-        
-        return searchRequest(for: types,
-                             matching: keywords,
-                             or: alternate,
-                             excluding: unwanted,
-                             inOrder: inOrder,
-                             filteredBy: filters,
-                             limit: limit,
-                             offset: offset)
-    }
-    
     
     /// Performs a search request to the [Spotify Web API](https://developer.spotify.com/web-api/).
     ///
-    /// - Note: This request uses the default `SPTAuth` session to authenticate the URL request.
+    /// - Note: This method uses the `SPTAuth` default instance session to authenticate the underlying API request. If the session does not contain a valid access token, this request will result in an error.
     ///
     /// - Parameters:
     ///   - types: The types of objects to filter results by. Possible values are `.album`, `.artist`, `.track`, and `.playlist`, and can be provided individually or as an array. The static constant `.all` can also be used to represent an array containing all search result types.
-    ///   - keywords: The search term to match results against. Keyword matching is *not* case-sensitive.
+    ///   - keywords: The search term against which to match results. **Note**: Keyword matching is *not* case-sensitive.
     ///   - alternate: An alternate search term used to broaden the search. The default value is an empty string.
     ///   - unwanted: Unwanted keywords to exclude from the search. The default value is an empty string.
     ///   - inOrder: When `false`, keywords will be matched in any order; when `true`, the search will maintain exact keyword order. The default value is `false`.
-    ///   - filters: An optional list of field filters to narrow the search. For available filters, see `SKSearchFieldFilter`.
-    ///   - limit: The number of items to limit results by. When no value is provided, the default limit is 20 items.
-    ///   - offset: The number of items to offset results by. When no value is provided, the default returns the first set of items.
+    ///   - filters: An optional list of field filters by which to narrow the search. For available filters, see `SKSearchFieldFilter`. The default value is an empty array.
+    ///   - locale: The locale-specific catalog in which to search. The default value is `Locale.current`, which represents the user's region settings at the time the method is called.
+    ///   - page: A page value containing parameters for pagingating the results. The default value is `nil`, with the default limit returning 20 items per page.
     ///   - resultsHandler: The callback handler for this request. The parameters for this handler are:
     ///       - `results`: An `SKSearchResults` object containing paged results for any albums, artists, tracks, or playlists returned by the search.
     ///       - `error`: An error object identifying if and why the request failed, or `nil` if the request was successful.
@@ -625,8 +590,8 @@ extension SKRequest {
                               excluding unwanted: String = "",
                               inOrder: Bool = false,
                               filteredBy filters: [SKSearchFieldFilter] = [],
-                              limit: Int? = nil,
-                              offset: Int? = nil,
+                              in locale: Locale? = Locale.current,
+                              page: Page? = nil,
                               resultsHandler: @escaping SKSearchResultsHandler) {
         
         SKRequest.searchRequest(for: types,
@@ -635,46 +600,9 @@ extension SKRequest {
                                 excluding: unwanted,
                                 inOrder: inOrder,
                                 filteredBy: filters,
-                                limit: limit,
-                                offset: offset)
+                                in: locale,
+                                page: page)
             .perform(handler: resultsHandler)
-    }
-    
-    /// Performs a search request to the [Spotify Web API](https://developer.spotify.com/web-api/).
-    ///
-    /// - Note: This request uses the default `SPTAuth` session to authenticate the URL request.
-    ///
-    /// - Parameters:
-    ///   - types: The types of objects to filter results by. Possible values are `.album`, `.artist`, `.track`, and `.playlist`, and can be provided individually or as an array. The static constant `.all` can also be used to represent an array containing all search result types.
-    ///   - keywords: The search term to match results against. Keyword matching is *not* case-sensitive.
-    ///   - alternate: An alternate search term used to broaden the search. The default value is an empty string.
-    ///   - unwanted: Unwanted keywords to exclude from the search. The default value is an empty string.
-    ///   - inOrder: When `false`, keywords will be matched in any order; when `true`, the search will maintain exact keyword order. The default value is `false`.
-    ///   - filters: An optional list of field filters to narrow the search. For available filters, see `SKSearchFieldFilter`.
-    ///   - limit: The number of items to limit results by. When no value is provided, the default limit is 20 items.
-    ///   - offset: The number of items to offset results by. When no value is provided, the default returns the first set of items.
-    ///   - resultsHandler: The callback handler for this request. The parameters for this handler are:
-    ///       - `results`: An `SKSearchResults` object containing paged results for any albums, artists, tracks, or playlists returned by the search.
-    ///       - `error`: An error object identifying if and why the request failed, or `nil` if the request was successful.
-    public static func search(for types: SKSearchResultType...,
-                              matching keywords: String,
-                              or alternate: String = "",
-                              excluding unwanted: String = "",
-                              inOrder: Bool = false,
-                              filteredBy filters: [SKSearchFieldFilter] = [],
-                              limit: Int? = nil,
-                              offset: Int? = nil,
-                              resultsHandler: @escaping SKSearchResultsHandler) {
-        
-        search(for: types,
-               matching: keywords,
-               or: alternate,
-               excluding: unwanted,
-               inOrder: inOrder,
-               filteredBy: filters,
-               limit: limit,
-               offset: offset,
-               resultsHandler: resultsHandler)
     }
 }
 
