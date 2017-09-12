@@ -36,14 +36,15 @@ public protocol JSONEncodable: Encodable {
     // TODO: Design JSONEncodable.
 }
 
-// MARK: - Array Extensions
+// MARK: - Array Conformance
 
 extension Array: JSONDecodable/* where Element: JSONDecodable */{ // FIXME: Uncomment when conditional conformance is available.
     
     public init(from jsonData: Data) throws {
         
+        self.init() // Initialize self here so we can get type(of: self).
         guard Element.self is JSONDecodable.Type else {
-            preconditionFailure("\([Element].self) does not conform to `JSONDecodable` because \(Element.self) does not conform to `JSONDecodable`")
+            preconditionFailure("\(type(of: self)) does not conform to `JSONDecodable` because \(Element.self) does not conform to `JSONDecodable`")
         }
         
         let decoder = JSONDecoder()
@@ -69,6 +70,27 @@ extension Array: JSONDecodable/* where Element: JSONDecodable */{ // FIXME: Unco
 }
 
 extension Array: JSONEncodable/* where Element: JSONEncodable */{ // FIXME: Uncomment when conditional conformance is available.
+    // TODO: Design JSONEncodable.
+}
+
+// MARK: - Optional Conformance
+
+extension Optional: JSONDecodable/* where Wrapped: JSONDecodable */{ // FIXME: Uncomment when conditional conformance is available.
+    
+    public init(from jsonData: Data) throws {
+        
+        self = .none // Initialize self here so we can get type(of: self).
+        guard Wrapped.self is JSONDecodable.Type else {
+            preconditionFailure("\(type(of: self)) does not conform to `JSONDecodable` because \(Wrapped.self) does not conform to `JSONDecodable`")
+        }
+        
+        let decoder = JSONDecoder()
+        decoder.dateDecodingStrategy = .iso8601
+        self = try decoder.decode(Wrapped?.self, from: jsonData)
+    }
+}
+
+extension Optional: JSONEncodable/* where Wrapped: JSONEncodable */{ // FIXME: Uncomment when conditional conformance is available.
     // TODO: Design JSONEncodable.
 }
 
