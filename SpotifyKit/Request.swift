@@ -683,8 +683,42 @@ extension SKRequest {
 // MARK: - SpotifyAuthentication Extensions
 
 extension SPTSession {
+    
+    /// A convenience factory that creates a [Spotify Web API](https://developer.spotify.com/web-api/) request authenticated by the given session.
+    ///
+    /// - Parameters:
+    ///   - method: The HTTP verb to use for this request: `GET`, `PUT`, `POST`, or `DELETE`.
+    ///   - url: The destination URL for this request.
+    ///   - parameters: The parameters for this request, if any.
+    ///   - requestBody: A tuple value comprised of multipart data and its respective content type, if any.
+    /// - Returns: An authorized `SKRequest` instance, or `nil` if a request cannot be instantiated with the given parameters.
+    public func makeRequest(method: HTTPRequestMethod, url: URL, parameters: [String: Any] = [:], requestBody: (Data, SKRequest.ContentType)? = nil) -> SKRequest? {
+        
+        let request = SKRequest(method: method, url: url, parameters: parameters)
+        request?.apiSession = self
+        request?.requestBody = requestBody
+        return request
+    }
+    
+    /// A convenience factory that creates a [Spotify Web API](https://developer.spotify.com/web-api/) request authenticated by the given session.
+    ///
+    /// - Parameters:
+    ///   - method: The HTTP verb to use for this request: `GET`, `PUT`, `POST`, or `DELETE`.
+    ///   - url: The destination URL for this request.
+    ///   - parameters: The parameters for this request, if any.
+    ///   - requestBody: A tuple value comprised of multipart data and its respective content type, if any.
+    /// - Returns: An authorized `SKRequest` instance, or `nil` if a request cannot be instantiated with the given parameters.
+    public func makeRequest(method: HTTPRequestMethod, endpoint: String, parameters: [String: Any] = [:], requestBody: (Data, SKRequest.ContentType)? = nil) -> SKRequest? {
+        
+        let request = SKRequest(method: method, endpoint: endpoint, parameters: parameters)
+        request?.apiSession = self
+        request?.requestBody = requestBody
+        return request
+    }
 
-    /// A convenience method that performs an authorized request to the [Spotify Web API](https://developer.spotify.com/web-api/).
+    /// A convenience method that performs an authorized request to the [Spotify Web API](https://developer.spotify.com/web-api/) using the given session.
+    ///
+    /// If a request cannot be instantiated with the given parameters, this method will do nothing, and the provided callback handler will not be executed.
     ///
     /// - Parameters:
     ///     - method: The HTTP verb to use for this request: `GET`, `PUT`, `POST`, or `DELETE`.
@@ -694,15 +728,14 @@ extension SPTSession {
     ///     - handler: The callback handler for this request. The parameters for this handler are:
     ///         - `data`: The data (typically an encoded JSON object) returned by the request, if any.
     ///         - `error`: An error object identifying if and why the request failed, or `nil` if the request was successful.
-    public func performRequest(_ method: HTTPRequestMethod, url: URL, parameters: [String: Any] = [:], requestBody: (Data, SKRequest.ContentType)? = nil, handler: @escaping SKRequestHandler) {
+    public func performRequest(method: HTTPRequestMethod, url: URL, parameters: [String: Any] = [:], requestBody: (Data, SKRequest.ContentType)? = nil, handler: @escaping SKRequestHandler) {
         
-        let request = SKRequest(method: method, url: url, parameters: parameters)
-        request?.apiSession = self
-        request?.requestBody = requestBody
-        request?.perform(handler: handler)
+        makeRequest(method: method, url: url, parameters: parameters, requestBody: requestBody)?.perform(handler: handler)
     }
 
-    /// A convenience method that performs an authorized request to the [Spotify Web API](https://developer.spotify.com/web-api/).
+    /// A convenience method that performs an authorized request to the [Spotify Web API](https://developer.spotify.com/web-api/) using the given session.
+    ///
+    /// If a request cannot be instantiated with the given parameters, this method will do nothing, and the provided callback handler will not be executed.
     ///
     /// - Parameters:
     ///     - method: The HTTP verb to use for this request: `GET`, `PUT`, `POST`, or `DELETE`.
@@ -712,12 +745,9 @@ extension SPTSession {
     ///     - handler: The callback handler for this request. The parameters for this handler are:
     ///         - `data`: The data (typically an encoded JSON object) returned by the request, if any.
     ///         - `error`: An error object identifying if and why the request failed, or `nil` if the request was successful.
-    public func performRequest(_ method: HTTPRequestMethod, endpoint: String, parameters: [String: Any] = [:], requestBody: (Data, SKRequest.ContentType)? = nil, handler: @escaping SKRequestHandler) {
+    public func performRequest(method: HTTPRequestMethod, endpoint: String, parameters: [String: Any] = [:], requestBody: (Data, SKRequest.ContentType)? = nil, handler: @escaping SKRequestHandler) {
         
-        let request = SKRequest(method: method, endpoint: endpoint, parameters: parameters)
-        request?.apiSession = self
-        request?.requestBody = requestBody
-        request?.perform(handler: handler)
+        makeRequest(method: method, endpoint: endpoint, parameters: parameters, requestBody: requestBody)?.perform(handler: handler)
     }
 }
 
@@ -734,20 +764,28 @@ public protocol Expandable {
     /// A boolean value indicating whether this instance represents a "simplified" version of the "full" Spotify object (i.e., all values unique to the full object are `nil`).
     var isSimplified: Bool { get }
     
-    /// Performs a request for the detailed version of the given object.
+    /// Performs a request for the detailed "full" version of the given object.
     ///
-    /// - Note: This request uses the default `SPTAuth` session to authenticate the URL request.
+    /// If the given object already contains the requested properties, this method will do nothing, and the provided callback handler will not be executed.
+    ///
+    /// - Note: This method uses the `SPTAuth` default instance session to authenticate the underlying API request. If the session does not contain a valid access token, this request will result in an error.
     ///
     /// - Parameter handler: The callback handler for this request, providing the detailed object if successful, and an error object identifying if and why the request or decoding failed if unsuccessful.
     func getFullObject(handler: @escaping (Self?, Error?) -> Void)
 }
 
 extension Expandable where Self: JSONDecodable {
+    
+    /// Creates and returns the request used to retrieve the full version of the given object.
+    ///
+    /// - Returns: The `SKRequest` object, for testing purposes.
+    internal func makeFullObjectRequest() -> SKRequest {
+        return SKRequest(method: .GET, url: url)!
+    }
+    
     public func getFullObject(handler: @escaping (Self?, Error?) -> Void) {
-        
         guard isSimplified else { return }
+        makeFullObjectRequest().perform(handler: handler)
         
-        let request = SKRequest(method: .GET, url: url)
-        request?.perform(handler: handler)
     }
 }
