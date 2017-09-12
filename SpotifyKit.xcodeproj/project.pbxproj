@@ -26,7 +26,6 @@
 		113C5F6F1F26C73F005D1DC6 /* Playlist.swift in Sources */ = {isa = PBXBuildFile; fileRef = 113C5F6E1F26C73F005D1DC6 /* Playlist.swift */; };
 		113C5F731F26CB37005D1DC6 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 113C5F721F26CB37005D1DC6 /* User.swift */; };
 		113D08421F208BEC00BECB27 /* SpotifyKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 113D08381F208BEC00BECB27 /* SpotifyKit.framework */; };
-		113D08471F208BEC00BECB27 /* SpotifyKitTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 113D08461F208BEC00BECB27 /* SpotifyKitTests.swift */; };
 		113D08491F208BEC00BECB27 /* SpotifyKit.h in Headers */ = {isa = PBXBuildFile; fileRef = 113D083B1F208BEC00BECB27 /* SpotifyKit.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		116EE39A1F3FCA0B006F9520 /* URLEncodable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 116EE3991F3FCA0B006F9520 /* URLEncodable.swift */; };
 		117BCC091F49503F00B1584F /* Devices.swift in Sources */ = {isa = PBXBuildFile; fileRef = 117BCC081F49503F00B1584F /* Devices.swift */; };
@@ -83,7 +82,6 @@
 		113D083B1F208BEC00BECB27 /* SpotifyKit.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SpotifyKit.h; sourceTree = "<group>"; };
 		113D083C1F208BEC00BECB27 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		113D08411F208BEC00BECB27 /* SpotifyKitTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SpotifyKitTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		113D08461F208BEC00BECB27 /* SpotifyKitTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpotifyKitTests.swift; sourceTree = "<group>"; };
 		113D08481F208BEC00BECB27 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		113D08531F208C4700BECB27 /* .gitignore */ = {isa = PBXFileReference; explicitFileType = text.script; path = .gitignore; sourceTree = "<group>"; };
 		113D08541F208C4700BECB27 /* Cartfile */ = {isa = PBXFileReference; explicitFileType = text.script; path = Cartfile; sourceTree = "<group>"; };
@@ -197,7 +195,6 @@
 				1122F9B01F248BB700A9AD89 /* ModelStubs */,
 				119DC3D91F239DDB003DB3BD /* ObjectModelTests.swift */,
 				117FF2BF1F3C1033007073D7 /* RequestTests.swift */,
-				113D08461F208BEC00BECB27 /* SpotifyKitTests.swift */,
 				113D08481F208BEC00BECB27 /* Info.plist */,
 			);
 			path = SpotifyKitTests;
@@ -394,7 +391,6 @@
 				11EC8A041F2DE7AE0066A5F0 /* Recommendations.swift in Sources */,
 				119DC3DA1F239DDB003DB3BD /* ObjectModelTests.swift in Sources */,
 				1122F9B81F24929800A9AD89 /* Track.swift in Sources */,
-				113D08471F208BEC00BECB27 /* SpotifyKitTests.swift in Sources */,
 				11353BF71F2EDD4A00F9924E /* RecentTracks.swift in Sources */,
 				11EC89FA1F2C56850066A5F0 /* SavedAlbums.swift in Sources */,
 				11EC8A001F2D8D740066A5F0 /* Errors.swift in Sources */,
