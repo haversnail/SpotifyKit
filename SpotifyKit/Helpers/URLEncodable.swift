@@ -72,7 +72,7 @@ extension Substring: URLEncodable {}
 
 extension URLEncodable where Self: FixedWidthInteger { // DoubleWidth/Int/Int*/UInt/UInt*
     internal func urlEncodedString(using encoder: URLEncoder) -> String {
-        return String(self)
+        return "\(self)" //String(self)
     }
 }
 
