@@ -8,17 +8,13 @@
 
 import Foundation
 
-extension ObjectModelTests {
-    var deviceData: Data {
-        return """
-        {
-          "id" : "baead9ee141d51cda197d9b3d8c978fb19e698aa",
-          "is_active" : false,
-          "is_restricted" : false,
-          "name" : "Alexander’s MacBook Air",
-          "type" : "Computer",
-          "volume_percent" : 100
-        }
-        """.data(using: .utf8)!
-    }
+let deviceData = """
+{
+  "id" : "baead9ee141d51cda197d9b3d8c978fb19e698aa",
+  "is_active" : false,
+  "is_restricted" : false,
+  "name" : "Alexander’s MacBook Air",
+  "type" : "Computer",
+  "volume_percent" : 100
 }
+""".data(using: .utf8)!

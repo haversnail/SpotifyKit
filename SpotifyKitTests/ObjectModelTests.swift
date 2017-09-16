@@ -21,131 +21,155 @@ class ObjectModelTests: XCTestCase {
         super.tearDown()
     }
     
-    func initTestObject<T: JSONDecodable>(of type: T.Type, from jsonData: Data) -> T? {
+    func initTestObject<T: JSONDecodable>(of type: T.Type, from jsonData: Data, file: StaticString = #file, line: UInt = #line) -> T? {
         do {
             return try type.init(from: jsonData)
         } catch DecodingError.dataCorrupted(let context) {
-            print(context.debugDescription, context.codingPath)
+            XCTFail("\(context.debugDescription) \nCoding Path: \(context.codingPath.debugDescription)", file: file, line: line)
             return nil
-        } catch DecodingError.keyNotFound(let key, let context) {
-            print(context.debugDescription, "A matching JSON key couldn't be found for the \"\(key)\" coding key.")
+        } catch DecodingError.keyNotFound(_, let context) {
+            XCTFail("\(context.debugDescription) \nCoding Path: \(context.codingPath.debugDescription)", file: file, line: line)
             return nil
         } catch DecodingError.typeMismatch(_, let context) {
-            print(context.debugDescription, context.codingPath)
+            XCTFail("\(context.debugDescription) \nCoding Path: \(context.codingPath.debugDescription)", file: file, line: line)
             return nil
         } catch DecodingError.valueNotFound(_, let context) {
-            print(context.debugDescription, context.codingPath)
+            XCTFail("\(context.debugDescription) \nCoding Path: \(context.codingPath.debugDescription)", file: file, line: line)
             return nil
         } catch {
-            print("Untyped error:", error)
+            XCTFail("object could not be initialized from the given JSON data. \(error.localizedDescription)", file: file, line: line)
             return nil
         }
     }
     
     func testAlbum() {
-        let album = initTestObject(of: SKAlbum.self, from: albumData)
-        XCTAssertNotNil(album, "object could not be initialized from the given JSON data (see console).")
-        XCTAssertEqual(album?.name, "El Camino")
+        guard let album = initTestObject(of: SKAlbum.self, from: albumData) else { return }
+        XCTAssertEqual(album.name, "El Camino")
         // Assert computed vars:
-        XCTAssertEqual(album?.releaseDate?.description(with: nil), "2011-12-06 00:00:00 +0000")
-        XCTAssertEqual(album?.isSimplified, false)
+        XCTAssertEqual(album.releaseDate?.description(with: nil), "2011-12-06 00:00:00 +0000")
+        XCTAssertEqual(album.isSimplified, false)
         // Assert paging collection operations:
-        XCTAssertEqual(album?.tracks?.startIndex, 0)
-        XCTAssertEqual(album?.tracks?.endIndex, 11)
-        XCTAssertEqual(album?.tracks?[3].name, "Little Black Submarines")
-        XCTAssertEqual(album?.tracks?.index(after: 1), 2)
-        XCTAssertEqual(album?.tracks?.index(before: 11), 10)
+        XCTAssertEqual(album.tracks?.startIndex, 0)
+        XCTAssertEqual(album.tracks?.endIndex, 11)
+        XCTAssertEqual(album.tracks?[3].name, "Little Black Submarines")
+        XCTAssertEqual(album.tracks?.index(after: 1), 2)
+        XCTAssertEqual(album.tracks?.index(before: 11), 10)
     }
     
     func testSeveralAlbums() {
-        let albums = initTestObject(of: [SKAlbum].self, from: albumArrayData)
+        guard let albums = initTestObject(of: [SKAlbum].self, from: albumArrayData) else { return }
         XCTAssertNotNil(albums, "array could not be initialized from the given JSON data (see console).")
         // Assert array:
-        XCTAssertEqual(albums?.count, 2)
+        XCTAssertEqual(albums.count, 2)
     }
     
     func testArtist() {
-        let artist = initTestObject(of: SKArtist.self, from: artistData)
-        XCTAssertNotNil(artist, "object could not be initialized from the given JSON data (see console).")
-        XCTAssertEqual(artist?.name, "Cold War Kids")
+        guard let artist = initTestObject(of: SKArtist.self, from: artistData) else { return }
+        XCTAssertEqual(artist.name, "Cold War Kids")
         // Assert computed vars:
-        XCTAssertEqual(artist?.isSimplified, false)
+        XCTAssertEqual(artist.isSimplified, false)
     }
     
     func testAudioFeatures() {
-        let audioFeatures = initTestObject(of: SKAudioFeatures.self, from: audioFeaturesData)
-        XCTAssertNotNil(audioFeatures, "object could not be initialized from the given JSON data (see console).")
-        XCTAssertEqual(audioFeatures?.key, .Bb)
-        XCTAssertEqual(audioFeatures?.mode, .minor)
+        guard let audioFeatures = initTestObject(of: SKAudioFeatures.self, from: audioFeaturesData) else { return }
+        XCTAssertEqual(audioFeatures.key, .Bb)
+        XCTAssertEqual(audioFeatures.mode, .minor)
         // Assert computed var:
-        XCTAssertEqual(audioFeatures?.duration, TimeInterval(203.782))
+        XCTAssertEqual(audioFeatures.duration, TimeInterval(203.782))
     }
     
     func testCategory() {
-        let category = initTestObject(of: SKCategory.self, from: categoryData)
-        XCTAssertNotNil(category, "object could not be initialized from the given JSON data (see console).")
+        guard let category = initTestObject(of: SKCategory.self, from: categoryData) else { return }
+        XCTAssertEqual(category.name, "Indie")
     }
     
     func testDevice() {
-        let device = initTestObject(of: SKDevice.self, from: deviceData)
-        XCTAssertNotNil(device, "object could not be initialized from the given JSON data (see console).")
+        guard let device = initTestObject(of: SKDevice.self, from: deviceData) else { return }
+        XCTAssertEqual(device.type, .computer)
     }
     
     func testError() {
-        let error = initTestObject(of: SKError.self, from: errorData)
-        XCTAssertNotNil(error, "object could not be initialized from the given JSON data (see console).")
-        XCTAssertEqual(error?.localizedDescription, "Receieved a 401 error: The access token expired.")
+        guard let error = initTestObject(of: SKError.self, from: errorData) else { return }
+        XCTAssertEqual(error.localizedDescription, "Received a 401 (unauthorized) error: The access token expired.")
     }
     
     func testAuthError() {
-        let error = initTestObject(of: SKAuthenticationError.self, from: authenticationErrorData)
-        XCTAssertNotNil(error, "object could not be initialized from the given JSON data (see console).")
-        XCTAssertEqual(error?.localizedDescription, "Received a \"invalid_client\" error: Invalid client secret.")
+        guard let error = initTestObject(of: SKAuthenticationError.self, from: authenticationErrorData) else { return }
+        XCTAssertEqual(error.localizedDescription, "Received a \"invalid_client\" error: Invalid client secret.")
     }
     
     func testPlayHistory() {
-        let recentTracks = initTestObject(of: PagedCollection<SKPlaybackEvent>.self, from: recentTrackData)
-        XCTAssertNotNil(recentTracks, "object could not be initialized from the given JSON data (see console).")
+        guard let recentTracks = initTestObject(of: PagedCollection<SKPlaybackEvent>.self, from: recentTrackData) else { return }
+        XCTAssertEqual(recentTracks[0].context.type, .playlist)
     }
     
     func testPlaylist() {
-        let playlist = initTestObject(of: SKPlaylist.self, from: playlistData)
-        XCTAssertNotNil(playlist, "object could not be initialized from the given JSON data (see console).")
+        guard let playlist = initTestObject(of: SKPlaylist.self, from: playlistData) else { return }
+        XCTAssertEqual(playlist.name, "Turn Up")
     }
-    
+
     func testRecommendations() {
-        let recommendations = initTestObject(of: SKRecommendations.self, from: recommendationsData)
-        XCTAssertNotNil(recommendations, "object could not be initialized from the given JSON data (see console).")
+        guard let recommendations = initTestObject(of: SKRecommendations.self, from: recommendationsData) else { return }
+        XCTAssertEqual(recommendations.seeds[0].type, .artist)
     }
     
     func testSavedAlbums() {
-        let savedAlbums = initTestObject(of: PagedCollection<SavedItem<SKAlbum>>.self, from: savedAlbumData)
-        XCTAssertNotNil(savedAlbums, "object could not be initialized from the given JSON data (see console).")
-        XCTAssertEqual(savedAlbums?[0].album.name, "Hold My Home")
+        guard let savedAlbums = initTestObject(of: PagedCollection<SavedItem<SKAlbum>>.self, from: savedAlbumData) else { return }
+        XCTAssertEqual(savedAlbums[0].album.name, "Hold My Home")
     }
     
     func testSavedTracks() {
-        let savedTracks = initTestObject(of: PagedCollection<SavedItem<SKTrack>>.self, from: savedTrackData)
-        XCTAssertNotNil(savedTracks, "object could not be initialized from the given JSON data (see console).")
-        XCTAssertEqual(savedTracks?[10].track.name, "Counting Stars")
+        guard let savedTracks = initTestObject(of: PagedCollection<SavedItem<SKTrack>>.self, from: savedTrackData) else { return }
+        XCTAssertEqual(savedTracks[10].track.name, "Counting Stars")
     }
 
     func testTrack() {
-        let track = initTestObject(of: SKTrack.self, from: trackData)
-        XCTAssertNotNil(track, "object could not be initialized from the given JSON data (see console).")
-        XCTAssertEqual(track?.name, "My Thing")
+        guard let track = initTestObject(of: SKTrack.self, from: trackData) else { return }
+        XCTAssertEqual(track.name, "My Thing")
         // Assert computed vars:
-        XCTAssertEqual(track?.duration, TimeInterval(157.666))
-        XCTAssertEqual(track?.contentRating, .clean)
-        XCTAssertEqual(track?.isSimplified, false)
+        XCTAssertEqual(track.duration, TimeInterval(157.666))
+        XCTAssertEqual(track.contentRating, .clean)
+        XCTAssertEqual(track.isSimplified, false)
         // Assert the returned "simplified" album object properties (for code coverage):
-        XCTAssertEqual(track?.album?.isSimplified, true)
-        XCTAssertNil(track?.album?.releaseDate)
+        XCTAssertEqual(track.album?.isSimplified, true)
+        XCTAssertNil(track.album?.releaseDate)
     }
     
     func testUser() {
-        let user = initTestObject(of: SKUser.self, from: userData)
-        XCTAssertNotNil(user, "object could not be initialized from the given JSON data (see console).")
+        guard let user = initTestObject(of: SKUser.self, from: userData) else { return }
+        XCTAssertEqual(user.id, "haversnail")
     }
 
+    func testPayloadMismatch() {
+        do {
+            let _ = try SKUser(from: albumData) // Try creating a user from album data.
+            XCTFail("'SKUser' type was able to instantiate itself from the wrong payload.")
+        } catch DecodingError.dataCorrupted(let context) {
+            XCTAssertEqual(context.codingPath[0].stringValue, "type") // Should encounter the wrong 'type' value.
+        } catch {
+            XCTFail("enountered an unexpected error. \(error.localizedDescription)")
+        }
+    }
+}
+
+extension Array where Element == CodingKey {
+    fileprivate var debugDescription: String {
+        get {
+            var path = ""
+            if self.isEmpty { return path }
+            
+            for (index, key) in self.enumerated() {
+                if key.intValue != nil {                    // If there's an int value for this particular key,
+                    path.append(key.stringValue)            // then append the string value as-is; it represents an index-based key.
+                } else {                                    // if there is no int value,
+                    path.append("\"\(key.stringValue)\"")   // then add quotes to show that it represents a string-based key.
+                }
+                
+                if index < endIndex - 1 {                   // As long as we're not on the last key,
+                    path.append(" ~> ")                     // add some pretty-printed pointing.
+                }
+            }
+            return path
+        }
+    }
 }

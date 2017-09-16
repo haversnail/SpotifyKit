@@ -8,24 +8,18 @@
 
 import Foundation
 
-extension ObjectModelTests {
-    var errorData: Data {
-        return """
-        {
-          "error": {
-            "status": 401,
-            "message": "The access token expired"
-          }
-        }
-        """.data(using: .utf8)!
-    }
-    
-    var authenticationErrorData: Data {
-        return """
-        {
-            "error": "invalid_client",
-            "error_description": "Invalid client secret"
-        }
-        """.data(using: .utf8)!
-    }
+let errorData = """
+{
+  "error": {
+    "status": 401,
+    "message": "The access token expired"
+  }
 }
+""".data(using: .utf8)!
+    
+let authenticationErrorData = """
+{
+    "error": "invalid_client",
+    "error_description": "Invalid client secret"
+}
+""".data(using: .utf8)!
