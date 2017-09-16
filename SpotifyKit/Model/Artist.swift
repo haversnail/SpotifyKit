@@ -172,7 +172,7 @@ extension SKArtist {
     ///
     /// - Parameter locale: The `Locale` object used to specify the "`country`" query parameter.
     /// - Returns: The `SKRequest` object, for testing purposes.
-    internal func makeTopTracksRequest(in locale: Locale?) -> SKRequest {
+    internal func makeTopTracksRequest(locale: Locale?) -> SKRequest {
         
         var parameters = [String: Any]()
         parameters[Constants.QueryParameters.country] = locale?.regionCode
@@ -190,7 +190,7 @@ extension SKArtist {
     ///     - `tracks`: An array returned by the request of up to 10 top tracks, if available.
     ///     - `error`: An error object identifying if and why the request failed, or `nil` if the request was successful.
     public func getTopTracks(in locale: Locale? = Locale.current, handler: @escaping ([SKTrack]?, Error?) -> Void) {
-        makeTopTracksRequest(in: locale).perform(handler: handler)
+        makeTopTracksRequest(locale: locale).perform(handler: handler)
     }
     
     // MARK: Get an Artist's Related Artists

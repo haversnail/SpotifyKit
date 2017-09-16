@@ -129,7 +129,7 @@ extension RawRepresentable where RawValue == String, Self: Decodable {
                           Self(rawValue: decoded.uppercased()) ??
                           Self(rawValue: decoded.capitalized)
         else {
-            throw DecodingError.dataCorrupted(DecodingError.Context(codingPath: decoder.codingPath, debugDescription: "Cannot initialize \(Self.self) from invalid \(RawValue.self) value \"\(decoded)\" or any case-sensitive variant"))
+            throw DecodingError.dataCorrupted(DecodingError.Context(codingPath: decoder.codingPath, debugDescription: "Cannot initialize \(Self.self) from invalid \(RawValue.self) value \"\(decoded)\" or any case-sensitive variant."))
         }
         
         self = value
