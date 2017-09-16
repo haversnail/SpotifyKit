@@ -1,5 +1,5 @@
 //
-//  ObjectModelTests.swift
+//  ModelTests.swift
 //  SpotifyKitTests
 //
 //  Created by Alexander Havermale on 7/22/17.
@@ -9,7 +9,7 @@
 import XCTest
 @testable import SpotifyKit
 
-class ObjectModelTests: XCTestCase {
+class ModelTests: XCTestCase {
     
     override func setUp() {
         super.setUp()
