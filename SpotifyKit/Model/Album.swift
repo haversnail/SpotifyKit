@@ -103,7 +103,7 @@ public struct SKAlbum: JSONDecodable {
     public let releaseDatePrecision: DatePrecision?
     
     /// The tracks of the album.
-    public let tracks: PagedCollection<SKTrack>?
+    public let tracks: Page<SKTrack>?
     
     // MARK: - Keys
     
@@ -156,7 +156,7 @@ extension SKAlbum: Decodable {
         label = try values.decodeIfPresent(String.self, forKey: .label)
         popularity = try values.decodeIfPresent(Int.self, forKey: .popularity)
         releaseDatePrecision = try values.decodeIfPresent(DatePrecision.self, forKey: .releaseDatePrecision)
-        tracks = try values.decodeIfPresent(PagedCollection<SKTrack>.self, forKey: .tracks)
+        tracks = try values.decodeIfPresent(Page<SKTrack>.self, forKey: .tracks)
 
         // Release Date
         guard let dateString = try values.decodeIfPresent(String.self, forKey: .releaseDate) else {

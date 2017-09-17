@@ -99,7 +99,7 @@ class ModelTests: XCTestCase {
     }
     
     func testPlayHistory() {
-        guard let recentTracks = initTestObject(of: PagedCollection<SKPlaybackEvent>.self, from: recentTrackData) else { return }
+        guard let recentTracks = initTestObject(of: Page<SKPlaybackEvent>.self, from: recentTrackData) else { return }
         XCTAssertEqual(recentTracks[0].context.type, .playlist)
     }
     
@@ -114,12 +114,12 @@ class ModelTests: XCTestCase {
     }
     
     func testSavedAlbums() {
-        guard let savedAlbums = initTestObject(of: PagedCollection<SavedItem<SKAlbum>>.self, from: savedAlbumData) else { return }
+        guard let savedAlbums = initTestObject(of: Page<SavedItem<SKAlbum>>.self, from: savedAlbumData) else { return }
         XCTAssertEqual(savedAlbums[0].album.name, "Hold My Home")
     }
     
     func testSavedTracks() {
-        guard let savedTracks = initTestObject(of: PagedCollection<SavedItem<SKTrack>>.self, from: savedTrackData) else { return }
+        guard let savedTracks = initTestObject(of: Page<SavedItem<SKTrack>>.self, from: savedTrackData) else { return }
         XCTAssertEqual(savedTracks[10].track.name, "Counting Stars")
     }
 

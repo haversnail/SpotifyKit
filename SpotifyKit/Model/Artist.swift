@@ -140,7 +140,7 @@ extension SKArtist {
     ///   - locale: The `Locale` object used to specify the "`market`" query parameter.
     ///   - page: The tuple value containing values for the "`limit`" and "`offset`" query parameters.
     /// - Returns: The `SKRequest` object, for testing purposes.
-    internal func makeAlbumsRequest(types: [SKAlbum.AlbumType]?, locale: Locale?, page: Page?) -> SKRequest {
+    internal func makeAlbumsRequest(types: [SKAlbum.AlbumType]?, locale: Locale?, page: PageParameters?) -> SKRequest {
         
         var parameters = [String: Any]()
         parameters[Constants.QueryParameters.albumType] = types
@@ -162,7 +162,7 @@ extension SKArtist {
     ///   - handler: The callback handler for the underlying request. The parameters for this handler are:
     ///     - `albums`: A paginated collection of simplified albums, if available.
     ///     - `error`: An error object identifying if and why the request failed, or `nil` if the request was successful.
-    public func getAlbums(filteredBy types: [SKAlbum.AlbumType]? = nil, in locale: Locale? = Locale.current, page: Page? = nil, handler: @escaping (PagedCollection<SKAlbum>?, Error?) -> Void) {
+    public func getAlbums(filteredBy types: [SKAlbum.AlbumType]? = nil, in locale: Locale? = Locale.current, page: PageParameters? = nil, handler: @escaping (Page<SKAlbum>?, Error?) -> Void) {
         makeAlbumsRequest(types: types, locale: locale, page: page).perform(handler: handler)
     }
     

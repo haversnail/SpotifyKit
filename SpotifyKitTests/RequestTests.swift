@@ -219,7 +219,7 @@ class RequestTests: XCTestCase {
         promise.expectedFulfillmentCount = 2
         defer { wait(for: promise, timeout: 10) }
         
-        let request = SKRequest.searchRequest(for: [.albums, .playlists], matching: "Game of", excluding: "Thrones", inOrder: true, filteredBy: filters, in: Locale(identifier: "en_US"), page: Page(limit: 3))
+        let request = SKRequest.searchRequest(for: [.albums, .playlists], matching: "Game of", excluding: "Thrones", inOrder: true, filteredBy: filters, in: Locale(identifier: "en_US"), page: PageParameters(limit: 3))
         
         // Assert request:
         assertRequest(request, contains: "q=%22game+of%22+NOT+thrones+year:2010-2017", "type=album,playlist", "market=US", "limit=3")
@@ -457,7 +457,7 @@ class RequestTests: XCTestCase {
         // Arrange:
         let artist = try! SKArtist(from: artistData)
         let locale = Locale(identifier: "en_US")
-        let page = Page(limit: 3, page: 2)
+        let page = PageParameters(limit: 3, page: 2)
         let request = artist.makeAlbumsRequest(types: [.album, .single], locale: locale, page: page)
         let promise = makeRequestExpectation()
         defer { wait(for: promise) }

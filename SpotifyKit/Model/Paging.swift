@@ -9,7 +9,7 @@
 import Foundation
 
 /// A structure representing the parameters for pagingating the elements of a larger collection.
-public struct Page { // Pag(e/ing)/PageIndex/PageIterator/PageParameters/PageOptions/PageConstraints
+public struct PageParameters { // Pag(e/ing)/PageIndex/PageIterator/PageParameters/PageOptions/PageConstraints
     
     /// The number of items to be contained in the page.
     public var limit: Int // count/capacity
@@ -38,8 +38,8 @@ public struct Page { // Pag(e/ing)/PageIndex/PageIterator/PageParameters/PageOpt
         self.offset = page > 1 ? limit * (page - 1) : nil
     }
     
-//    func advancing(by numberOfPages: Int = 1) -> Page {
-//        return Page(limit: limit, offset: (offset ?? 0) + (limit * numberOfPages))
+//    func advancing(by numberOfPages: Int = 1) -> PageParameters {
+//        return PageParameters(limit: limit, offset: (offset ?? 0) + (limit * numberOfPages))
 //    }
 //
 //    mutating func advance(by numberOfPages: Int = 1) {
@@ -51,10 +51,10 @@ public struct Page { // Pag(e/ing)/PageIndex/PageIterator/PageParameters/PageOpt
 
 // MARK: - Collection
 
-/// A generic structure representing a paginated container for an array of Spotify objects.
+/// A generic collection used to paginate results from a [Spotify Web API](https://developer.spotify.com/web-api/) request.
 ///
-/// This collection can either be *offset-based* or *cursor-based* depending on the [type of paging object](https://developer.spotify.com/web-api/object-model/#paging-object) returned by the Spotify Web API.
-public struct PagedCollection<Object: Decodable>: JSONDecodable {
+/// This collection can either be *offset-based* or *cursor-based* depending on the [type of paging object](https://developer.spotify.com/web-api/object-model/#paging-object) returned by the API.
+public struct Page<Element: Decodable>: JSONDecodable {
     
     /// Contains paging cursors used to find the adjacent pages of items.
     public struct Cursors: Decodable {
@@ -67,7 +67,7 @@ public struct PagedCollection<Object: Decodable>: JSONDecodable {
     }
     
     /// The array of objects.
-    private let _items: [Object]
+    private let _items: [Element]
     
     /// The maximum number of items in the response (as set in the query or by default).
     public let limit: Int
@@ -108,12 +108,12 @@ public struct PagedCollection<Object: Decodable>: JSONDecodable {
         decoder.dateDecodingStrategy = .iso8601
 
         // First try decoding a paged collection object as normal:
-        do { self = try decoder.decode(PagedCollection<Object>.self, from: jsonData) }
+        do { self = try decoder.decode(Page<Element>.self, from: jsonData) }
         
         // If we're not finding the keys we're expecting,
         catch DecodingError.keyNotFound(_, let context) {
             // then try decoding as a paged collection wrapped in a single key-value pair dictionary,
-            guard let collection = try decoder.decode([String: PagedCollection<Object>].self, from: jsonData).first?.value else {
+            guard let collection = try decoder.decode([String: Page<Element>].self, from: jsonData).first?.value else {
                 // throwing an error if the dictionary object is empty:
                 throw DecodingError.dataCorruptedError(atCodingPath: context.codingPath, debugDescription: "JSON object is empty.")
             }
@@ -128,9 +128,9 @@ public struct PagedCollection<Object: Decodable>: JSONDecodable {
 
 // MARK: - Collection Conformance
 
-extension PagedCollection: Collection { // Forwards Collection logic to the PagedCollection structure for convenience.
+extension Page: Collection { // Forwards Collection logic to the Page structure for convenience.
     
-    public typealias Index = Array<Object>.Index
+    public typealias Index = Array<Element>.Index
 
     public var startIndex: Index {
         return _items.startIndex
@@ -140,7 +140,7 @@ extension PagedCollection: Collection { // Forwards Collection logic to the Page
         return _items.endIndex
     }
     
-    public subscript(position: Index) -> Object {
+    public subscript(position: Index) -> Element {
         return _items[position]
     }
     
@@ -149,11 +149,11 @@ extension PagedCollection: Collection { // Forwards Collection logic to the Page
     }
 }
 
-extension PagedCollection: BidirectionalCollection { // Extends support for backward as well as forward index traversal.
+extension Page: BidirectionalCollection { // Extends support for backward as well as forward index traversal.
     
     public func index(before i: Index) -> Index {
         return _items.index(before: i)
     }
 }
 
-extension PagedCollection: RandomAccessCollection {} // Guarantees O(1) efficiency for operations requiring index distance measurement.
+extension Page: RandomAccessCollection {} // Guarantees O(1) efficiency for operations requiring index distance measurement.

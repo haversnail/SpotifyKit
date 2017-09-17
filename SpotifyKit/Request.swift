@@ -413,10 +413,10 @@ public typealias SKSearchResultsHandler = (_ results: SKSearchResults?, _ error:
 
 /// An object containing paged results for any albums, artists, tracks, or playlists returned by a search request.
 public struct SKSearchResults: JSONDecodable {
-    public let albums: PagedCollection<SKAlbum>?
-    public let artists: PagedCollection<SKArtist>?
-    public let tracks: PagedCollection<SKTrack>?
-    public let playlists: PagedCollection<SKPlaylist>?
+    public let albums: Page<SKAlbum>?
+    public let artists: Page<SKArtist>?
+    public let tracks: Page<SKTrack>?
+    public let playlists: Page<SKPlaylist>?
 }
 
 /// An enumeration representing the types of SpotifyKit objects returned by a search request.
@@ -477,7 +477,7 @@ extension SKRequest {
                                      inOrder: Bool = false,
                                      filteredBy filters: [SKSearchFieldFilter] = [],
                                      in locale: Locale? = Locale.current,
-                                     page: Page? = nil) -> SKRequest {
+                                     page: PageParameters? = nil) -> SKRequest {
         
         var query: String = inOrder ? "\"" + keywords.lowercased() + "\"" : keywords.lowercased()
         
@@ -565,7 +565,7 @@ extension SKRequest {
                               inOrder: Bool = false,
                               filteredBy filters: [SKSearchFieldFilter] = [],
                               in locale: Locale? = Locale.current,
-                              page: Page? = nil,
+                              page: PageParameters? = nil,
                               resultsHandler: @escaping SKSearchResultsHandler) {
         
         SKRequest.searchRequest(for: types,

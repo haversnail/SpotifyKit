@@ -86,7 +86,7 @@ public struct SKPlaylist: JSONDecodable { // TODO: Make JSON Codable.
     // MARK: - Object Properties (Full)
     
     /// A collection containing information about the tracks of the playlist.
-    public let tracks: PagedCollection<PlaylistTrack>?
+    public let tracks: Page<PlaylistTrack>?
     
     /// The playlist description. Only returned for modified, verified playlists, otherwise `nil`.
     public let userDescription: String?
@@ -153,7 +153,7 @@ extension SKPlaylist: Decodable {
         followers = try values.decodeIfPresent(SKFollowers.self, forKey: .followers)
         
         // Handle both simplified and full "tracks" objects:
-        tracks = try? values.decode(PagedCollection<PlaylistTrack>.self, forKey: .tracks)
+        tracks = try? values.decode(Page<PlaylistTrack>.self, forKey: .tracks)
         tracksURL = try tracks?.url ?? values.decode(SimplifiedTracks.self, forKey: .tracks).url
         totalTracks = try tracks?.total ?? values.decode(SimplifiedTracks.self, forKey: .tracks).total
     }

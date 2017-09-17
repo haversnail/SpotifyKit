@@ -91,9 +91,9 @@ Any notable differences and deviations between **SpotifyKit** and the [Spotify W
 ### Modifications
 
 * _**Object types:**_
-    * **[Paging object][OM-paging]** → "`PagedCollection`," a generic structure that's strongly typed with the kind of objects it contains, containing properties for both [offset-based][OM-paging] and [cursor-based][OM-cursor-paging] paging.
+    * **[Paging object][OM-paging]** → "`Page`," a generic structure that's strongly typed with the kind of objects it contains, containing properties for both [offset-based][OM-paging] and [cursor-based][OM-cursor-paging] paging.
 
-        * `PagedCollection` also conforms to the Swift Standard Library’s `Collection` protocol, forwarding all the functionality of the underlying collection of items to the paging structure itself.
+        * `Page` also conforms to the Swift Standard Library’s `Collection` protocol, forwarding all the functionality of the underlying collection of items to the paging structure itself.
 
     * **[Saved Track][OM-saved-track]/[Saved Album][OM-saved-album] objects** → "`SavedItem`," a generic structure that's strongly typed with the kind of saved item it contains. Compatible types like Albums and Tracks conform to the `UserSavable` protocol, which ensures that the compiler will warn you ahead-of-time if you provide a media type that Spotify hasn’t (yet) made savable by the user.
     
@@ -177,8 +177,8 @@ extension Array: JSONCodable where Element: JSONCodable {
 or:
 
 ```swift
-extension PagedCollection: Equatable where Object: Equatable {
-    // Conforming PagedCollection to Equatable where its Objects are.
+extension Page: Equatable where Element: Equatable {
+    // Conforming Page to Equatable where its Elements are.
 }
 ```
 
