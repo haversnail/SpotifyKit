@@ -57,7 +57,7 @@ public struct SKTrack: JSONDecodable {
     /// A list of the countries in which the track can be played, identified by their [ISO 3166-1 alpha-2](http://en.wikipedia.org/wiki/ISO_3166-1_alpha-2) code.
     ///
     /// This property may be `nil` if the API request already specified a specific market from which to retrieve the track.
-    public let availableMarkets: [String]? // String will only always hold two characters. TODO: Change to a more performant data type.
+    public let availableMarkets: [String]?
     
     /// The disc number (usually `1` unless the album consists of more than one disc).
     public let discNumber: Int
@@ -163,6 +163,6 @@ extension SKTrack: Expandable {
     }
 }
 
-// MARK: - User Savable Extension
+// MARK: - User Savable Conformance
 
 extension SKTrack: UserSavable {}

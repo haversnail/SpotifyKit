@@ -8,14 +8,14 @@
 
 import Foundation
 
-public struct SKPlaylist: JSONDecodable { // TODO: Make JSON Codable.
+public struct SKPlaylist: JSONDecodable {
     
     // MARK: - Embedded Types
     
     /// An enum representing the expected `type` value for a playlist object.
     private enum ObjectType: String, Codable { case playlist }
     
-    public struct PlaylistTrack: Decodable { // Rename to PlaylistItem?
+    public struct PlaylistTrack: Decodable {
         
         /// The date and time the track was added.
         /// - Note: Some very old playlists may return `nil` in this field.

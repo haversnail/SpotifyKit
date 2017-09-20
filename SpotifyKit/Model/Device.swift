@@ -8,7 +8,7 @@
 
 import Foundation
 
-public struct SKDevice: JSONDecodable { // TODO: Make JSON Codable.
+public struct SKDevice: JSONDecodable {
     
     // MARK: - Embedded Types
     
@@ -17,6 +17,17 @@ public struct SKDevice: JSONDecodable { // TODO: Make JSON Codable.
         case mobile = "Smartphone"
         case speaker = "Speaker"
         case tv = "CastVideo"
+        case unknown
+        
+        public init(rawValue: String) {
+            switch rawValue {
+                case "Computer":    self = .computer
+                case "Smartphone":  self = .mobile
+                case "Speaker":     self = .speaker
+                case "CastVideo":   self = .tv
+                default: self = .unknown
+            }
+        }
     }
     
     // MARK: - Object Properties

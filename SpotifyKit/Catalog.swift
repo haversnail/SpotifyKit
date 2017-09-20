@@ -11,21 +11,20 @@ import Foundation
 /// A structure used to make requests to the [Spotify Web API](https://developer.spotify.com/web-api/) catalog for top-level items, such as albums, artists, tracks, playlists, and others.
 ///
 /// - Note: All request-performing methods (e.g., "`getAlbum`" or "`search`") use the `SPTAuth` default instance session to authenticate the underlying request. If this session does not contain a valid access token, the request will result in an error. If you want to customize the request by injecting your own custom URL/API session or by decoding the response yourself, you can do so using any of the accompanying factory methods (e.g., "`makeAlbumRequest`" or "`makeSearchRequest`") to create and return the `SKRequest` instance itself.
-public struct SKCatalog { // SKStorefront / SKRequestFactory // TODO: Struct or class?
+public struct SKCatalog {
     
-    //public static var local = SKCatalog(locale: Locale.current) // How does this work, balancing a singleton and a computed var like `Locale.current`?
-    public static var local: SKCatalog { return SKCatalog(locale: Locale.current) } // Locale.autoupdatingCurrent
+    public static var local: SKCatalog { return SKCatalog(locale: Locale.current) } // var current // Locale.autoupdatingCurrent
     
     /// The locale representing the specific storefront/market from which to request catalog content.
     ///
-    /// All requests that require a "`market`," "`country`," or "`locale`" parameter will refer to the region and language codes provided by this property. If set to `nil`, requests will return results...   The default value is `Locale.current`, which represents the user's region settings at the time the method is called.
+    /// All requests that include a "`market`," "`country`," or "`locale`" parameter will refer to the region and language codes provided by this property. If set to `nil`, many requests will return results for all available markets.
     ///
-    /// - Important: Requests that require a locale-specific parameter may result in an error if no locale is set, and will be marked as such.
-    public var locale: Locale? // var current // var storefront // = Locale.current // = nil
+    /// - Important: Some requests are are required to specify a locale or country code, and will result in an error if no locale is set before performing the request. This requirement will be annotated by all requests to which this applies.
+    public var locale: Locale? // var storefront // = Locale.current // = nil
     
     /// Creates a new, reusable catalog instance with the specified storefront.
     ///
-    /// - Parameter locale: The storefront from which to request catalog content.
+    /// - Parameter locale: The storefront/market from which to request catalog content.
     public init(locale: Locale?/* = Locale.current*/) {
         self.locale = locale
     }
@@ -437,7 +436,7 @@ extension SKArtist {
     ///
     /// - Parameters:
     ///   - types: The types of albums by which to filter results. If no types are specified (i.e., parameter is set to an empty array), all album types will be returned. See `SKAlbum.AlbumType` for possible values.
-    ///   - locale: The locale-specific market/storefront from which to request. **Note:** If set to `nil`, results will be returned for all markets and will likely contain duplicate results, one for each market in which the album is available.
+    ///   - locale: The locale-specific storefront/market from which to request. **Note:** If set to `nil`, results will be returned for all markets and will likely contain duplicate results, one for each market in which the album is available.
     ///   - page: The parameters for paginating the results, specifying the index and number of items to return. If no parameters are supplied, the request will return the default number of items beginning with first item.
     /// - Returns: An `SKRequest` instance with which to perform the API request.
     public func makeAlbumsRequest(types: [SKAlbum.AlbumType], locale: Locale?, page: PageParameters?) -> SKRequest {
@@ -456,7 +455,7 @@ extension SKArtist {
     ///
     /// - Parameters:
     ///   - types: The types of albums by which to filter results. If no types are specified, all album types will be returned. See `SKAlbum.AlbumType` for possible values. The default value is an empty array.
-    ///   - locale: The locale-specific market/storefront from which to request. The default value is `Locale.current`, which represents the user's region settings at the time the method is called. **Note:** If set to `nil`, results will be returned for all markets and will likely contain duplicate results, one for each market in which the album is available.
+    ///   - locale: The locale-specific storefront/market from which to request. The default value is `Locale.current`, which represents the user's region settings at the time the method is called. **Note:** If set to `nil`, results will be returned for all markets and will likely contain duplicate results, one for each market in which the album is available.
     ///   - page: The parameters for paginating the results, specifying the index and number of items to return. If no parameters are supplied, the request will return the default number of items beginning with first item. The default value is `nil`.
     ///   - handler: The callback handler for the request. The parameters for this handler are:
     ///     - `albums`: A paginated collection of simplified albums, if available.
@@ -469,7 +468,7 @@ extension SKArtist {
     
     /// Creates and returns the request used to get the current artist's top tracks.
     ///
-    /// - Parameter locale: The locale-specific market/storefront from which to request. **Note:** The locale must contain a valid region code.
+    /// - Parameter locale: The locale-specific storefront/market from which to request. **Note:** The locale must contain a valid region code.
     /// - Returns: An `SKRequest` instance with which to perform the API request.
     public func makeTopTracksRequest(locale: Locale) -> SKRequest {
         
@@ -523,7 +522,7 @@ extension SKCategory {
     /// Creates and returns the request used to get playlists for the current category.
     ///
     /// - Parameters:
-    ///   - locale: The locale-specific market/storefront from which to request.
+    ///   - locale: The locale-specific storefront/market from which to request.
     ///   - page: The parameters for paginating the results, specifying the index and number of items to return. If no parameters are supplied, the request will return the default number of items beginning with first item.
     /// - Returns: An `SKRequest` instance with which to perform the API request.
     public func makePlaylistsRequest(locale: Locale?, page: PageParameters?) -> SKRequest {
@@ -540,7 +539,7 @@ extension SKCategory {
     /// - Note: This method uses the `SPTAuth` default instance session to authenticate the underlying request. If this session does not contain a valid access token, the request will result in an error.
     ///
     /// - Parameters:
-    ///   - locale: The locale-specific market/storefront from which to request. The default value is `Locale.current`, which represents the user's region settings at the time the method is called.
+    ///   - locale: The locale-specific storefront/market from which to request. The default value is `Locale.current`, which represents the user's region settings at the time the method is called.
     ///   - page: The parameters for paginating the results, specifying the index and number of items to return. If no parameters are supplied, the request will return the default number of items beginning with first item. The default value is `nil`.
     ///   - handler: The callback handler for the request. The parameters for this handler are:
     ///     - `playlists`: A paginated collection of simplified playlists, if available.

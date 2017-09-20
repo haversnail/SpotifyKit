@@ -60,7 +60,7 @@ public struct SKUser: JSONDecodable {
     
     /// The country of the user, as set in the user's account profile. This value returns an [ISO 3166-1 alpha-2 country code](http://en.wikipedia.org/wiki/ISO_3166-1_alpha-2).
     /// - Note: This field is only available when the current user has granted access to the `user-read-private` scope. See [Using Scopes](https://developer.spotify.com/web-api/using-scopes/) for more details.
-    public let country: String?  // String will only always hold two characters. TODO: Change to a more performant data type.
+    public let country: String?
     
     /// The user's email address, as entered by the user when creating their account.
     /// - Important: This email address is unverified; there is no proof that it actually belongs to the user.

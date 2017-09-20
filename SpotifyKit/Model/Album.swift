@@ -56,7 +56,7 @@ public struct SKAlbum: JSONDecodable {
     /// The markets in which the album is available: [ISO 3166-1 alpha-2 country codes](http://en.wikipedia.org/wiki/ISO_3166-1_alpha-2). Note that an album is considered available in a market when at least 1 of its tracks is available in that market.
     ///
     /// This property may be `nil` if the API request already specified a specific market from which to retrieve the album.
-    public let availableMarkets: [String]? // String will only always hold two characters. TODO: Change to a more performant data type.
+    public let availableMarkets: [String]?
     
     /// Known external URLs for this album. See ["external URL object"](https://developer.spotify.com/web-api/object-model/#external-url-object) for more details.
     public let externalURLs: [String: URL]

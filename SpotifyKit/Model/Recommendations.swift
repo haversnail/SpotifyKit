@@ -10,7 +10,7 @@ import Foundation
 
 // MARK: Recommendations Object
 
-public struct SKRecommendations: JSONDecodable { // TODO: Make JSON Codable.
+public struct SKRecommendations: JSONDecodable {
     
     /// An array of recommendation seed objects.
     public let seeds: [SKSeed]
@@ -21,7 +21,7 @@ public struct SKRecommendations: JSONDecodable { // TODO: Make JSON Codable.
 
 // MARK: - Recommendations Seed Object
 
-public struct SKSeed: JSONDecodable { // TODO: Make JSON Codable.
+public struct SKSeed: JSONDecodable {
     
     public enum SeedType: String, Codable {
         case artist

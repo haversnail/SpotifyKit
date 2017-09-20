@@ -12,7 +12,7 @@ import Foundation
 public protocol UserSavable {}
 
 /// A generic structure representing a Spotify media item that has been saved to the user's library.
-public struct SavedItem<Object: UserSavable & Decodable> { // TODO: Make Codable.
+public struct SavedItem<Object: UserSavable & Decodable> {
     
     /// The date and time the item was saved.
     public let dateAdded: Date
@@ -31,13 +31,20 @@ extension SavedItem: Decodable {
     // MARK: Keys
     
     fileprivate struct ItemKey: CodingKey {
+        public var stringValue: String
+        public var intValue: Int?
+        
+        public init?(stringValue: String) {
+            self.stringValue = stringValue
+            self.intValue = nil
+        }
+        
+        public init?(intValue: Int) {
+            self.stringValue = "\(intValue)"
+            self.intValue = intValue
+        }
+        
         static var dateAdded: ItemKey { return ItemKey(stringValue: "added_at")! } // The compiler won't let us create stored static vars for generic objects. :(
-        
-        var stringValue: String
-        init?(stringValue: String) { self.stringValue = stringValue }
-        
-        var intValue: Int? { return nil }
-        init?(intValue: Int) { return nil }
     }
     
     // MARK: Initializer

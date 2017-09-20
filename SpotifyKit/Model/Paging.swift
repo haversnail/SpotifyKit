@@ -11,13 +11,13 @@ import Foundation
 /// A structure representing the parameters for pagingating the elements of a larger collection.
 ///
 /// If no parameters are supplied, requests will return 20 items by default, beginning with the first item.
-public struct PageParameters { // Pag(e/ing)/PageIndex/PageIterator/PageParameters/PageOptions/PageConstraints
+public struct PageParameters {
     
     /// The number of items to be contained in the page.
-    public var limit: Int // count/capacity
+    public var limit: Int
     
     /// The index of the first item to be contained in the page. If `nil` or no value is supplied, then the first item in the page will represent the first item in the overall collection (i.e., the item at index `0`).
-    public var offset: Int? = nil // index
+    public var offset: Int? = nil
     
     
     /// Creates a set of page parameters based on limit and offset.
@@ -39,14 +39,6 @@ public struct PageParameters { // Pag(e/ing)/PageIndex/PageIterator/PageParamete
         self.limit = limit
         self.offset = page > 1 ? limit * (page - 1) : nil
     }
-    
-//    func advancing(by numberOfPages: Int = 1) -> PageParameters {
-//        return PageParameters(limit: limit, offset: (offset ?? 0) + (limit * numberOfPages))
-//    }
-//
-//    mutating func advance(by numberOfPages: Int = 1) {
-//        offset = (offset ?? 0) + (limit * numberOfPages)
-//    }
 }
 
 

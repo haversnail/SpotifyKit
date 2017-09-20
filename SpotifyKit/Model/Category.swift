@@ -8,7 +8,7 @@
 
 import Foundation
 
-public struct SKCategory: JSONDecodable { // TODO: Make JSON Codable.
+public struct SKCategory: JSONDecodable {
 
     /// A link to the Web API endpoint returning full details of the category.
     public let url: URL
