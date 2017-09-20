@@ -186,7 +186,11 @@ public class SKRequest { // Inheriting from NSObject causes buildtime error: cla
     ///
     /// Set this property if you wish to provide a custom URL session object with which to perform the underlying network request. The default value is a URL session instance with the [default configuration](apple-reference-documentation://hs7s_hgSaq).
     /// - Important: The session will be invalidated upon deinitialization of this `SKRequest` instance (except if this session references the [shared singleton URLSession](apple-reference-documentation://hswpyQK_SL)).
-    public var urlSession: URLSession = URLSession(configuration: .`default`) // or `URLSession.shared`?
+    public lazy var urlSession: URLSession = URLSession(configuration: .default) // or `URLSession.shared`?
+//    public lazy var urlSession: URLSession = {
+//        let configuration = URLSessionConfiguration.default
+//        return URLSession(configuration: configuration)
+//    }()
 
     /// The authenticated Spotify API session used to authorize the request.
     ///
