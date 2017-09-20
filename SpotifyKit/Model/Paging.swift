@@ -9,6 +9,8 @@
 import Foundation
 
 /// A structure representing the parameters for pagingating the elements of a larger collection.
+///
+/// If no parameters are supplied, requests will return 20 items by default, beginning with the first item.
 public struct PageParameters { // Pag(e/ing)/PageIndex/PageIterator/PageParameters/PageOptions/PageConstraints
     
     /// The number of items to be contained in the page.
@@ -21,7 +23,7 @@ public struct PageParameters { // Pag(e/ing)/PageIndex/PageIterator/PageParamete
     /// Creates a set of page parameters based on limit and offset.
     ///
     /// - Parameters:
-    ///   - limit: The number of items to be contained in the page.
+    ///   - limit: The number of items to be contained in the page. The maximum value for any given request is 50 items.
     ///   - offset: The index of the first item contained in the page. The default value is `nil`, meaning that the first item in the overall collection will be the first item in the page (i.e., the item at index `0`).
     public init(limit: Int, offset: Int? = nil) {
         self.limit = limit
@@ -31,8 +33,8 @@ public struct PageParameters { // Pag(e/ing)/PageIndex/PageIterator/PageParamete
     /// Creates a set of page parameters based on limit and page number.
     ///
     /// - Parameters:
-    ///   - limit: The number of items to be contained in the page.
-    ///   - page: The page number of items to contain, based on the number of items in each page. For example, with limit of `20`, page `1` would contain items at indices `0-19`, page `2` would contain items at indices `20-39`, and so on.
+    ///   - limit: The number of items to be contained in the page. The maximum value for any given request is 50 items.
+    ///   - page: The page "number," based on the number of items in each page. For example, with limit of `20`, page `1` would contain items at indices `0-19`, page `2` would contain items at indices `20-39`, and so on.
     public init(limit: Int, page: Int) {
         self.limit = limit
         self.offset = page > 1 ? limit * (page - 1) : nil

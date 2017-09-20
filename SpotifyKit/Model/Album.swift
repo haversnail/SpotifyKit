@@ -191,77 +191,10 @@ extension SKAlbum: Expandable {
     }
 }
 
-// MARK: - User Savable Extension
+// MARK: - User Savable Conformance
 
 extension SKAlbum: UserSavable {}
 
-// MARK: - Requests
+// MARK: - URL Encodable Conformance
 
 extension SKAlbum.AlbumType: URLEncodable {}
-
-extension SKAlbum {
-    
-    // TODO: Consider providing request to user
-    // so that they may customize its parameters and call when desired.
-    
-    // MARK: Get an Album
-    
-    /// Creates and returns the request used to get an album.
-    ///
-    /// - Parameters:
-    ///   - id: The Spotify ID for the album, used in the endpoint path.
-    ///   - locale: The `Locale` object used to specify the "`market`" query parameter.
-    /// - Returns: The `SKRequest` object, for testing purposes.
-    internal static func makeAlbumRequest(id: String, locale: Locale?) -> SKRequest {
-        
-        var parameters = [String: Any]()
-        parameters[Constants.QueryParameters.market] = locale?.regionCode
-        
-        return SKRequest(method: .GET, endpoint: Constants.Endpoints.album(id: id), parameters: parameters)! // TODO: Provide internal sanity check instead of implicitly unwrapping?
-    }
-    
-    /// Get Spotify catalog information for a single album.
-    ///
-    /// - Note: This method uses the `SPTAuth` default instance session to authenticate the underlying API request. If the session does not contain a valid access token, this request will result in an error.
-    ///
-    /// - Parameters:
-    ///   - id: The [Spotify ID](https://developer.spotify.com/web-api/user-guide/#spotify-uris-and-ids) for the album.
-    ///   - locale: The locale-specific catalog from which to request. The default value is `Locale.current`, which represents the user's region settings at the time the method is called.
-    ///   - handler: The callback handler for the underlying request. The parameters for this handler are:
-    ///     - `album`: The requested full album object, if available.
-    ///     - `error`: An error object identifying if and why the request failed, or `nil` if the request was successful.
-    public static func getAlbum(withID id: String, in locale: Locale? = Locale.current, handler: @escaping (SKAlbum?, Error?) -> Void) {
-        makeAlbumRequest(id: id, locale: locale).perform(handler: handler)
-    }
-    
-    // MARK: Get Several Albums
-    
-    /// Creates and returns the request used to get several albums.
-    ///
-    /// - Parameters:
-    ///   - ids: The Spotify IDs for the albums, used in the URL query.
-    ///   - locale: The `Locale` object used to specify the "`market`" query parameter.
-    /// - Returns: The `SKRequest` object, for testing purposes.
-    internal static func makeAlbumsRequest(ids: [String], locale: Locale?) -> SKRequest {
-        
-        var parameters = [String: Any]()
-        parameters[Constants.QueryParameters.ids] = ids
-        parameters[Constants.QueryParameters.market] = locale?.regionCode
-        
-        return SKRequest(method: .GET, endpoint: Constants.Endpoints.albums, parameters: parameters)!
-    }
-    
-    /// Get Spotify catalog information for multiple albums identified by their Spotify IDs.
-    ///
-    /// - Note: This method uses the `SPTAuth` default instance session to authenticate the underlying API request. If the session does not contain a valid access token, this request will result in an error.
-    ///
-    /// - Parameters:
-    ///   - ids: A list of the [Spotify IDs](https://developer.spotify.com/web-api/user-guide/#spotify-uris-and-ids) for the albums. Maximum: 20 IDs.
-    ///   - locale: The locale-specific catalog from which to request. The default value is `Locale.current`, which represents the user's region settings at the time the method is called.
-    ///   - handler: The callback handler for the underlying request. The parameters for this handler are:
-    ///     - `albums`: The list of requested full album objects. If a particular album cannot be found for a given ID, the resulting array will contain a `nil` value at the corresponding index.
-    ///     - `error`: An error object identifying if and why the request failed, or `nil` if the request was successful.
-    public static func getAlbums(withIDs ids: [String], in locale: Locale? = Locale.current, handler: @escaping ([SKAlbum?]?, Error?) -> Void) {
-        makeAlbumsRequest(ids: ids, locale: locale).perform(handler: handler)
-    }
-}

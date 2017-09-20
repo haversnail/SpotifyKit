@@ -170,3 +170,16 @@ extension SKPlaylist: Expandable {
             tracks == nil
     }
 }
+
+// MARK: - Featured Playlists
+
+/// An object containing a paginated collection of featured playlists, accompanied by a localized message from Spotify.
+public struct SKFeaturedPlaylists: JSONDecodable {
+    public let localizedMessage: String
+    public let playlists: Page<SKPlaylist>
+    
+    private enum CodingKeys: String, CodingKey {
+        case localizedMessage = "message"
+        case playlists
+    }
+}

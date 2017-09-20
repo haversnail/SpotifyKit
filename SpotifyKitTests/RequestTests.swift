@@ -11,6 +11,8 @@ import XCTest
 
 class RequestTests: XCTestCase {
     
+    var catalog: SKCatalog!
+    
     // MARK: - Test Case Lifecycle
     
     override func setUp() {
@@ -19,16 +21,18 @@ class RequestTests: XCTestCase {
         // FIXME: Request a new access token if this one is expired.
         // Note: Be sure to request all scopes when retrieving a new token, as some tests will perform API requests that require access to private user data.
         // https://developer.spotify.com/web-api/console/
-        let accessToken = "BQAdEhUuTE5HeuIyGEwsJtzVTGl-ihh0uw0ihkYdNE9XWRSCtrjho0CARB7Lqs9gzvLYOjKpTghaBuWtVaZgpvZ8fRaOBkcjmhXEuDfSjPIZW2daGOsapnleAmMTHOvNCTVakiURQ-a3SBQUdg"
+        let accessToken = "BQD8THpxX2MzjEFVocuqb5bnu4z9h4v7hzHj0AMoyHsPzYbzJENwR06lHeSjYfQKuD_cdnjshjO8lM5yaXfjk102SjVCtVerfHsWZ0HEE2OEMRmgtBUt-EO5obUI-dzXqNnjCb5s5yB3BlJEeA"
         
         SPTAuth.defaultInstance().session = SPTSession(userName: "haversnail",
                                                        accessToken: accessToken,
                                                        expirationDate: Date.distantFuture)
+        catalog = SKCatalog(locale: Locale(identifier: "en_US"))
     }
     
     override func tearDown() {
         // Put teardown code here. This method is called after the invocation of each test method in the class.
         SPTAuth.defaultInstance().session = nil
+        catalog = nil
         super.tearDown()
     }
     
@@ -214,18 +218,24 @@ class RequestTests: XCTestCase {
             .genre("soundtrack"), // Should not be added to the query, since we'll only be requesting albums and playlists ("genre" applies to artists/tracks).
             .year(DateInterval(start: startDate, end: endDate))
         ]
+        let page = PageParameters(limit: 3)
         
         let promise = makeRequestExpectation()
-        promise.expectedFulfillmentCount = 2
-        defer { wait(for: promise, timeout: 10) }
+        defer { wait(for: promise) }
         
-        let request = SKRequest.searchRequest(for: [.albums, .playlists], matching: "Game of", excluding: "Thrones", inOrder: true, filteredBy: filters, in: Locale(identifier: "en_US"), page: PageParameters(limit: 3))
+        let request = catalog.makeSearchRequest(types: [.albums, .playlists],
+                                                keywords: "Game of",
+                                                alternate: "",
+                                                unwanted: "Thrones",
+                                                inOrder: true,
+                                                filters: filters,
+                                                page: page)
         
         // Assert request:
         assertRequest(request, contains: "q=%22game+of%22+NOT+thrones+year:2010-2017", "type=album,playlist", "market=US", "limit=3")
         
         // Act:
-        request.perform { (results: SKSearchResults?, error) in
+        catalog.search(for: [.albums, .playlists], matching: "Game of", excluding: "Thrones", inOrder: true, filteredBy: filters, page: page) { (results, error) in
             defer { promise.fulfill() }
             
             // Assert results:
@@ -248,24 +258,6 @@ class RequestTests: XCTestCase {
                 XCTAssert(album.name.localizedCaseInsensitiveContains("game of"), "one or more albums does not contain the expected keywords.")
                 XCTAssert(!album.name.localizedCaseInsensitiveContains("thrones"), "one or more albums contains unwanted keywords.")
             }
-        }
-        
-        // Test `search` method:
-        SKRequest.search(for: .all, matching: "Soundtrack") { (results, error) in
-            defer { promise.fulfill() }
-            
-            // Assert:
-            if let error = error {
-                XCTFail(error.localizedDescription); return
-            }
-            guard let results = results else {
-                XCTFail("'results' is nil."); return
-            }
-            
-            XCTAssertNotNil(results.albums, "results should have contained all object types.")
-            XCTAssertNotNil(results.playlists, "results should have contained all object types.")
-            XCTAssertNotNil(results.artists, "results should have contained all object types.")
-            XCTAssertNotNil(results.tracks, "results should have contained all object types.")
         }
     }
     
@@ -336,8 +328,7 @@ class RequestTests: XCTestCase {
         
         // Arrange:
         let albumID = "5DLhV9yOvZ7IxVmljMXtNm"
-        let locale = Locale(identifier: "en_US")
-        let request = SKAlbum.makeAlbumRequest(id: albumID, locale: locale)
+        let request = catalog.makeAlbumRequest(id: albumID)
         let promise = makeRequestExpectation()
         defer { wait(for: promise) }
         
@@ -346,7 +337,7 @@ class RequestTests: XCTestCase {
         XCTAssertEqual(request.preparedURLRequest.url?.query, "market=US")
         
         // Act (using public convenience method):
-        SKAlbum.getAlbum(withID: albumID, in: locale) { (album, error) in
+        catalog.getAlbum(withID: albumID) { (album, error) in
             defer { promise.fulfill() }
             
             // Assert results:
@@ -365,8 +356,7 @@ class RequestTests: XCTestCase {
         
         // Arrange:
         let albumIDs = ["5DLhV9yOvZ7IxVmljMXtNm","ABCm9wqX2AAeZNV3kdxXYZ","790mhPtbtIdMDRdZM3Jimz"] // Middle ID does not exist.
-        let locale = Locale(identifier: "en_US")
-        let request = SKAlbum.makeAlbumsRequest(ids: albumIDs, locale: locale)
+        let request = catalog.makeAlbumsRequest(ids: albumIDs)
         let promise = makeRequestExpectation()
         defer { wait(for: promise) }
         
@@ -374,7 +364,7 @@ class RequestTests: XCTestCase {
         assertRequest(request, contains: "/v1/albums", "ids=5DLhV9yOvZ7IxVmljMXtNm,ABCm9wqX2AAeZNV3kdxXYZ,790mhPtbtIdMDRdZM3Jimz", "market=US")
         
         // Act:
-        SKAlbum.getAlbums(withIDs: albumIDs, in: locale) { (albums, error) in
+        catalog.getAlbums(withIDs: albumIDs) { (albums, error) in
             defer { promise.fulfill() }
             
             // Assert results:
@@ -398,7 +388,7 @@ class RequestTests: XCTestCase {
         
         // Arrange:
         let artistID = "6VDdCwrBM4qQaGxoAyxyJC"
-        let request = SKArtist.makeArtistRequest(id: artistID)
+        let request = catalog.makeArtistRequest(id: artistID)
         let promise = makeRequestExpectation()
         defer { wait(for: promise) }
         
@@ -406,7 +396,7 @@ class RequestTests: XCTestCase {
         XCTAssertEqual(request.url.path, "/v1/artists/\(artistID)")
         
         // Act:
-        SKArtist.getArtist(withID: artistID) { (artist, error) in
+        catalog.getArtist(withID: artistID) { (artist, error) in
             defer { promise.fulfill() }
             
             // Assert:
@@ -425,7 +415,7 @@ class RequestTests: XCTestCase {
         
         // Arrange:
         let artistIDs = ["6VDdCwrBM4qQaGxoAyxyJC","ABCm9wqX2AAeZNV3kdxXYZ","53XhwfbYqKCa1cC15pYq2q"] // Middle ID does not exist.
-        let request = SKArtist.makeArtistsRequest(ids: artistIDs)
+        let request = catalog.makeArtistsRequest(ids: artistIDs)
         let promise = makeRequestExpectation()
         defer { wait(for: promise) }
         
@@ -434,7 +424,7 @@ class RequestTests: XCTestCase {
         XCTAssertEqual(request.preparedURLRequest.url?.query, "ids=6VDdCwrBM4qQaGxoAyxyJC,ABCm9wqX2AAeZNV3kdxXYZ,53XhwfbYqKCa1cC15pYq2q")
         
         // Act:
-        SKArtist.getArtists(withIDs: artistIDs) { (artists, error) in
+        catalog.getArtists(withIDs: artistIDs) { (artists, error) in
             defer { promise.fulfill() }
             
             // Assert results:
@@ -453,7 +443,7 @@ class RequestTests: XCTestCase {
     }
     
     func testGetAlbumsForArtist() {
-        
+
         // Arrange:
         let artist = try! SKArtist(from: artistData)
         let locale = Locale(identifier: "en_US")
@@ -461,14 +451,14 @@ class RequestTests: XCTestCase {
         let request = artist.makeAlbumsRequest(types: [.album, .single], locale: locale, page: page)
         let promise = makeRequestExpectation()
         defer { wait(for: promise) }
-        
+
         // Assert request:
         assertRequest(request, contains: "/v1/artists/\(artist.id)/albums", "album_type=album,single", "market=US", "offset=3", "limit=3")
-        
+
         // Act:
-        artist.getAlbums(filteredBy: [.album, .single], in: locale, page: page) { (albums, error) in
+        artist.getAlbums(filteredBy: [.album, .single], for: locale, page: page) { (albums, error) in
             defer { promise.fulfill() }
-            
+
             // Assert results:
             if let error = error {
                 XCTFail(error.localizedDescription); return
@@ -476,29 +466,29 @@ class RequestTests: XCTestCase {
             guard let albums = albums else {
                 XCTFail("'albums' is nil."); return
             }
-            
+
             XCTAssertEqual(albums.limit, 3)
             XCTAssertEqual(albums.offset, 3)
         }
     }
-    
+
     func testGetTopTracksForArtist() {
-        
+
         // Arrange:
         let artist = try! SKArtist(from: artistData)
         let locale = Locale(identifier: "en_US")
         let request = artist.makeTopTracksRequest(locale: locale)
         let promise = makeRequestExpectation()
         defer { wait(for: promise) }
-        
+
         // Assert request:
         XCTAssertEqual(request.url.path, "/v1/artists/\(artist.id)/top-tracks")
         XCTAssertEqual(request.preparedURLRequest.url?.query, "country=US")
-        
+
         // Act:
-        artist.getTopTracks(in: locale) { (tracks, error) in
+        artist.getTopTracks(for: locale) { (tracks, error) in
             defer { promise.fulfill() }
-            
+
             // Assert results:
             if let error = error {
                 XCTFail(error.localizedDescription); return
@@ -506,26 +496,26 @@ class RequestTests: XCTestCase {
             guard let tracks = tracks else {
                 XCTFail("'tracks' is nil."); return
             }
-            
+
             XCTAssertEqual(tracks[0].artists[0].name, artist.name)
         }
     }
-    
+
     func testGetRelatedArtistsForArtist() {
-        
+
         // Arrange:
         let artist = try! SKArtist(from: artistData)
         let request = artist.makeRelatedArtistsRequest()
         let promise = makeRequestExpectation()
         defer { wait(for: promise) }
-        
+
         // Assert request:
         XCTAssertEqual(request.url.path, "/v1/artists/\(artist.id)/related-artists")
-        
+
         // Act:
         artist.getRelatedArtists { (artists, error) in
             defer { promise.fulfill() }
-            
+
             // Assert results:
             if let error = error {
                 XCTFail(error.localizedDescription); return
@@ -533,7 +523,7 @@ class RequestTests: XCTestCase {
             guard let _ = artists else {
                 XCTFail("'artists' is nil."); return
             }
-            
+
             //for artist in artists { print(artist.name) }
         }
     }
@@ -593,6 +583,37 @@ class RequestTests: XCTestCase {
             
             XCTAssert(features.contains { $0 != nil }, "no 'features' object should be nil - request contained valid track IDs.")
             XCTAssertEqual(features.map { $0!.uri }, tracks.map { $0.uri })
+        }
+    }
+    
+    // MARK: - Browse Requests
+    
+    func testGetFeaturedPlaylists() {
+        
+        // Arrange:
+        let page = PageParameters(limit: 1)
+        let date = ISO8601DateFormatter().date(from: "2017-09-16T21:45:00Z")!
+        let request = catalog.makeFeaturedPlaylistsRequest(date: date, page: page)
+        let promise = makeRequestExpectation()
+        defer { wait(for: promise) }
+        
+        // Assert request:
+        assertRequest(request, contains: "/v1/browse/featured-playlists", "locale=en_US", "country=US", "timestamp=2017-09-16T21:45:00Z", "limit=1")
+        
+        // Act:
+        catalog.getFeaturedPlaylists(for: date, page: page) { (lists, error) in
+            defer { promise.fulfill() }
+            
+            // Assert results:
+            if let error = error {
+                XCTFail(error.localizedDescription); return
+            }
+            guard let lists = lists else {
+                XCTFail("'lists' was nil."); return
+            }
+            
+            XCTAssertEqual(lists.localizedMessage, "Party Time")
+            XCTAssertEqual(lists.playlists[0].name, "Fight Night")
         }
     }
 }
