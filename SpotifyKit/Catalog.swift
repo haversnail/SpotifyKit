@@ -607,6 +607,31 @@ extension Array where Element == SKTrack {
     }
 }
 
+// MARK: - Paging Requests
+
+extension Page {
+    
+    /// Gets the next page of items and provides it to the specified handler, or `nil` if no next page exists.
+    ///
+    /// - Note: This method uses the `SPTAuth` default instance session to authenticate the underlying request. If this session does not contain a valid access token, the request will result in an error.
+    ///
+    /// - Parameter handler: The callback handler for this request, providing the next page of elements if successful, or an error object identifying if and why the request or the decoding failed if unsuccessful.
+    public func getNext(handler: @escaping (Page<Element>?, Error?) -> Void) {
+        guard let url = nextURL else { handler(nil, nil); return }
+        SKRequest(method: .GET, url: url)!.perform(handler: handler)
+    }
+    
+    /// Gets the previous page of items and provides it to the specified handler, or `nil` if no previous page exists.
+    ///
+    /// - Note: This method uses the `SPTAuth` default instance session to authenticate the underlying request. If this session does not contain a valid access token, the request will result in an error.
+    ///
+    /// - Parameter handler: The callback handler for this request, providing the previous page of elements if successful, or an error object identifying if and why the request or the decoding failed if unsuccessful.
+    public func getPrevious(handler: @escaping (Page<Element>?, Error?) -> Void) {
+        guard let url = previousURL else { handler(nil, nil); return }
+        SKRequest(method: .GET, url: url)!.perform(handler: handler)
+    }
+}
+
 // MARK: - Expandable Type Requests
 
 /// A type that is represented in the [Spotify Web API](https://developer.spotify.com/web-api/) by both "simplified" and "full" versions of the given type.
@@ -628,7 +653,7 @@ public protocol Expandable {
     ///
     /// - Note: This method uses the `SPTAuth` default instance session to authenticate the underlying request. If this session does not contain a valid access token, the request will result in an error.
     ///
-    /// - Parameter handler: The callback handler for this request, providing the detailed object if successful, and an error object identifying if and why the request or the decoding failed if unsuccessful.
+    /// - Parameter handler: The callback handler for this request, providing the detailed object if successful, or an error object identifying if and why the request or the decoding failed if unsuccessful.
     func getFullObject(handler: @escaping (Self?, Error?) -> Void)
     //func simplified() -> Self
     //mutating func simplify()
