@@ -13,7 +13,7 @@ public struct SKAudioFeatures: JSONDecodable { // TODO: Make JSON Codable?
     /// An enum representing the expected `type` value for an audio features object.
     private enum ObjectType: String, Codable { case audioFeatures = "audio_features" }
     
-    public enum PitchClass: Int, Codable {
+    public enum Pitch: Int, Codable {
         case C, Db, D, Eb, E, F, Gb, G, Ab, A, Bb, B
     }
     
@@ -48,7 +48,7 @@ public struct SKAudioFeatures: JSONDecodable { // TODO: Make JSON Codable?
     public let instrumentalness: Float
     
     /// The key the track is in. Integers map to pitches using standard [Pitch Class notation](https://en.wikipedia.org/wiki/Pitch_class). E.g. 0 = C, 1 = C♯/D♭, 2 = D, and so on. See `SKAudioFeatures.PitchClass` for all possible values.
-    public let key: PitchClass
+    public let key: Pitch
     
     /// Detects the presence of an audience in the recording. Higher liveness values represent an increased probability that the track was performed live. A value above 0.8 provides strong likelihood that the track is live.
     public let liveness: Float
@@ -80,7 +80,7 @@ public struct SKAudioFeatures: JSONDecodable { // TODO: Make JSON Codable?
     /// The object type: `"audio_features"`.
     private let type: ObjectType
     
-    // MARK: - Keys
+    // MARK: Keys
     
     private enum CodingKeys: String, CodingKey {
         case acousticness
@@ -101,5 +101,88 @@ public struct SKAudioFeatures: JSONDecodable { // TODO: Make JSON Codable?
         case type
         case uri
         case valence
+    }
+}
+
+extension SKAudioFeatures.Pitch: URLEncodable {}
+extension SKAudioFeatures.Mode: URLEncodable {}
+
+// MARK: - Tunable Track Attributes
+
+public enum SKTrackAttribute {
+
+    internal typealias AttributeRange<T> = (min: T?, max: T?, target: T?) // TODO: Change typealias to public once SE-0155 is implemented.
+
+    case accousticness(min: Float?, max: Float?, target: Float?) // accousticness(AttributeRange<Float>) // <- Would require additional parentheses. :(
+    case danceability(min: Float?, max: Float?, target: Float?)
+    case duration(min: TimeInterval?, max: TimeInterval?, target: TimeInterval?)
+    case energy(min: Float?, max: Float?, target: Float?)
+    case instrumentalness(min: Float?, max: Float?, target: Float?)
+    case key(min: SKAudioFeatures.Pitch?, max: SKAudioFeatures.Pitch?, target: SKAudioFeatures.Pitch?)
+    case liveness(min: Float?, max: Float?, target: Float?)
+    case loudness(min: Float?, max: Float?, target: Float?)
+    case mode(min: SKAudioFeatures.Mode?, max: SKAudioFeatures.Mode?, target: SKAudioFeatures.Mode?)
+    case popularity(min: Int?, max: Int?, target: Int?)
+    case speechiness(min: Float?, max: Float?, target: Float?)
+    case tempo(min: Float?, max: Float?, target: Float?)
+    case timeSignature(min: Int?, max: Int?, target: Int?)
+    case valence(min: Float?, max: Float?, target: Float?)
+}
+
+// MARK: URLEncodable Properties
+
+extension SKTrackAttribute {
+    
+    /// A makeshift `rawValue`.
+    internal var key: String {
+        switch self {
+            case .accousticness:    return "accousticness"
+            case .danceability:     return "danceability"
+            case .duration:         return "duration_ms"
+            case .energy:           return "energy"
+            case .instrumentalness: return "instrumentalness"
+            case .key:              return "key"
+            case .liveness:         return "liveness"
+            case .loudness:         return "loudness"
+            case .mode:             return "mode"
+            case .popularity:       return "popularity"
+            case .speechiness:      return "speechiness"
+            case .tempo:            return "tempo"
+            case .timeSignature:    return "time_signature"
+            case .valence:          return "valence"
+        }
+    }
+    
+    /// The associated value(s) for the given case, returned as a URL-encodable type.
+    internal var values: AttributeRange<URLEncodable> {
+        switch self {
+            case let .accousticness(values),
+                 let .danceability(values),
+                 let .energy(values),
+                 let .instrumentalness(values),
+                 let .liveness(values),
+                 let .loudness(values),
+                 let .speechiness(values),
+                 let .tempo(values),
+                 let .valence(values): return (min: values.min, max: values.max, target: values.target) // return values
+            case let .popularity(values),
+                 let .timeSignature(values): return (min: values.min, max: values.max, target: values.target) // return values
+            case let .duration(values): return (min: values.min, max: values.max, target: values.target) // return values
+            case let .key(values): return (min: values.min, max: values.max, target: values.target) // return values
+            case let .mode(values): return (min: values.min, max: values.max, target: values.target) // return values
+        }
+    }
+}
+
+// MARK: Hashable Conformance
+
+extension SKTrackAttribute: Hashable {
+    public var hashValue: Int {
+        return key.hashValue
+    }
+    
+    /// - Note: Attributes of the same type will be considered equal even if they contain different associated values.
+    public static func ==(lhs: SKTrackAttribute, rhs: SKTrackAttribute) -> Bool {
+        return lhs.key == rhs.key // Only compares keys; otherwise, set collections would ignore duplicated attributes with different associated values.
     }
 }

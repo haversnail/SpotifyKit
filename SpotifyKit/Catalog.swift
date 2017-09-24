@@ -250,6 +250,92 @@ public struct SKCatalog {
         makeCategoryRequest(id: id).perform(handler: handler)
     }
     
+    // MARK: Get Available Genre Seeds ✔︎
+    
+    /// Creates and returns the request used to get available genre seeds for recommendations.
+    ///
+    /// - Returns: An `SKRequest` instance with which to perform the API request.
+    public func makeAvailableGenresRequest() -> SKRequest {
+        return SKRequest(method: .GET, endpoint: Constants.Endpoints.genres)!
+    }
+    
+    /// Gets a list of available genre seeds used for recommendations.
+    ///
+    /// - Parameter handler: The callback handler for the request. The parameters for this handler are:
+    ///     - `genres`: The list of available genres.
+    ///     - `error`: An error object identifying if and why the request failed, or `nil` if the request was successful.
+    public func getAvailableGenres(handler: @escaping ([String]?, Error?) -> Void) {
+        makeAvailableGenresRequest().perform(handler: handler)
+    }
+    
+    // MARK: Get Recommendations ✔︎
+    
+    /// Creates and returns the request used to get recommendations based on seed genres, artists, and tracks.
+    ///
+    /// Recommendations are generated based on the available information for a given seed entity and matched against similar artists and tracks. If there is sufficient information about the provided seeds, a list of tracks will be returned together with pool size details.
+    ///
+    /// - Note: For each request, you may provide up to five seed items comprised of any combination of genres, artists, and tracks. If more than five seed items are provided, the request will result in an error.
+    ///
+    /// In cases where seed artists and tracks are very new or obscure, the request may not have enough data to generate a list of tracks.
+    ///
+    /// - Parameters:
+    ///   - genres: A list of seed genres. For possible values, use the "`getAvailableGenres`" method to retrieve a list of genres available as seeds for this request.
+    ///   - artists: A list of seed artists.
+    ///   - tracks: A list of seed tracks.
+    ///   - attributes: A list of tunable track attributes by which to filter results. Each attribute allows you to specify a minimum value, maximum value, and target value.
+    ///   - limit: The target size of the results. **Note**: For seeds with unusually small pools or when highly restrictive filtering is applied, it may be impossible to generate the requested number of recommended tracks. In such cases, debugging information will be made available in the response.
+    /// - Returns: An `SKRequest` instance with which to perform the API request.
+    public func makeRecommendationsRequest(genres: [String],
+                                           artists: [SKArtist],
+                                           tracks: [SKTrack],
+                                           attributes: Set<SKTrackAttribute>,
+                                           limit: Int?) -> SKRequest {
+        
+        var parameters = [String: Any]()
+        parameters[Constants.QueryParameters.market] = locale?.regionCode
+        parameters[Constants.QueryParameters.limit] = limit
+        
+        parameters[Constants.QueryParameters.seedArtists] = artists.isEmpty ? nil : artists.map { $0.id }
+        parameters[Constants.QueryParameters.seedTracks] = tracks.isEmpty ? nil : tracks.map { $0.id }
+        parameters[Constants.QueryParameters.seedGenres] = genres.isEmpty ? nil : genres
+        
+        for attribute in attributes {
+            parameters[Constants.QueryParameters.minPrefix + attribute.key] = attribute.values.min
+            parameters[Constants.QueryParameters.maxPrefix + attribute.key] = attribute.values.max
+            parameters[Constants.QueryParameters.targetPrefix + attribute.key] = attribute.values.target
+        }
+        
+        return SKRequest(method: .GET, endpoint: Constants.Endpoints.recommendations, parameters: parameters)!
+    }
+    
+    /// Gets recommendations based on seed genres, artists, and tracks.
+    ///
+    /// Recommendations are generated based on the available information for a given seed entity and matched against similar artists and tracks. If there is sufficient information about the provided seeds, a list of tracks will be returned together with pool size details.
+    ///
+    /// - Note: For each request, you may provide up to five seed items comprised of any combination of genres, artists, and tracks. If more than five seed items are provided, the request will result in an error.
+    ///
+    /// In cases where seed artists and tracks are very new or obscure, the request may not have enough data to generate a list of tracks.
+    ///
+    /// - Parameters:
+    ///   - genres: A list of seed genres. For possible values, use the "`getAvailableGenres`" method to retrieve a list of genres available as seeds for this request.
+    ///   - artists: A list of seed artists.
+    ///   - tracks: A list of seed tracks.
+    ///   - attributes: A list of tunable track attributes by which to filter results. Each attribute allows you to specify a minimum value, maximum value, and target value.
+    ///   - limit: The target size of the results. **Note**: For seeds with unusually small pools or when highly restrictive filtering is applied, it may be impossible to generate the requested number of recommended tracks. In such cases, debugging information will be made available in the response.
+    ///   - handler: The callback handler for the request. The parameters for this handler are:
+    ///     - `recommendations`: An `SKRecommendations` object, which contains an array of tracks accompanied by the seeds from which the tracks are returned.
+    ///     - `error`: An error object identifying if and why the request failed, or `nil` if the request was successful.
+    public func getRecommendationsBasedOn(genres: [String],
+                                          artists: [SKArtist],
+                                          tracks: [SKTrack],
+                                          filteredBy attributes: Set<SKTrackAttribute> = [],
+                                          limit: Int? = nil,
+                                          handler: @escaping (SKRecommendations?, Error?) -> Void) {
+        
+        makeRecommendationsRequest(genres: genres, artists: artists, tracks: tracks, attributes: attributes, limit: limit).perform(handler: handler)
+    }
+    //public func getRecommendations<T: Seedable>(basedOn seeds: [T], filteredBy attributes: Set<SKTrackAttribute> = [], limit: Int? = nil, handler: @escaping (SKRecommendations?, Error?) -> Void)
+    
     // MARK: - Search
     
     /// Creates and returns the request used to search the Spotify catalog.

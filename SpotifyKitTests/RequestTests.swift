@@ -620,4 +620,88 @@ class RequestTests: XCTestCase {
             XCTAssertEqual(lists.playlists[0].name, "Fight Night")
         }
     }
+    
+    func testGetAvailableGenres() {
+        
+        // Arrange:
+        let request = catalog.makeAvailableGenresRequest()
+        let promise = makeRequestExpectation()
+        defer { wait(for: promise) }
+        
+        // Assert request:
+        XCTAssertEqual(request.url.path, "/v1/recommendations/available-genre-seeds")
+        
+        // Act:
+        catalog.getAvailableGenres { (genres, error) in
+            defer { promise.fulfill() }
+            
+            // Assert results:
+            if let error = error {
+                XCTFail(error.localizedDescription); return
+            }
+            guard let _ = genres else {
+                XCTFail("'genres' was nil."); return
+            }
+            
+            //for genre in genres { print(genre) }
+        }
+        
+    }
+    
+    func testGetRecommendations() {
+        
+        // Arrange:
+        let genres = ["alt-rock", "indie"]
+        let tracks = [try! SKTrack(from: trackData)]
+        let artists = [try! SKArtist(from: artistData)]
+        let attributes: Set<SKTrackAttribute> = [
+            .tempo(min: nil, max: nil, target: 120),
+            .valence(min: 0.5, max: 1, target: nil),
+            .duration(min: nil, max: 240, target: nil)
+        ]
+        let request = catalog.makeRecommendationsRequest(genres: genres, artists: artists, tracks: tracks, attributes: attributes, limit: 5)
+        let promise = makeRequestExpectation()
+        defer { wait(for: promise) }
+        
+        // Assert request:
+        assertRequest(request, contains: "/v1/recommendations",
+                                         "seed_genres=alt-rock,indie",
+                                         "seed_artists=\(artists[0].id)",
+                                         "seed_tracks=\(tracks[0].id)",
+                                         "max_duration_ms=240000",
+                                         "target_tempo=120.0",
+                                         "min_valence=0.5",
+                                         "max_valence=1.0")
+        
+        // Act:
+        catalog.getRecommendationsBasedOn(genres: genres, artists: artists, tracks: tracks, filteredBy: attributes, limit: 5) { (recommendations, error) in
+            defer { promise.fulfill() }
+            
+            // Assert results:
+            if let error = error {
+                XCTFail(error.localizedDescription); return
+            }
+            guard let recommendations = recommendations else {
+                XCTFail("'recommendations' was nil."); return
+            }
+            
+            XCTAssertEqual(recommendations.tracks.count, 5)
+            
+            let genreSeeds = recommendations.seeds.filter { $0.type == .genre }.map { $0.id }
+            let artistSeeds = recommendations.seeds.filter { $0.type == .artist }.map { $0.id }
+            let trackSeeds = recommendations.seeds.filter { $0.type == .track }.map { $0.id }
+            
+            for genre in genres {
+                XCTAssert(genreSeeds.contains(genre), "expected to find \(genre) in genre seeds: \(genreSeeds.joined(separator: ", "))")
+            }
+            for artist in artists {
+                XCTAssert(artistSeeds.contains(artist.id), "expected to find \(artist) in artist seeds: \(artistSeeds.joined(separator: ", "))")
+            }
+            for track in tracks {
+                XCTAssert(trackSeeds.contains(track.id), "expected to find \(track) in track seeds: \(trackSeeds.joined(separator: ", "))")
+            }
+            
+            //for track in recommendations.tracks { print(track.name, " -- ", track.artists[0].name) }
+        }
+    }
 }

@@ -37,6 +37,12 @@ internal struct Constants {
         static let itemType = "type"
         static let albumType = "album_type"
         static let timestamp = "timestamp"
+        static let seedArtists = "seed_artists"
+        static let seedGenres = "seed_genres"
+        static let seedTracks = "seed_tracks"
+        static let minPrefix = "min_"
+        static let maxPrefix = "max_"
+        static let targetPrefix = "target_"
     }
     
     // MARK: - API Endpoints
@@ -82,7 +88,7 @@ internal struct Constants {
         static var shuffle: String            { return player/"shuffle" }
         static var `repeat`: String           { return player/"repeat" }
         
-        static var genreSeeds: String         { return recommendations/"available-genre-seeds" }
+        static var genres: String             { return recommendations/"available-genre-seeds" }
         
         static func album(id: String) -> String                   { return albums/id }
         static func tracksForAlbum(id: String) -> String          { return albums/id/"tracks" }
