@@ -272,52 +272,45 @@ public struct SKCatalog {
                                   filters: Set<SKSearchFieldFilter>,
                                   page: PageParameters?) -> SKRequest {
         
+        // Begin with the primary keywords, adding quotes if 'inOrder' is true:
         var query: String = inOrder ? "\"" + keywords.lowercased() + "\"" : keywords.lowercased()
         
+        // Add any alternate keywords:
         if !alternate.isEmpty {
-            query.append(" OR \(alternate.lowercased())")
+            query.append(" OR " + alternate.lowercased())
         }
         
+        // Add any unwanted keywords:
         if !unwanted.isEmpty {
-            query.append(" NOT \(unwanted.lowercased())")
+            query.append(" NOT " + unwanted.lowercased())
         }
         
+        // If there are any filters,
         if !filters.isEmpty {
+            
+            // Create a URL encoder instance with which to encode the filter values:
+            let encoder = URLEncoder()
+            encoder.spaceSeparator = "+"
+            encoder.rangeSeparator = "-"
+            encoder.dateFormatter = {
+                let formatter = DateFormatter()
+                formatter.dateFormat = "yyyy"
+                return formatter
+            }()
             
             for filter in filters {
                 
+                // If the filter isn't intended for the given search result type(s), then skip it and continue to the next one:
                 switch filter {
-                case let .album(keywords),
-                     let .artist(keywords),
-                     let .track(keywords):
-
-                    query.append(" \(filter.key):\"\(keywords)\"")
-                    
-                case let .genre(keywords):
-                    guard types.contains(.artists) || types.contains(.tracks) else { break }
-                    query.append(" \(filter.key):\"\(keywords)\"")
-                    
-                case let .tag(tag):
-                    guard types.contains(.albums) else { break }
-                    query.append(" \(filter.key):\(tag.rawValue)")
-                    
-                case let .upc(code):
-                    guard types.contains(.albums) else { break }
-                    query.append(" \(filter.key):\(code)")
-                    
-                case let .isrc(code):
-                    guard types.contains(.tracks) else { break }
-                    query.append(" \(filter.key):\(code)") // .trimmingCharacters(in: CharacterSet.alphanumerics.inverted)
-                    
-                case let .year(range):
-                    let encoder = URLEncoder()
-                    encoder.rangeSeparator = "-"
-                    encoder.dateFormatter = {
-                        let formatter = DateFormatter()
-                        formatter.dateFormat = "yyyy"
-                        return formatter
-                    }()
-                    query.append(" \(filter.key):\(range.urlEncodedString(using: encoder))")                
+                    case .genre:     guard types.contains(.artists) || types.contains(.tracks) else { continue }
+                    case .tag, .upc: guard types.contains(.albums) else { continue }
+                    case .isrc:      guard types.contains(.tracks) else { continue }
+                    default: break
+                }
+                
+                let value = filter.value.string(using: encoder) // Encode the filter's associated value;
+                if !value.isEmpty {                             // as long as the string value isn't empty,
+                    query.append(" \(filter.key):\(value)")     // append it to the query.
                 }
             }
         }
