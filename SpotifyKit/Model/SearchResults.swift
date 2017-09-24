@@ -28,10 +28,10 @@ public enum SKSearchResultType: String, URLEncodable {
     case playlists = "playlist"
 }
 
-extension Array where Element == SKSearchResultType {
+extension Set where Element == SKSearchResultType {
     
     /// A convenience property containing all possible search result types: `.album`, `.artist`, `.track`, and `.playlist`.
-    public static let all: [SKSearchResultType] = [.albums, .artists, .tracks, .playlists] // Consider using an OptionSet instead.
+    public static let all: Set<SKSearchResultType> = [.albums, .artists, .tracks, .playlists] // Consider using an OptionSet instead.
 }
 
 // MARK: - Search Filters

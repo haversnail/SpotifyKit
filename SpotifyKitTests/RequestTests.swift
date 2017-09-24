@@ -214,7 +214,7 @@ class RequestTests: XCTestCase {
         let formatter = ISO8601DateFormatter()
         let startDate = formatter.date(from: "2010-05-05T09:30:00Z")!
         let endDate = formatter.date(from: "2017-06-05T09:30:00Z")!
-        let filters: [SKSearchFieldFilter] = [
+        let filters: Set<SKSearchFieldFilter> = [
             .genre("soundtrack"), // Should not be added to the query, since we'll only be requesting albums and playlists ("genre" applies to artists/tracks).
             .year(DateInterval(start: startDate, end: endDate))
         ]

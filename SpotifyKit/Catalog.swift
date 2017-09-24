@@ -264,12 +264,12 @@ public struct SKCatalog {
     ///   - page: The parameters for paginating the results, specifying the index and number of items to return. If no parameters are supplied, the request will return the default number of items beginning with first item.
     ///
     /// - Returns: An `SKRequest` instance with which to perform the API request.
-    public func makeSearchRequest(types: [SKSearchResultType],
+    public func makeSearchRequest(types: Set<SKSearchResultType>,
                                   keywords: String,
                                   alternate: String,
                                   unwanted: String,
                                   inOrder: Bool,
-                                  filters: [SKSearchFieldFilter],
+                                  filters: Set<SKSearchFieldFilter>,
                                   page: PageParameters?) -> SKRequest {
         
         var query: String = inOrder ? "\"" + keywords.lowercased() + "\"" : keywords.lowercased()
@@ -324,7 +324,7 @@ public struct SKCatalog {
         
         var parameters = [String: Any]()
         parameters[Constants.QueryParameters.query] = query
-        parameters[Constants.QueryParameters.itemType] = types
+        parameters[Constants.QueryParameters.itemType] = types.isEmpty ? nil : types
         parameters[Constants.QueryParameters.market] = locale?.regionCode // TODO: Find a way to include the "from_token" value.
         parameters[Constants.QueryParameters.limit] = page?.limit
         parameters[Constants.QueryParameters.offset] = page?.offset
@@ -345,12 +345,12 @@ public struct SKCatalog {
     ///   - handler: The callback handler for this request. The parameters for this handler are:
     ///       - `results`: An `SKSearchResults` object containing paged results for any albums, artists, tracks, or playlists returned by the search.
     ///       - `error`: An error object identifying if and why the request failed, or `nil` if the request was successful.
-    public func search(for types: [SKSearchResultType],
+    public func search(for types: Set<SKSearchResultType>,
                        matching keywords: String,
                        or alternate: String = "",
                        excluding unwanted: String = "",
                        inOrder: Bool = false,
-                       filteredBy filters: [SKSearchFieldFilter] = [],
+                       filteredBy filters: Set<SKSearchFieldFilter> = [],
                        page: PageParameters? = nil,
                        handler: @escaping (SKSearchResults?, Error?) -> Void) {
         
@@ -439,7 +439,7 @@ extension SKArtist {
     ///   - locale: The locale-specific storefront/market from which to request. **Note:** If set to `nil`, results will be returned for all markets and will likely contain duplicate results, one for each market in which the album is available.
     ///   - page: The parameters for paginating the results, specifying the index and number of items to return. If no parameters are supplied, the request will return the default number of items beginning with first item.
     /// - Returns: An `SKRequest` instance with which to perform the API request.
-    public func makeAlbumsRequest(types: [SKAlbum.AlbumType], locale: Locale?, page: PageParameters?) -> SKRequest {
+    public func makeAlbumsRequest(types: Set<SKAlbum.AlbumType>, locale: Locale?, page: PageParameters?) -> SKRequest {
         
         var parameters = [String: Any]()
         parameters[Constants.QueryParameters.albumType] = types.isEmpty ? nil : types
@@ -460,7 +460,7 @@ extension SKArtist {
     ///   - handler: The callback handler for the request. The parameters for this handler are:
     ///     - `albums`: A paginated collection of simplified albums, if available.
     ///     - `error`: An error object identifying if and why the request failed, or `nil` if the request was successful.
-    public func getAlbums(filteredBy types: [SKAlbum.AlbumType] = [], for locale: Locale? = SKCatalog.local.locale, page: PageParameters? = nil, handler: @escaping (Page<SKAlbum>?, Error?) -> Void) {
+    public func getAlbums(filteredBy types: Set<SKAlbum.AlbumType> = [], for locale: Locale? = SKCatalog.local.locale, page: PageParameters? = nil, handler: @escaping (Page<SKAlbum>?, Error?) -> Void) {
         makeAlbumsRequest(types: types, locale: locale, page: page).perform(handler: handler)
     }
     
