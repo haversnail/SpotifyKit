@@ -216,7 +216,11 @@ class RequestTests: XCTestCase {
         let endDate = formatter.date(from: "2017-06-05T09:30:00Z")!
         let filters: Set<SKSearchFieldFilter> = [
             .genre("soundtrack"), // Should not be added to the query, since we'll only be requesting albums and playlists ("genre" applies to artists/tracks).
-            .year(DateInterval(start: startDate, end: endDate))
+            .year(DateInterval(start: startDate, end: endDate)),
+//            .upc("1234"),
+//            .isrc("abcd"),
+//            .tag(.hipster),
+//            .tag(.new)
         ]
         let page = PageParameters(limit: 3)
         
