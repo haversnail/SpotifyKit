@@ -216,7 +216,7 @@ public class SKRequest { // Inheriting from NSObject causes buildtime error: cla
 //            let encoder = URLEncoder()
 //            for (key, value) in parameters {
 //                guard value is URLEncodable else { continue }
-//                let encodedValue = (value as! URLEncodable).urlEncodedString(using: encoder)
+//                let encodedValue = (value as! URLEncodable).string(using: encoder)
 //                items.append(URLQueryItem(name: key, value: encodedValue))
 //            }
 
@@ -228,7 +228,7 @@ public class SKRequest { // Inheriting from NSObject causes buildtime error: cla
             components?.queryItems = parameters
                 .lazy
                 .filter { $0.value is URLEncodable }
-                .map { return URLQueryItem(name: $0.key, value: ($0.value as! URLEncodable).urlEncodedString(using: .`default`)) }
+                .map { return URLQueryItem(name: $0.key, value: ($0.value as! URLEncodable).string(using: .`default`)) }
             
             return components?.url ?? url // Return our new composed URL, or our original one if we couldn't create the components object.
         }
