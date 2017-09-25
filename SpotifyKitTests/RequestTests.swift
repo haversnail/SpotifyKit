@@ -621,6 +621,115 @@ class RequestTests: XCTestCase {
         }
     }
     
+    func testGetNewReleases() {
+        
+        // Arrange:
+        let page = PageParameters(limit: 5)
+        let request = catalog.makeNewReleasesRequest(page: page)
+        let promise = makeRequestExpectation()
+        defer { wait(for: promise) }
+        
+        // Assert request:
+        assertRequest(request, contains: "/v1/browse/new-releases", "country=US", "limit=5") // FIXME: Refactor this method to test for exactly these strings—not more or less.
+        
+        // Act:
+        catalog.getNewReleases(page: page) { (albums, error) in
+            defer { promise.fulfill() }
+            
+            // Assert results:
+            if let error = error {
+                XCTFail(error.localizedDescription); return
+            }
+            guard let _ = albums else {
+                XCTFail("'albums' was nil."); return
+            }
+            
+            //for album in albums { print(album.name + " -- " + album.artists[0].name) }
+        }
+    }
+    
+    func testGetCategories() {
+        
+        // Arrange:
+        let page = PageParameters(limit: 5)
+        let request = catalog.makeCategoriesRequest(page: page)
+        let promise = makeRequestExpectation()
+        defer { wait(for: promise) }
+        
+        // Assert request:
+        assertRequest(request, contains: "/v1/browse/categories", "locale=en_US", "country=US", "limit=5")
+        
+        // Act:
+        catalog.getCategories(page: page) { (categories, error) in
+            defer { promise.fulfill() }
+            
+            // Assert results:
+            if let error = error {
+                XCTFail(error.localizedDescription); return
+            }
+            guard let _ = categories else {
+                XCTFail("'categories' was nil."); return
+            }
+            
+            //for category in categories { print(category.name, "(\(category.id))") }
+        }
+    }
+    
+    func testGetCategory() {
+        
+        // Arrange:
+        let categoryID = "indie_alt"
+        let request = catalog.makeCategoryRequest(id: categoryID)
+        let promise = makeRequestExpectation()
+        defer { wait(for: promise) }
+        
+        // Assert request:
+        XCTAssertEqual(request.url.path, "/v1/browse/categories/\(categoryID)")
+        
+        // Act:
+        catalog.getCategory(withID: categoryID) { (category, error) in
+            defer { promise.fulfill() }
+            
+            // Assert results:
+            if let error = error {
+                XCTFail(error.localizedDescription); return
+            }
+            guard let category = category else {
+                XCTFail("'category' was nil."); return
+            }
+            
+            XCTAssertEqual(category.id, categoryID)
+        }
+    }
+    
+    func testGetPlaylistsForCategory() {
+        
+        // Arrange:
+        let category = try! SKCategory(from: categoryData)
+        let page = PageParameters(limit: 5)
+        let request = category.makePlaylistsRequest(locale: catalog.locale, page: page)
+        let promise = makeRequestExpectation()
+        defer { wait(for: promise) }
+        
+        // Assert request:
+        assertRequest(request, contains: "/v1/browse/categories/\(category.id)/playlists", "country=US", "limit=5")
+        
+        // Act:
+        category.getPlaylists(for: catalog.locale, page: page) { (playlists, error) in
+            defer { promise.fulfill() }
+            
+            // Assert results:
+            if let error = error {
+                XCTFail(error.localizedDescription); return
+            }
+            guard let _ = playlists else {
+                XCTFail("'playlists' was nil."); return
+            }
+            
+            //for playlist in playlists { print(playlist.name) }
+        }
+    }
+    
     func testGetAvailableGenres() {
         
         // Arrange:
