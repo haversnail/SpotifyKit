@@ -18,14 +18,19 @@ class RequestTests: XCTestCase {
     override func setUp() {
         super.setUp()
         // Put setup code here. This method is called before the invocation of each test method in the class.
-        // FIXME: Request a new access token if this one is expired.
-        // Note: Be sure to request all scopes when retrieving a new token, as some tests will perform API requests that require access to private user data.
-        // https://developer.spotify.com/web-api/console/
-        let accessToken = "BQD8THpxX2MzjEFVocuqb5bnu4z9h4v7hzHj0AMoyHsPzYbzJENwR06lHeSjYfQKuD_cdnjshjO8lM5yaXfjk102SjVCtVerfHsWZ0HEE2OEMRmgtBUt-EO5obUI-dzXqNnjCb5s5yB3BlJEeA"
         
-        SPTAuth.defaultInstance().session = SPTSession(userName: "haversnail",
+        // FIXME: 1. Provide your username.
+        let username = "francesetoth"
+        
+        // FIXME: 2. Request an access token.
+        /// - Note: Be sure to request all scopes when retrieving a new token, as some tests will perform API requests that require access to private user data.
+        /// - SeeAlso: https://developer.spotify.com/web-api/console/
+        let accessToken = "BQDeUq5pROz9Ah6IIY7-rq0R0oIpj7DZ8zUie5WwGOmLI7e2SUy7g-9fmYigWvgaUnNIdAfSk-BhhiXGpSjeI0MX6XMJu-Iykm1bdKG9kmVWFI5q3yullW68boFwnySms4h-bo63bFe6mSVzfA"
+        
+        SPTAuth.defaultInstance().session = SPTSession(userName: username,
                                                        accessToken: accessToken,
                                                        expirationDate: Date.distantFuture)
+        
         catalog = SKCatalog(locale: Locale(identifier: "en_US"))
     }
     
@@ -811,6 +816,62 @@ class RequestTests: XCTestCase {
             }
             
             //for track in recommendations.tracks { print(track.name, " -- ", track.artists[0].name) }
+        }
+    }
+    
+    // MARK: - User Requests
+    
+    func testGetUser() {
+        
+        // Arrange:
+        let userID = "ahavermale"
+        let request = SKUser.makeUserRequest(id: userID)
+        let promise = makeRequestExpectation()
+        defer { wait(for: promise) }
+        
+        // Assert request:
+        XCTAssertEqual(request.url.path, "/v1/users/\(userID)")
+        
+        // Act:
+        SKUser.getUser(withID: userID) { (user, error) in
+            defer { promise.fulfill() }
+            
+            // Assert results:
+            if let error = error {
+                XCTFail(error.localizedDescription); return
+            }
+            guard let user = user else {
+                XCTFail("'user' was nil."); return
+            }
+            
+            XCTAssertEqual(user.id, userID)
+        }
+    }
+    
+    func testGetCurrentUser() {
+        
+        // Arrange:
+        let username = SPTAuth.defaultInstance().session.canonicalUsername!
+        let request = SKUser.makeCurrentUserRequest()
+        let promise = makeRequestExpectation()
+        defer { wait(for: promise) }
+        
+        // Assert request:
+        XCTAssertEqual(request.url.path, "/v1/me")
+        
+        // Act:
+        SKUser.getCurrentUser { (user, error) in
+            defer { promise.fulfill() }
+            
+            // Assert results:
+            if let error = error {
+                XCTFail(error.localizedDescription); return
+            }
+            guard let user = user else {
+                XCTFail("'user' was nil."); return
+            }
+            
+            XCTAssertEqual(user.id, username)
         }
     }
 }

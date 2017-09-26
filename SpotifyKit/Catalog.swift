@@ -685,6 +685,63 @@ extension Array where Element == SKTrack {
     }
 }
 
+// MARK: - User Requests
+
+extension SKUser {
+    
+    // MARK: Get a User's Profile ✔︎
+    
+    /// Creates and returns the request used to get a user.
+    ///
+    /// - Parameter id: The user's [Spotify user ID](https://developer.spotify.com/web-api/user-guide/#spotify-uris-and-ids).
+    /// - Returns: An `SKRequest` instance with which to perform the API request.
+    public static func makeUserRequest(id: String) -> SKRequest {
+        return SKRequest(method: .GET, endpoint: Constants.Endpoints.user(id: id))!
+    }
+    
+    /// Gets public profile information about a Spotify user.
+    ///
+    /// - Note: This method uses the `SPTAuth` default instance session to authenticate the underlying request. If this session does not contain a valid access token, the request will result in an error.
+    ///
+    /// - Parameters:
+    ///   - id: The user's [Spotify user ID](https://developer.spotify.com/web-api/user-guide/#spotify-uris-and-ids).
+    ///   - handler: The callback handler for the request. The parameters for this handler are:
+    ///     - `user`: The requested user, if available.
+    ///     - `error`: An error object identifying if and why the request failed, or `nil` if the request was successful.
+    public static func getUser(withID id: String, handler: @escaping (SKUser?, Error?) -> Void) {
+        makeUserRequest(id: id).perform(handler: handler)
+    }
+    
+    // MARK: Get the Current User's Profile ✔︎
+    
+    /// Creates and returns the request used to get the current authenticated user.
+    ///
+    /// - Returns: An `SKRequest` instance with which to perform the API request.
+    public static func makeCurrentUserRequest() -> SKRequest { // makeAuthenticatedUserRequest
+        return SKRequest(method: .GET, endpoint: Constants.Endpoints.me)!
+    }
+    
+    /// Gets detailed profile information about the current authenticated user.
+    ///
+    /// - Note: This method uses the `SPTAuth` default instance session to authenticate the underlying request. If this session does not contain a valid access token, the request will result in an error. The access token must have been issued on behalf of the current user.
+    ///
+    /// To retrieve all user properties, the access token also must have been generated with certain scopes. In particular:
+    /// * Reading the user's email address requires the "`user-read-email`" scope.
+    /// * Reading the user's country and product subscription level requires the "`user-read-private`" scope.
+    /// * Reading the user's date of birth requires the "`user-read-birthdate`" scope.
+    ///
+    /// See [Using Scopes](https://developer.spotify.com/spotify-web-api/using-scopes/) for more information.
+    ///
+    /// - Parameters:
+    ///   - id: The user's [Spotify user ID](https://developer.spotify.com/web-api/user-guide/#spotify-uris-and-ids).
+    ///   - handler: The callback handler for the request. The parameters for this handler are:
+    ///     - `user`: The current authenticated user, if available.
+    ///     - `error`: An error object identifying if and why the request failed, or `nil` if the request was successful.
+    public static func getCurrentUser(handler: @escaping (SKUser?, Error?) -> Void) { // getAuthenticatedUser
+        makeCurrentUserRequest().perform(handler: handler)
+    }
+}
+
 // MARK: - Paging Requests
 
 extension Page {
