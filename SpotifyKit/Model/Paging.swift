@@ -11,7 +11,7 @@ import Foundation
 /// A structure representing the parameters for pagingating the elements of a larger collection.
 ///
 /// If no parameters are supplied, requests will return 20 items by default, beginning with the first item.
-public struct PageParameters {
+public struct Pagination {
     
     /// The number of items to be contained in the page.
     public var limit: Int

@@ -384,7 +384,7 @@ class RequestTests: XCTestCase {
         // Arrange:
         let artist = try! SKArtist(from: artistData)
         let locale = Locale(identifier: "en_US")
-        let page = PageParameters(limit: 3, page: 2)
+        let page = Pagination(limit: 3, page: 2)
         let request = artist.makeAlbumsRequest(types: [.album, .single], locale: locale, page: page)
         let promise = makeRequestExpectation()
         defer { wait(for: promise) }
@@ -529,7 +529,7 @@ class RequestTests: XCTestCase {
     func testGetFeaturedPlaylists() {
         
         // Arrange:
-        let page = PageParameters(limit: 1)
+        let page = Pagination(limit: 1)
         let date = ISO8601DateFormatter().date(from: "2017-09-16T21:45:00Z")!
         let request = catalog.makeFeaturedPlaylistsRequest(date: date, page: page)
         let promise = makeRequestExpectation()
@@ -559,7 +559,7 @@ class RequestTests: XCTestCase {
     func testGetNewReleases() {
         
         // Arrange:
-        let page = PageParameters(limit: 5)
+        let page = Pagination(limit: 5)
         let request = catalog.makeNewReleasesRequest(page: page)
         let promise = makeRequestExpectation()
         defer { wait(for: promise) }
@@ -587,7 +587,7 @@ class RequestTests: XCTestCase {
     func testGetCategories() {
         
         // Arrange:
-        let page = PageParameters(limit: 5)
+        let page = Pagination(limit: 5)
         let request = catalog.makeCategoriesRequest(page: page)
         let promise = makeRequestExpectation()
         defer { wait(for: promise) }
@@ -643,7 +643,7 @@ class RequestTests: XCTestCase {
         
         // Arrange:
         let category = try! SKCategory(from: categoryData)
-        let page = PageParameters(limit: 5)
+        let page = Pagination(limit: 5)
         let request = category.makePlaylistsRequest(locale: catalog.locale, page: page)
         let promise = makeRequestExpectation()
         defer { wait(for: promise) }
@@ -770,7 +770,7 @@ class RequestTests: XCTestCase {
             //            .tag(.hipster),
             //            .tag(.new)
         ]
-        let page = PageParameters(limit: 3)
+        let page = Pagination(limit: 3)
         
         let promise = makeRequestExpectation()
         defer { wait(for: promise) }
@@ -877,7 +877,7 @@ class RequestTests: XCTestCase {
         
         // Arrange:
         let user = try! SKUser(from: userData)
-        let page = PageParameters(limit: 3)
+        let page = Pagination(limit: 3)
         let request = user.makePlaylistsRequest(page: page)
         let promise = makeRequestExpectation()
         defer { wait(for: promise) }
@@ -1139,7 +1139,7 @@ class RequestTests: XCTestCase {
         
         // Arrange:
         let playlist = try! SKPlaylist(from: ephemeralPlaylistData) // FIXME: Update JSON data to match your test playlist.
-        let page = PageParameters(limit: 5)
+        let page = Pagination(limit: 5)
         let request = playlist.makeTracksRequest(locale: catalog.locale, page: page)
         let promise = makeRequestExpectation()
         defer { wait(for: promise) }

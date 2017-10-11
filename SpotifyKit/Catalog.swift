@@ -139,7 +139,7 @@ public struct SKCatalog {
     ///   - date: A timestamp used to tailor results to a specific date and time of day. For example, if retrieving featured playlists for 3:00 PM, 23 October 2014, the catalog would return a list of playlists relevant to that time and day of the week, accompanied by a specific localized message (e.g., *"Get ready to rock your Thursday! #Rocktober"*). If `nil` is provided, the response defaults to the current UTC time.
     ///   - page: The parameters for paginating the results, specifying the index and number of items to return. If no parameters are supplied, the request will return the default number of items beginning with first item.
     /// - Returns: An `SKRequest` instance with which to perform the API request.
-    public func makeFeaturedPlaylistsRequest(date: Date?, page: PageParameters?) -> SKRequest {
+    public func makeFeaturedPlaylistsRequest(date: Date?, page: Pagination?) -> SKRequest {
         
         var parameters = [String: Any]()
         parameters[Constants.QueryParameters.locale] = locale?.identifier
@@ -160,7 +160,7 @@ public struct SKCatalog {
     ///   - handler: The callback handler for the request. The parameters for this handler are:
     ///     - `featuredPlaylists`: An `SKFeaturedPlaylists` object, which contains a paginated collection of playlists accompanied by a localized message string.
     ///     - `error`: An error object identifying if and why the request failed, or `nil` if the request was successful.
-    public func getFeaturedPlaylists(for date: Date? = Date(), page: PageParameters? = nil, handler: @escaping (SKFeaturedPlaylists?, Error?) -> Void) {
+    public func getFeaturedPlaylists(for date: Date? = Date(), page: Pagination? = nil, handler: @escaping (SKFeaturedPlaylists?, Error?) -> Void) {
         makeFeaturedPlaylistsRequest(date: date, page: page).perform(handler: handler)
     }
     
@@ -170,7 +170,7 @@ public struct SKCatalog {
     ///
     /// - Parameter page: The parameters for paginating the results, specifying the index and number of items to return. If no parameters are supplied, the request will return the default number of items beginning with first item.
     /// - Returns: An `SKRequest` instance with which to perform the API request.
-    public func makeNewReleasesRequest(page: PageParameters?) -> SKRequest {
+    public func makeNewReleasesRequest(page: Pagination?) -> SKRequest {
         
         var parameters = [String: Any]()
         parameters[Constants.QueryParameters.country] = locale?.regionCode
@@ -186,7 +186,7 @@ public struct SKCatalog {
     ///   - handler: The callback handler for the request. The parameters for this handler are:
     ///     - `albums`: A paginated collection of newly released albums.
     ///     - `error`: An error object identifying if and why the request failed, or `nil` if the request was successful.
-    public func getNewReleases(page: PageParameters? = nil, handler: @escaping (Page<SKAlbum>?, Error?) -> Void) {
+    public func getNewReleases(page: Pagination? = nil, handler: @escaping (Page<SKAlbum>?, Error?) -> Void) {
         makeNewReleasesRequest(page: page).perform(handler: handler)
     }
     
@@ -198,7 +198,7 @@ public struct SKCatalog {
     ///
     /// - Parameter page: The parameters for paginating the results, specifying the index and number of items to return. If no parameters are supplied, the request will return the default number of items beginning with first item.
     /// - Returns: An `SKRequest` instance with which to perform the API request.
-    public func makeCategoriesRequest(page: PageParameters?) -> SKRequest {
+    public func makeCategoriesRequest(page: Pagination?) -> SKRequest {
         
         var parameters = [String: Any]()
         parameters[Constants.QueryParameters.country] = locale?.regionCode
@@ -217,7 +217,7 @@ public struct SKCatalog {
     ///   - handler: The callback handler for the request. The parameters for this handler are:
     ///     - `categories`: A paginated collection of available Spotify categories.
     ///     - `error`: An error object identifying if and why the request failed, or `nil` if the request was successful.
-    public func getCategories(page: PageParameters? = nil, handler: @escaping (Page<SKCategory>?, Error?) -> Void) {
+    public func getCategories(page: Pagination? = nil, handler: @escaping (Page<SKCategory>?, Error?) -> Void) {
         makeCategoriesRequest(page: page).perform(handler: handler)
     }
     
@@ -356,7 +356,7 @@ public struct SKCatalog {
                                   unwanted: String?,
                                   inOrder: Bool,
                                   filters: Set<SKSearchFieldFilter>,
-                                  page: PageParameters?) -> SKRequest {
+                                  page: Pagination?) -> SKRequest {
         
         // Begin with the primary keywords, adding quotes if 'inOrder' is true:
         var query: String = inOrder ? "\"" + keywords.lowercased() + "\"" : keywords.lowercased()
@@ -430,7 +430,7 @@ public struct SKCatalog {
                        excluding unwanted: String? = nil,
                        inOrder: Bool = false,
                        filteredBy filters: Set<SKSearchFieldFilter> = [],
-                       page: PageParameters? = nil,
+                       page: Pagination? = nil,
                        handler: @escaping (SKSearchResults?, Error?) -> Void) {
         
         makeSearchRequest(types: types,
@@ -518,7 +518,7 @@ extension SKArtist {
     ///   - locale: The locale-specific storefront/market from which to request. **Note:** If set to `nil`, results will be returned for all markets and will likely contain duplicate results, one for each market in which the album is available.
     ///   - page: The parameters for paginating the results, specifying the index and number of items to return. If no parameters are supplied, the request will return the default number of items beginning with first item.
     /// - Returns: An `SKRequest` instance with which to perform the API request.
-    public func makeAlbumsRequest(types: Set<SKAlbum.AlbumType>, locale: Locale?, page: PageParameters?) -> SKRequest {
+    public func makeAlbumsRequest(types: Set<SKAlbum.AlbumType>, locale: Locale?, page: Pagination?) -> SKRequest {
         
         var parameters = [String: Any]()
         parameters[Constants.QueryParameters.albumType] = types.isEmpty ? nil : types
@@ -539,7 +539,7 @@ extension SKArtist {
     ///   - handler: The callback handler for the request. The parameters for this handler are:
     ///     - `albums`: A paginated collection of simplified albums, if available.
     ///     - `error`: An error object identifying if and why the request failed, or `nil` if the request was successful.
-    public func getAlbums(filteredBy types: Set<SKAlbum.AlbumType> = [], for locale: Locale? = SKCatalog.local.locale, page: PageParameters? = nil, handler: @escaping (Page<SKAlbum>?, Error?) -> Void) {
+    public func getAlbums(filteredBy types: Set<SKAlbum.AlbumType> = [], for locale: Locale? = SKCatalog.local.locale, page: Pagination? = nil, handler: @escaping (Page<SKAlbum>?, Error?) -> Void) {
         makeAlbumsRequest(types: types, locale: locale, page: page).perform(handler: handler)
     }
     
@@ -604,7 +604,7 @@ extension SKCategory {
     ///   - locale: The locale-specific storefront/market from which to request.
     ///   - page: The parameters for paginating the results, specifying the index and number of items to return. If no parameters are supplied, the request will return the default number of items beginning with first item.
     /// - Returns: An `SKRequest` instance with which to perform the API request.
-    public func makePlaylistsRequest(locale: Locale?, page: PageParameters?) -> SKRequest {
+    public func makePlaylistsRequest(locale: Locale?, page: Pagination?) -> SKRequest {
         
         var parameters = [String: Any]()
         parameters[Constants.QueryParameters.country] = locale?.regionCode
@@ -623,7 +623,7 @@ extension SKCategory {
     ///   - handler: The callback handler for the request. The parameters for this handler are:
     ///     - `playlists`: A paginated collection of simplified playlists, if available.
     ///     - `error`: An error object identifying if and why the request failed, or `nil` if the request was successful.
-    public func getPlaylists(for locale: Locale? = SKCatalog.local.locale, page: PageParameters? = nil, handler: @escaping (Page<SKPlaylist>?, Error?) -> Void) {
+    public func getPlaylists(for locale: Locale? = SKCatalog.local.locale, page: Pagination? = nil, handler: @escaping (Page<SKPlaylist>?, Error?) -> Void) {
         makePlaylistsRequest(locale: locale, page: page).perform(handler: handler)
     }
     
@@ -747,7 +747,7 @@ extension SKUser {
     ///
     /// - Parameter page: The parameters for paginating the results, specifying the index and number of items to return. If no parameters are supplied, the request will return the default number of items beginning with first item.
     /// - Returns: An `SKRequest` instance with which to perform the API request.
-    public func makePlaylistsRequest(page: PageParameters?) -> SKRequest {
+    public func makePlaylistsRequest(page: Pagination?) -> SKRequest {
         
         var parameters = [String: Any]()
         parameters[Constants.QueryParameters.limit] = page?.limit
@@ -768,7 +768,7 @@ extension SKUser {
     ///   - handler: The callback handler for the request. The parameters for this handler are:
     ///     - `user`: The current authenticated user, if available.
     ///     - `error`: An error object identifying if and why the request failed, or `nil` if the request was successful.
-    public func getPlaylists(page: PageParameters? = nil, handler: @escaping (Page<SKPlaylist>?, Error?) -> Void) {
+    public func getPlaylists(page: Pagination? = nil, handler: @escaping (Page<SKPlaylist>?, Error?) -> Void) {
         makePlaylistsRequest(page: page).perform(handler: handler)
     }
     
@@ -885,7 +885,7 @@ extension SKPlaylist {
     ///   - locale: The locale-specific storefront/market from which to request.
     ///   - page: The parameters for paginating the results, specifying the index and number of items to return. If no parameters are supplied, the request will return the default number of items beginning with first item.
     /// - Returns: An `SKRequest` instance with which to perform the API request.
-    public func makeTracksRequest(locale: Locale?, page: PageParameters?) -> SKRequest {
+    public func makeTracksRequest(locale: Locale?, page: Pagination?) -> SKRequest {
         
         var parameters = [String: Any]()
         parameters[Constants.QueryParameters.market] = locale?.regionCode
@@ -906,7 +906,7 @@ extension SKPlaylist {
     ///   - handler: The callback handler for the request. The parameters for this handler are:
     ///     - `tracks`: A paginated collection of full track objects, if available.
     ///     - `error`: An error object identifying if and why the request failed, or `nil` if the request was successful.
-    public func getTracks(for locale: Locale? = SKCatalog.local.locale, page: PageParameters? = nil, handler: @escaping (Page<SKPlaylist.PlaylistTrack>?, Error?) -> Void) {
+    public func getTracks(for locale: Locale? = SKCatalog.local.locale, page: Pagination? = nil, handler: @escaping (Page<SKPlaylist.PlaylistTrack>?, Error?) -> Void) {
         makeTracksRequest(locale: locale, page: page).perform(handler: handler)
     }
     
