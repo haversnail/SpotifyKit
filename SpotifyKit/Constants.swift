@@ -34,7 +34,7 @@ internal struct Constants {
         static let locale = "locale"
         static let limit = "limit"
         static let offset = "offset"
-        static let itemType = "type"
+        static let type = "type"
         static let albumType = "album_type"
         static let timestamp = "timestamp"
         static let seedArtists = "seed_artists"

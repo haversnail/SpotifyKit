@@ -343,8 +343,8 @@ public struct SKCatalog {
     /// - Parameters:
     ///   - types: An array identifying the types of objects requested by the search. Possible values are `.album`, `.artist`, `.track`, and `.playlist`. The static constant `.all` can also be used to represent an array containing all search result types.
     ///   - keywords: The search term against which to match results. **Note**: Keyword matching is *not* case-sensitive.
-    ///   - alternate: An alternate search term used to broaden the search. If no alternate keywords are needed, set this parameter to an empty string.
-    ///   - unwanted: Unwanted keywords to exclude from the search. If no unwanted keywords are needed, set this parameter to an empty string.
+    ///   - alternate: An alternate search term used to broaden the search. If no alternate keywords are needed, set this parameter to `nil`.
+    ///   - unwanted: Unwanted keywords to exclude from the search. If no unwanted keywords are needed, set this parameter to `nil`.
     ///   - inOrder: When `false`, keywords will be matched in any order; when `true`, the search will maintain exact keyword order.
     ///   - filters: A list of field filters by which to narrow the search. For available filters, see `SKSearchFieldFilter`. If no filters are needed, set this parameter to an empty array.
     ///   - page: The parameters for paginating the results, specifying the index and number of items to return. If no parameters are supplied, the request will return the default number of items beginning with first item.
@@ -352,8 +352,8 @@ public struct SKCatalog {
     /// - Returns: An `SKRequest` instance with which to perform the API request.
     public func makeSearchRequest(types: Set<SKSearchResultType>,
                                   keywords: String,
-                                  alternate: String,
-                                  unwanted: String,
+                                  alternate: String?,
+                                  unwanted: String?,
                                   inOrder: Bool,
                                   filters: Set<SKSearchFieldFilter>,
                                   page: PageParameters?) -> SKRequest {
@@ -362,12 +362,12 @@ public struct SKCatalog {
         var query: String = inOrder ? "\"" + keywords.lowercased() + "\"" : keywords.lowercased()
         
         // Add any alternate keywords:
-        if !alternate.isEmpty {
+        if let alternate = alternate, !alternate.isEmpty {
             query.append(" OR " + alternate.lowercased())
         }
         
         // Add any unwanted keywords:
-        if !unwanted.isEmpty {
+        if let unwanted = unwanted, !unwanted.isEmpty {
             query.append(" NOT " + unwanted.lowercased())
         }
         
@@ -403,7 +403,7 @@ public struct SKCatalog {
         
         var parameters = [String: Any]()
         parameters[Constants.QueryParameters.query] = query
-        parameters[Constants.QueryParameters.itemType] = types.isEmpty ? nil : types
+        parameters[Constants.QueryParameters.type] = types.isEmpty ? nil : types
         parameters[Constants.QueryParameters.market] = locale?.regionCode // TODO: Find a way to include the "from_token" value.
         parameters[Constants.QueryParameters.limit] = page?.limit
         parameters[Constants.QueryParameters.offset] = page?.offset
@@ -426,8 +426,8 @@ public struct SKCatalog {
     ///       - `error`: An error object identifying if and why the request failed, or `nil` if the request was successful.
     public func search(for types: Set<SKSearchResultType>,
                        matching keywords: String,
-                       or alternate: String = "",
-                       excluding unwanted: String = "",
+                       or alternate: String? = nil,
+                       excluding unwanted: String? = nil,
                        inOrder: Bool = false,
                        filteredBy filters: Set<SKSearchFieldFilter> = [],
                        page: PageParameters? = nil,
@@ -667,7 +667,7 @@ extension Array where Element == SKTrack {
         if self.isEmpty { assertionFailure("array of IDs must contain at least one value for the API request to be valid.") }
         
         var parameters = [String: Any]()
-        parameters[Constants.QueryParameters.ids] = map { $0.id }
+        parameters[Constants.QueryParameters.ids] = self.isEmpty ? nil : map { $0.id }
         return SKRequest(method: .GET, endpoint: Constants.Endpoints.audioFeatures, parameters: parameters)!
     }
     
@@ -725,12 +725,12 @@ extension SKUser {
     ///
     /// - Note: This method uses the `SPTAuth` default instance session to authenticate the underlying request. If this session does not contain a valid access token, the request will result in an error. The access token must have been issued on behalf of the current user.
     ///
-    /// To retrieve all user properties, the access token also must have been generated with certain scopes. In particular:
+    /// To retrieve all user properties, the access token also must have been generated with certain scopes authorized. In particular:
     /// * Reading the user's email address requires the "`user-read-email`" scope.
     /// * Reading the user's country and product subscription level requires the "`user-read-private`" scope.
     /// * Reading the user's date of birth requires the "`user-read-birthdate`" scope.
     ///
-    /// See [Using Scopes](https://developer.spotify.com/spotify-web-api/using-scopes/) for more information.
+    /// See [Using Scopes](https://developer.spotify.com/spotify-web-api/using-scopes/) for more details.
     ///
     /// - Parameters:
     ///   - id: The user's [Spotify user ID](https://developer.spotify.com/web-api/user-guide/#spotify-uris-and-ids).
