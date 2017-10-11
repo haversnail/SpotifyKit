@@ -200,7 +200,7 @@ public class SKRequest { // Inheriting from NSObject causes buildtime error: cla
     public weak var apiSession: SPTSession? = SPTAuth.defaultInstance()?.session // or `nil`?
     
     /// A tuple value storing multipart request body data and its associated MIME content type.
-    fileprivate var requestBody: (data: Data, type: ContentType)? = nil
+    internal var requestBody: (data: Data, type: ContentType)? = nil // fileprivate
 
     /// The prepared URL used by the URL request, comprised of the initial URL and the query containing the URL-encodable elements in `parameters`.
     ///

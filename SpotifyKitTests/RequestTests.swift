@@ -56,13 +56,24 @@ class RequestTests: XCTestCase {
         }
     }
     
-    func assertRequest(_ request: SKRequest, contains components: String..., file: StaticString = #file, line: UInt = #line) {
-        let url = request.preparedURLRequest.url!.absoluteString
+    func decode<T: JSONDecodable>(_ type: T.Type, from request: SKRequest, file: StaticString = #file, line: UInt = #line) -> T? {
         
-        for component in components {
-            if !url.contains(component) {
-                XCTFail("expected to find \"\(component)\" in the prepared URL request: \(url)", file: file, line: line)
-            }
+        guard let data = request.requestBody?.data else {
+            XCTFail("the request does not contain multipart body data.", file: file, line: line)
+            return nil
+        }
+        
+        do {
+            return try type.init(from: data)
+        } catch {
+            let message = """
+                the request body could not be decoded to the given type:
+                \(error.localizedDescription)
+                \(String(data: data, encoding: .utf8) ?? "The data could not be decoded to a string.")
+                """
+            
+            XCTFail(message, file: file, line: line)
+            return nil
         }
     }
     
@@ -211,64 +222,7 @@ class RequestTests: XCTestCase {
         }
     }
     
-    // MARK: - Request Factory Tests
-    
-    func testSearchRequest() {
-        
-        // Arrange:
-        let formatter = ISO8601DateFormatter()
-        let startDate = formatter.date(from: "2010-05-05T09:30:00Z")!
-        let endDate = formatter.date(from: "2017-06-05T09:30:00Z")!
-        let filters: Set<SKSearchFieldFilter> = [
-            .genre("soundtrack"), // Should not be added to the query, since we'll only be requesting albums and playlists ("genre" applies to artists/tracks).
-            .year(DateInterval(start: startDate, end: endDate)),
-//            .upc("1234"),
-//            .isrc("abcd"),
-//            .tag(.hipster),
-//            .tag(.new)
-        ]
-        let page = PageParameters(limit: 3)
-        
-        let promise = makeRequestExpectation()
-        defer { wait(for: promise) }
-        
-        let request = catalog.makeSearchRequest(types: [.albums, .playlists],
-                                                keywords: "Game of",
-                                                alternate: "",
-                                                unwanted: "Thrones",
-                                                inOrder: true,
-                                                filters: filters,
-                                                page: page)
-        
-        // Assert request:
-        assertRequest(request, contains: "q=%22game+of%22+NOT+thrones+year:2010-2017", "type=album,playlist", "market=US", "limit=3")
-        
-        // Act:
-        catalog.search(for: [.albums, .playlists], matching: "Game of", excluding: "Thrones", inOrder: true, filteredBy: filters, page: page) { (results, error) in
-            defer { promise.fulfill() }
-            
-            // Assert results:
-            if let error = error {
-                XCTFail(error.localizedDescription); return
-            }
-            guard let results = results else {
-                XCTFail("'results' is nil."); return
-            }
-            
-            XCTAssertNotNil(results.albums, "results should have contained album objects.")
-            XCTAssertNotNil(results.playlists, "results should have contained playlist objects.")
-            XCTAssertNil(results.artists, "results should not have contained artist objects.")
-            XCTAssertNil(results.tracks, "results should not have contained track objects.")
-            
-            guard let albums = results.albums else { return }
-            
-            for album in albums {
-                //print(album.name)
-                XCTAssert(album.name.localizedCaseInsensitiveContains("game of"), "one or more albums does not contain the expected keywords.")
-                XCTAssert(!album.name.localizedCaseInsensitiveContains("thrones"), "one or more albums contains unwanted keywords.")
-            }
-        }
-    }
+    // MARK: - Request Extension Tests
     
     func testSPTSessionMethods() {
         
@@ -302,33 +256,6 @@ class RequestTests: XCTestCase {
         // Act:
         session.performRequest(method: .GET, url: url, handler: handler)
         session.performRequest(method: .GET, endpoint: url.path, handler: handler)
-    }
-    
-    func testExpandableRequest() {
-        
-        // Arrange:
-        let artist = try! SKArtist(from: simplifiedArtistData)
-        let request = artist.makeFullObjectRequest()
-        let promise = makeRequestExpectation()
-        defer { wait(for: promise) }
-        
-        // Assert request:
-        XCTAssertEqual(request.url, artist.url)
-        
-        // Act:
-        artist.getFullObject { (artist, error) in
-            defer { promise.fulfill() }
-
-            // Assert results:
-            if let error = error {
-                XCTFail(error.localizedDescription); return
-            }
-            guard let artist = artist else {
-                XCTFail("'artist' is nil."); return
-            }
-            
-            XCTAssertNotNil(artist.popularity, "property should contain a non-nil value.")
-        }
     }
     
     // MARK: - Album Requests
@@ -370,7 +297,8 @@ class RequestTests: XCTestCase {
         defer { wait(for: promise) }
         
         // Assert request:
-        assertRequest(request, contains: "/v1/albums", "ids=5DLhV9yOvZ7IxVmljMXtNm,ABCm9wqX2AAeZNV3kdxXYZ,790mhPtbtIdMDRdZM3Jimz", "market=US")
+        XCTAssertEqual(request.url.path, "/v1/albums")
+        SKTAssertQuery(in: request, contains: "ids=5DLhV9yOvZ7IxVmljMXtNm,ABCm9wqX2AAeZNV3kdxXYZ,790mhPtbtIdMDRdZM3Jimz", "market=US")
         
         // Act:
         catalog.getAlbums(withIDs: albumIDs) { (albums, error) in
@@ -462,7 +390,8 @@ class RequestTests: XCTestCase {
         defer { wait(for: promise) }
 
         // Assert request:
-        assertRequest(request, contains: "/v1/artists/\(artist.id)/albums", "album_type=album,single", "market=US", "offset=3", "limit=3")
+        XCTAssertEqual(request.url.path, "/v1/artists/\(artist.id)/albums")
+        SKTAssertQuery(in: request, contains: "album_type=album,single", "market=US", "offset=3", "limit=3")
 
         // Act:
         artist.getAlbums(filteredBy: [.album, .single], for: locale, page: page) { (albums, error) in
@@ -607,7 +536,8 @@ class RequestTests: XCTestCase {
         defer { wait(for: promise) }
         
         // Assert request:
-        assertRequest(request, contains: "/v1/browse/featured-playlists", "locale=en_US", "country=US", "timestamp=2017-09-16T21:45:00Z", "limit=1")
+        XCTAssertEqual(request.url.path, "/v1/browse/featured-playlists")
+        SKTAssertQuery(in: request, contains: "locale=en_US", "country=US", "timestamp=2017-09-16T21:45:00Z", "limit=1")
         
         // Act:
         catalog.getFeaturedPlaylists(for: date, page: page) { (lists, error) in
@@ -617,12 +547,12 @@ class RequestTests: XCTestCase {
             if let error = error {
                 XCTFail(error.localizedDescription); return
             }
-            guard let lists = lists else {
+            guard let _ = lists else {
                 XCTFail("'lists' was nil."); return
             }
             
-            XCTAssertEqual(lists.localizedMessage, "Party Time")
-            XCTAssertEqual(lists.playlists[0].name, "Fight Night")
+//            XCTAssertEqual(lists.localizedMessage, "Party Time")
+//            XCTAssertEqual(lists.playlists[0].name, "Fight Night")
         }
     }
     
@@ -635,7 +565,8 @@ class RequestTests: XCTestCase {
         defer { wait(for: promise) }
         
         // Assert request:
-        assertRequest(request, contains: "/v1/browse/new-releases", "country=US", "limit=5") // FIXME: Refactor this method to test for exactly these strings—not more or less.
+        XCTAssertEqual(request.url.path, "/v1/browse/new-releases")
+        SKTAssertQuery(in: request, contains: "country=US", "limit=5")
         
         // Act:
         catalog.getNewReleases(page: page) { (albums, error) in
@@ -662,7 +593,8 @@ class RequestTests: XCTestCase {
         defer { wait(for: promise) }
         
         // Assert request:
-        assertRequest(request, contains: "/v1/browse/categories", "locale=en_US", "country=US", "limit=5")
+        XCTAssertEqual(request.url.path, "/v1/browse/categories")
+        SKTAssertQuery(in: request, contains: "locale=en_US", "country=US", "limit=5")
         
         // Act:
         catalog.getCategories(page: page) { (categories, error) in
@@ -717,7 +649,8 @@ class RequestTests: XCTestCase {
         defer { wait(for: promise) }
         
         // Assert request:
-        assertRequest(request, contains: "/v1/browse/categories/\(category.id)/playlists", "country=US", "limit=5")
+        XCTAssertEqual(request.url.path, "/v1/browse/categories/\(category.id)/playlists")
+        SKTAssertQuery(in: request, contains: "country=US", "limit=5")
         
         // Act:
         category.getPlaylists(for: catalog.locale, page: page) { (playlists, error) in
@@ -778,14 +711,16 @@ class RequestTests: XCTestCase {
         defer { wait(for: promise) }
         
         // Assert request:
-        assertRequest(request, contains: "/v1/recommendations",
-                                         "seed_genres=alt-rock,indie",
-                                         "seed_artists=\(artists[0].id)",
-                                         "seed_tracks=\(tracks[0].id)",
-                                         "max_duration_ms=240000",
-                                         "target_tempo=120.0",
-                                         "min_valence=0.5",
-                                         "max_valence=1.0")
+        XCTAssertEqual(request.url.path, "/v1/recommendations")
+        SKTAssertQuery(in: request, contains: "seed_genres=alt-rock,indie",
+                                               "seed_artists=\(artists[0].id)",
+                                               "seed_tracks=\(tracks[0].id)",
+                                               "max_duration_ms=240000",
+                                               "target_tempo=120.0",
+                                               "min_valence=0.5",
+                                               "max_valence=1.0",
+                                               "market=US",
+                                               "limit=5")
         
         // Act:
         catalog.getRecommendationsBasedOn(genres: genres, artists: artists, tracks: tracks, filteredBy: attributes, limit: 5) { (recommendations, error) in
@@ -816,6 +751,69 @@ class RequestTests: XCTestCase {
             }
             
             //for track in recommendations.tracks { print(track.name, " -- ", track.artists[0].name) }
+        }
+    }
+    
+    // MARK: - Search Requests
+    
+    func testSearchRequest() {
+        
+        // Arrange:
+        let formatter = ISO8601DateFormatter()
+        let startDate = formatter.date(from: "2010-05-05T09:30:00Z")!
+        let endDate = formatter.date(from: "2017-06-05T09:30:00Z")!
+        let filters: Set<SKSearchFieldFilter> = [
+            .genre("soundtrack"), // Should not be added to the query, since we'll only be requesting albums and playlists ("genre" applies to artists/tracks).
+            .year(DateInterval(start: startDate, end: endDate)),
+            //            .upc("1234"),
+            //            .isrc("abcd"),
+            //            .tag(.hipster),
+            //            .tag(.new)
+        ]
+        let page = PageParameters(limit: 3)
+        
+        let promise = makeRequestExpectation()
+        defer { wait(for: promise) }
+        
+        let request = catalog.makeSearchRequest(types: [.albums, .playlists],
+                                                keywords: "Game of",
+                                                alternate: nil,
+                                                unwanted: "Thrones",
+                                                inOrder: true,
+                                                filters: filters,
+                                                page: page)
+        
+        // Assert request:
+        XCTAssertEqual(request.url.path, "/v1/search")
+        SKTAssertQuery(in: request, contains: "q=%22game+of%22+NOT+thrones+year:2010-2017",
+                                               "type=album,playlist",
+                                               "market=US",
+                                               "limit=3")
+        
+        // Act:
+        catalog.search(for: [.albums, .playlists], matching: "Game of", excluding: "Thrones", inOrder: true, filteredBy: filters, page: page) { (results, error) in
+            defer { promise.fulfill() }
+            
+            // Assert results:
+            if let error = error {
+                XCTFail(error.localizedDescription); return
+            }
+            guard let results = results else {
+                XCTFail("'results' is nil."); return
+            }
+            
+            XCTAssertNotNil(results.albums, "results should have contained album objects.")
+            XCTAssertNotNil(results.playlists, "results should have contained playlist objects.")
+            XCTAssertNil(results.artists, "results should not have contained artist objects.")
+            XCTAssertNil(results.tracks, "results should not have contained track objects.")
+            
+            guard let albums = results.albums else { return }
+            
+            for album in albums {
+                //print(album.name)
+                XCTAssert(album.name.localizedCaseInsensitiveContains("game of"), "one or more albums does not contain the expected keywords.")
+                XCTAssert(!album.name.localizedCaseInsensitiveContains("thrones"), "one or more albums contains unwanted keywords.")
+            }
         }
     }
     
@@ -872,6 +870,78 @@ class RequestTests: XCTestCase {
             }
             
             XCTAssertEqual(user.id, username)
+        }
+    }
+    
+    // MARK: - Expandable Requests
+    
+    func testExpandableRequest() {
+        
+        // Arrange:
+        let artist = try! SKArtist(from: simplifiedArtistData)
+        let request = artist.makeFullObjectRequest()
+        let promise = makeRequestExpectation()
+        defer { wait(for: promise) }
+        
+        // Assert request:
+        XCTAssertEqual(request.url, artist.url)
+        
+        // Act:
+        artist.getFullObject { (artist, error) in
+            defer { promise.fulfill() }
+            
+            // Assert results:
+            if let error = error {
+                XCTFail(error.localizedDescription); return
+            }
+            guard let artist = artist else {
+                XCTFail("'artist' is nil."); return
+            }
+            
+            XCTAssertNotNil(artist.popularity, "property should contain a non-nil value.")
+        }
+    }
+}
+
+// MARK: - Request Test Assertions
+
+/// Asserts that an `SKRequest` instance contains the specified URL query strings.
+///
+/// - Parameters:
+///   - request: The `SKRequest` instance under test.
+///   - items: The URL query strings against which to compare.
+///   - file: The file in which failure occurred. Defaults to the file name of the test case in which this function was called.
+///   - line: The line number on which failure occurred. Defaults to the line number on which this function was called.
+func SKTAssertQuery(in request: SKRequest, contains items: String..., file: StaticString = #file, line: UInt = #line) {
+    
+    guard let url = request.preparedURLRequest.url else {
+        XCTFail("the prepared URL request contains no URL.", file: file, line: line); return
+    }
+    
+    guard let query = url.query else {
+        XCTFail("the request URL contains no query:\n" + url.absoluteString, file: file, line: line); return
+    }
+    
+    let expected = Set<String>(items)                               // The set of expected query items.
+    let actual = Set<String>(query.components(separatedBy: "&"))    // The set of actual query items.
+    
+    if expected == actual { return } // If these both contain the same values, then return - no need to test further.
+
+    let unexpected = actual.subtracting(expected) // The set of any remaining 'actual' items.
+    let missing = expected.subtracting(actual) // The set of any remaining 'expected' items.
+    
+    if expected.isStrictSuperset(of: actual) { // then 'actual' is missing something expected (but doesn't have anything unexpected):
+        for item in missing {
+            XCTFail("could not find \"\(item)\" in the request URL query:\n" + query, file: file, line: line)
+        }
+    } else if actual.isStrictSuperset(of: expected) { // then 'actual' contains more than what's expected (but isn't missing anything):
+        for item in unexpected {
+            XCTFail("request URL query contained an unexpected item: \"\(item)\"\n" + query, file: file, line: line)
+        }
+    } else { // each set contains something that the other doesn't:
+        for item in missing {
+            let items = unexpected.count > 1 ? unexpected.joined(separator: "\", \"") : unexpected.first!
+            XCTFail("could not find \"\(item)\" in the request URL query, but found \"\(items)\" instead:\n" + query, file: file, line: line)
         }
     }
 }
