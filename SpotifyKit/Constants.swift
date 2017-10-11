@@ -28,12 +28,14 @@ internal struct Constants {
     struct QueryParameters {
         private init() {}
         static let ids = "ids"
+        static let uris = "uris"
         static let query = "q"
         static let country = "country"
         static let market = "market"
         static let locale = "locale"
         static let limit = "limit"
         static let offset = "offset"
+        static let position = "position"
         static let type = "type"
         static let albumType = "album_type"
         static let timestamp = "timestamp"
@@ -43,6 +45,65 @@ internal struct Constants {
         static let minPrefix = "min_"
         static let maxPrefix = "max_"
         static let targetPrefix = "target_"
+    }
+    
+    // MARK: URL Request Bodies
+    
+    struct RequestBodies {
+        private init() {}
+        
+        struct PlaylistDetailsBody: JSONCodable {
+            let name: String?
+            let description: String?
+            let isPublic: Bool?
+            let isCollaborative: Bool?
+
+            private enum CodingKeys: String, CodingKey {
+                case name
+                case description
+                case isPublic = "public"
+                case isCollaborative = "collaborative"
+            }
+        }
+        
+        struct PlaylistFollowBody: JSONCodable {
+            let isPublic: Bool
+            
+            private enum CodingKeys: String, CodingKey {
+                case isPublic = "public"
+            }
+        }
+        
+        struct RemoveTracksBody: JSONCodable {
+            struct Track: Codable {
+                let uri: String
+                //let positions: [Int]? // Not supporting this.
+            }
+            
+            let tracks: [Track]?
+            let positions: [Int]?
+            let snapshotID: String?
+            
+            private enum CodingKeys: String, CodingKey {
+                case tracks
+                case positions
+                case snapshotID = "snapshot_id"
+            }
+        }
+        
+        struct ReorderTracksBody: JSONCodable {
+            let startIndex: Int
+            let rangeLength: Int?
+            let newIndex: Int
+            let snapshotID: String?
+            
+            private enum CodingKeys: String, CodingKey {
+                case startIndex = "range_start"
+                case rangeLength = "range_length"
+                case newIndex = "insert_before"
+                case snapshotID = "snapshot_id"
+            }
+        }
     }
     
     // MARK: - API Endpoints

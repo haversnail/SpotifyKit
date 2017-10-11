@@ -740,6 +740,529 @@ extension SKUser {
     public static func getCurrentUser(handler: @escaping (SKUser?, Error?) -> Void) { // getAuthenticatedUser
         makeCurrentUserRequest().perform(handler: handler)
     }
+    
+    // MARK: Get a User's Playlists ✔︎
+    
+    /// Creates and returns the request used to get a user's playlists.
+    ///
+    /// - Parameter page: The parameters for paginating the results, specifying the index and number of items to return. If no parameters are supplied, the request will return the default number of items beginning with first item.
+    /// - Returns: An `SKRequest` instance with which to perform the API request.
+    public func makePlaylistsRequest(page: PageParameters?) -> SKRequest {
+        
+        var parameters = [String: Any]()
+        parameters[Constants.QueryParameters.limit] = page?.limit
+        parameters[Constants.QueryParameters.offset] = page?.offset
+        return SKRequest(method: .GET, endpoint: Constants.Endpoints.playlistsForUser(id: id), parameters: parameters)!
+    }
+    
+    /// Gets a list of the playlists owned or followed by a Spotify user.
+    ///
+    /// - Note: This method uses the `SPTAuth` default instance session to authenticate the underlying request. If this session does not contain a valid access token, the request will result in an error. The access token must have been issued on behalf of the current user.
+    ///
+    /// Private playlists are only retrievable for the *current user* and requires the "`playlist-read-private`" scope to have been authorized by the user. Note that this scope alone will not return collaborative playlists, even though they are always private.
+    ///
+    /// See [Using Scopes](https://developer.spotify.com/spotify-web-api/using-scopes/) for more details.
+    ///
+    /// - Parameters:
+    ///   - page: The parameters for paginating the results, specifying the index and number of items to return. If no parameters are supplied, the request will return the default number of items beginning with first item. The default value is `nil`.
+    ///   - handler: The callback handler for the request. The parameters for this handler are:
+    ///     - `user`: The current authenticated user, if available.
+    ///     - `error`: An error object identifying if and why the request failed, or `nil` if the request was successful.
+    public func getPlaylists(page: PageParameters? = nil, handler: @escaping (Page<SKPlaylist>?, Error?) -> Void) {
+        makePlaylistsRequest(page: page).perform(handler: handler)
+    }
+    
+    // TODO: Get Authenticated User's Playlists
+}
+
+// MARK: - Playlist Requests
+
+extension SKPlaylist {
+    
+    // MARK: Create a Playlist ✔︎
+    
+    /// Creates and returns the request used to create a new playlist.
+    ///
+    /// - Parameters:
+    ///   - userID: The [Spotify ID](https://developer.spotify.com/web-api/user-guide/#spotify-uris-and-ids) for the current authenticated user. **Note**: the access token provided to this request must have been issued on behalf of this user, who must have authorized either the "`playlist-modify-public`" or "`playlist-modify-private`" scope. See [Using Scopes](https://developer.spotify.com/web-api/using-scopes/) for more details.
+    ///   - name: The name for the new playlist. This name does not need to be unique; a user may have several playlists with the same name.
+    ///   - description: An optional description of the playlist.
+    ///   - isPublic: `true` if the playlist will be public, `false` if private. **Note**: to create private playlists, the user must have authorized the "`playlist-modify-private`" scope.
+    ///   - isCollaborative: `true` if the playlist will be collaborative, `false` otherwise. **Note**: to create collaborative playlists, the user must have authorized both "`playlist-modify-private`" and "`playlist-modify-public`" scopes.
+    /// - Returns: An `SKRequest` instance with which to perform the API request.
+    public static func makeNewPlaylistRequest(userID: String, name: String, description: String?, isPublic: Bool, isCollaborative: Bool) -> SKRequest {
+        
+        let request = SKRequest(method: .POST, endpoint: Constants.Endpoints.playlistsForUser(id: userID))!
+        
+        typealias RequestBody = Constants.RequestBodies.PlaylistDetailsBody
+        let data = try! RequestBody(name: name,
+                                    description: description,
+                                    isPublic: isPublic,
+                                    isCollaborative: isCollaborative).data()
+        
+        request.addMultipartData(data, type: .json)
+        return request
+    }
+    
+    /// Creates a new, empty playlist for the current authenticated user.
+    ///
+    /// - Note: This method uses the `SPTAuth` default instance session to provide the user ID for, and the access token to authenticate, the underlying request. If this session does not contain a valid access token, the request will result in an error; if this session does not contain a valid username, then this method will do nothing.
+    ///
+    /// The access token must have been issued on behalf of the current user, who must have authorized either the "`playlist-modify-public`" or "`playlist-modify-private`" scope. See [Using Scopes](https://developer.spotify.com/web-api/using-scopes/) for more details.
+    ///
+    /// - Parameters:
+    ///   - name: The name for the new playlist. This name does not need to be unique; a user may have several playlists with the same name.
+    ///   - description: An optional description of the playlist. The default value is `nil`.
+    ///   - isPublic: `true` if the playlist should be public, `false` if private. The default value is `true`. **Note**: to create private playlists, the user must have authorized the "`playlist-modify-private`" scope.
+    ///   - isCollaborative: `true` if the playlist should be collaborative, `false` otherwise. The default value is `false`. **Note**: to create collaborative playlists, the user must have authorized both "`playlist-modify-private`" and "`playlist-modify-public`" scopes.
+    ///   - handler: The callback handler for the request. The parameters for this handler are:
+    ///     - `playlist`: The newly-created playlist object, if the request was successful.
+    ///     - `error`: An error object identifying if and why the request failed, or `nil` if the request was successful.
+    public static func createPlaylist(named name: String, description: String? = nil, isPublic: Bool = true, isCollaborative: Bool = false, handler: @escaping (SKPlaylist?, Error?) -> Void) {
+        
+        guard let userID = SPTAuth.defaultInstance()?.session?.canonicalUsername else { // TODO: Remove dependency on iOS SDK classes in the future.
+            assertionFailure("the 'SPTAuth' default instance session must contain a valid username."); return
+        }
+        
+        makeNewPlaylistRequest(userID: userID, name: name, description: description, isPublic: isPublic, isCollaborative: isCollaborative).perform(handler: handler)
+    }
+    
+    // MARK: Update a Playlist's Details ✔︎
+    
+    /// Creates and returns the request used to update a playlist's details.
+    ///
+    /// - Note: If all parameters have been set to `nil`, the returned request will not contain a request body.
+    ///
+    /// - Parameters:
+    ///   - name: The new name for the playlist.
+    ///   - description: A new description of the playlist.
+    ///   - isPublic: If `true`, the playlist will be made public; if `false`, private.
+    ///   - isCollaborative: If `true`, the playlist will become collaborative and other users will be able to modify the playlist in their Spotify client. **Note**: setting this parameter to `true` is only applicable to non-public playlists.
+    /// - Returns: An `SKRequest` instance with which to perform the API request.
+    public func makeUpdatePlaylistRequest(name: String?, description: String?, isPublic: Bool?, isCollaborative: Bool?) -> SKRequest {
+        
+        let request = SKRequest(method: .PUT, endpoint: Constants.Endpoints.playlist(id: id, ownerID: owner.id))!
+        
+        if name == nil && description == nil && isPublic == nil && isCollaborative == nil { return request }
+        
+        typealias RequestBody = Constants.RequestBodies.PlaylistDetailsBody
+        let data = try! RequestBody(name: name,
+                                    description: description,
+                                    isPublic: isPublic,
+                                    isCollaborative: isCollaborative).data()
+        
+        request.addMultipartData(data, type: .json)
+        return request
+    }
+    
+    /// Changes a playlist's details, including its name, description, and access levels.
+    ///
+    /// - Note: This method uses the `SPTAuth` default instance session to authenticate the underlying request. If this session does not contain a valid access token, the request will result in an error. The access token must have been issued on behalf of the current user.
+    ///
+    /// Changing the details for a public playlist requires authorization of the "`playlist-modify-public`" scope; likewise, changing the details for a private playlist requires authorization of the "`playlist-modify-private`" scope. See [Using Scopes](https://developer.spotify.com/web-api/using-scopes/) for more details.
+    ///
+    /// If all parameters have been set to nil, then this method will do nothing.
+    ///
+    /// - Parameters:
+    ///   - name: The new name for the playlist. The default value is `nil`.
+    ///   - description: A new description of the playlist. The default value is `nil`.
+    ///   - isPublic: If `true`, the playlist will be made public; if `false`, private. The default value is `nil`.
+    ///   - isCollaborative: If `true`, the playlist will become collaborative and other users will be able to modify the playlist in their Spotify client. **Note**: setting this parameter to `true` is only applicable to non-public playlists. The default value is `nil`.
+    ///   - handler: The callback handler for this request, providing an error object identifying if and why the request failed if unsuccessful.
+    public func update(name: String? = nil, description: String? = nil, isPublic: Bool? = nil, isCollaborative: Bool? = nil, handler: @escaping (Error?) -> Void) {
+        if name == nil && description == nil && isPublic == nil && isCollaborative == nil { return }
+        
+        makeUpdatePlaylistRequest(name: name, description: description, isPublic: isPublic, isCollaborative: isCollaborative).perform { (_, error) in
+            handler(error)
+        }
+    }
+    
+    // MARK: Get a Playlist's Tracks
+    
+    /// Creates and returns the request used to get a playlist's tracks.
+    ///
+    /// - Parameters:
+    ///   - locale: The locale-specific storefront/market from which to request.
+    ///   - page: The parameters for paginating the results, specifying the index and number of items to return. If no parameters are supplied, the request will return the default number of items beginning with first item.
+    /// - Returns: An `SKRequest` instance with which to perform the API request.
+    public func makeTracksRequest(locale: Locale?, page: PageParameters?) -> SKRequest {
+        
+        var parameters = [String: Any]()
+        parameters[Constants.QueryParameters.market] = locale?.regionCode
+        parameters[Constants.QueryParameters.limit] = page?.limit
+        parameters[Constants.QueryParameters.offset] = page?.offset
+        return SKRequest(method: .GET, endpoint: Constants.Endpoints.tracksForPlaylist(id: id, ownerID: owner.id), parameters: parameters)!
+    }
+    
+    /// Gets the full details for the tracks of a playlist.
+    ///
+    /// - Note: This method uses the `SPTAuth` default instance session to authenticate the underlying request. If this session does not contain a valid access token, the request will result in an error.
+    ///
+    /// Both public and private playlists belonging to any user are retrievable on provision of a valid access token.
+    ///
+    /// - Parameters:
+    ///   - locale: The locale-specific storefront/market from which to request. The default value is `Locale.current`, which represents the user's region settings at the time the method is called.
+    ///   - page: The parameters for paginating the results, specifying the index and number of items to return. If no parameters are supplied, the request will return the default number of items beginning with first item. The default value is `nil`.
+    ///   - handler: The callback handler for the request. The parameters for this handler are:
+    ///     - `tracks`: A paginated collection of full track objects, if available.
+    ///     - `error`: An error object identifying if and why the request failed, or `nil` if the request was successful.
+    public func getTracks(for locale: Locale? = SKCatalog.local.locale, page: PageParameters? = nil, handler: @escaping (Page<SKPlaylist.PlaylistTrack>?, Error?) -> Void) {
+        makeTracksRequest(locale: locale, page: page).perform(handler: handler)
+    }
+    
+    // MARK: Add Tracks to a Playlist ✔︎
+    
+    /// Creates and returns the request used to add tracks to the playlist.
+    ///
+    /// - Parameters:
+    ///   - tracks: A list of tracks to add.
+    ///   - position: The index at which to insert the tracks. If omitted or set to `nil`, the tracks will be appended to the playlist.
+    /// - Returns: An `SKRequest` instance with which to perform the API request.
+    public func makeAddTracksRequest(tracks: [SKTrack], position: Int?) -> SKRequest {
+        if tracks.isEmpty { assertionFailure("array of tracks must contain at least one track for the API request to be valid.") }
+        
+        var parameters = [String: Any]()
+        parameters[Constants.QueryParameters.uris] = tracks.isEmpty ? nil : tracks.map { $0.uri }
+        parameters[Constants.QueryParameters.position] = position
+        return SKRequest(method: .POST, endpoint: Constants.Endpoints.tracksForPlaylist(id: id, ownerID: owner.id), parameters: parameters)!
+    }
+    
+    /// Adds one or more tracks to the playlist.
+    ///
+    /// - Note: This method uses the `SPTAuth` default instance session to authenticate the underlying request. If this session does not contain a valid access token, the request will result in an error. The access token must have been issued on behalf of the current user.
+    ///
+    /// Adding tracks to a public playlist requires authorization of the "`playlist-modify-public`" scope; likewise, adding tracks to a private playlist (including collaborative playlists) requires authorization of the "`playlist-modify-private`" scope. See [Using Scopes](https://developer.spotify.com/web-api/using-scopes/) for more details.
+    ///
+    /// - Parameters:
+    ///   - tracks: A list of tracks to add.
+    ///   - position: The index at which to insert the tracks. If omitted or set to `nil`, the tracks will be appended to the playlist. The default value is `nil`.
+    ///   - handler: The callback handler for the request. The parameters for this handler are:
+    ///     - `snapshotID`: On success, the snapshot ID string identifying the version of this playlist that reflects the given changes. This value can be used to identify this specific version in subsequent requests.
+    ///     - `error`: An error object identifying if and why the request failed, or `nil` if the request was successful.
+    public func add(_ tracks: [SKTrack], at position: Int? = nil, handler: @escaping (String?, Error?) -> Void) {
+        makeAddTracksRequest(tracks: tracks, position: position).perform { (snapshotID: [String: String]?, error) in
+            handler(snapshotID?.first?.value, error)
+        }
+    }
+    
+    // MARK: Remove Tracks from a Playlist ✔︎
+    
+    /// Creates and returns the request used to remove tracks from the playlist.
+    ///
+    /// - Parameters:
+    ///   - tracks: The list of tracks to remove. The tracks' URIs must match those already in the playlist, otherwise the request will result in an error. Provide this parameter when attempting to remove all occurrences of a given track or set of tracks within the playlist. **Note**: If this parameter is supplied, then the `positions` parameter must be `nil`—the request cannot specify both positions and tracks simultaneously.
+    ///   - positions: An array of integers representing the indices of the tracks to remove. The values provided must be valid indices within the list of tracks. Provide this parameter when attempting to remove tracks at a specific position or positions within the playlist. **Note**: If this parameter is supplied, then the `tracks` parameter must be `nil`—the request cannot specify both positions and tracks simultaneously.
+    ///   - snapshotID: A specific playlist snapshot against which to perform the changes. When making subsequent playlist requests, use this parameter to supply the most recent snapshot identifier to avoid editing conflicts.
+    /// - Returns: An `SKRequest` instance with which to perform the API request.
+    public func makeRemoveTracksRequest(tracks: [SKTrack]?, positions: [Int]?, snapshotID: String?) -> SKRequest {
+        
+        let request = SKRequest(method: .DELETE, endpoint: Constants.Endpoints.tracksForPlaylist(id: id, ownerID: owner.id))!
+        
+        typealias RequestBody = Constants.RequestBodies.RemoveTracksBody
+        let tracks = tracks?.map { RequestBody.Track(uri: $0.uri) }
+        let data = try! RequestBody(tracks: tracks, positions: positions, snapshotID: snapshotID).data()
+        
+        request.addMultipartData(data, type: .json)
+        return request
+    }
+    
+    /// Removes one or more tracks from the playlist.
+    ///
+    /// - Note: This method uses the `SPTAuth` default instance session to authenticate the underlying request. If this session does not contain a valid access token, the request will result in an error. The access token must have been issued on behalf of the current user.
+    ///
+    /// Removing tracks from a public playlist requires authorization of the "`playlist-modify-public`" scope; likewise, removing tracks from a private playlist requires authorization of the "`playlist-modify-private`" scope. See [Using Scopes](https://developer.spotify.com/web-api/using-scopes/) for more details.
+    ///
+    /// - Parameters:
+    ///   - positions: An array of integers representing the indices of the tracks to remove. The values provided must be valid indices within the list of tracks. A maximum of 100 values can be sent at once.
+    ///   - snapshotID: The specific playlist snapshot against which to perform the changes. This parameter is required to guard against concurrent edits to the playlist. When making subsequent playlist requests, use this parameter to supply the most recent snapshot identifier to avoid editing conflicts. The default value is the playlist's current `snapshotID`.
+    ///   - handler: The callback handler for the request. The parameters for this handler are:
+    ///     - `snapshotID`: On success, the snapshot ID string identifying the version of this playlist that reflects the given changes. This value can be used to identify this specific version in subsequent requests.
+    ///     - `error`: An error object identifying if and why the request failed, or `nil` if the request was successful.
+    public func remove(at positions: [Int], inSnapshot snapshotID: String = "", handler: @escaping (String?, Error?) -> Void) { // removeTracks
+        
+        let snapshotID = snapshotID.isEmpty ? self.snapshotID : snapshotID
+        
+        makeRemoveTracksRequest(tracks: nil, positions: positions, snapshotID: snapshotID).perform { (snapshotID: [String: String]?, error) in
+            handler(snapshotID?.first?.value, error)
+        }
+    }
+    
+    /// Removes one or more tracks from the playlist.
+    ///
+    /// - Note: This method uses the `SPTAuth` default instance session to authenticate the underlying request. If this session does not contain a valid access token, the request will result in an error. The access token must have been issued on behalf of the current user.
+    ///
+    /// Removing tracks from a public playlist requires authorization of the "`playlist-modify-public`" scope; likewise, removing tracks from a private playlist requires authorization of the "`playlist-modify-private`" scope. See [Using Scopes](https://developer.spotify.com/web-api/using-scopes/) for more details.
+    ///
+    /// - Parameters:
+    ///   - position: An integer representing the index of the track to remove. The value provided must be a valid index within the list of tracks.
+    ///   - snapshotID: The specific playlist snapshot against which to perform the changes. This parameter is required to guard against concurrent edits to the playlist. When making subsequent playlist requests, use this parameter to supply the most recent snapshot identifier to avoid editing conflicts. The default value is the playlist's current `snapshotID`.
+    ///   - handler: The callback handler for the request. The parameters for this handler are:
+    ///     - `snapshotID`: On success, the snapshot ID string identifying the version of this playlist that reflects the given changes. This value can be used to identify this specific version in subsequent requests.
+    ///     - `error`: An error object identifying if and why the request failed, or `nil` if the request was successful.
+    public func remove(at position: Int, inSnapshot snapshotID: String = "", handler: @escaping (String?, Error?) -> Void) { // removeTrack
+        
+        
+        remove(at: [position], inSnapshot: snapshotID, handler: handler)
+    }
+    
+    /// Removes all occurrences of the specified tracks from the playlist.
+    ///
+    /// - Parameters:
+    ///   - tracks: The list of tracks to remove. The tracks' URIs must match those already in the playlist, otherwise the request will result in an error.
+    ///   - snapshotID: A specific playlist snapshot against which to perform the changes. When making subsequent playlist requests, use this parameter to supply the most recent snapshot identifier to avoid editing conflicts. The API will validate that the specified tracks exist and make the changes, even if more recent changes have been made to the playlist. The default value is `nil`.
+    ///   - handler: The callback handler for the request. The parameters for this handler are:
+    ///     - `snapshotID`: On success, the snapshot ID string identifying the version of this playlist that reflects the given changes. This value can be used to identify this specific version in subsequent requests.
+    ///     - `error`: An error object identifying if and why the request failed, or `nil` if the request was successful.
+    public func removeOccurrences(of tracks: [SKTrack], inSnapshot snapshotID: String? = nil, handler: @escaping (String?, Error?) -> Void) {
+        
+        makeRemoveTracksRequest(tracks: tracks, positions: nil, snapshotID: snapshotID).perform { (snapshotID: [String: String]?, error) in
+            handler(snapshotID?.first?.value, error)
+        }
+    }
+    
+    /// Removes all occurrences of the specified track from the playlist.
+    ///
+    /// - Parameters:
+    ///   - track: The track to remove. The track's URI must match one already in the playlist, otherwise the request will result in an error.
+    ///   - snapshotID: A specific playlist snapshot against which to perform the changes. When making subsequent playlist requests, use this parameter to supply the most recent snapshot identifier to avoid editing conflicts. The API will validate that the specified track exists and make the changes, even if more recent changes have been made to the playlist. The default value is `nil`.
+    ///   - handler: The callback handler for the request. The parameters for this handler are:
+    ///     - `snapshotID`: On success, the snapshot ID string identifying the version of this playlist that reflects the given changes. This value can be used to identify this specific version in subsequent requests.
+    ///     - `error`: An error object identifying if and why the request failed, or `nil` if the request was successful.
+    public func removeOccurrences(of track: SKTrack, inSnapshot snapshotID: String? = nil, handler: @escaping (String?, Error?) -> Void) {
+        
+        removeOccurrences(of: [track], inSnapshot: snapshotID, handler: handler)
+    }
+    
+    // MARK: Reorder a Playlist's Tracks ✔︎
+    
+    /// Creates and returns the request used to reorder tracks in a playlist.
+    ///
+    /// - Parameters:
+    ///   - startIndex: The index of the first track to be reordered.
+    ///   - rangeLength: The number of tracks to be reordered, beginning with the start index. If reordering a single track, set this parameter to `nil`.
+    ///   - position: The index of the track before which the reordered track(s) should be inserted.
+    ///   - snapshotID: A specific playlist snapshot against which to perform the changes.
+    /// - Returns: An `SKRequest` instance with which to perform the API request.
+    public func makeMoveTracksRequest(startIndex: Int, rangeLength: Int?, position: Int, snapshotID: String?) -> SKRequest {
+        
+        let request = SKRequest(method: .PUT, endpoint: Constants.Endpoints.tracksForPlaylist(id: id, ownerID: owner.id))!
+        
+        typealias RequestBody = Constants.RequestBodies.ReorderTracksBody
+        let data = try! RequestBody(startIndex: startIndex,
+                                    rangeLength: rangeLength,
+                                    newIndex: position,
+                                    snapshotID: snapshotID).data()
+        
+        request.addMultipartData(data, type: .json)
+        return request
+    }
+    
+    /// Reorders a track or a group of tracks in a playlist.
+    ///
+    /// When reordering tracks, the timestamp indicating when they were added and the user who added them will be kept untouched. In addition, users following the playlists will not be notified about changes in the playlists when the tracks are reordered.
+    ///
+    /// # Discussion
+    ///
+    /// When selecting which tracks to reorder, you can use a half-open range to select tracks up to a given index. For example:
+    ///
+    /// ## Listing 1
+    /// ````
+    /// let endIndex = playlist.totalTracks
+    /// playlist.move(at: 7..<endIndex, before: 0) {
+    ///     (snapshotID, error) in
+    ///     // Moves tracks at index seven onwards
+    ///     // to the beginning of the playlist.
+    /// }
+    /// ````
+    /// Alternatively, you can use a closed range to encompass all tracks at the given indices. For example:
+    ///
+    /// ## Listing 2
+    /// ````
+    /// let endIndex = playlist.totalTracks
+    /// playlist.move(at: 0...2, before: endIndex) {
+    ///     (snapshotID, error) in
+    ///     // Moves the first three tracks
+    ///     // to the end of the playlist.
+    /// }
+    /// ````
+    /// If you simply want to move a single track instead of a range of tracks, you can also provide a single index value. For example:
+    ///
+    /// ## Listing 3
+    /// ````
+    /// playlist.move(at: 5, before: 0) {
+    ///     (snapshotID, error) in
+    ///     // Moves the track at index five
+    ///     // to the beginning of the playlist.
+    /// }
+    /// ````
+    ///
+    /// For a better visualization on how reordering Spotify tracks works, see the [API Endpoint Reference](https://developer.spotify.com/web-api/reorder-playlists-tracks/).
+    ///
+    /// - Note: This method uses the `SPTAuth` default instance session to authenticate the underlying request. If this session does not contain a valid access token, the request will result in an error. The access token must have been issued on behalf of the current user.
+    ///
+    /// - Parameters:
+    ///   - indices: A contiguous range of integers representing the indices of the tracks to reorder, with the lower bound representing the index of the first track to be reordered. When using a closed range, the bounds of the range must be valid indices within the list of tracks; with a half-open range, all values up to (but not including) the upper bound must be valid indices within the list of tracks.
+    ///   - position: The index of the track before which the reordered track(s) should be inserted. To move tracks to the end of the playlist, set this parameter to the track list's "past the end" position—that is, the position one greater than the last valid index. With the exception of this value, this parameter must be a valid index within the list of tracks.
+    ///   - snapshotID: A specific playlist snapshot against which to perform the changes. The default value is `nil`.
+    ///   - handler: The callback handler for the request. The parameters for this handler are:
+    ///     - `snapshotID`: On success, the snapshot ID string identifying the version of this playlist that reflects the given changes. This value can be used to identify this specific version in subsequent requests.
+    ///     - `error`: An error object identifying if and why the request failed, or `nil` if the request was successful.
+    public func move(at indices: Range<Int>, before position: Int, inSnapshot snapshotID: String? = nil, handler: @escaping (String?, Error?) -> Void) { // moveTracks
+        
+        makeMoveTracksRequest(startIndex: indices.lowerBound,
+                              rangeLength: indices.count == 1 ? nil : indices.count,
+                              position: position,
+                              snapshotID: snapshotID)
+            
+            .perform { (snapshotID: [String: String]?, error) in
+                handler(snapshotID?.first?.value, error)
+        }
+    }
+    
+    /// Reorders a track or a group of tracks in a playlist.
+    ///
+    /// When reordering tracks, the timestamp indicating when they were added and the user who added them will be kept untouched. In addition, users following the playlists will not be notified about changes in the playlists when the tracks are reordered.
+    ///
+    /// # Discussion
+    ///
+    /// When selecting which tracks to reorder, you can use a half-open range to select tracks up to a given index. For example:
+    ///
+    /// ## Listing 1
+    /// ````
+    /// let endIndex = playlist.totalTracks
+    /// playlist.move(at: 7..<endIndex, before: 0) {
+    ///     (snapshotID, error) in
+    ///     // Moves tracks at index seven onwards
+    ///     // to the beginning of the playlist.
+    /// }
+    /// ````
+    /// Alternatively, you can use a closed range to encompass all tracks at the given indices. For example:
+    ///
+    /// ## Listing 2
+    /// ````
+    /// let endIndex = playlist.totalTracks
+    /// playlist.move(at: 0...2, before: endIndex) {
+    ///     (snapshotID, error) in
+    ///     // Moves the first three tracks
+    ///     // to the end of the playlist.
+    /// }
+    /// ````
+    /// If you simply want to move a single track instead of a range of tracks, you can also provide a single index value. For example:
+    ///
+    /// ## Listing 3
+    /// ````
+    /// playlist.move(at: 5, before: 0) {
+    ///     (snapshotID, error) in
+    ///     // Moves the track at index five
+    ///     // to the beginning of the playlist.
+    /// }
+    /// ````
+    ///
+    /// For a better visualization on how reordering Spotify tracks works, see the [API Endpoint Reference](https://developer.spotify.com/web-api/reorder-playlists-tracks/).
+    ///
+    /// - Note: This method uses the `SPTAuth` default instance session to authenticate the underlying request. If this session does not contain a valid access token, the request will result in an error. The access token must have been issued on behalf of the current user.
+    ///
+    /// - Parameters:
+    ///   - indices: A contiguous range of integers representing the indices of the tracks to reorder, with the lower bound representing the index of the first track to be reordered. When using a closed range, the bounds of the range must be valid indices within the list of tracks; with a half-open range, all values up to (but not including) the upper bound must be valid indices within the list of tracks.
+    ///   - position: The index of the track before which the reordered track(s) should be inserted. To move tracks to the end of the playlist, set this parameter to the track list's "past the end" position—that is, the position one greater than the last valid index. With the exception of this value, this parameter must be a valid index within the list of tracks.
+    ///   - snapshotID: A specific playlist snapshot against which to perform the changes. The default value is `nil`.
+    ///   - handler: The callback handler for the request. The parameters for this handler are:
+    ///     - `snapshotID`: On success, the snapshot ID string identifying the version of this playlist that reflects the given changes. This value can be used to identify this specific version in subsequent requests.
+    ///     - `error`: An error object identifying if and why the request failed, or `nil` if the request was successful.
+    public func move(at indices: ClosedRange<Int>, before position: Int, inSnapshot snapshotID: String? = nil, handler: @escaping (String?, Error?) -> Void) {
+        move(at: Range(indices), before: position, handler: handler)
+    }
+    
+    /// Reorders a track or a group of tracks in a playlist.
+    ///
+    /// When reordering tracks, the timestamp indicating when they were added and the user who added them will be kept untouched. In addition, users following the playlists will not be notified about changes in the playlists when the tracks are reordered.
+    ///
+    /// # Discussion
+    ///
+    /// When selecting which tracks to reorder, you can use a half-open range to select tracks up to a given index. For example:
+    ///
+    /// ## Listing 1
+    /// ````
+    /// let endIndex = playlist.totalTracks
+    /// playlist.move(at: 7..<endIndex, before: 0) {
+    ///     (snapshotID, error) in
+    ///     // Moves tracks at index seven onwards
+    ///     // to the beginning of the playlist.
+    /// }
+    /// ````
+    /// Alternatively, you can use a closed range to encompass all tracks at the given indices. For example:
+    ///
+    /// ## Listing 2
+    /// ````
+    /// let endIndex = playlist.totalTracks
+    /// playlist.move(at: 0...2, before: endIndex) {
+    ///     (snapshotID, error) in
+    ///     // Moves the first three tracks
+    ///     // to the end of the playlist.
+    /// }
+    /// ````
+    /// If you simply want to move a single track instead of a range of tracks, you can also provide a single index value. For example:
+    ///
+    /// ## Listing 3
+    /// ````
+    /// playlist.move(at: 5, before: 0) {
+    ///     (snapshotID, error) in
+    ///     // Moves the track at index five
+    ///     // to the beginning of the playlist.
+    /// }
+    /// ````
+    ///
+    /// For a better visualization on how reordering Spotify tracks works, see the [API Endpoint Reference](https://developer.spotify.com/web-api/reorder-playlists-tracks/).
+    ///
+    /// - Note: This method uses the `SPTAuth` default instance session to authenticate the underlying request. If this session does not contain a valid access token, the request will result in an error. The access token must have been issued on behalf of the current user.
+    ///
+    /// - Parameters:
+    ///   - index: The index of the track to reorder. This parameter must be valid index within the list of tracks.
+    ///   - position: The index of the track before which the reordered track(s) should be inserted. To move tracks to the end of the playlist, set this parameter to the track list's "past the end" position—that is, the position one greater than the last valid index. With the exception of this value, this parameter must be a valid index within the list of tracks.
+    ///   - snapshotID: A specific playlist snapshot against which to perform the changes. The default value is `nil`.
+    ///   - handler: The callback handler for the request. The parameters for this handler are:
+    ///     - `snapshotID`: On success, the snapshot ID string identifying the version of this playlist that reflects the given changes. This value can be used to identify this specific version in subsequent requests.
+    ///     - `error`: An error object identifying if and why the request failed, or `nil` if the request was successful.
+    public func move(at index: Int, before position: Int, inSnapshot snapshotID: String? = nil, handler: @escaping (String?, Error?) -> Void) { // moveTrack
+        
+        makeMoveTracksRequest(startIndex: index, rangeLength: nil, position: position, snapshotID: snapshotID)
+            .perform { (snapshotID: [String: String]?, error) in
+                handler(snapshotID?.first?.value, error)
+        }
+    }
+    
+    // MARK: Replace a Playlist's Tracks ✔︎
+    
+    /// Creates and returns the request used to replace tracks in the playlist.
+    ///
+    /// - Parameter tracks: The list of tracks with which to replace the contents of the playlist. To clear all tracks from the playlist, set this parameter to an empty array.
+    /// - Returns: An `SKRequest` instance with which to perform the API request.
+    public func makeReplaceTracksRequest(tracks: [SKTrack]) -> SKRequest {
+        
+        var parameters = [String: Any]()
+        parameters[Constants.QueryParameters.uris] = tracks.map { $0.uri }  // Note: We want to keep this parameter even if 'tracks' is empty,
+                                                                            // in case the user wants to clear all tracks from the playlist.
+                                                                            // (i.e., "/playlist/{playlistID}/tracks?uris=")
+        return SKRequest(method: .PUT, endpoint: Constants.Endpoints.tracksForPlaylist(id: id, ownerID: owner.id), parameters: parameters)!
+    }
+    
+    /// Replaces all the tracks in the playlist.
+    ///
+    /// - Note: This method uses the `SPTAuth` default instance session to authenticate the underlying request. If this session does not contain a valid access token, the request will result in an error. The access token must have been issued on behalf of the current user.
+    ///
+    /// Replacing tracks in a public playlist requires authorization of the "`playlist-modify-public`" scope; likewise, replacing tracks in a private playlist requires authorization of the "`playlist-modify-private`" scope. See [Using Scopes](https://developer.spotify.com/web-api/using-scopes/) for more details.
+    ///
+    /// - Parameters:
+    ///   - tracks: The list of tracks with which to replace the contents of the playlist. To clear all tracks from the playlist, set this parameter to an empty array.
+    ///   - handler: The callback handler for the request. The parameters for this handler are:
+    ///     - `snapshotID`: On success, the snapshot ID string identifying the version of this playlist that reflects the given changes. This value can be used to identify this specific version in subsequent requests.
+    ///     - `error`: An error object identifying if and why the request failed, or `nil` if the request was successful.
+    public func replace(with tracks: [SKTrack], handler: @escaping (String?, Error?) -> Void) {
+        
+        makeReplaceTracksRequest(tracks: tracks).perform { (snapshotID: [String: String]?, error) in
+            handler(snapshotID?.first?.value, error)
+        }
+    }
 }
 
 // MARK: - Paging Requests

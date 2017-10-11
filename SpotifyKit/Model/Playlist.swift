@@ -69,7 +69,7 @@ public struct SKPlaylist: JSONDecodable {
     public let isPublic: Bool?
     
     /// The version identifier for the current playlist. Can be supplied in other requests to target a specific playlist version.
-    public let snapshotID: String?
+    public let snapshotID: String
     
     /// A link to the Web API endpoint where full details of the playlist's tracks can be retrieved.
     public let tracksURL: URL
@@ -148,7 +148,7 @@ extension SKPlaylist: Decodable {
         name = try values.decode(String.self, forKey: .name)
         owner = try values.decode(SKUser.self, forKey: .owner)
         isPublic = try values.decodeIfPresent(Bool.self, forKey: .isPublic)
-        snapshotID = try values.decodeIfPresent(String.self, forKey: .snapshotID)
+        snapshotID = try values.decode(String.self, forKey: .snapshotID)
         userDescription = try values.decodeIfPresent(String.self, forKey: .userDescription)
         followers = try values.decodeIfPresent(SKFollowers.self, forKey: .followers)
         
