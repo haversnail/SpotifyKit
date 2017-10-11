@@ -105,7 +105,9 @@ public struct Page<Element: Decodable>: JSONDecodable {
         do { self = try decoder.decode(Page<Element>.self, from: jsonData) }
         
         // If we're not finding the keys we're expecting,
-        catch DecodingError.keyNotFound(_, let context) {
+        catch let DecodingError.keyNotFound(key, context) {
+            // if the key we're missing isn't in the top level, then this error was thrown from decoding a sub-element; pass it along:
+            if context.codingPath.count > 1 { throw DecodingError.keyNotFound(key, context) }
             // then try decoding as a paged collection wrapped in a single key-value pair dictionary,
             guard let collection = try decoder.decode([String: Page<Element>].self, from: jsonData).first?.value else {
                 // throwing an error if the dictionary object is empty:
