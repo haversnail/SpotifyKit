@@ -335,37 +335,39 @@ public class SKRequest { // Inheriting from NSObject causes buildtime error: cla
         //let urlSession = URLSession(configuration: .default)
         let task = urlSession.dataTask(with: preparedURLRequest) { (data, response, error) in
 
-            //var handlerError: Error? = nil
-            //var status: HTTPStatusCode? = nil
-            //defer { handler(data, handlerError) }
-
-            // Assert that we received a non-nil data object, and handle any errors returned by the data task:
-            guard data != nil, response != nil, error == nil else { // Are these two mutually exclusive?
+            // If any URL loading errors were encountered, forward and return here:
+            if let error = error {
                 handler(nil, error)
                 return
             }
 
             // Make sure the response is in fact an HTTP URL response:
-            guard let httpResponse = response as? HTTPURLResponse else {
-                assertionFailure("Performing any request to the Spotify Web API is an HTTPS request and should therefore always return an HTTPURLResponse object.") //fatalError()?
+            guard let response = response as? HTTPURLResponse else {
+                assertionFailure("Performing any request to the Spotify Web API is an HTTPS request and should therefore always return an HTTPURLResponse object.")
+                handler(nil, URLError(.unsupportedURL))
                 return
             }
 
             // Make sure the status code of that response matches one of the expected HTTP status codes:
-            guard let statusCode = HTTPStatusCode(rawValue: httpResponse.statusCode) else {
+            guard let statusCode = HTTPStatusCode(rawValue: response.statusCode) else {
                 // TODO: Return an "unknown status code" error.
                 return
             }
             print(statusCode)
 
+            guard let data = data else {
+                handler(nil, nil)
+                return
+            }
+            
             // Handle any error objects returned by the Web API:
-            if let apiError = try? SKError(from: data!) {
+            if let apiError = try? SKError(from: data) {
                 handler(nil, apiError)
                 return
             }
 
             // Handle any authentication error objects returned by the web API:
-            if let authError = try? SKAuthenticationError(from: data!) {
+            if let authError = try? SKAuthenticationError(from: data) {
                 handler(nil, authError)
                 return
             }
