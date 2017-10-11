@@ -33,7 +33,26 @@ extension JSONDecodable {
 
 /// A type that can encode itself to a JSON representation.
 public protocol JSONEncodable: Encodable {
-    // TODO: Design JSONEncodable.
+    /// Encodes the given type to a JSON representation suitable for the [Spotify Web API](https://developer.spotify.com/web-api/).
+    ///
+    /// - Returns: A `Data` object containing the payload.
+    /// - Throws: Any errors encountered during encoding. See [EncodingError](apple-reference-documentation://hsJCtRo9pa) for more details.
+    func data() throws -> Data
+}
+
+extension JSONEncodable {
+    public func data() throws -> Data {
+        let encoder = JSONEncoder()
+        
+        encoder.dataEncodingStrategy = .base64
+        encoder.dateEncodingStrategy = .iso8601
+        encoder.outputFormatting = .prettyPrinted // Do we need this?
+        if #available(iOS 11.0, *) {
+            encoder.outputFormatting.insert(.sortedKeys)
+        }
+        
+        return try encoder.encode(self)
+    }
 }
 
 // MARK: - Array Conformance
@@ -69,9 +88,34 @@ extension Array: JSONDecodable/* where Element: Decodable */{ // FIXME: Uncommen
     }
 }
 
-extension Array: JSONEncodable/* where Element: Encodable */{ // FIXME: Uncomment when conditional conformance is available.
-    // TODO: Design JSONEncodable.
+//extension Array: JSONEncodable/* where Element: Encodable */{ // FIXME: Uncomment when conditional conformance is available.
+//    // TODO: Design JSONEncodable.
+//}
+
+// MARK: - Dictionary Conformance
+
+extension Dictionary: JSONDecodable/* where Key: Decodable, Value: Decodable */{ // FIXME: Uncomment when conditional conformance is available.
+    
+    public init(from jsonData: Data) throws {
+        
+        self.init() // Initialize self here so we can get type(of: self).
+        guard Key.self is Decodable.Type else {
+            preconditionFailure("\(type(of: self)) does not conform to 'JSONDecodable' because \(Key.self) does not conform to 'Decodable'")
+        }
+        
+        guard Value.self is Decodable.Type else {
+            preconditionFailure("\(type(of: self)) does not conform to 'JSONDecodable' because \(Value.self) does not conform to 'Decodable'")
+        }
+        
+        let decoder = JSONDecoder()
+        decoder.dateDecodingStrategy = .iso8601
+        self = try decoder.decode([Key: Value].self, from: jsonData)
+    }
 }
+
+//extension Dictionary: JSONEncodable/* where Key: Encodable, Value: Encodable */{ // FIXME: Uncomment when conditional conformance is available.
+//    // TODO: Design JSONEncodable.
+//}
 
 // MARK: - Optional Conformance
 
@@ -90,9 +134,9 @@ extension Optional: JSONDecodable/* where Wrapped: Decodable */{ // FIXME: Uncom
     }
 }
 
-extension Optional: JSONEncodable/* where Wrapped: Encodable */{ // FIXME: Uncomment when conditional conformance is available.
-    // TODO: Design JSONEncodable.
-}
+//extension Optional: JSONEncodable/* where Wrapped: Encodable */{ // FIXME: Uncomment when conditional conformance is available.
+//    // TODO: Design JSONEncodable.
+//}
 
 // MARK: - Decoding Error Convenience Methods
 
