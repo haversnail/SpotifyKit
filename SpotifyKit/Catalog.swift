@@ -287,7 +287,7 @@ public struct SKCatalog {
     /// - Returns: An `SKRequest` instance with which to perform the API request.
     public func makeRecommendationsRequest(genres: [String],
                                            artists: [SKArtist],
-                                           tracks: [SKTrack],
+                                           tracks: [SKTrack], // TODO: Change to protocol constraints.
                                            attributes: Set<SKTrackAttribute>,
                                            limit: Int?) -> SKRequest {
         
@@ -652,7 +652,7 @@ extension SKTrack {
     }
 }
 
-extension Array where Element == SKTrack {
+extension Collection where Element: Track {
     
     // MARK: Get Audio Features for Several Tracks ✔︎
     
@@ -902,9 +902,9 @@ extension SKPlaylist {
     ///   - locale: The locale-specific storefront/market from which to request. The default value is `Locale.current`, which represents the user's region settings at the time the method is called.
     ///   - page: The parameters for paginating the results, specifying the index and number of items to return. If no parameters are supplied, the request will return the default number of items beginning with first item. The default value is `nil`.
     ///   - handler: The callback handler for the request. The parameters for this handler are:
-    ///     - `tracks`: A paginated collection of full track objects, if available.
+    ///     - `tracks`: A paginated collection of full playlist track objects, if available.
     ///     - `error`: An error object identifying if and why the request failed, or `nil` if the request was successful.
-    public func getTracks(for locale: Locale? = SKCatalog.local.locale, page: Pagination? = nil, handler: @escaping (Page<SKPlaylist.PlaylistTrack>?, Error?) -> Void) {
+    public func getTracks(for locale: Locale? = SKCatalog.local.locale, page: Pagination? = nil, handler: @escaping (Page<SKPlaylistTrack>?, Error?) -> Void) {
         makeTracksRequest(locale: locale, page: page).perform(handler: handler)
     }
     
@@ -916,7 +916,7 @@ extension SKPlaylist {
     ///   - tracks: A list of tracks to add.
     ///   - position: The index at which to insert the tracks. If omitted or set to `nil`, the tracks will be appended to the playlist.
     /// - Returns: An `SKRequest` instance with which to perform the API request.
-    public func makeAddTracksRequest(tracks: [SKTrack], position: Int?) -> SKRequest {
+    public func makeAddTracksRequest<T: Collection>(tracks: T, position: Int?) -> SKRequest where T.Element: Track {
         if tracks.isEmpty { assertionFailure("array of tracks must contain at least one track for the API request to be valid.") }
         
         var parameters = [String: Any]()
@@ -925,7 +925,7 @@ extension SKPlaylist {
         return SKRequest(method: .POST, endpoint: Constants.Endpoints.tracksForPlaylist(id: id, ownerID: owner.id), parameters: parameters)!
     }
     
-    /// Adds one or more tracks to the playlist.
+    /// Adds the given tracks to the playlist.
     ///
     /// - Note: This method uses the `SPTAuth` default instance session to authenticate the underlying request. If this session does not contain a valid access token, the request will result in an error. The access token must have been issued on behalf of the current user.
     ///
@@ -937,23 +937,37 @@ extension SKPlaylist {
     ///   - handler: The callback handler for the request. The parameters for this handler are:
     ///     - `snapshotID`: On success, the snapshot ID string identifying the version of this playlist that reflects the given changes. This value can be used to identify this specific version in subsequent requests.
     ///     - `error`: An error object identifying if and why the request failed, or `nil` if the request was successful.
-    public func add(_ tracks: [SKTrack], at position: Int? = nil, handler: @escaping (String?, Error?) -> Void) {
+    public func add<T: Collection>(_ tracks: T, at position: Int? = nil, handler: @escaping (String?, Error?) -> Void) where T.Element: Track {
         makeAddTracksRequest(tracks: tracks, position: position).perform { (snapshotID: [String: String]?, error) in
             handler(snapshotID?.first?.value, error)
         }
     }
     
+    /// Adds the given track to the playlist.
+    ///
+    /// - Note: This method uses the `SPTAuth` default instance session to authenticate the underlying request. If this session does not contain a valid access token, the request will result in an error. The access token must have been issued on behalf of the current user.
+    ///
+    /// Adding tracks to a public playlist requires authorization of the "`playlist-modify-public`" scope; likewise, adding tracks to a private playlist (including collaborative playlists) requires authorization of the "`playlist-modify-private`" scope. See [Using Scopes](https://developer.spotify.com/web-api/using-scopes/) for more details.
+    ///
+    /// - Parameters:
+    ///   - track: The track to add.
+    ///   - position: The index at which to insert the track. If omitted or set to `nil`, the track will be appended to the playlist. The default value is `nil`.
+    ///   - handler: The callback handler for the request. The parameters for this handler are:
+    ///     - `snapshotID`: On success, the snapshot ID string identifying the version of this playlist that reflects the given changes. This value can be used to identify this specific version in subsequent requests.
+    ///     - `error`: An error object identifying if and why the request failed, or `nil` if the request was successful.
+    public func add<T: Track>(_ track: T, at position: Int? = nil, handler: @escaping (String?, Error?) -> Void) {
+        add([track], handler: handler)
+    }
+
     // MARK: Remove Tracks from a Playlist ✔︎
     
     /// Creates and returns the request used to remove tracks from the playlist.
     ///
-    /// - Parameters:
-    ///   - tracks: The list of tracks to remove. The tracks' URIs must match those already in the playlist, otherwise the request will result in an error. Provide this parameter when attempting to remove all occurrences of a given track or set of tracks within the playlist. **Note**: If this parameter is supplied, then the `positions` parameter must be `nil`—the request cannot specify both positions and tracks simultaneously.
-    ///   - positions: An array of integers representing the indices of the tracks to remove. The values provided must be valid indices within the list of tracks. Provide this parameter when attempting to remove tracks at a specific position or positions within the playlist. **Note**: If this parameter is supplied, then the `tracks` parameter must be `nil`—the request cannot specify both positions and tracks simultaneously.
-    ///   - snapshotID: A specific playlist snapshot against which to perform the changes. When making subsequent playlist requests, use this parameter to supply the most recent snapshot identifier to avoid editing conflicts.
-    /// - Returns: An `SKRequest` instance with which to perform the API request.
-    public func makeRemoveTracksRequest(tracks: [SKTrack]?, positions: [Int]?, snapshotID: String?) -> SKRequest {
-        
+    /// - Note: This method is used only to construct the `SKRequest` instance, and is kept private to (a) avoid confusion regarding which parameters can be supplied, and (b) remove the need to explicitly define '`T`' for cases where we aren't providing any tracks to the request.
+    ///
+    /// The request cannot specify both positions and tracks simultaneously.
+    private func _makeRemoveTracksRequest<T: Collection>(tracks: T?, positions: [Int]?, snapshotID: String?) -> SKRequest where T.Element: Track {
+
         let request = SKRequest(method: .DELETE, endpoint: Constants.Endpoints.tracksForPlaylist(id: id, ownerID: owner.id))!
         
         typealias RequestBody = Constants.RequestBodies.RemoveTracksBody
@@ -962,6 +976,27 @@ extension SKPlaylist {
         
         request.addMultipartData(data, type: .json)
         return request
+    }
+    
+    /// Creates and returns the request used to remove tracks from the playlist.
+    ///
+    /// - Parameters:
+    ///   - tracks: The list of tracks to remove. The tracks' URIs must match those already in the playlist, otherwise the request will result in an error. Call the method with this parameter when attempting to remove all occurrences of a given track or set of tracks within the playlist.
+    ///   - snapshotID: A specific playlist snapshot against which to perform the changes. When making subsequent playlist requests, use this parameter to supply the most recent snapshot identifier to avoid editing conflicts.
+    /// - Returns: An `SKRequest` instance with which to perform the API request.
+    public func makeRemoveTracksRequest<T: Collection>(tracks: T, snapshotID: String?) -> SKRequest where T.Element: Track {
+        return _makeRemoveTracksRequest(tracks: tracks, positions: nil, snapshotID: snapshotID)
+    }
+    
+    /// Creates and returns the request used to remove tracks from the playlist.
+    ///
+    /// - Parameters:
+    ///   - positions: An array of integers representing the indices of the tracks to remove. The values provided must be valid indices within the list of tracks.  Call the method with this parameter when attempting to remove tracks at a specific position or positions within the playlist.
+    ///   - snapshotID: A specific playlist snapshot against which to perform the changes. When making subsequent playlist requests, use this parameter to supply the most recent snapshot identifier to avoid editing conflicts.
+    /// - Returns: An `SKRequest` instance with which to perform the API request.
+    public func makeRemoveTracksRequest(positions: [Int], snapshotID: String?) -> SKRequest {
+        let tracks: [SKTrack]? = nil // Compiler cannot infer 'T' from simply passing nil, so we create a typed nil value here.
+        return _makeRemoveTracksRequest(tracks: tracks, positions: positions, snapshotID: snapshotID)
     }
     
     /// Removes one or more tracks from the playlist.
@@ -980,7 +1015,7 @@ extension SKPlaylist {
         
         let snapshotID = snapshotID.isEmpty ? self.snapshotID : snapshotID
         
-        makeRemoveTracksRequest(tracks: nil, positions: positions, snapshotID: snapshotID).perform { (snapshotID: [String: String]?, error) in
+        makeRemoveTracksRequest(positions: positions, snapshotID: snapshotID).perform { (snapshotID: [String: String]?, error) in
             handler(snapshotID?.first?.value, error)
         }
     }
@@ -999,7 +1034,6 @@ extension SKPlaylist {
     ///     - `error`: An error object identifying if and why the request failed, or `nil` if the request was successful.
     public func remove(at position: Int, inSnapshot snapshotID: String = "", handler: @escaping (String?, Error?) -> Void) { // removeTrack
         
-        
         remove(at: [position], inSnapshot: snapshotID, handler: handler)
     }
     
@@ -1011,9 +1045,9 @@ extension SKPlaylist {
     ///   - handler: The callback handler for the request. The parameters for this handler are:
     ///     - `snapshotID`: On success, the snapshot ID string identifying the version of this playlist that reflects the given changes. This value can be used to identify this specific version in subsequent requests.
     ///     - `error`: An error object identifying if and why the request failed, or `nil` if the request was successful.
-    public func removeOccurrences(of tracks: [SKTrack], inSnapshot snapshotID: String? = nil, handler: @escaping (String?, Error?) -> Void) {
+    public func removeOccurrences<T: Collection>(of tracks: T, inSnapshot snapshotID: String? = nil, handler: @escaping (String?, Error?) -> Void) where T.Element: Track {
         
-        makeRemoveTracksRequest(tracks: tracks, positions: nil, snapshotID: snapshotID).perform { (snapshotID: [String: String]?, error) in
+        makeRemoveTracksRequest(tracks: tracks, snapshotID: snapshotID).perform { (snapshotID: [String: String]?, error) in
             handler(snapshotID?.first?.value, error)
         }
     }
@@ -1026,7 +1060,7 @@ extension SKPlaylist {
     ///   - handler: The callback handler for the request. The parameters for this handler are:
     ///     - `snapshotID`: On success, the snapshot ID string identifying the version of this playlist that reflects the given changes. This value can be used to identify this specific version in subsequent requests.
     ///     - `error`: An error object identifying if and why the request failed, or `nil` if the request was successful.
-    public func removeOccurrences(of track: SKTrack, inSnapshot snapshotID: String? = nil, handler: @escaping (String?, Error?) -> Void) {
+    public func removeOccurrences<T: Track>(of track: T, inSnapshot snapshotID: String? = nil, handler: @escaping (String?, Error?) -> Void) {
         
         removeOccurrences(of: [track], inSnapshot: snapshotID, handler: handler)
     }
@@ -1235,7 +1269,7 @@ extension SKPlaylist {
     ///
     /// - Parameter tracks: The list of tracks with which to replace the contents of the playlist. To clear all tracks from the playlist, set this parameter to an empty array.
     /// - Returns: An `SKRequest` instance with which to perform the API request.
-    public func makeReplaceTracksRequest(tracks: [SKTrack]) -> SKRequest {
+    public func makeReplaceTracksRequest<T: Collection>(tracks: T) -> SKRequest where T.Element: Track {
         
         var parameters = [String: Any]()
         parameters[Constants.QueryParameters.uris] = tracks.map { $0.uri }  // Note: We want to keep this parameter even if 'tracks' is empty,
@@ -1255,7 +1289,7 @@ extension SKPlaylist {
     ///   - handler: The callback handler for the request. The parameters for this handler are:
     ///     - `snapshotID`: On success, the snapshot ID string identifying the version of this playlist that reflects the given changes. This value can be used to identify this specific version in subsequent requests.
     ///     - `error`: An error object identifying if and why the request failed, or `nil` if the request was successful.
-    public func replace(with tracks: [SKTrack], handler: @escaping (String?, Error?) -> Void) {
+    public func replace<T: Collection>(with tracks: T, handler: @escaping (String?, Error?) -> Void) where T.Element: Track {
         
         makeReplaceTracksRequest(tracks: tracks).perform { (snapshotID: [String: String]?, error) in
             handler(snapshotID?.first?.value, error)

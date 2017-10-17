@@ -25,7 +25,7 @@ class RequestTests: XCTestCase {
         // FIXME: 2. Request an access token.
         /// - Note: Be sure to request all scopes when retrieving a new token, as some tests will perform API requests that require access to private user data.
         /// - SeeAlso: https://developer.spotify.com/web-api/console/
-        let accessToken = "BQDeUq5pROz9Ah6IIY7-rq0R0oIpj7DZ8zUie5WwGOmLI7e2SUy7g-9fmYigWvgaUnNIdAfSk-BhhiXGpSjeI0MX6XMJu-Iykm1bdKG9kmVWFI5q3yullW68boFwnySms4h-bo63bFe6mSVzfA"
+        let accessToken = "BQBN3-907XqdcNKpbIIgzPiAumuTkbpMl7-IuFWpW6lc6WoiOqZUe4-_q1oc8m9IPnX8faF_ELTXz1yfvuBAms-tOw9kqGPr-9ImPms9_zX1kO19z5a8JhGtl6JDbYJ_iNbvT0KAPGnNLsePnXYL1uHUjMPPSD_KL9baEQ8jFhAVu3NXMDrW5Q6ruoxTDLrwCPZ7gyECWWZ-qnbAguaRwJ7d3bc8xEYpNiFbo7I-Sw"
         
         SPTAuth.defaultInstance().session = SPTSession(userName: username,
                                                        accessToken: accessToken,
@@ -1024,7 +1024,7 @@ class RequestTests: XCTestCase {
         
         // Arrange:
         let playlist = try! SKPlaylist(from: ephemeralPlaylistData) // FIXME: Update JSON data to match your test playlist.
-        let request = playlist.makeRemoveTracksRequest(tracks: nil, positions: [0], snapshotID: nil)
+        let request = playlist.makeRemoveTracksRequest(positions: [0], snapshotID: nil)
         let promise = makeRequestExpectation()
         promise.expectedFulfillmentCount = 2
         defer { wait(for: promise) }
@@ -1053,7 +1053,15 @@ class RequestTests: XCTestCase {
             //XCTAssertEqual(snapshotID, playlist.snapshotID)
         }
         
-        guard let track = playlist.tracks?.last?.track else { return }
+        // Arrange:
+        guard let track = playlist.tracks?.last else { return }
+        let request2 = playlist.makeRemoveTracksRequest(tracks: [track], snapshotID: nil)
+        
+        // Assert request body:
+        guard let body2 = decode(Constants.RequestBodies.RemoveTracksBody.self, from: request2) else { return }
+        XCTAssertEqual(body2.tracks?[0].uri, track.uri)
+        XCTAssertNil(body2.snapshotID)
+        XCTAssertNil(body2.positions)
         
         playlist.removeOccurrences(of: track) { (snapshotID, error) in
             defer { promise.fulfill() }
@@ -1109,7 +1117,7 @@ class RequestTests: XCTestCase {
         
         // Arrange:
         let playlist = try! SKPlaylist(from: ephemeralPlaylistData) // FIXME: Update JSON data to match your test playlist.
-        let tracks = playlist.tracks!.map { $0.track }
+        let tracks = playlist.tracks!
         let request = playlist.makeReplaceTracksRequest(tracks: tracks)
         let promise = makeRequestExpectation()
         defer { wait(for: promise) }
@@ -1161,7 +1169,7 @@ class RequestTests: XCTestCase {
                 XCTFail("'tracks' was nil."); return
             }
             
-            for track in tracks { print(track.track.name) }
+            for track in tracks { print(track.name) }
         }
     }
     

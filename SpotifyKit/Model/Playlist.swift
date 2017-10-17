@@ -10,36 +10,8 @@ import Foundation
 
 public struct SKPlaylist: JSONDecodable {
     
-    // MARK: - Embedded Types
-    
     /// An enum representing the expected `type` value for a playlist object.
     private enum ObjectType: String, Codable { case playlist }
-    
-    public struct PlaylistTrack: Decodable {
-        
-        /// The date and time the track was added.
-        /// - Note: Some very old playlists may return `nil` in this field.
-        public let dateAdded: Date?
-        
-        /// The Spotify user who added the track.
-        /// - Note: Some very old playlists may return `nil` in this field.
-        public let userAdded: SKUser?
-        
-        /// Whether this track is a [local file](https://developer.spotify.com/web-api/local-files-spotify-playlists/) or not.
-        public let isLocal: Bool
-        
-        /// Information about the track.
-        public let track: SKTrack
-        
-        // MARK: Keys
-        
-        private enum CodingKeys: String, CodingKey {
-            case dateAdded = "added_at"
-            case userAdded = "added_by"
-            case isLocal = "is_local"
-            case track
-        }
-    }
 
     // MARK: - Object Properties (Simplified)
     
@@ -86,7 +58,7 @@ public struct SKPlaylist: JSONDecodable {
     // MARK: - Object Properties (Full)
     
     /// A collection containing information about the tracks of the playlist.
-    public let tracks: Page<PlaylistTrack>?
+    public let tracks: Page<SKPlaylistTrack>?
     
     /// The playlist description. Only returned for modified, verified playlists, otherwise `nil`.
     public let userDescription: String?
@@ -153,7 +125,7 @@ extension SKPlaylist: Decodable {
         followers = try values.decodeIfPresent(SKFollowers.self, forKey: .followers)
         
         // Handle both simplified and full "tracks" objects:
-        tracks = try? values.decode(Page<PlaylistTrack>.self, forKey: .tracks)
+        tracks = try? values.decode(Page<SKPlaylistTrack>.self, forKey: .tracks)
         tracksURL = try tracks?.url ?? values.decode(SimplifiedTracks.self, forKey: .tracks).url
         totalTracks = try tracks?.total ?? values.decode(SimplifiedTracks.self, forKey: .tracks).total
     }
