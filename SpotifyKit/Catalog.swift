@@ -496,8 +496,6 @@ public struct SKCatalog {
     
     // TODO: - Follow
     
-    // TODO: - Playlists
-    
     // TODO: - Users
     
     // TODO: - User Library
@@ -877,7 +875,7 @@ extension SKPlaylist {
         }
     }
     
-    // MARK: Get a Playlist's Tracks
+    // MARK: Get a Playlist's Tracks ✔︎
     
     /// Creates and returns the request used to get a playlist's tracks.
     ///
