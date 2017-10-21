@@ -61,7 +61,7 @@ public struct Page<Element: Decodable>: JSONDecodable {
     }
     
     /// The array of objects.
-    private let _items: [Element]
+    private let items: [Element]
     
     /// The maximum number of items in the response (as set in the query or by default).
     public let limit: Int
@@ -87,7 +87,7 @@ public struct Page<Element: Decodable>: JSONDecodable {
     
     private enum CodingKeys: String, CodingKey {
         case url = "href"
-        case _items = "items"
+        case items
         case limit
         case nextURL = "next"
         case offset
@@ -108,7 +108,7 @@ public struct Page<Element: Decodable>: JSONDecodable {
         catch let DecodingError.keyNotFound(key, context) {
             // if the key we're missing isn't in the top level, then this error was thrown from decoding a sub-element; pass it along:
             if context.codingPath.count > 1 { throw DecodingError.keyNotFound(key, context) }
-            // then try decoding as a paged collection wrapped in a single key-value pair dictionary,
+            // otherwise, try decoding as a paged collection wrapped in a single key-value pair dictionary,
             guard let collection = try decoder.decode([String: Page<Element>].self, from: jsonData).first?.value else {
                 // throwing an error if the dictionary object is empty:
                 throw DecodingError.dataCorruptedError(atCodingPath: context.codingPath, debugDescription: "JSON object is empty.")
@@ -129,26 +129,26 @@ extension Page: Collection { // Forwards Collection logic to the Page structure 
     public typealias Index = Array<Element>.Index
 
     public var startIndex: Index {
-        return _items.startIndex
+        return items.startIndex
     }
     
     public var endIndex: Index {
-        return _items.endIndex
+        return items.endIndex
     }
     
     public subscript(position: Index) -> Element {
-        return _items[position]
+        return items[position]
     }
     
     public func index(after i: Index) -> Index {
-        return _items.index(after: i)
+        return items.index(after: i)
     }
 }
 
 extension Page: BidirectionalCollection { // Extends support for backward as well as forward index traversal.
     
     public func index(before i: Index) -> Index {
-        return _items.index(before: i)
+        return items.index(before: i)
     }
 }
 

@@ -65,8 +65,11 @@ public struct SKPlaylist: JSONDecodable {
     
     /// Information about the followers of the playlist.
     public let followers: SKFollowers?
+}
 
-    // MARK: - Keys
+// MARK: - Custom Decoding
+
+extension SKPlaylist: Decodable {
     
     private enum CodingKeys: String, CodingKey {
         case isCollaborative = "collaborative"
@@ -84,11 +87,6 @@ public struct SKPlaylist: JSONDecodable {
         case type
         case uri
     }
-}
-
-// MARK: - Custom Decoding
-
-extension SKPlaylist: Decodable {
     
     /// Used for simplified playlist objects, when the entire collection of tracks is not returned.
     private struct SimplifiedTracks: Decodable {

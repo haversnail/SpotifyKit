@@ -51,17 +51,18 @@ public struct SKPlaybackEvent {
     
     /// The context the track was played from.
     public let context: PlaybackContext
+}
+
+// MARK: - Custom Decoding
+
+extension SKPlaybackEvent: Decodable {
     
     private enum CodingKeys: String, CodingKey {
         case track
         case playbackDate = "played_at"
         case context
     }
-}
-
-// MARK: - Custom Decoding
-
-extension SKPlaybackEvent: Decodable {
+    
     public init(from decoder: Decoder) throws {
         let values = try decoder.container(keyedBy: CodingKeys.self)
         context = try values.decode(PlaybackContext.self, forKey: .context)
