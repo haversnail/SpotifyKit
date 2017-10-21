@@ -512,11 +512,11 @@ extension SKArtist {
     /// Creates and returns the request used to get the current artist's albums.
     ///
     /// - Parameters:
-    ///   - types: The types of albums by which to filter results. If no types are specified (i.e., parameter is set to an empty array), all album types will be returned. See `SKAlbum.AlbumType` for possible values.
+    ///   - types: The types of albums by which to filter results. If no types are specified (i.e., parameter is set to an empty array), all album types will be returned. See `SKAlbumType` for possible values.
     ///   - locale: The locale-specific storefront/market from which to request. **Note:** If set to `nil`, results will be returned for all markets and will likely contain duplicate results, one for each market in which the album is available.
     ///   - page: The parameters for paginating the results, specifying the index and number of items to return. If no parameters are supplied, the request will return the default number of items beginning with first item.
     /// - Returns: An `SKRequest` instance with which to perform the API request.
-    public func makeAlbumsRequest(types: Set<SKAlbum.AlbumType>, locale: Locale?, page: Pagination?) -> SKRequest {
+    public func makeAlbumsRequest(types: Set<SKAlbumType>, locale: Locale?, page: Pagination?) -> SKRequest {
         
         var parameters = [String: Any]()
         parameters[Constants.QueryParameters.albumType] = types.isEmpty ? nil : types
@@ -531,13 +531,13 @@ extension SKArtist {
     /// - Note: This method uses the `SPTAuth` default instance session to authenticate the underlying request. If this session does not contain a valid access token, the request will result in an error.
     ///
     /// - Parameters:
-    ///   - types: The types of albums by which to filter results. If no types are specified, all album types will be returned. See `SKAlbum.AlbumType` for possible values. The default value is an empty array.
+    ///   - types: The types of albums by which to filter results. If no types are specified, all album types will be returned. See `SKAlbumType` for possible values. The default value is an empty array.
     ///   - locale: The locale-specific storefront/market from which to request. The default value is `Locale.current`, which represents the user's region settings at the time the method is called. **Note:** If set to `nil`, results will be returned for all markets and will likely contain duplicate results, one for each market in which the album is available.
     ///   - page: The parameters for paginating the results, specifying the index and number of items to return. If no parameters are supplied, the request will return the default number of items beginning with first item. The default value is `nil`.
     ///   - handler: The callback handler for the request. The parameters for this handler are:
     ///     - `albums`: A paginated collection of simplified albums, if available.
     ///     - `error`: An error object identifying if and why the request failed, or `nil` if the request was successful.
-    public func getAlbums(filteredBy types: Set<SKAlbum.AlbumType> = [], for locale: Locale? = SKCatalog.local.locale, page: Pagination? = nil, handler: @escaping (Page<SKAlbum>?, Error?) -> Void) {
+    public func getAlbums(filteredBy types: Set<SKAlbumType> = [], for locale: Locale? = SKCatalog.local.locale, page: Pagination? = nil, handler: @escaping (Page<SKAlbum>?, Error?) -> Void) {
         makeAlbumsRequest(types: types, locale: locale, page: page).perform(handler: handler)
     }
     

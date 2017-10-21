@@ -113,13 +113,13 @@ class ModelTests: XCTestCase {
     }
     
     func testSavedAlbums() {
-        guard let savedAlbums = initTestObject(Page<SavedItem<SKAlbum>>.self, from: savedAlbumData) else { return }
-        XCTAssertEqual(savedAlbums[0].album.name, "Hold My Home")
+        guard let albums = initTestObject(Page<SKSavedAlbum>.self, from: savedAlbumData) else { return }
+        XCTAssertEqual(albums[0].name, "Hold My Home")
     }
     
     func testSavedTracks() {
-        guard let savedTracks = initTestObject(Page<SavedItem<SKTrack>>.self, from: savedTrackData) else { return }
-        XCTAssertEqual(savedTracks[10].track.name, "Counting Stars")
+        guard let tracks = initTestObject(Page<SKSavedTrack>.self, from: savedTrackData) else { return }
+        XCTAssertEqual(tracks[10].name, "Counting Stars")
     }
 
     func testTrack() {
@@ -136,7 +136,7 @@ class ModelTests: XCTestCase {
     
     func testUser() {
         guard let user = initTestObject(SKUser.self, from: userData) else { return }
-        XCTAssertEqual(user.id, "haversnail")
+        XCTAssertEqual(user.id, "ahavermale")
     }
 
     func testPayloadMismatch() {

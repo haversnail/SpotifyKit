@@ -9,7 +9,6 @@
 /* Begin PBXBuildFile section */
 		11179A271F22D11600376AFD /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 11179A261F22D11600376AFD /* SystemConfiguration.framework */; };
 		11179A291F22D12300376AFD /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 11179A281F22D12300376AFD /* AVFoundation.framework */; };
-		1119FD0A1F26E2F400EE47E2 /* SavedItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1119FD091F26E2F400EE47E2 /* SavedItem.swift */; };
 		1119FD0C1F272DFE00EE47E2 /* SavedTracks.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1119FD0B1F272DFE00EE47E2 /* SavedTracks.swift */; };
 		1122F9AD1F24698A00A9AD89 /* JSONCodable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1122F9AC1F24698A00A9AD89 /* JSONCodable.swift */; };
 		1122F9AE1F24704D00A9AD89 /* SpotifyAudioPlayback.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 119A294A1F20985C009D4A88 /* SpotifyAudioPlayback.framework */; };
@@ -67,7 +66,6 @@
 /* Begin PBXFileReference section */
 		11179A261F22D11600376AFD /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
 		11179A281F22D12300376AFD /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
-		1119FD091F26E2F400EE47E2 /* SavedItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SavedItem.swift; sourceTree = "<group>"; };
 		1119FD0B1F272DFE00EE47E2 /* SavedTracks.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SavedTracks.swift; sourceTree = "<group>"; };
 		1122F9AC1F24698A00A9AD89 /* JSONCodable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JSONCodable.swift; sourceTree = "<group>"; };
 		1122F9B11F248D6800A9AD89 /* Album.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Album.swift; sourceTree = "<group>"; };
@@ -254,7 +252,6 @@
 				11353BF41F2EDA4D00F9924E /* PlaybackEvent.swift */,
 				113C5F6C1F26C235005D1DC6 /* Playlist.swift */,
 				11EC8A011F2DE2340066A5F0 /* Recommendations.swift */,
-				1119FD091F26E2F400EE47E2 /* SavedItem.swift */,
 				117FFD941F7229E100C76833 /* SearchResults.swift */,
 				119DC3D51F239B93003DB3BD /* Track.swift */,
 				113C5F721F26CB37005D1DC6 /* User.swift */,
@@ -385,7 +382,6 @@
 				11353BF51F2EDA4D00F9924E /* PlaybackEvent.swift in Sources */,
 				114A0F6C1F6EAF33009E652C /* Constants.swift in Sources */,
 				113C5F731F26CB37005D1DC6 /* User.swift in Sources */,
-				1119FD0A1F26E2F400EE47E2 /* SavedItem.swift in Sources */,
 				11E001F21F491D800045A502 /* Device.swift in Sources */,
 				119DC3D01F23948F003DB3BD /* Image.swift in Sources */,
 				114A0F6A1F6E9C18009E652C /* Catalog.swift in Sources */,

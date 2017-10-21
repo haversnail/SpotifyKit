@@ -109,7 +109,7 @@ public protocol Track {
     var popularity: Int? { get }
 }
 
-// MARK: - Track Object
+// MARK: - Track Type
 
 public struct SKTrack: Track, JSONDecodable {
     
@@ -182,7 +182,19 @@ public struct SKTrack: Track, JSONDecodable {
     }
 }
 
-// MARK: - Playlist Track Object
+// MARK: Expandable Conformance
+
+extension SKTrack: Expandable {
+    
+    public var isSimplified: Bool {
+        return
+            album == nil &&
+                externalIDs == nil &&
+                popularity == nil
+    }
+}
+
+// MARK: - Playlist Track Type
 
 public struct SKPlaylistTrack: Track, JSONDecodable {
     
@@ -230,20 +242,40 @@ public struct SKPlaylistTrack: Track, JSONDecodable {
     }
 }
 
-// TODO: - Saved Track Object
+// MARK: - Saved Track Type
 
-// MARK: - Expandable Conformance
-
-extension SKTrack: Expandable {
+public struct SKSavedTrack: Track, JSONDecodable {
     
-    public var isSimplified: Bool {
-        return
-            album == nil &&
-            externalIDs == nil &&
-            popularity == nil
+    /// The date and time the track was saved.
+    public let dateAdded: Date
+    
+    /// The nested track object.
+    private let track: SKTrack
+    
+    // MARK: Track Properties
+    
+    public var artists: [SKArtist]              { return track.artists }
+    public var availableMarkets: [String]?      { return track.availableMarkets }
+    public var contentRating: SKContentRating   { return track.contentRating }
+    public var discNumber: Int                  { return track.discNumber }
+    public var duration: TimeInterval           { return track.duration }
+    public var externalURLs: [String : URL]     { return track.externalURLs }
+    public var isPlayable: Bool?                { return track.isPlayable }
+    public var id: String                       { return track.id }
+    public var uri: String                      { return track.uri }
+    public var url: URL                         { return track.url }
+    public var trackLink: SKTrackLink?          { return track.trackLink }
+    public var name: String                     { return track.name }
+    public var previewURL: URL?                 { return track.previewURL }
+    public var trackNumber: Int                 { return track.trackNumber }
+    public var album: SKAlbum?                  { return track.album }
+    public var externalIDs: [String : String]?  { return track.externalIDs }
+    public var popularity: Int?                 { return track.popularity }
+    
+    // MARK: Keys
+    
+    private enum CodingKeys: String, CodingKey {
+        case dateAdded = "added_at"
+        case track
     }
 }
-
-// MARK: - User Savable Conformance
-
-extension SKTrack: UserSavable {}
