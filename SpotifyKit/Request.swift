@@ -78,56 +78,6 @@ public enum HTTPStatusCode: Int, Codable {
 
 
 
-/// The access scopes used to request data from the Spotify Web API. See [Using Scopes](https://developer.spotify.com/web-api/using-scopes/) for all possible scopes, their prompts during authentication, and more details.
-public enum SKScope: String, Codable {
-    
-    /// Read access to user's private playlists.
-    case readPrivatePlaylists = "playlist-read-private"
-    
-    /// Include collaborative playlists when requesting a user's playlists.
-    case readCollaborativePlaylists = "playlist-read-collaborative"
-    
-    /// Write access to a user's public playlists.
-    case modifyPublicPlaylists = "playlist-modify-public"
-    
-    /// Write access to a user's private playlists.
-    case modifyPrivatePlaylists = "playlist-modify-private"
-    
-    /// Control playback of a Spotify track. This scope is currently only available to Spotify native SDKs (for example, the [iOS SDK](https://developer.spotify.com/technologies/spotify-ios-sdk/) and the [Android SDK](https://developer.spotify.com/technologies/spotify-android-sdk/)). The user must have a Spotify Premium account.
-    case streaming
-    
-    /// Upload a playlist cover image.
-    case uploadUGCImage = "ugc-image-upload"
-    
-    /// Write/delete access to the list of artists and other users that the user follows.
-    case modifyUserFollows = "user-follow-modify"
-    
-    /// Read access to the list of artists and other users that the user follows.
-    case readUserFollows = "user-follow-read"
-    
-    /// Read access to a user's "Your Music" library.
-    case readUserLibrary = "user-library-read"
-    
-    /// Write/delete access to a user's "Your Music" library.
-    case modifyUserLibrary = "user-library-modify"
-    
-    /// Read access to user’s subscription details (type of user account).
-    case readUserPrivate = "user-read-private"
-    
-    // user-read-recently-played?
-    
-    /// Read access to the user's birthdate.
-    case readUserBirthdate = "user-read-birthdate"
-    
-    /// Read access to user’s email address.
-    case readUserEmail = "user-read-email"
-    
-    /// Read access to a user's top artists and tracks.
-    case readUserTopContent = "user-top-read"
-}
-
-
-
 // MARK: SKRequestHandler
 
 /// The callback handler for a request.
