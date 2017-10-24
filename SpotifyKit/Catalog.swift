@@ -837,7 +837,7 @@ extension SKPlaylist {
     ///   - isPublic: If `true`, the playlist will be made public; if `false`, private.
     ///   - isCollaborative: If `true`, the playlist will become collaborative and other users will be able to modify the playlist in their Spotify client. **Note**: setting this parameter to `true` is only applicable to non-public playlists.
     /// - Returns: An `SKRequest` instance with which to perform the API request.
-    public func makeUpdatePlaylistRequest(name: String?, description: String?, isPublic: Bool?, isCollaborative: Bool?) -> SKRequest {
+    public func makeUpdateDetailsRequest(name: String?, description: String?, isPublic: Bool?, isCollaborative: Bool?) -> SKRequest {
         
         let request = SKRequest(method: .PUT, endpoint: Constants.Endpoints.playlist(id: id, ownerID: owner.id))!
         
@@ -865,14 +865,87 @@ extension SKPlaylist {
     ///   - name: The new name for the playlist. The default value is `nil`.
     ///   - description: A new description of the playlist. The default value is `nil`.
     ///   - isPublic: If `true`, the playlist will be made public; if `false`, private. The default value is `nil`.
-    ///   - isCollaborative: If `true`, the playlist will become collaborative and other users will be able to modify the playlist in their Spotify client. **Note**: setting this parameter to `true` is only applicable to non-public playlists. The default value is `nil`.
-    ///   - handler: The callback handler for this request, providing an error object identifying if and why the request failed if unsuccessful.
-    public func update(name: String? = nil, description: String? = nil, isPublic: Bool? = nil, isCollaborative: Bool? = nil, handler: @escaping (Error?) -> Void) {
+    ///   - isCollaborative: If `true`, the playlist will become collaborative and other users will be able to modify the playlist in their Spotify client. The default value is `nil`. **Note**: setting this parameter to `true` is only applicable to non-public playlists.
+    ///   - handler: The callback handler for the request, providing an error object identifying if and why the request failed, or `nil` if the request was successful.
+    public func update(name: String? = nil, description: String? = nil, isPublic: Bool? = nil, isCollaborative: Bool? = nil, handler: @escaping SKErrorHandler) {
         if name == nil && description == nil && isPublic == nil && isCollaborative == nil { return }
         
-        makeUpdatePlaylistRequest(name: name, description: description, isPublic: isPublic, isCollaborative: isCollaborative).perform { (_, error) in
-            handler(error)
+        makeUpdateDetailsRequest(name: name, description: description, isPublic: isPublic, isCollaborative: isCollaborative).perform(handler: handler)
+    }
+    
+    // MARK: Upload a Custom Playlist Cover Image ✔︎
+    
+    /// Creates and returns the request used to upload a custom playlist cover image.
+    ///
+    /// - Parameter data: The image data to upload. The payload must contain Base-64 encoded JPEG image data. The maximum encoded payload size is 256 KB.
+    /// - Returns: An `SKRequest` instance with which to perform the API request.
+    public func makeUpdateImageRequest(data: Data) -> SKRequest { // makeUploadImageRequest(data: Data) // makeReplaceImageRequest(data: Data)
+        
+        let request = SKRequest(method: .PUT, endpoint: Constants.Endpoints.imageForPlaylist(id: id, ownerID: owner.id))!
+        request.addMultipartData(data, type: .jpeg)
+        return request
+    }
+    
+    /// Uploads a custom playlist cover image, replacing the current image used to represent the given playlist.
+    ///
+    /// - Note: This method uses the `SPTAuth` default instance session to authenticate the underlying request. If this session does not contain a valid access token, the request will result in an error.
+    ///
+    /// The access token must have been issued on behalf of the user who owns the playlist, and must have the "`ugc-image-upload`" scope authorized. In addition, the token must also contain the "`playlist-modify-public`" and/or "`playlist-modify-private`" scopes, depending the access level of playlist. See [Using Scopes](https://developer.spotify.com/web-api/using-scopes/) for more details.
+    ///
+    /// - Parameters:
+    ///   - data: The image data to upload. The payload must contain Base-64 encoded JPEG image data. The maximum encoded payload size is 256 KB.
+    ///   - handler: The callback handler for the request, providing an error object identifying if and why the request failed, or `nil` if the request was successful.
+    public func updateImage(with data: Data, handler: @escaping SKErrorHandler) { // uploadImage(_ data: ...) // replaceImage(with data: ...)
+        
+        // If the size exceeds the maximum file size, call the handler now and return a custom error message (API doesn't return an error for this):
+        guard data.count <= Constants.maxImageSize else {
+            let size = Float(data.count) / 1000
+            
+            let sizeText = size < 1000 ? String(format: "%.1f", size) + " KB" : String(format: "%.1f", size/1000) + " MB"
+            
+            let message = """
+            The final Base-64 encoded JPEG image is too large (\(sizeText)).
+            Consider reducing the image size or lowering the compression quality.
+            """
+            
+            handler(SKError(status: .badRequest, message: message))
+            return
         }
+
+        makeUpdateImageRequest(data: data).perform(handler: handler)
+//        makeUpdateImageRequest(data: data).perform { (_, status, error) in
+//            if let error = error {
+//                handler(error); return
+//            }
+//
+//            guard status == .accepted else {
+//                // TODO: Pass error to handler.
+//                return
+//            }
+//        }
+    }
+    
+    /// Uploads a custom playlist cover image, replacing the current image used to represent the given playlist.
+    ///
+    /// - Note: This method uses the `SPTAuth` default instance session to authenticate the underlying request. If this session does not contain a valid access token, the request will result in an error.
+    ///
+    /// The access token must have been issued on behalf of the user who owns the playlist, and must have the "`ugc-image-upload`" scope authorized. In addition, the token must also contain the "`playlist-modify-public`" and/or "`playlist-modify-private`" scopes, depending the access level of playlist. See [Using Scopes](https://developer.spotify.com/web-api/using-scopes/) for more details.
+    ///
+    /// - Parameters:
+    ///   - image: The image data to upload. The maximum encoded payload size is 256 KB. **Note**: if there is a problem generating Base-64 encoded JPEG image data from the given `UIImage`—for example, if the image has no data or if the underlying `CGImageRef` contains data in an unsupported bitmap format—then this method will do nothing and the provided callback handler will not be executed.
+    ///   - quality: The compression quality of the resulting JPEG image, expressed as a value from 0.0 to 1.0. The value 0.0 represents the maximum compression (or lowest quality) while the value 1.0 represents the least compression (or best quality). The default value is 0.8.
+    ///   - handler: The callback handler for the request, providing an error object identifying if and why the request failed, or `nil` if the request was successful.
+    public func updateImage(with image: UIImage, quality: Float = 0.8, handler: @escaping SKErrorHandler) { // replaceImage(with image: ...)
+        
+        guard let data = UIImageJPEGRepresentation(image, CGFloat(quality)) else {
+            print("UIImage could not be converted to a JPEG representation."); return
+        }
+        
+        //print("Image data size (before encoding):", Float(data.count) / 1000, "KB")
+        //let base64Data = data.base64EncodedData()
+        //print("Image data size (after encoding):", Float(base64Data.count) / 1000, "KB")
+        
+        updateImage(with: data.base64EncodedData(), handler: handler)
     }
     
     // MARK: Get a Playlist's Tracks ✔︎

@@ -24,8 +24,9 @@ class RequestTests: XCTestCase {
         
         // FIXME: 2. Request an access token.
         /// - Note: Be sure to request all scopes when retrieving a new token, as some tests will perform API requests that require access to private user data.
-        /// - SeeAlso: https://developer.spotify.com/web-api/console/
-        let accessToken = "BQBN3-907XqdcNKpbIIgzPiAumuTkbpMl7-IuFWpW6lc6WoiOqZUe4-_q1oc8m9IPnX8faF_ELTXz1yfvuBAms-tOw9kqGPr-9ImPms9_zX1kO19z5a8JhGtl6JDbYJ_iNbvT0KAPGnNLsePnXYL1uHUjMPPSD_KL9baEQ8jFhAVu3NXMDrW5Q6ruoxTDLrwCPZ7gyECWWZ-qnbAguaRwJ7d3bc8xEYpNiFbo7I-Sw"
+        ///
+        /// You can request a token through the Web API Console [here](https://developer.spotify.com/web-api/console/get-current-user/token?scope=user-read-private&scope=user-read-birthdate&scope=user-read-email&scope=playlist-read-private&scope=playlist-read-collaborative&scope=playlist-modify-public&scope=playlist-modify-private&scope=user-library-read&scope=user-library-modify&scope=user-follow-read&scope=user-follow-modify&scope=user-top-read&scope=user-read-playback-state&scope=user-read-recently-played&scope=user-read-currently-playing&scope=user-modify-playback-state&scope=ugc-image-upload).
+        let accessToken = "BQD3bNcaYRtPT-g3eE8ndd7n-an4A0iVoMqGLtn1SeqEy-79XKzrM414MAnIrmF5X9Ae3qnNhBKuSTBa39Lmbm4uedBtE1tDxxKwKS_nl2bvBVRoL2IwG2y8QrLcJJ7x1pqwtXpaTRj0gG2DtlgKyhSbB701X8ixKsRoe7KYDyo_GGXBrahqieTfaVIF_u8PT8hmv2w9QXLXjOfmlNYUlERS_8jZwjsF1fxs_43s8SW84-3dnNaK683liJsUbA1WAsH5GqSltxxRJdecDozLE8YMAiD0jYiSjJ3hJ8zQEooWK5vLhg6Y-4XLeRUaC5w7DtmGyvysN8Z8"
         
         SPTAuth.defaultInstance().session = SPTSession(userName: username,
                                                        accessToken: accessToken,
@@ -968,12 +969,12 @@ class RequestTests: XCTestCase {
 //        }
     }
     
-    func testUpdatePlaylist() {
+    func testUpdatePlaylistDetails() {
         
         // Arrange:
         let playlist = try! SKPlaylist(from: ephemeralPlaylistData) // FIXME: Update JSON data to match your test playlist.
         let description = "A playlist under test by the SpotifyKit framework."
-        let request = playlist.makeUpdatePlaylistRequest(name: nil, description: description, isPublic: nil, isCollaborative: nil)
+        let request = playlist.makeUpdateDetailsRequest(name: nil, description: description, isPublic: nil, isCollaborative: nil)
         let promise = makeRequestExpectation()
         defer { wait(for: promise) }
         
@@ -995,6 +996,48 @@ class RequestTests: XCTestCase {
             if let error = error {
                 XCTFail(error.localizedDescription); return
             }
+        }
+    }
+    
+    func testUpdatePlaylistImage() {
+        
+        // Arrange:
+        let playlist = try! SKPlaylist(from: ephemeralPlaylistData) // FIXME: Update JSON data to match your test playlist.
+        let image: UIImage = {
+            let testBundle = Bundle(for: type(of: self))
+            return UIImage(named: "cover-alt", in: testBundle, compatibleWith: nil)!
+        }()
+        let data = UIImageJPEGRepresentation(image, 0.8)!.base64EncodedData()
+        let request = playlist.makeUpdateImageRequest(data: data)
+        let promise = makeRequestExpectation()
+        promise.expectedFulfillmentCount = 2
+        defer { wait(for: promise) }
+        
+        // Assert request:
+        XCTAssertEqual(request.method, .PUT)
+        XCTAssertEqual(request.url.path, "/v1/users/\(playlist.owner.id)/playlists/\(playlist.id)/images")
+        XCTAssertEqual(request.requestBody!.data, data)
+        
+        // Act:
+        playlist.updateImage(with: image) { (error) in
+            defer { promise.fulfill() }
+            
+            // Assert results:
+            if let error = error {
+                XCTFail(error.localizedDescription); return
+            }
+        }
+        
+        // Act, testing oversized image data:
+        playlist.updateImage(with: image, quality: 1.0) { (error) in
+            defer { promise.fulfill() }
+            
+            // Assert results:
+            guard let error = error as? SKError else {
+                XCTFail("request should have generated an error due to the image exceeding the maximum file size."); return
+            }
+            
+            XCTAssertEqual(error.status, .badRequest)
         }
     }
     

@@ -13,6 +13,7 @@ internal struct Constants {
     static let baseURL = URL(string: "https://api.spotify.com")!
     static let accountsURL = URL(string: "https://accounts.spotify.com")!
     static let tokenType = "Bearer"
+    static let maxImageSize = 256000 // 256 KB
     
     // MARK: - HTTP Header Fields
     

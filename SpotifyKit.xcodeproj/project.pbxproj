@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		11166EAE1F9C891C00F6D532 /* cover-alt.png in Resources */ = {isa = PBXBuildFile; fileRef = 11166EAD1F9C891C00F6D532 /* cover-alt.png */; };
+		11166EB01F9C914800F6D532 /* cover.png in Resources */ = {isa = PBXBuildFile; fileRef = 11166EAB1F9C7A3F00F6D532 /* cover.png */; };
 		11179A271F22D11600376AFD /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 11179A261F22D11600376AFD /* SystemConfiguration.framework */; };
 		11179A291F22D12300376AFD /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 11179A281F22D12300376AFD /* AVFoundation.framework */; };
 		1119FD0C1F272DFE00EE47E2 /* SavedTracks.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1119FD0B1F272DFE00EE47E2 /* SavedTracks.swift */; };
@@ -64,6 +66,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		11166EAB1F9C7A3F00F6D532 /* cover.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = cover.png; sourceTree = "<group>"; };
+		11166EAD1F9C891C00F6D532 /* cover-alt.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "cover-alt.png"; sourceTree = "<group>"; };
 		11179A261F22D11600376AFD /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
 		11179A281F22D12300376AFD /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
 		1119FD0B1F272DFE00EE47E2 /* SavedTracks.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SavedTracks.swift; sourceTree = "<group>"; };
@@ -140,6 +144,15 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		11166EAA1F9C79FF00F6D532 /* ImageStubs */ = {
+			isa = PBXGroup;
+			children = (
+				11166EAB1F9C7A3F00F6D532 /* cover.png */,
+				11166EAD1F9C891C00F6D532 /* cover-alt.png */,
+			);
+			path = ImageStubs;
+			sourceTree = "<group>";
+		};
 		1122F9B01F248BB700A9AD89 /* ModelStubs */ = {
 			isa = PBXGroup;
 			children = (
@@ -199,6 +212,7 @@
 			isa = PBXGroup;
 			children = (
 				1122F9B01F248BB700A9AD89 /* ModelStubs */,
+				11166EAA1F9C79FF00F6D532 /* ImageStubs */,
 				119DC3D91F239DDB003DB3BD /* ModelTests.swift */,
 				117FF2BF1F3C1033007073D7 /* RequestTests.swift */,
 				113D08481F208BEC00BECB27 /* Info.plist */,
@@ -358,6 +372,8 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				11166EB01F9C914800F6D532 /* cover.png in Resources */,
+				11166EAE1F9C891C00F6D532 /* cover-alt.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
