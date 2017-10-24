@@ -84,15 +84,21 @@ public enum HTTPStatusCode: Int, Codable {
 ///
 /// - Parameters:
 ///     - data: The data (typically an encoded JSON object) returned by the request, if any. If the data returned represents an API-specific error object, that object will be provided via the `error` parameter instead.
+///     - status: The API-specific HTTP status code associated with the request reponse. If the underlying URL request could not be completed successfully, or the URL response contained an unexpected status code, this parameter will be `nil`.
 ///     - error: An error object identifying if and why the request failed, or `nil` if the request was successful.
-public typealias SKRequestHandler = (_ data: Data?, /*_ status: HTTPStatusCode?, */_ error: Error?) -> Void // or `SKRequest.ResponseHandler`?
+public typealias SKRequestHandler = (_ data: Data?, _ status: HTTPStatusCode?, _ error: Error?) -> Void // or `SKRequest.ResponseHandler`?
 
 /// The callback handler for a request.
 ///
 /// - Parameters:
 ///     - object: The object decoded from the JSON data returned by the request. If the object could not be decoded from the data received, the `error` parameter will provide details.
 ///     - error: An error object identifying if and why the request or decoding failed, or `nil` if the request was successful.
-public typealias SKDecodedRequestHandler<T: JSONDecodable> = (_ object: T?, _ error: Error?) -> Void
+public typealias SKDecodableHandler<T: JSONDecodable> = (_ object: T?, _ error: Error?) -> Void
+
+/// The callback handler for a request.
+///
+/// - Parameter error: An error object identifying if and why the request or decoding failed, or `nil` if the request was successful.
+public typealias SKErrorHandler = (_ error: Error?) -> Void
 
 
 
@@ -283,49 +289,65 @@ public class SKRequest { // Inheriting from NSObject causes buildtime error: cla
     public func perform(handler: @escaping SKRequestHandler) {
 
         //let urlSession = URLSession(configuration: .default)
-        let task = urlSession.dataTask(with: preparedURLRequest) { (data, response, error) in
+        let task = urlSession.dataTask(with: preparedURLRequest) { (data, response, error) in // let taskHandler: (Data?, URLResponse?, Error?) -> Void =
 
-            // If any URL loading errors were encountered, forward and return here:
+            // First, handle 'error' - if any URL loading errors were encountered, forward and return here:
             if let error = error {
-                handler(nil, error)
+                handler(nil, nil, error)
                 return
             }
 
-            // Make sure the response is in fact an HTTP URL response:
+            // Next, handle the URL response - make sure that it is in fact an HTTP URL response:
             guard let response = response as? HTTPURLResponse else {
                 assertionFailure("Performing any request to the Spotify Web API is an HTTPS request and should therefore always return an HTTPURLResponse object.")
-                handler(nil, URLError(.unsupportedURL))
+                handler(nil, nil, URLError(.unsupportedURL))
                 return
             }
 
-            // Make sure the status code of that response matches one of the expected HTTP status codes:
+            // Next, make sure the status code of that response matches one of the expected HTTP status codes:
             guard let statusCode = HTTPStatusCode(rawValue: response.statusCode) else {
-                // TODO: Return an "unknown status code" error.
-                return
-            }
-            print(statusCode)
-
-            guard let data = data else {
-                handler(nil, nil)
+                assertionFailure("Received an unexpected status code from the Spotify Web API: \(response.statusCode)")
+                handler(nil, nil, nil) // TODO: Return an "unknown status code" error.
                 return
             }
             
-            // Handle any error objects returned by the Web API:
+            print(statusCode)
+
+            // Next, handle the data - if no data was returned by this request, then just return the status code:
+            guard let data = data else {
+                handler(nil, statusCode, nil)
+                return
+            }
+            
+            // If the data represents an error object returned by the Web API, handle it here:
             if let apiError = try? SKError(from: data) {
-                handler(nil, apiError)
+                handler(nil, statusCode, apiError)
                 return
             }
 
-            // Handle any authentication error objects returned by the web API:
+            // Likewise, if the data represents an authentication error object, handle it here:
             if let authError = try? SKAuthenticationError(from: data) {
-                handler(nil, authError)
+                handler(nil, statusCode, authError)
                 return
             }
 
             // TODO: Handle Conditional Requests.
 
-            handler(data, nil)
+            // Finally, if we did not receive any URL errors, and any data received was not an API error object, then return the data and status code:
+            handler(data, statusCode, nil)
         }
+        
+//        let task: URLSessionTask
+//
+//        //switch method {
+//        //    case .PUT, .POST: ...
+//        //    default: ...
+//        //}
+//
+//        switch requestBody {
+//            case .some(let body): task = urlSession.uploadTask(with: preparedURLRequest, from: body.data, completionHandler: taskHandler)
+//            case .none: task = urlSession.dataTask(with: preparedURLRequest, completionHandler: taskHandler)
+//        }
 
         task.resume()
         //urlSession.finishTasksAndInvalidate()
@@ -336,9 +358,9 @@ public class SKRequest { // Inheriting from NSObject causes buildtime error: cla
     /// - Parameter handler: The callback handler for this request. The parameters for this handler are:
     ///     - `object`: The object decoded from the JSON data returned by the request.
     ///     - `error`: An error object identifying if and why the request failed, or `nil` if the request was successful.
-    public func perform<T: JSONDecodable>(handler: @escaping SKDecodedRequestHandler<T>) {
+    public func perform<T: JSONDecodable>(handler: @escaping SKDecodableHandler<T>) {
 
-        perform { (data, error) in
+        perform { (data, _, error) in
             guard data != nil, error == nil else {
                 handler(nil, error)
                 return
@@ -352,6 +374,15 @@ public class SKRequest { // Inheriting from NSObject causes buildtime error: cla
                 handler(nil, error)
                 return
             }
+        }
+    }
+    
+    /// Performs the request, calling the specified handler when complete.
+    ///
+    /// - Parameter handler: The callback handler for the request, providing an error object identifying if and why the request failed, or `nil` if the request was successful.
+    public func perform(handler: @escaping SKErrorHandler) {
+        perform { (_, _, error) in
+            handler(error)
         }
     }
 }

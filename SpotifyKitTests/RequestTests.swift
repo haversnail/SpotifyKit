@@ -169,12 +169,15 @@ class RequestTests: XCTestCase {
         defer { wait(for: promise) }
         
         // Act:
-        request.perform { [unowned self] (data, error) in
+        request.perform { [unowned self] (data, status, error) in
             defer { promise.fulfill() }
             
             // Assert:
             if let error = error {
                 XCTFail(error.localizedDescription); return
+            }
+            guard status == .ok else {
+                XCTFail("HTTP status code is not OK."); return
             }
             guard let data = data else {
                 XCTFail("'data' is nil."); return
@@ -204,7 +207,7 @@ class RequestTests: XCTestCase {
                                          expirationDate: Date.distantFuture)
         
         // Act:
-        request.perform { [unowned self] (data, error) in
+        request.perform { [unowned self] (data, status, error) in
             defer { promise.fulfill() }
 
             // Assert:
@@ -213,6 +216,9 @@ class RequestTests: XCTestCase {
             if let data = data {
                 self.add(XCTAttachment(uniformTypeIdentifier: nil, name: "Payload.json", payload: data))
                 XCTFail("'data' is supposed to be nil.")
+            }
+            guard status == .unauthorized else {
+                XCTFail("HTTP status code is supposed to be '.unauthorized'"); return
             }
             guard let error = error as? SKError else {
                 XCTFail("error object is supposed to be of type 'SKError'"); return
@@ -233,12 +239,15 @@ class RequestTests: XCTestCase {
         promise.expectedFulfillmentCount = 2 // Make sure both requests finish successfully.
         defer { wait(for: promise) }
         
-        let handler: SKRequestHandler = { [unowned self] (data, error) in
+        let handler: SKRequestHandler = { [unowned self] (data, status, error) in
             defer { promise.fulfill() }
             
             // Assert:
             if let error = error {
                 XCTFail(error.localizedDescription); return
+            }
+            guard status == .ok else {
+                XCTFail("HTTP status code is not OK."); return
             }
             guard let data = data else {
                 XCTFail("'data' is nil."); return
