@@ -1225,6 +1225,255 @@ class RequestTests: XCTestCase {
         }
     }
     
+    // MARK: - Follow Requests
+    
+    func testFollowArtists() {
+        
+        // Arrange:
+        let artists = try! [SKArtist](from: artistArrayData)
+        let request = artists.makeFollowRequest()
+        let promise = makeRequestExpectation()
+        defer { wait(for: promise) }
+        
+        // Assert request:
+        XCTAssertEqual(request.method, .PUT)
+        XCTAssertEqual(request.url.path, "/v1/me/following")
+        SKTAssertQuery(in: request, contains: "type=artist", "ids=\(artists.map { $0.id }.joined(separator: ","))")
+        
+        // Act:
+        artists.follow { (error) in
+            
+            // Assert result:
+            if let error = error {
+                XCTFail(error.localizedDescription); return
+            }
+            
+            let request = artists.makeFollowStatusRequest()
+            XCTAssertEqual(request.method, .GET)
+            XCTAssertEqual(request.url.path, "/v1/me/following/contains")
+            SKTAssertQuery(in: request, contains: "type=artist", "ids=\(artists.map { $0.id }.joined(separator: ","))")
+            
+            artists.checkIfFollowing { (isFollowing, error) in
+                defer { promise.fulfill() }
+                
+                if let error = error {
+                    XCTFail(error.localizedDescription); return
+                }
+                guard let isFollowing = isFollowing else {
+                    XCTFail("'isFollowing' was nil."); return
+                }
+                
+                XCTAssertEqual(isFollowing.count, 2)
+                XCTAssertTrue(isFollowing[0])
+                XCTAssertTrue(isFollowing[1])
+            }
+        }
+    }
+    
+    func testFollowUser() {
+        
+        // Arrange:
+        let user = try! SKUser(from: userData2)
+        let request = user.makeFollowRequest()
+        let promise = makeRequestExpectation()
+        defer { wait(for: promise) }
+        
+        // Assert request:
+        XCTAssertEqual(request.method, .PUT)
+        XCTAssertEqual(request.url.path, "/v1/me/following")
+        SKTAssertQuery(in: request, contains: "type=user", "ids=\(user.id)")
+        
+        // Act:
+        user.follow { (error) in
+            
+            // Assert result:
+            if let error = error {
+                XCTFail(error.localizedDescription); return
+            }
+            
+            let request = user.makeFollowStatusRequest()
+            XCTAssertEqual(request.method, .GET)
+            XCTAssertEqual(request.url.path, "/v1/me/following/contains")
+            SKTAssertQuery(in: request, contains: "type=user", "ids=\(user.id)")
+            
+            user.checkIfFollowing { (isFollowing, error) in
+                defer { promise.fulfill() }
+
+                if let error = error {
+                    XCTFail(error.localizedDescription); return
+                }
+                guard let isFollowing = isFollowing else {
+                    XCTFail("'isFollowing' was nil."); return
+                }
+                
+                XCTAssertTrue(isFollowing)
+            }
+        }
+    }
+    
+    func testUnfollowArtists() {
+        
+        // Arrange:
+        let artists = try! [SKArtist](from: artistArrayData)
+        let request = artists.makeUnfollowRequest()
+        let promise = makeRequestExpectation()
+        defer { wait(for: promise) }
+        
+        // Assert request:
+        XCTAssertEqual(request.method, .DELETE)
+        XCTAssertEqual(request.url.path, "/v1/me/following")
+        SKTAssertQuery(in: request, contains: "type=artist", "ids=\(artists.map { $0.id }.joined(separator: ","))")
+        
+        // Act:
+        artists.unfollow { (error) in
+            
+            // Assert result:
+            if let error = error {
+                XCTFail(error.localizedDescription); return
+            }
+            
+            artists.checkIfFollowing { (isFollowing, error) in
+                defer { promise.fulfill() }
+                
+                if let error = error {
+                    XCTFail(error.localizedDescription); return
+                }
+                guard let isFollowing = isFollowing else {
+                    XCTFail("'isFollowing' was nil."); return
+                }
+                
+                XCTAssertEqual(isFollowing.count, 2)
+                XCTAssertFalse(isFollowing[0])
+                XCTAssertFalse(isFollowing[1])
+            }
+        }
+    }
+    
+    func testUnfollowUser() {
+        
+        // Arrange:
+        let user = try! SKUser(from: userData2)
+        let request = user.makeUnfollowRequest()
+        let promise = makeRequestExpectation()
+        defer { wait(for: promise) }
+        
+        // Assert request:
+        XCTAssertEqual(request.method, .DELETE)
+        XCTAssertEqual(request.url.path, "/v1/me/following")
+        SKTAssertQuery(in: request, contains: "type=user", "ids=\(user.id)")
+        
+        // Act:
+        user.unfollow { (error) in
+            
+            // Assert result:
+            if let error = error {
+                XCTFail(error.localizedDescription); return
+            }
+            
+            user.checkIfFollowing { (isFollowing, error) in
+                defer { promise.fulfill() }
+                
+                if let error = error {
+                    XCTFail(error.localizedDescription); return
+                }
+                guard let isFollowing = isFollowing else {
+                    XCTFail("'isFollowing' was nil."); return
+                }
+                
+                XCTAssertFalse(isFollowing)
+            }
+        }
+    }
+    
+    func testFollowPlaylist() {
+        
+        // Arrange:
+        let playlist = try! SKPlaylist(from: playlistData)
+        let request = playlist.makeFollowRequest(public: false)
+        let promise = makeRequestExpectation()
+        defer { wait(for: promise) }
+        
+        // Assert request:
+        XCTAssertEqual(request.method, .PUT)
+        XCTAssertEqual(request.url.path, "/v1/users/\(playlist.owner.id)/playlists/\(playlist.id)/followers")
+        
+        guard let body = decode(Constants.RequestBodies.PlaylistFollowBody.self, from: request) else { return }
+        XCTAssertEqual(body.isPublic, false)
+        
+        // Act:
+        playlist.follow { (error) in
+            defer { promise.fulfill() }
+            
+            // Assert results:
+            if let error = error {
+                XCTFail(error.localizedDescription); return
+            }
+        }
+    }
+    
+    func testUnfollowPlaylist() {
+        
+        // Arrange:
+        let playlist = try! SKPlaylist(from: playlistData)
+        let request = playlist.makeUnfollowRequest()
+        let promise = makeRequestExpectation()
+        defer { wait(for: promise) }
+        
+        // Assert request:
+        XCTAssertEqual(request.method, .DELETE)
+        XCTAssertEqual(request.url.path, "/v1/users/\(playlist.owner.id)/playlists/\(playlist.id)/followers")
+        
+        // Act:
+        playlist.unfollow { (error) in
+            defer { promise.fulfill() }
+            
+            // Assert results:
+            if let error = error {
+                XCTFail(error.localizedDescription); return
+            }
+        }
+        
+        // Re-follow playlist when test concludes:
+        addTeardownBlock {
+            playlist.follow { error in
+                if let error = error {
+                    print(error.localizedDescription)
+                }
+            }
+        }
+    }
+    
+    func testIfUsersFollowPlaylist() {
+        
+        // Arrange:
+        let user = try! SKUser(from: userData2)
+        let playlist = try! SKPlaylist(from: playlistData)
+        let request = playlist.makeFollowStatusRequest(users: [user])
+        let promise = makeRequestExpectation()
+        defer { wait(for: promise) }
+        
+        // Assert request:
+        XCTAssertEqual(request.method, .GET)
+        XCTAssertEqual(request.url.path, "/v1/users/\(playlist.owner.id)/playlists/\(playlist.id)/followers/contains")
+        SKTAssertQuery(in: request, contains: "ids=\(user.id)")
+        
+        // Act:
+        playlist.checkIfFollowed(by: [user]) { (isFollowing, error) in
+            defer { promise.fulfill() }
+            
+            // Assert results:
+            if let error = error {
+                XCTFail(error.localizedDescription); return
+            }
+            guard let isFollowing = isFollowing else {
+                XCTFail("'isFollowing' was nil."); return
+            }
+            
+            XCTAssertEqual(isFollowing.count, 1)
+            XCTAssertFalse(isFollowing[0])
+        }
+    }
+    
     // MARK: - Expandable Requests
     
     func testExpandableRequest() {

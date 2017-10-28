@@ -886,7 +886,7 @@ extension SKPlaylist {
         return request
     }
     
-    /// Uploads a custom playlist cover image, replacing the current image used to represent the given playlist.
+    /// Uploads a custom playlist cover image, replacing the current image used to represent the playlist.
     ///
     /// - Note: This method uses the `SPTAuth` default instance session to authenticate the underlying request. If this session does not contain a valid access token, the request will result in an error.
     ///
@@ -925,7 +925,7 @@ extension SKPlaylist {
 //        }
     }
     
-    /// Uploads a custom playlist cover image, replacing the current image used to represent the given playlist.
+    /// Uploads a custom playlist cover image, replacing the current image used to represent the playlist.
     ///
     /// - Note: This method uses the `SPTAuth` default instance session to authenticate the underlying request. If this session does not contain a valid access token, the request will result in an error.
     ///
@@ -1370,6 +1370,333 @@ extension SKPlaylist {
     }
 }
 
+// MARK: - Follow Requests
+
+/// A type representing a Spotify item that can be followed or unfollowed by the current authenticated user.
+///
+/// Types that conform to this protocol provide a set of request factories and convenience methods to either follow, unfollow, or check to see if the current authenticated user is already following the given item. These types must also contain a valid [Spotify ID](https://developer.spotify.com/web-api/user-guide/#spotify-uris-and-ids).
+///
+/// - Note: Although a Spotify playlist is technically a "followable" catalog item, the method declarations and implementations for following playlists differ from those defined here. Thus, the `SKPlaylist` type does not conform to this protocol, but instead provides its own comparable methods and request factories.
+public protocol Followable {
+    
+    /// The [Spotify ID](https://developer.spotify.com/web-api/user-guide/#spotify-uris-and-ids) for the item. **Required.**
+    var id: String { get }
+    
+    /// Creates and returns the request used to add the current authenticated user as a follower of the item.
+    ///
+    /// - Returns: An `SKRequest` instance with which to perform the API request.
+    func makeFollowRequest() -> SKRequest
+    
+    /// Creates and returns the request used to remove the current authenticated user as a follower of the item.
+    ///
+    /// - Returns: An `SKRequest` instance with which to perform the API request.
+    func makeUnfollowRequest() -> SKRequest
+    
+    /// Creates and returns the request used to check whether the current authenticated user is following the item.
+    ///
+    /// - Returns: An `SKRequest` instance with which to perform the API request.
+    func makeFollowStatusRequest() -> SKRequest
+    
+    /// Adds the current authenticated user as a follower of the item.
+    ///
+    /// - Note: This method uses the `SPTAuth` default instance session to authenticate the underlying request. If this session does not contain a valid access token, the request will result in an error. The access token must have been issued on behalf of the current user.
+    ///
+    /// Modifying the list of items that the current authenticated user follows also requires authorization of the "`user-follow-modify`" scope. See [Using Scopes](https://developer.spotify.com/spotify-web-api/using-scopes/) for more details.
+    ///
+    /// - Parameter handler: The callback handler for the request, providing an error object identifying if and why the request failed, or `nil` if the request was successful.
+    func follow(handler: @escaping SKErrorHandler)
+    
+    /// Removes the current authenticated user as a follower of the item.
+    ///
+    /// - Note: This method uses the `SPTAuth` default instance session to authenticate the underlying request. If this session does not contain a valid access token, the request will result in an error. The access token must have been issued on behalf of the current user.
+    ///
+    /// Modifying the list of items that the current authenticated user follows also requires authorization of the "`user-follow-modify`" scope. See [Using Scopes](https://developer.spotify.com/spotify-web-api/using-scopes/) for more details.
+    ///
+    /// - Parameter handler: The callback handler for the request, providing an error object identifying if and why the request failed, or `nil` if the request was successful.
+    func unfollow(handler: @escaping SKErrorHandler)
+    
+    /// Checks whether the current authenticated user is following the item.
+    ///
+    /// - Note: This method uses the `SPTAuth` default instance session to authenticate the underlying request. If this session does not contain a valid access token, the request will result in an error. The access token must have been issued on behalf of the current user.
+    ///
+    /// Modifying the list of items that the current authenticated user follows also requires authorization of the "`user-follow-modify`" scope. See [Using Scopes](https://developer.spotify.com/spotify-web-api/using-scopes/) for more details.
+    ///
+    /// - Parameter handler: The callback handler for the request. The parameters for this handler are:
+    ///     - `isFollowing`: A Boolean value indicating whether the current authenticated user is following the item: `true` if following, `false` otherwise.
+    ///     - `error`: An error object identifying if and why the request failed, or `nil` if the request was successful.
+    func checkIfFollowing(handler: @escaping (Bool?, Error?) -> Void)
+}
+
+// MARK: Internal Requirements
+
+/// Specifies intermediary internal requirements for the `Followable` protocol.
+///
+/// While these requirements would be easier kept in the public `Followable` protocol, doing so would unnecessarily expose properties and methods that are only relevant to the Web API, polluting the type's public namespace.
+internal protocol _Followable {
+    
+    /// The string representation of this type, used by API requests to specify which [Spotify object](https://developer.spotify.com/web-api/object-model/) the type represents.
+    static var type: String { get }
+}
+
+extension SKUser: _Followable { static var type = "user" }
+extension SKArtist: _Followable { static var type = "artist" }
+
+// MARK: Default Implementation
+
+extension Followable {
+    
+    private var followRequestParameters: [String: Any] {
+        get {
+            var parameters = [String: Any]()
+            parameters[Constants.QueryParameters.ids] = id
+            parameters[Constants.QueryParameters.type] = (Self.self as? _Followable.Type)?.type // Self.type
+            return parameters
+        }
+    }
+    
+    public func makeFollowRequest() -> SKRequest {
+        return SKRequest(method: .PUT, endpoint: Constants.Endpoints.myFollows, parameters: followRequestParameters)!
+    }
+    
+    public func makeUnfollowRequest() -> SKRequest {
+        return SKRequest(method: .DELETE, endpoint: Constants.Endpoints.myFollows, parameters: followRequestParameters)!
+    }
+    
+    public func makeFollowStatusRequest() -> SKRequest {
+        return SKRequest(method: .GET, endpoint: Constants.Endpoints.checkIfFollowing, parameters: followRequestParameters)!
+    }
+    
+    public func follow(handler: @escaping SKErrorHandler) {
+        makeFollowRequest().perform(handler: handler)
+    }
+    
+    public func unfollow(handler: @escaping SKErrorHandler) {
+        makeUnfollowRequest().perform(handler: handler)
+    }
+    
+    public func checkIfFollowing(handler: @escaping (Bool?, Error?) -> Void) {
+        makeFollowStatusRequest().perform { (flags: [Bool]?, error) in
+            handler(flags?.first, error)
+        }
+    }
+}
+
+extension SKArtist: Followable {}
+extension SKUser: Followable {}
+
+// MARK: Collection Conformance
+
+extension Collection/*: Followable */where Element: Followable {
+    
+    private var followRequestParameters: [String: Any] {
+        get {
+            if self.isEmpty { assertionFailure("array of Followable items must contain at least one value for the API request to be valid.") }
+            
+            var parameters = [String: Any]()
+            parameters[Constants.QueryParameters.ids] = self.isEmpty ? nil : self.map { $0.id }
+            parameters[Constants.QueryParameters.type] = (Element.self as? _Followable.Type)?.type // Element.type
+            return parameters
+        }
+    }
+    
+    /// Creates and returns the request used to add the current authenticated user as a follower of the items in the collection.
+    ///
+    /// - Returns: An `SKRequest` instance with which to perform the API request.
+    public func makeFollowRequest() -> SKRequest {
+        return SKRequest(method: .PUT, endpoint: Constants.Endpoints.myFollows, parameters: followRequestParameters)!
+    }
+    
+    /// Creates and returns the request used to remove the current authenticated user as a follower of the items in the collection.
+    ///
+    /// - Returns: An `SKRequest` instance with which to perform the API request.
+    public func makeUnfollowRequest() -> SKRequest {
+        return SKRequest(method: .DELETE, endpoint: Constants.Endpoints.myFollows, parameters: followRequestParameters)!
+    }
+    
+    /// Creates and returns the request used to check whether the current authenticated user is following the items in the collection.
+    ///
+    /// - Returns: An `SKRequest` instance with which to perform the API request.
+    public func makeFollowStatusRequest() -> SKRequest {
+        return SKRequest(method: .GET, endpoint: Constants.Endpoints.checkIfFollowing, parameters: followRequestParameters)!
+    }
+    
+    /// Adds the current authenticated user as a follower of the items in the collection.
+    ///
+    /// - Note: This method uses the `SPTAuth` default instance session to authenticate the underlying request. If this session does not contain a valid access token, the request will result in an error. The access token must have been issued on behalf of the current user.
+    ///
+    /// Modifying the list of items that the current authenticated user follows also requires authorization of the "`user-follow-modify`" scope. See [Using Scopes](https://developer.spotify.com/spotify-web-api/using-scopes/) for more details.
+    ///
+    /// - Parameter handler: The callback handler for the request, providing an error object identifying if and why the request failed, or `nil` if the request was successful.
+    public func follow(handler: @escaping SKErrorHandler) {
+        makeFollowRequest().perform(handler: handler)
+    }
+    
+    /// Removes the current authenticated user as a follower of the items in the collection.
+    ///
+    /// - Note: This method uses the `SPTAuth` default instance session to authenticate the underlying request. If this session does not contain a valid access token, the request will result in an error. The access token must have been issued on behalf of the current user.
+    ///
+    /// Modifying the list of items that the current authenticated user follows also requires authorization of the "`user-follow-modify`" scope. See [Using Scopes](https://developer.spotify.com/spotify-web-api/using-scopes/) for more details.
+    ///
+    /// - Parameter handler: The callback handler for the request, providing an error object identifying if and why the request failed, or `nil` if the request was successful.
+    public func unfollow(handler: @escaping SKErrorHandler) {
+        makeUnfollowRequest().perform(handler: handler)
+    }
+    
+    /// Checks whether the current authenticated user is following the items in the collection.
+    ///
+    /// - Note: This method uses the `SPTAuth` default instance session to authenticate the underlying request. If this session does not contain a valid access token, the request will result in an error. The access token must have been issued on behalf of the current user.
+    ///
+    /// Modifying the list of items that the current authenticated user follows also requires authorization of the "`user-follow-modify`" scope. See [Using Scopes](https://developer.spotify.com/spotify-web-api/using-scopes/) for more details.
+    ///
+    /// - Parameter handler: The callback handler for the request. The parameters for this handler are:
+    ///     - `isFollowing`: An array of Boolean values indicating whether the current authenticated user is following the item at the corresponding index. If a particular item is followed by the current authenticated user, the resulting array will contain `true` at the corresponding index; `false` otherwise.
+    ///     - `error`: An error object identifying if and why the request failed, or `nil` if the request was successful.
+    public func checkIfFollowing(handler: @escaping ([Bool]?, Error?) -> Void) {
+        makeFollowStatusRequest().perform(handler: handler)
+//        makeFollowStatusRequest().perform { (bools: [Bool]?, error) in
+//            guard error == nil else { handler(nil, error); return }
+//
+//            let ids = self.map { $0.id }
+//            var dictionary = [String: Bool]()
+//            for (id, bool) in zip(ids, bools!) {
+//                dictionary[id] = bool
+//            }
+//
+//            handler(dictionary, nil)
+//        }
+    }
+}
+
+// MARK: Playlist Follow Requests
+
+extension SKPlaylist {
+    
+    // MARK: Follow a Playlist
+    
+    /// Creates and returns the request used to add the current authenticated user as a follower of the playlist.
+    ///
+    /// - Parameter public: A Boolean value indicating whether the playlist should be included in the user's public playlists. **Note**: to follow playlists privately, the user must authorize the "`playlist-modify-private`" scope. See [Using Scopes](https://developer.spotify.com/spotify-web-api/using-scopes/) for more details.
+    /// - Returns: An `SKRequest` instance with which to perform the API request.
+    public func makeFollowRequest(public: Bool) -> SKRequest {
+        
+        let request = SKRequest(method: .PUT, endpoint: Constants.Endpoints.followsForPlaylist(id: id, ownerID: owner.id))!
+        
+        typealias RequestBody = Constants.RequestBodies.PlaylistFollowBody
+        let data = try! RequestBody(isPublic: `public`).data()
+        
+        request.addMultipartData(data, type: .json)
+        return request
+    }
+    
+    /// Adds the current authenticated user as a follower of the playlist.
+    ///
+    /// - Note: This method uses the `SPTAuth` default instance session to authenticate the underlying request. If this session does not contain a valid access token, the request will result in an error. The access token must have been issued on behalf of the current user.
+    ///
+    /// Following a playlist publicly requires authorization of the "`playlist-modify-public`" scope; likewise, following a playlist privately requires authorization of the "`playlist-modify-private`" scope. See [Using Scopes](https://developer.spotify.com/web-api/using-scopes/) for more details.
+    ///
+    /// - Parameters:
+    ///   - public: A Boolean value indicating whether the playlist should be included in the user's public playlists. The default value is `true`. **Note**: to follow playlists privately, the user must have authorized the "`playlist-modify-private`" scope.
+    ///   - handler: The callback handler for the request, providing an error object identifying if and why the request failed, or `nil` if the request was successful.
+    public func follow(makingPublic public: Bool = true, handler: @escaping SKErrorHandler) {
+        makeFollowRequest(public: `public`).perform(handler: handler)
+    }
+    
+    // MARK: Unfollow a Playlist
+    
+    /// Creates and returns the request used to remove the current authenticated user as a follower of the playlist.
+    ///
+    /// - Returns: An `SKRequest` instance with which to perform the API request.
+    public func makeUnfollowRequest() -> SKRequest {
+        return SKRequest(method: .DELETE, endpoint: Constants.Endpoints.followsForPlaylist(id: id, ownerID: owner.id))!
+    }
+    
+    /// Removes the current authenticated user as a follower of the playlist.
+    ///
+    /// - Note: This method uses the `SPTAuth` default instance session to authenticate the underlying request. If this session does not contain a valid access token, the request will result in an error. The access token must have been issued on behalf of the current user.
+    ///
+    /// Unfollowing a publicly-followed playlist requires authorization of the "`playlist-modify-public`" scope; likewise, unfollowing a privately-followed playlist requires authorization of the "`playlist-modify-private`" scope. See [Using Scopes](https://developer.spotify.com/web-api/using-scopes/) for more details.
+    ///
+    /// - Parameter handler: The callback handler for the request, providing an error object identifying if and why the request failed, or `nil` if the request was successful.
+    public func unfollow(handler: @escaping SKErrorHandler) {
+        makeUnfollowRequest().perform(handler: handler)
+    }
+    
+    // MARK: Check if Users Follow a Playlist
+    
+    /// Creates and returns the request used to check whether the given users are following the playlist.
+    ///
+    /// - Parameter users: The users against which to perform the check. Maximum: 5 users.
+    /// - Returns: An `SKRequest` instance with which to perform the API request.
+    public func makeFollowStatusRequest(users: [SKUser]) -> SKRequest {
+        if users.isEmpty { assertionFailure("array of users must contain at least one value for the API request to be valid.") }
+        
+        var parameters = [String: Any]()
+        parameters[Constants.QueryParameters.ids] = users.isEmpty ? nil : users.map { $0.id }
+        return SKRequest(method: .GET, endpoint: Constants.Endpoints.checkIfUsersFollowPlaylist(id: id, ownerID: owner.id), parameters: parameters)!
+    }
+    
+    /// Check to see if one or more Spotify users are following the playlist.
+    ///
+    /// - Note: This method uses the `SPTAuth` default instance session to authenticate the underlying request. If this session does not contain a valid access token, the request will result in an error.
+    ///
+    /// Following a playlist can be done publicly or privately. Checking if a user publicly follows a playlist doesn't require any scopes; if the user is publicly following the playlist, the resulting Boolean value will be `true`.
+    ///
+    /// However, checking if the user is privately following a playlist is only possible for the current authenticated user when that user has granted access to the "`playlist-read-private`" scope. See [Using Scopes](https://developer.spotify.com/web-api/using-scopes/) for more details.
+    ///
+    /// - Parameters:
+    ///   - users: The users against which to perform the check. Maximum: 5 users.
+    ///   - handler: The callback handler for the request. The parameters for this handler are:
+    ///     - `isFollowing`: An array of Boolean values indicating whether the given users are following the playlist. For each user that is following, the resulting array will contain `true` at the corresponding index; `false` otherwise.
+    ///     - `error`: An error object identifying if and why the request failed, or `nil` if the request was successful.
+    public func checkIfFollowed(by users: [SKUser], handler: @escaping ([Bool]?, Error?) -> Void) {
+        makeFollowStatusRequest(users: users).perform(handler: handler)
+    }
+}
+
+// TODO: Get Authenticated User's Followed Albums
+
+// MARK: - Expandable Type Requests
+
+/// A type that is represented in the [Spotify Web API](https://developer.spotify.com/web-api/) by both "simplified" and "full" versions.
+///
+/// Types that conform to this protocol provide a set of convenience methods to retrieve the full version of a simplified SpotifyKit object, and are required to have a URL providing the API endpoint to the full details of the item.
+///
+/// These types also implement an "`isSimplified`" property, a Boolean value indicating whether an instance of this type represents a "simplified" version of the "full" Spotify object.
+public protocol Expandable {
+    
+    /// A link to the [Web API endpoint](https://developer.spotify.com/web-api/endpoint-reference/) providing full details of the object. **Required.**
+    var url: URL { get }
+    
+    /// A boolean value indicating whether this instance represents a "simplified" version of the "full" Spotify object (i.e., all values unique to the full object are `nil`).
+    var isSimplified: Bool { get }
+    
+    /// Performs a request for the detailed version of the item.
+    ///
+    /// If the given object already contains the requested properties, this method will do nothing and the provided callback handler will not be executed.
+    ///
+    /// - Note: This method uses the `SPTAuth` default instance session to authenticate the underlying request. If this session does not contain a valid access token, the request will result in an error.
+    ///
+    /// - Parameter handler: The callback handler for this request, providing the detailed object if successful, or an error object identifying if and why the request or the decoding failed if unsuccessful.
+    func getFullObject(handler: @escaping (Self?, Error?) -> Void)
+    //func simplified() -> Self
+    //mutating func simplify()
+}
+
+extension Expandable where Self: JSONDecodable {
+    
+    /// Creates and returns the request used to retrieve the detailed version of the given object.
+    ///
+    /// - Returns: An `SKRequest` instance with which to perform the API request.
+    public func makeFullObjectRequest() -> SKRequest {
+        return SKRequest(method: .GET, url: url)!
+    }
+    
+    public func getFullObject(handler: @escaping (Self?, Error?) -> Void) {
+        guard isSimplified else { return }
+        makeFullObjectRequest().perform(handler: handler)
+    }
+}
+
 // MARK: - Paging Requests
 
 extension Page {
@@ -1392,47 +1719,5 @@ extension Page {
     public func getPrevious(handler: @escaping (Page<Element>?, Error?) -> Void) {
         guard let url = previousURL else { handler(nil, nil); return }
         SKRequest(method: .GET, url: url)!.perform(handler: handler)
-    }
-}
-
-// MARK: - Expandable Type Requests
-
-/// A type that is represented in the [Spotify Web API](https://developer.spotify.com/web-api/) by both "simplified" and "full" versions of the given type.
-///
-/// Types that conform to this protocol provide a set of convenience methods to retrieve the full version of a simplified SpotifyKit object, and are required to have a URL providing the API endpoint to the full details of the given object.
-///
-/// These types also implement an "`isSimplified`" property, a Boolean value indicating whether an instance of the given type represents a "simplified" version of the "full" Spotify object.
-public protocol Expandable {
-    
-    /// A link to the [Web API endpoint](https://developer.spotify.com/web-api/endpoint-reference/) providing full details of the object. **Required.**
-    var url: URL { get }
-    
-    /// A boolean value indicating whether this instance represents a "simplified" version of the "full" Spotify object (i.e., all values unique to the full object are `nil`).
-    var isSimplified: Bool { get }
-    
-    /// Performs a request for the detailed version of the given object.
-    ///
-    /// If the given object already contains the requested properties, this method will do nothing, and the provided callback handler will not be executed.
-    ///
-    /// - Note: This method uses the `SPTAuth` default instance session to authenticate the underlying request. If this session does not contain a valid access token, the request will result in an error.
-    ///
-    /// - Parameter handler: The callback handler for this request, providing the detailed object if successful, or an error object identifying if and why the request or the decoding failed if unsuccessful.
-    func getFullObject(handler: @escaping (Self?, Error?) -> Void)
-    //func simplified() -> Self
-    //mutating func simplify()
-}
-
-extension Expandable where Self: JSONDecodable {
-    
-    /// Creates and returns the request used to retrieve the detailed version of the given object.
-    ///
-    /// - Returns: An `SKRequest` instance with which to perform the API request.
-    public func makeFullObjectRequest() -> SKRequest {
-        return SKRequest(method: .GET, url: url)!
-    }
-    
-    public func getFullObject(handler: @escaping (Self?, Error?) -> Void) {
-        guard isSimplified else { return }
-        makeFullObjectRequest().perform(handler: handler)
     }
 }
