@@ -138,13 +138,13 @@ Any notable differences and deviations between **SpotifyKit** and the [Spotify W
 
     * For the **SpotifyKit** types listed below, there is no public property for their respective JSON object's `type` attribute. Instead, these types implement a privately-scoped property as a single-case enumeration to assert that the `type` attribute matches exactly what's expected for the given **SpotifyKit** type:
     ```swift
-    public struct SKAlbum: JSONDecodable {
+    public struct SKAlbum: Album, JSONDecodable {
 
         // An enum representing the expected `type` value for an album object.
-        private enum ObjectType: String, Codable { case album }
+        private enum ResourceType: String, Codable { case album }
 
-        // The object's type: "album"
-        private let type: ObjectType // <- decoded value is "album" or else initializer fails.
+        // The resource object's type: "album"
+        private let type: ResourceType // <- decoded value is "album" or else initializer fails.
 
         // ...
     }
