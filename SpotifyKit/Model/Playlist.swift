@@ -11,7 +11,7 @@ import Foundation
 public struct SKPlaylist: JSONDecodable {
     
     /// An enum representing the expected `type` value for a playlist object.
-    private enum ObjectType: String, Codable { case playlist }
+    private enum ResourceType: String, Codable { case playlist }
 
     // MARK: - Object Properties (Simplified)
     
@@ -52,8 +52,8 @@ public struct SKPlaylist: JSONDecodable {
     /// The [Spotify URI](https://developer.spotify.com/web-api/user-guide/#spotify-uris-and-ids) for the playlist.
     public let uri: String
     
-    /// The object type: `"playlist"`.
-    private let type: ObjectType
+    /// The resource object type: `"playlist"`.
+    private let type: ResourceType
     
     // MARK: - Object Properties (Full)
     
@@ -107,7 +107,7 @@ extension SKPlaylist: Decodable {
         let values = try decoder.container(keyedBy: CodingKeys.self)
         
         // Verify the type of object we're decoding first:
-        type = try values.decode(ObjectType.self, forKey: .type)
+        type = try values.decode(ResourceType.self, forKey: .type)
 
         isCollaborative = try values.decode(Bool.self, forKey: .isCollaborative)
         externalURLs = try values.decode([String: URL].self, forKey: .externalURLs)

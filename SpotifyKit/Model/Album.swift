@@ -105,12 +105,12 @@ public protocol Album {
 public struct SKAlbum: Album, JSONDecodable {
     
     /// An enum representing the expected `type` value for an album object.
-    private enum ObjectType: String, Codable { case album }
+    private enum ResourceType: String, Codable { case album }
     
     // MARK: Object Properties (Simplified)
     
-    /// The object type: `"album"`.
-    private let type: ObjectType
+    /// The resource object type: `"album"`.
+    private let type: ResourceType
 
     public let albumType: SKAlbumType
     public let artists: [SKArtist]
@@ -163,7 +163,7 @@ extension SKAlbum: Decodable {
         let values = try decoder.container(keyedBy: CodingKeys.self)
         
         // Verify the type of object we're decoding first:
-        type = try values.decode(ObjectType.self, forKey: .type)
+        type = try values.decode(ResourceType.self, forKey: .type)
         
         // Object Properties (Simplified)
         albumType = try values.decode(SKAlbumType.self, forKey: .albumType)//, toCase: .lowercase)

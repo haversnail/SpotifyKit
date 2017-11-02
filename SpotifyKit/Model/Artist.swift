@@ -13,7 +13,7 @@ public struct SKArtist: JSONDecodable {
     // MARK: - Embedded Types
     
     /// An enum representing the expected `type` value for an artist object.
-    private enum ObjectType: String, Codable { case artist }
+    private enum ResourceType: String, Codable { case artist }
     
     // MARK: - Object Properties (Simplified)
     
@@ -32,8 +32,8 @@ public struct SKArtist: JSONDecodable {
     /// The [Spotify URI](https://developer.spotify.com/web-api/user-guide/#spotify-uris-and-ids) for the album.
     public let uri: String
     
-    /// The object type: `"artist"`.
-    private let type: ObjectType
+    /// The resource object type: `"artist"`.
+    private let type: ResourceType
     
     // MARK: - Object Properties (Full)
     

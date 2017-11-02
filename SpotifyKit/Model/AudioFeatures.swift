@@ -11,7 +11,7 @@ import Foundation
 public struct SKAudioFeatures: JSONDecodable { // TODO: Make JSON Codable?
     
     /// An enum representing the expected `type` value for an audio features object.
-    private enum ObjectType: String, Codable { case audioFeatures = "audio_features" }
+    private enum ResourceType: String, Codable { case audioFeatures = "audio_features" }
     
     public enum Pitch: Int, Codable {
         case C, Db, D, Eb, E, F, Gb, G, Ab, A, Bb, B
@@ -77,8 +77,8 @@ public struct SKAudioFeatures: JSONDecodable { // TODO: Make JSON Codable?
     /// A measure from 0.0 to 1.0 describing the musical positiveness conveyed by a track. Tracks with high valence sound more positive (e.g. happy, cheerful, euphoric), while tracks with low valence sound more negative (e.g. sad, depressed, angry).
     public let valence: Float
     
-    /// The object type: `"audio_features"`.
-    private let type: ObjectType
+    /// The resource object type: `"audio_features"`.
+    private let type: ResourceType
     
     // MARK: Keys
     

@@ -11,7 +11,7 @@ import Foundation
 // MARK: Supporting Types
 
 /// An enum representing the expected `type` value for a track object.
-fileprivate enum ObjectType: String, Codable { case track }
+fileprivate enum ResourceType: String, Codable { case track }
 
 public enum SKContentRating: Int {
     case clean
@@ -21,8 +21,8 @@ public enum SKContentRating: Int {
 
 public struct SKTrackLink: Decodable {
     
-    /// The object type: `"track"`.
-    private let type: ObjectType
+    /// The resource object type: `"track"`.
+    private let type: ResourceType
 
     /// Known external URLs for this track. See ["external URL object"](https://developer.spotify.com/web-api/object-model/#external-url-object) for more details.
     public let externalURLs: [String: URL]
@@ -115,8 +115,8 @@ public struct SKTrack: Track, JSONDecodable {
     
     // MARK: Object Properties (Simplified)
     
-    /// The object type: `"track"`.
-    private let type: ObjectType
+    /// The resource object type: `"track"`.
+    private let type: ResourceType
     
     /// The track length in milliseconds.
     /// - Note: As most Apple frameworks and interfaces use the `TimeInterval` type for properties like this, and since most `TimeInterval` properties refer to seconds, this property is maintained at the `private` scope and is used to provide a more compatible public "duration" property.

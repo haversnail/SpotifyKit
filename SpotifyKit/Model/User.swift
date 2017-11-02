@@ -9,7 +9,7 @@
 import Foundation
 
 /// An enum representing the expected `type` value for a user object.
-fileprivate enum ObjectType: String, Codable { case user }
+fileprivate enum ResourceType: String, Codable { case user }
 
 // MARK: - User Protocol
 
@@ -43,8 +43,8 @@ public protocol User {
 
 public struct SKUser: User, JSONDecodable {
     
-    /// The object type: `"user"`.
-    private let type: ObjectType
+    /// The resource object type: `"user"`.
+    private let type: ResourceType
     
     public let displayName: String?
     public let externalURLs: [String: URL]
@@ -81,8 +81,8 @@ public struct SKCurrentUser: User, JSONDecodable { // SKAuthenticatedUser
         case unknown // TODO: Test for this case.
     }
     
-    /// The object type: `"user"`.
-    private let type: ObjectType
+    /// The resource object type: `"user"`.
+    private let type: ResourceType
     
     // MARK: Public Properties
     
