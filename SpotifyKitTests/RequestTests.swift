@@ -860,7 +860,7 @@ class RequestTests: XCTestCase {
         
         // Arrange:
         let username = SPTAuth.defaultInstance().session.canonicalUsername!
-        let request = SKUser.makeCurrentUserRequest()
+        let request = SKCurrentUser.makeCurrentUserRequest()
         let promise = makeRequestExpectation()
         defer { wait(for: promise) }
         
@@ -868,7 +868,7 @@ class RequestTests: XCTestCase {
         XCTAssertEqual(request.url.path, "/v1/me")
         
         // Act:
-        SKUser.getCurrentUser { (user, error) in
+        SKCurrentUser.getCurrentUser { (user, error) in
             defer { promise.fulfill() }
             
             // Assert results:
@@ -894,6 +894,35 @@ class RequestTests: XCTestCase {
         
         // Assert request:
         XCTAssertEqual(request.url.path, "/v1/users/\(user.id)/playlists")
+        SKTAssertQuery(in: request, contains: "limit=3")
+        
+        // Act:
+        user.getPlaylists(page: page) { (playlists, error) in
+            defer { promise.fulfill() }
+            
+            // Assert results:
+            if let error = error {
+                XCTFail(error.localizedDescription); return
+            }
+            guard let playlists = playlists else {
+                XCTFail("'playlists' was nil."); return
+            }
+            
+            XCTAssertEqual(playlists.count, page.limit)
+        }
+    }
+    
+    func testGetPlaylistsForCurrentUser() {
+        
+        // Arrange:
+        let user = try! SKCurrentUser(from: currentUserData)
+        let page = Pagination(limit: 3)
+        let request = user.makePlaylistsRequest(page: page)
+        let promise = makeRequestExpectation()
+        defer { wait(for: promise) }
+        
+        // Assert request:
+        XCTAssertEqual(request.url.path, "/v1/me/playlists")
         SKTAssertQuery(in: request, contains: "limit=3")
         
         // Act:
@@ -1273,7 +1302,7 @@ class RequestTests: XCTestCase {
     func testFollowUser() {
         
         // Arrange:
-        let user = try! SKUser(from: userData2)
+        let user = try! SKUser(from: userData)
         let request = user.makeFollowRequest()
         let promise = makeRequestExpectation()
         defer { wait(for: promise) }
@@ -1352,7 +1381,7 @@ class RequestTests: XCTestCase {
     func testUnfollowUser() {
         
         // Arrange:
-        let user = try! SKUser(from: userData2)
+        let user = try! SKUser(from: userData)
         let request = user.makeUnfollowRequest()
         let promise = makeRequestExpectation()
         defer { wait(for: promise) }
@@ -1446,7 +1475,7 @@ class RequestTests: XCTestCase {
     func testIfUsersFollowPlaylist() {
         
         // Arrange:
-        let user = try! SKUser(from: userData2)
+        let user = try! SKUser(from: userData)
         let playlist = try! SKPlaylist(from: playlistData)
         let request = playlist.makeFollowStatusRequest(users: [user])
         let promise = makeRequestExpectation()

@@ -136,6 +136,11 @@ class ModelTests: XCTestCase {
     
     func testUser() {
         guard let user = initTestObject(SKUser.self, from: userData) else { return }
+        XCTAssertEqual(user.id, "nikerunclub")
+    }
+    
+    func testCurrentUser() {
+        guard let user = initTestObject(SKCurrentUser.self, from: currentUserData) else { return }
         XCTAssertEqual(user.id, "ahavermale")
     }
 

@@ -710,6 +710,40 @@ extension SKUser {
         makeUserRequest(id: id).perform(handler: handler)
     }
     
+    // MARK: Get a User's Playlists ✔︎
+    
+    /// Creates and returns the request used to get the user's playlists.
+    ///
+    /// - Parameter page: The parameters for paginating the results, specifying the index and number of items to return. If no parameters are supplied, the request will return the default number of items beginning with first item.
+    /// - Returns: An `SKRequest` instance with which to perform the API request.
+    public func makePlaylistsRequest(page: Pagination?) -> SKRequest {
+        
+        var parameters = [String: Any]()
+        parameters[Constants.QueryParameters.limit] = page?.limit
+        parameters[Constants.QueryParameters.offset] = page?.offset
+        return SKRequest(method: .GET, endpoint: Constants.Endpoints.playlistsForUser(id: id), parameters: parameters)!
+    }
+    
+    /// Gets a list of the playlists owned or followed by the user.
+    ///
+    /// - Note: This method uses the `SPTAuth` default instance session to authenticate the underlying request. If this session does not contain a valid access token, the request will result in an error. The access token must have been issued on behalf of the current user.
+    ///
+    /// Private playlists are only retrievable for the *current user* and requires the "`playlist-read-private`" scope to have been authorized by the user. Note that this scope alone will not return collaborative playlists, even though they are always private.
+    ///
+    /// See [Using Scopes](https://developer.spotify.com/spotify-web-api/using-scopes/) for more details.
+    ///
+    /// - Parameters:
+    ///   - page: The parameters for paginating the results, specifying the index and number of items to return. If no parameters are supplied, the request will return the default number of items beginning with first item. The default value is `nil`.
+    ///   - handler: The callback handler for the request. The parameters for this handler are:
+    ///     - `user`: The current authenticated user, if available.
+    ///     - `error`: An error object identifying if and why the request failed, or `nil` if the request was successful.
+    public func getPlaylists(page: Pagination? = nil, handler: @escaping (Page<SKPlaylist>?, Error?) -> Void) {
+        makePlaylistsRequest(page: page).perform(handler: handler)
+    }
+}
+
+extension SKCurrentUser {
+    
     // MARK: Get the Current User's Profile ✔︎
     
     /// Creates and returns the request used to get the current authenticated user.
@@ -735,13 +769,13 @@ extension SKUser {
     ///   - handler: The callback handler for the request. The parameters for this handler are:
     ///     - `user`: The current authenticated user, if available.
     ///     - `error`: An error object identifying if and why the request failed, or `nil` if the request was successful.
-    public static func getCurrentUser(handler: @escaping (SKUser?, Error?) -> Void) { // getAuthenticatedUser
+    public static func getCurrentUser(handler: @escaping (SKCurrentUser?, Error?) -> Void) { // getAuthenticatedUser
         makeCurrentUserRequest().perform(handler: handler)
     }
     
-    // MARK: Get a User's Playlists ✔︎
+    // MARK: Get the Current User's Playlists ✔︎
     
-    /// Creates and returns the request used to get a user's playlists.
+    /// Creates and returns the request used to get the current authenticated user's playlists.
     ///
     /// - Parameter page: The parameters for paginating the results, specifying the index and number of items to return. If no parameters are supplied, the request will return the default number of items beginning with first item.
     /// - Returns: An `SKRequest` instance with which to perform the API request.
@@ -750,10 +784,10 @@ extension SKUser {
         var parameters = [String: Any]()
         parameters[Constants.QueryParameters.limit] = page?.limit
         parameters[Constants.QueryParameters.offset] = page?.offset
-        return SKRequest(method: .GET, endpoint: Constants.Endpoints.playlistsForUser(id: id), parameters: parameters)!
+        return SKRequest(method: .GET, endpoint: Constants.Endpoints.myPlaylists, parameters: parameters)!
     }
     
-    /// Gets a list of the playlists owned or followed by a Spotify user.
+    /// Gets a list of the playlists owned or followed by the current authenticated user.
     ///
     /// - Note: This method uses the `SPTAuth` default instance session to authenticate the underlying request. If this session does not contain a valid access token, the request will result in an error. The access token must have been issued on behalf of the current user.
     ///
@@ -769,8 +803,6 @@ extension SKUser {
     public func getPlaylists(page: Pagination? = nil, handler: @escaping (Page<SKPlaylist>?, Error?) -> Void) {
         makePlaylistsRequest(page: page).perform(handler: handler)
     }
-    
-    // TODO: Get Authenticated User's Playlists
 }
 
 // MARK: - Playlist Requests
@@ -1438,8 +1470,8 @@ internal protocol _Followable {
     static var type: String { get }
 }
 
-extension SKUser: _Followable { static var type = "user" }
 extension SKArtist: _Followable { static var type = "artist" }
+extension SKUser: _Followable { static var type = "user" } // Wouldn't make sense for the current user to follow a SKCurrentUser type... so there's no need to include the User protocol. This should only apply to SKUser types.
 
 // MARK: Default Implementation
 
@@ -1627,7 +1659,7 @@ extension SKPlaylist {
     ///
     /// - Parameter users: The users against which to perform the check. Maximum: 5 users.
     /// - Returns: An `SKRequest` instance with which to perform the API request.
-    public func makeFollowStatusRequest(users: [SKUser]) -> SKRequest {
+    public func makeFollowStatusRequest<T: Collection>(users: T) -> SKRequest where T.Element: User {
         if users.isEmpty { assertionFailure("array of users must contain at least one value for the API request to be valid.") }
         
         var parameters = [String: Any]()
@@ -1648,8 +1680,38 @@ extension SKPlaylist {
     ///   - handler: The callback handler for the request. The parameters for this handler are:
     ///     - `isFollowing`: An array of Boolean values indicating whether the given users are following the playlist. For each user that is following, the resulting array will contain `true` at the corresponding index; `false` otherwise.
     ///     - `error`: An error object identifying if and why the request failed, or `nil` if the request was successful.
-    public func checkIfFollowed(by users: [SKUser], handler: @escaping ([Bool]?, Error?) -> Void) {
+    public func checkIfFollowed<T: Collection>(by users: T, handler: @escaping ([Bool]?, Error?) -> Void) where T.Element: User {
         makeFollowStatusRequest(users: users).perform(handler: handler)
+    }
+    
+    /// Creates and returns the request used to check whether the given user is following the playlist.
+    ///
+    /// - Parameter user: The user against which to perform the check.
+    /// - Returns: An `SKRequest` instance with which to perform the API request.
+    public func makeFollowStatusRequest<T: User>(user: T) -> SKRequest {
+        
+        var parameters = [String: Any]()
+        parameters[Constants.QueryParameters.ids] = user.id
+        return SKRequest(method: .GET, endpoint: Constants.Endpoints.checkIfUsersFollowPlaylist(id: id, ownerID: owner.id), parameters: parameters)!
+    }
+    
+    /// Check to see if one or more Spotify users are following the playlist.
+    ///
+    /// - Note: This method uses the `SPTAuth` default instance session to authenticate the underlying request. If this session does not contain a valid access token, the request will result in an error.
+    ///
+    /// Following a playlist can be done publicly or privately. Checking if a user publicly follows a playlist doesn't require any scopes; if the user is publicly following the playlist, the resulting Boolean value will be `true`.
+    ///
+    /// However, checking if the user is privately following a playlist is only possible for the current authenticated user when that user has granted access to the "`playlist-read-private`" scope. See [Using Scopes](https://developer.spotify.com/web-api/using-scopes/) for more details.
+    ///
+    /// - Parameters:
+    ///   - user: The user against which to perform the check.
+    ///   - handler: The callback handler for the request. The parameters for this handler are:
+    ///     - `isFollowing`: A Boolean value indicating whether the given user is following the playlist: `true` if following, `false` otherwise.
+    ///     - `error`: An error object identifying if and why the request failed, or `nil` if the request was successful.
+    public func checkIfFollowed<T: User>(by user: T, handler: @escaping (Bool?, Error?) -> Void) {
+        makeFollowStatusRequest(user: user).perform { (flags: [Bool]?, error) in
+            handler(flags?.first, error)
+        }
     }
 }
 

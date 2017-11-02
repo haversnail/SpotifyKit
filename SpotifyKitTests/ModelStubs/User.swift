@@ -8,7 +8,7 @@
 
 import Foundation
 
-let userData = """
+let currentUserData = """
 {
   "birthdate" : "1900-07-01",
   "country" : "US",
@@ -30,7 +30,7 @@ let userData = """
 }
 """.data(using: .utf8)!
 
-let userData2 = """
+let userData = """
 {
   "display_name" : "Nike+ Run Club",
   "external_urls" : {

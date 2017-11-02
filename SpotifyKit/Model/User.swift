@@ -8,13 +8,70 @@
 
 import Foundation
 
-public struct SKUser: JSONDecodable {
+/// An enum representing the expected `type` value for a user object.
+fileprivate enum ObjectType: String, Codable { case user }
+
+// MARK: - User Protocol
+
+public protocol User {
     
-    // MARK: - Embedded Types
+    /// The name displayed on the user's profile. `nil` if not available.
+    var displayName: String? { get }
     
-    /// An enum representing the expected `type` value for a user object.
-    private enum ObjectType: String, Codable { case user }
+    /// Known external URLs for this user. See ["external URL object"](https://developer.spotify.com/web-api/object-model/#external-url-object) for more details.
+    var externalURLs: [String: URL] { get }
     
+    /// Information about the followers of this user.
+    /// - Note: User objects that are part of a Playlist or Playlist Track object don't return this property.
+    var followers: SKFollowers? { get }
+    
+    /// The [Spotify ID](https://developer.spotify.com/web-api/user-guide/#spotify-uris-and-ids) for the user.
+    var id: String { get }
+    
+    /// The user's profile image. If the user does not have a profile image set, this property will contain an empty array.
+    /// - Note: User objects that are part of a Playlist object don't return this property.
+    var images: [SKImage]? { get }
+    
+    /// The [Spotify URI](https://developer.spotify.com/web-api/user-guide/#spotify-uris-and-ids) for this user.
+    var uri: String { get }
+    
+    /// A link to the Web API endpoint for this user.
+    var url: URL { get }
+}
+
+// MARK: - User Type
+
+public struct SKUser: User, JSONDecodable {
+    
+    /// The object type: `"user"`.
+    private let type: ObjectType
+    
+    public let displayName: String?
+    public let externalURLs: [String: URL]
+    public let followers: SKFollowers?
+    public let id: String
+    public let images: [SKImage]?
+    public let uri: String
+    public let url: URL
+    
+    // MARK: Keys
+
+    private enum CodingKeys: String, CodingKey {
+        case displayName = "display_name"
+        case externalURLs = "external_urls"
+        case followers
+        case url = "href"
+        case id
+        case images
+        case type
+        case uri
+    }
+}
+
+// MARK: - Current Authenticated User Type
+
+public struct SKCurrentUser: User, JSONDecodable { // SKAuthenticatedUser
+        
     /// - SeeAlso: https:/spotify.github.io/ios-sdk/Constants/SPTProduct.html
     public enum ProductType: String, Codable {
         case free
@@ -23,36 +80,21 @@ public struct SKUser: JSONDecodable {
         case unlimited
         case unknown // TODO: Test for this case.
     }
-
-    // MARK: - Object Properties (Public)
-    
-    /// The name displayed on the user's profile. `nil` if not available.
-    public let displayName: String?
-    
-    /// Known external URLs for this user. See ["external URL object"](https://developer.spotify.com/web-api/object-model/#external-url-object) for more details.
-    public let externalURLs: [String: URL]
-
-    /// Information about the followers of this user.
-    /// - Note: User objects that are part of a Playlist or Playlist Track object don't return this property.
-    public let followers: SKFollowers?
-    
-    /// A link to the Web API endpoint for this user.
-    public let url: URL
-    
-    /// The [Spotify ID](https://developer.spotify.com/web-api/user-guide/#spotify-uris-and-ids) for the user.
-    public let id: String
-    
-    /// The user's profile image. If the user does not have a profile image set, this property will contain an empty array.
-    /// - Note: User objects that are part of a Playlist object don't return this property.
-    public let images: [SKImage]?
-    
-    /// The [Spotify URI](https://developer.spotify.com/web-api/user-guide/#spotify-uris-and-ids) for this user.
-    public let uri: String
     
     /// The object type: `"user"`.
     private let type: ObjectType
     
-    // MARK: - Object Properties (Private)
+    // MARK: Public Properties
+    
+    public let displayName: String?
+    public let externalURLs: [String: URL]
+    public let followers: SKFollowers?
+    public let id: String
+    public let images: [SKImage]?
+    public let uri: String
+    public let url: URL
+    
+    // MARK: Private Properties
     
     /// The user's date-of-birth.
     /// - Note: This field is only available when the current user has granted access to the `user-read-birthdate` scope. See [Using Scopes](https://developer.spotify.com/web-api/using-scopes/) for more details.
@@ -71,7 +113,7 @@ public struct SKUser: JSONDecodable {
     /// - Note: This field is only available when the current user has granted access to the `user-read-private` scope. See [Using Scopes](https://developer.spotify.com/web-api/using-scopes/) for more details.
     public let product: ProductType?
     
-    // MARK: - Keys
+    // MARK: Keys
 
     private enum CodingKeys: String, CodingKey {
         case birthdate
@@ -88,7 +130,7 @@ public struct SKUser: JSONDecodable {
         case uri
     }
     
-    // MARK: - Custom JSON Decoding
+    // MARK: Custom JSON Decoding
     
     public init(from jsonData: Data) throws {
         let decoder = JSONDecoder()
@@ -98,6 +140,6 @@ public struct SKUser: JSONDecodable {
         formatter.timeZone = TimeZone(secondsFromGMT: 0)
         decoder.dateDecodingStrategy = .formatted(formatter)
         
-        self = try decoder.decode(SKUser.self, from: jsonData)
+        self = try decoder.decode(SKCurrentUser.self, from: jsonData)
     }
 }
