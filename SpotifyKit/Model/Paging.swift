@@ -14,11 +14,18 @@ public struct Pagination {
     /// The number of items to be contained in the page.
     public var limit: Int
     
-    /// The index of the first item to be contained in the page. If `nil` or no value is supplied, then the first item in the page will represent the first item in the overall collection (i.e., the item at index `0`).
+    /// The index of the first item to be contained in the page.
+    ///
+    /// If `nil` or no value is supplied, then the first item in the page will represent the first item in the overall collection (i.e., the item at index `0`).
     public var offset: Int? = nil
     
+    /// The cursor identifying the last item in the previous page.
+    ///
+    /// If `nil` or no value is supplied, then the first item in the page will represent the first item in the overall collection (i.e., the item at index `0`).
+    public var cursor: String? = nil
     
-    /// Creates a set of page parameters based on limit and offset.
+    
+    /// Creates a set of pagination parameters based on limit and offset.
     ///
     /// - Parameters:
     ///   - limit: The number of items to be contained in the page. The maximum value for any given request is 50 items.
@@ -28,7 +35,7 @@ public struct Pagination {
         self.offset = offset
     }
     
-    /// Creates a set of page parameters based on limit and page number.
+    /// Creates a set of pagination parameters based on limit and page number.
     ///
     /// - Parameters:
     ///   - limit: The number of items to be contained in the page. The maximum value for any given request is 50 items.
@@ -36,6 +43,16 @@ public struct Pagination {
     public init(limit: Int, page: Int) {
         self.limit = limit
         self.offset = page > 1 ? limit * (page - 1) : nil
+    }
+    
+    /// Creates a set of pagination parameters based on limit and cursor.
+    ///
+    /// - Parameters:
+    ///   - limit: The number of items to be contained in the page. The maximum value for any given request is 50 items.
+    ///   - cursor: The cursor identifying the last item in the previous page.
+    public init(limit: Int, cursor: String?) {
+        self.limit = limit
+        self.cursor = cursor
     }
 }
 
@@ -48,14 +65,14 @@ public struct Pagination {
 /// This collection can either be *offset-based* or *cursor-based* depending on the [type of paging object](https://developer.spotify.com/web-api/object-model/#paging-object) returned by the API.
 public struct Page<Element: Decodable>: JSONDecodable {
     
-    /// Contains paging cursors used to find the adjacent pages of items.
-    public struct Cursors: Decodable {
+    /// A structure containing identifiers used to find the adjacent pages of items.
+    public struct Cursors: Decodable { // TODO: Consider removing type and just decode "after" as a top-level property.
         
         /// The cursor to use as a key to find the previous page of items.
-        public let before: String?
+        public let before: String? // firstIdentifier
         
         /// The cursor to use as a key to find the next page of items.
-        public let after: String?
+        public let after: String? // lastIdentifier
     }
     
     /// The array of objects.
@@ -74,7 +91,7 @@ public struct Page<Element: Decodable>: JSONDecodable {
     public let previousURL: URL?
     
     /// The cursors used to find the next set of items. See The [Spotify Web API Object Model](https://developer.spotify.com/web-api/object-model/#cursor-object) for reference.
-    public let cursors: Cursors?
+    public let cursors: Cursors? // cursor: String?
     
     /// The total number of items available to return. Note that not all paging objects return this value (for example, when fetching a list of recently played tracks).
     /// - Note: To retrieve the number of items currently returned by the paging object, see "`count`" instead.
@@ -90,7 +107,7 @@ public struct Page<Element: Decodable>: JSONDecodable {
         case nextURL = "next"
         case offset
         case previousURL = "previous"
-        case cursors
+        case cursors // cursor = "cursors"
         case total
     }
 
