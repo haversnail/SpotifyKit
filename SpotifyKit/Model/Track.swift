@@ -10,6 +10,9 @@ import Foundation
 
 // MARK: Supporting Types
 
+/// An enum representing the expected `type` value for a track object.
+fileprivate enum ObjectType: String, Codable { case track }
+
 public enum SKContentRating: Int {
     case clean
     case explicit
@@ -17,9 +20,6 @@ public enum SKContentRating: Int {
 }
 
 public struct SKTrackLink: Decodable {
-    
-    /// An enum representing the expected `type` value for a track object.
-    private enum ObjectType: String, Codable { case track }
     
     /// The object type: `"track"`.
     private let type: ObjectType
@@ -112,9 +112,6 @@ public protocol Track {
 // MARK: - Track Type
 
 public struct SKTrack: Track, JSONDecodable {
-    
-    /// An enum representing the expected `type` value for a track object.
-    private enum ObjectType: String, Codable { case track }
     
     // MARK: Object Properties (Simplified)
     

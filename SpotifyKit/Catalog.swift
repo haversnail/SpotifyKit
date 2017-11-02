@@ -8,7 +8,7 @@
 
 import Foundation
 
-/// A structure used to make requests to the [Spotify Web API](https://developer.spotify.com/web-api/) catalog for top-level items, such as albums, artists, tracks, playlists, and others.
+/// A structure used to make requests to the Spotify catalog for top-level items such as albums, artists, tracks, playlists, and others.
 ///
 /// - Note: All request-performing methods (e.g., "`getAlbum`" or "`search`") use the `SPTAuth` default instance session to authenticate the underlying request. If this session does not contain a valid access token, the request will result in an error. If you want to customize the request by injecting your own custom URL/API session or by decoding the response yourself, you can do so using any of the accompanying factory methods (e.g., "`makeAlbumRequest`" or "`makeSearchRequest`") to create and return the `SKRequest` instance itself.
 public struct SKCatalog {
@@ -19,7 +19,7 @@ public struct SKCatalog {
     ///
     /// All requests that include a "`market`," "`country`," or "`locale`" parameter will refer to the region and language codes provided by this property. If set to `nil`, many requests will return results for all available markets.
     ///
-    /// - Important: Some requests are are required to specify a locale or country code, and will result in an error if no locale is set before performing the request. This requirement will be annotated by all requests to which this applies.
+    /// - Important: Some requests are required to specify a locale or country code, and will result in an error if no locale is set before performing the request. This requirement will be annotated by all applicable requests.
     public var locale: Locale? // var storefront // = Locale.current // = nil
     
     /// Creates a new, reusable catalog instance with the specified storefront.
@@ -656,20 +656,20 @@ extension Collection where Element: Track {
     
     // MARK: Get Audio Features for Several Tracks ✔︎
     
-    /// Creates and returns the request used to get audio features for the current array of tracks.
+    /// Creates and returns the request used to get audio features for the current collection of tracks.
     ///
     /// - Important: The maximum number of IDs the API can process for a single request to this endpoint is 100. If the current array contains more than 100 items, the request may result in an error.
     ///
     /// - Returns: An `SKRequest` instance with which to perform the API request.
     public func makeAudioFeaturesRequest() -> SKRequest {
-        if self.isEmpty { assertionFailure("array of IDs must contain at least one value for the API request to be valid.") }
+        if self.isEmpty { assertionFailure("collection of IDs must contain at least one value for the API request to be valid.") }
         
         var parameters = [String: Any]()
         parameters[Constants.QueryParameters.ids] = self.isEmpty ? nil : map { $0.id }
         return SKRequest(method: .GET, endpoint: Constants.Endpoints.audioFeatures, parameters: parameters)!
     }
     
-    /// Gets audio feature information for the current array of tracks.
+    /// Gets audio feature information for the current collection of tracks.
     ///
     /// - Note: This method uses the `SPTAuth` default instance session to authenticate the underlying request. If this session does not contain a valid access token, the request will result in an error.
     ///
@@ -1022,7 +1022,7 @@ extension SKPlaylist {
     ///   - position: The index at which to insert the tracks. If omitted or set to `nil`, the tracks will be appended to the playlist.
     /// - Returns: An `SKRequest` instance with which to perform the API request.
     public func makeAddTracksRequest<T: Collection>(tracks: T, position: Int?) -> SKRequest where T.Element: Track {
-        if tracks.isEmpty { assertionFailure("array of tracks must contain at least one track for the API request to be valid.") }
+        if tracks.isEmpty { assertionFailure("collection of tracks must contain at least one track for the API request to be valid.") }
         
         var parameters = [String: Any]()
         parameters[Constants.QueryParameters.uris] = tracks.isEmpty ? nil : tracks.map { $0.uri }
@@ -1522,7 +1522,7 @@ extension Collection/*: Followable */where Element: Followable {
     
     private var followRequestParameters: [String: Any] {
         get {
-            if self.isEmpty { assertionFailure("array of Followable items must contain at least one value for the API request to be valid.") }
+            if self.isEmpty { assertionFailure("collection of Followable items must contain at least one value for the API request to be valid.") }
             
             var parameters = [String: Any]()
             parameters[Constants.QueryParameters.ids] = self.isEmpty ? nil : self.map { $0.id }
@@ -1603,7 +1603,7 @@ extension Collection/*: Followable */where Element: Followable {
 
 extension SKPlaylist {
     
-    // MARK: Follow a Playlist
+    // MARK: Follow a Playlist ✔︎
     
     /// Creates and returns the request used to add the current authenticated user as a follower of the playlist.
     ///
@@ -1633,7 +1633,7 @@ extension SKPlaylist {
         makeFollowRequest(public: `public`).perform(handler: handler)
     }
     
-    // MARK: Unfollow a Playlist
+    // MARK: Unfollow a Playlist ✔︎
     
     /// Creates and returns the request used to remove the current authenticated user as a follower of the playlist.
     ///
@@ -1653,7 +1653,7 @@ extension SKPlaylist {
         makeUnfollowRequest().perform(handler: handler)
     }
     
-    // MARK: Check if Users Follow a Playlist
+    // MARK: Check if Users Follow a Playlist ✔︎
     
     /// Creates and returns the request used to check whether the given users are following the playlist.
     ///
