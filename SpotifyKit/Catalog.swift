@@ -1680,17 +1680,6 @@ extension SKPlaylist {
         makeFollowStatusRequest(users: users).perform(handler: handler)
     }
     
-    /// Creates and returns the request used to check whether the given user is following the playlist.
-    ///
-    /// - Parameter user: The user against which to perform the check.
-    /// - Returns: An `SKRequest` instance with which to perform the API request.
-    public func makeFollowStatusRequest<T: User>(user: T) -> SKRequest {
-        
-        var parameters = [String: Any]()
-        parameters[Constants.QueryParameters.ids] = user.id
-        return SKRequest(method: .GET, endpoint: Constants.Endpoints.checkIfUsersFollowPlaylist(id: id, ownerID: owner.id), parameters: parameters)!
-    }
-    
     /// Check to see if one or more Spotify users are following the playlist.
     ///
     /// - Note: This method uses the `SPTAuth` default instance session to authenticate the underlying request. If this session does not contain a valid access token, the request will result in an error.
@@ -1705,7 +1694,7 @@ extension SKPlaylist {
     ///     - `isFollowing`: A Boolean value indicating whether the given user is following the playlist: `true` if following, `false` otherwise.
     ///     - `error`: An error object identifying if and why the request failed, or `nil` if the request was successful.
     public func checkIfFollowed<T: User>(by user: T, handler: @escaping (Bool?, Error?) -> Void) {
-        makeFollowStatusRequest(user: user).perform { (flags: [Bool]?, error) in
+        makeFollowStatusRequest(users: [user]).perform { (flags: [Bool]?, error) in
             handler(flags?.first, error)
         }
     }
