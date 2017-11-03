@@ -1402,7 +1402,7 @@ extension SKPlaylist {
 
 /// A type representing a Spotify item that can be followed or unfollowed by the current authenticated user.
 ///
-/// Types that conform to this protocol provide a set of request factories and convenience methods to either follow, unfollow, or check to see if the current authenticated user is already following the given item. These types must also contain a valid [Spotify ID](https://developer.spotify.com/web-api/user-guide/#spotify-uris-and-ids).
+/// Types that conform to this protocol provide a set of request factories and convenience methods to either follow, unfollow, or check to see if the current authenticated user is already following the item. These types must also contain a valid [Spotify ID](https://developer.spotify.com/web-api/user-guide/#spotify-uris-and-ids).
 ///
 /// - Note: Although a Spotify playlist is technically a "followable" catalog item, the method declarations and implementations for following playlists differ from those defined here. Thus, the `SKPlaylist` type does not conform to this protocol, but instead provides its own comparable methods and request factories.
 public protocol Followable {
@@ -1447,7 +1447,7 @@ public protocol Followable {
     ///
     /// - Note: This method uses the `SPTAuth` default instance session to authenticate the underlying request. If this session does not contain a valid access token, the request will result in an error. The access token must have been issued on behalf of the current user.
     ///
-    /// Modifying the list of items that the current authenticated user follows also requires authorization of the "`user-follow-modify`" scope. See [Using Scopes](https://developer.spotify.com/spotify-web-api/using-scopes/) for more details.
+    /// Reading the list of items that the current authenticated user follows also requires authorization of the "`user-follow-read`" scope. See [Using Scopes](https://developer.spotify.com/spotify-web-api/using-scopes/) for more details.
     ///
     /// - Parameter handler: The callback handler for the request. The parameters for this handler are:
     ///     - `isFollowing`: A Boolean value indicating whether the current authenticated user is following the item: `true` if following, `false` otherwise.
@@ -1574,7 +1574,7 @@ extension Collection/*: Followable */where Element: Followable {
     ///
     /// - Note: This method uses the `SPTAuth` default instance session to authenticate the underlying request. If this session does not contain a valid access token, the request will result in an error. The access token must have been issued on behalf of the current user.
     ///
-    /// Modifying the list of items that the current authenticated user follows also requires authorization of the "`user-follow-modify`" scope. See [Using Scopes](https://developer.spotify.com/spotify-web-api/using-scopes/) for more details.
+    /// Reading the list of items that the current authenticated user follows also requires authorization of the "`user-follow-read`" scope. See [Using Scopes](https://developer.spotify.com/spotify-web-api/using-scopes/) for more details.
     ///
     /// - Parameter handler: The callback handler for the request. The parameters for this handler are:
     ///     - `isFollowing`: An array of Boolean values indicating whether the current authenticated user is following the item at the corresponding index. If a particular item is followed by the current authenticated user, the resulting array will contain `true` at the corresponding index; `false` otherwise.
