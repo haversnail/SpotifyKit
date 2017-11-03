@@ -127,6 +127,57 @@ public struct SKCatalog {
         makeArtistsRequest(ids: ids).perform(handler: handler)
     }
     
+    // MARK: - Tracks
+    
+    // MARK: Get a Track ✔︎
+    
+    /// Creates and returns the request used to get a track.
+    ///
+    /// - Parameter id: The [Spotify ID](https://developer.spotify.com/web-api/user-guide/#spotify-uris-and-ids) for the track.
+    /// - Returns: An `SKRequest` instance with which to perform the API request.
+    public func makeTrackRequest(id: String) -> SKRequest {
+        
+        var parameters = [String: Any]()
+        parameters[Constants.QueryParameters.market] = locale?.regionCode
+        return SKRequest(method: .GET, endpoint: Constants.Endpoints.track(id: id), parameters: parameters)!
+    }
+    
+    /// Gets Spotify catalog information for a single track identified by its unique Spotify ID.
+    ///
+    /// - Parameters:
+    ///   - id: The [Spotify ID](https://developer.spotify.com/web-api/user-guide/#spotify-uris-and-ids) for the track.
+    ///   - handler: The callback handler for the request. The parameters for this handler are:
+    ///     - `track`: The requested full track object, if available.
+    ///     - `error`: An error object identifying if and why the request failed, or `nil` if the request was successful.
+    public func getTrack(withID id: String, handler: @escaping (SKTrack?, Error?) -> Void) {
+        makeTrackRequest(id: id).perform(handler: handler)
+    }
+    
+    // MARK: Get Several Tracks ✔︎
+    
+    /// Creates and returns the request used to get several tracks.
+    ///
+    /// - Parameter ids: A list of the [Spotify IDs](https://developer.spotify.com/web-api/user-guide/#spotify-uris-and-ids) for the tracks. Maximum: 50 IDs.
+    /// - Returns: An `SKRequest` instance with which to perform the API request.
+    public func makeTracksRequest(ids: [String]) -> SKRequest {
+        
+        var parameters = [String: Any]()
+        parameters[Constants.QueryParameters.ids] = ids
+        parameters[Constants.QueryParameters.market] = locale?.regionCode
+        return SKRequest(method: .GET, endpoint: Constants.Endpoints.tracks, parameters: parameters)!
+    }
+    
+    /// Gets Spotify catalog information for multiple tracks based on their Spotify IDs.
+    ///
+    /// - Parameters:
+    ///   - ids: A list of the [Spotify IDs](https://developer.spotify.com/web-api/user-guide/#spotify-uris-and-ids) for the tracks. Maximum: 50 IDs.
+    ///   - handler: The callback handler for the request. The parameters for this handler are:
+    ///     - `tracks`: The requested list of full track objects. If a particular track cannot be found for a given ID, the resulting array will contain `nil` at the corresponding index.
+    ///     - `error`: An error object identifying if and why the request failed, or `nil` if the request was successful.
+    public func getTracks(withIDs ids: [String], handler: @escaping ([SKTrack?]?, Error?) -> Void) {
+        makeTracksRequest(ids: ids).perform(handler: handler)
+    }
+    
     // MARK: - Browse
     
     // MARK: Get Featured Playlists ✔︎
@@ -442,61 +493,6 @@ public struct SKCatalog {
                           page: page)
             .perform(handler: handler)
     }
-    
-    // MARK: - Tracks
-    
-    // MARK: Get a Track
-    
-    /// Creates and returns the request used to get a track.
-    ///
-    /// - Parameter id: The [Spotify ID](https://developer.spotify.com/web-api/user-guide/#spotify-uris-and-ids) for the track.
-    /// - Returns: An `SKRequest` instance with which to perform the API request.
-    public func makeTrackRequest(id: String) -> SKRequest {
-        
-        var parameters = [String: Any]()
-        parameters[Constants.QueryParameters.market] = locale?.regionCode
-        return SKRequest(method: .GET, endpoint: Constants.Endpoints.track(id: id), parameters: parameters)!
-    }
-    
-    /// Gets Spotify catalog information for a single track identified by its unique Spotify ID.
-    ///
-    /// - Parameters:
-    ///   - id: The [Spotify ID](https://developer.spotify.com/web-api/user-guide/#spotify-uris-and-ids) for the track.
-    ///   - handler: The callback handler for the request. The parameters for this handler are:
-    ///     - `track`: The requested full track object, if available.
-    ///     - `error`: An error object identifying if and why the request failed, or `nil` if the request was successful.
-    public func getTrack(withID id: String, handler: @escaping (SKTrack?, Error?) -> Void) {
-        makeTrackRequest(id: id).perform(handler: handler)
-    }
-    
-    // MARK: Get Several Tracks
-    
-    /// Creates and returns the request used to get several tracks.
-    ///
-    /// - Parameter ids: A list of the [Spotify IDs](https://developer.spotify.com/web-api/user-guide/#spotify-uris-and-ids) for the tracks. Maximum: 50 IDs.
-    /// - Returns: An `SKRequest` instance with which to perform the API request.
-    public func makeTracksRequest(ids: [String]) -> SKRequest {
-        
-        var parameters = [String: Any]()
-        parameters[Constants.QueryParameters.ids] = ids
-        parameters[Constants.QueryParameters.market] = locale?.regionCode
-        return SKRequest(method: .GET, endpoint: Constants.Endpoints.tracks, parameters: parameters)!
-    }
-    
-    /// Gets Spotify catalog information for multiple tracks based on their Spotify IDs.
-    ///
-    /// - Parameters:
-    ///   - ids: A list of the [Spotify IDs](https://developer.spotify.com/web-api/user-guide/#spotify-uris-and-ids) for the tracks. Maximum: 50 IDs.
-    ///   - handler: The callback handler for the request. The parameters for this handler are:
-    ///     - `tracks`: The requested list of full track objects. If a particular track cannot be found for a given ID, the resulting array will contain `nil` at the corresponding index.
-    ///     - `error`: An error object identifying if and why the request failed, or `nil` if the request was successful.
-    public func getTracks(withIDs ids: [String], handler: @escaping ([SKTrack?]?, Error?) -> Void) {
-        makeTracksRequest(ids: ids).perform(handler: handler)
-    }
-    
-    // TODO: - Follow
-    
-    // TODO: - Users
     
     // TODO: - User Library
     

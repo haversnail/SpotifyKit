@@ -476,6 +476,68 @@ class RequestTests: XCTestCase {
         }
     }
     
+    // MARK: - Track Requests
+    
+    func testGetTrack() {
+        
+        // Arrange:
+        let trackID = "0kwuKfWntoGh0EWyYb7Mpf"
+        let request = catalog.makeTrackRequest(id: trackID)
+        let promise = makeRequestExpectation()
+        defer { wait(for: promise) }
+        
+        // Assert request:
+        XCTAssertEqual(request.url.path, "/v1/tracks/\(trackID)")
+        XCTAssertEqual(request.preparedURLRequest.url?.query, "market=US")
+        
+        // Act:
+        catalog.getTrack(withID: trackID) { (track, error) in
+            defer { promise.fulfill() }
+            
+            // Assert results:
+            if let error = error {
+                XCTFail(error.localizedDescription); return
+            }
+            guard let track = track else {
+                XCTFail("'track' was nil."); return
+            }
+            
+            XCTAssertEqual(track.id, trackID)
+            XCTAssertEqual(track.name, "Stranger Things")
+        }
+    }
+    
+    func testGetSeveralTracks() {
+        
+        // Arrange:
+        let trackIDs = ["7gBj0VgcuAgkXkiRRYvSmK","ABCm9wqX2AAeZNV3kdxXYZ","4uNDs2TBsv2KX9b4LIxfdt"] // Middle ID does not exist.
+        let request = catalog.makeTracksRequest(ids: trackIDs)
+        let promise = makeRequestExpectation()
+        defer { wait(for: promise) }
+        
+        // Assert request:
+        XCTAssertEqual(request.url.path, "/v1/tracks")
+        SKTAssertQuery(in: request, contains: "ids=7gBj0VgcuAgkXkiRRYvSmK,ABCm9wqX2AAeZNV3kdxXYZ,4uNDs2TBsv2KX9b4LIxfdt", "market=US")
+        
+        // Act:
+        catalog.getTracks(withIDs: trackIDs) { (tracks, error) in
+            defer { promise.fulfill() }
+            
+            // Assert results:
+            if let error = error {
+                XCTFail(error.localizedDescription); return
+            }
+            guard let tracks = tracks else {
+                XCTFail("'tracks' is nil."); return
+            }
+            
+            XCTAssertEqual(tracks.count, 3)
+            XCTAssertEqual(tracks[0]?.id, "7gBj0VgcuAgkXkiRRYvSmK")
+            XCTAssertEqual(tracks[2]?.id, "4uNDs2TBsv2KX9b4LIxfdt")
+            XCTAssertNil(tracks[1], "middle value should have been nil - the corresponding ID didn't exist.")
+        }
+    }
+    
     // MARK: - Audio Features Requests
     
     func testGetAudioFeaturesForTrack() {
