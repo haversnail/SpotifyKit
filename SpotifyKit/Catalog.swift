@@ -334,7 +334,10 @@ public struct SKCatalog {
     ///   - artists: A list of seed artists.
     ///   - tracks: A list of seed tracks.
     ///   - attributes: A list of tunable track attributes by which to filter results. Each attribute allows you to specify a minimum value, maximum value, and target value.
-    ///   - limit: The target size of the results. **Note**: For seeds with unusually small pools or when highly restrictive filtering is applied, it may be impossible to generate the requested number of recommended tracks. In such cases, debugging information will be made available in the response.
+    ///   - limit: The target size of the results.
+    ///
+    ///     **Note**: For seeds with unusually small pools or when highly restrictive filtering is applied, it may be impossible to generate the requested number of recommended tracks. In such cases, debugging information will be made available in the response.
+    ///
     /// - Returns: An `SKRequest` instance with which to perform the API request.
     public func makeRecommendationsRequest(genres: [String],
                                            artists: [SKArtist],
@@ -372,7 +375,10 @@ public struct SKCatalog {
     ///   - artists: A list of seed artists.
     ///   - tracks: A list of seed tracks.
     ///   - attributes: A list of tunable track attributes by which to filter results. Each attribute allows you to specify a minimum value, maximum value, and target value.
-    ///   - limit: The target size of the results. **Note**: For seeds with unusually small pools or when highly restrictive filtering is applied, it may be impossible to generate the requested number of recommended tracks. In such cases, debugging information will be made available in the response.
+    ///   - limit: The target size of the results.
+    ///
+    ///     **Note**: For seeds with unusually small pools or when highly restrictive filtering is applied, it may be impossible to generate the requested number of recommended tracks. In such cases, debugging information will be made available in the response.
+    ///
     ///   - handler: The callback handler for the request. The parameters for this handler are:
     ///     - `recommendations`: An `SKRecommendations` object, which contains an array of tracks accompanied by the seeds from which the tracks are returned.
     ///     - `error`: An error object identifying if and why the request failed, or `nil` if the request was successful.
@@ -509,7 +515,10 @@ extension SKArtist {
     ///
     /// - Parameters:
     ///   - types: The types of albums by which to filter results. If no types are specified (i.e., parameter is set to an empty array), all album types will be returned. See `SKAlbumType` for possible values.
-    ///   - locale: The locale-specific storefront/market from which to request. **Note:** If set to `nil`, results will be returned for all markets and will likely contain duplicate results, one for each market in which the album is available.
+    ///   - locale: The locale-specific storefront/market from which to request.
+    ///
+    ///     **Note:** If set to `nil`, results will be returned for all markets and will likely contain duplicate results, one for each market in which the album is available.
+    ///
     ///   - page: The parameters for paginating the results, specifying the index and number of items to return. If no parameters are supplied, the request will return the default number of items beginning with first item.
     /// - Returns: An `SKRequest` instance with which to perform the API request.
     public func makeAlbumsRequest(types: Set<SKAlbumType>, locale: Locale?, page: Pagination?) -> SKRequest {
@@ -528,7 +537,10 @@ extension SKArtist {
     ///
     /// - Parameters:
     ///   - types: The types of albums by which to filter results. If no types are specified, all album types will be returned. See `SKAlbumType` for possible values. The default value is an empty array.
-    ///   - locale: The locale-specific storefront/market from which to request. The default value is `Locale.current`, which represents the user's region settings at the time the method is called. **Note:** If set to `nil`, results will be returned for all markets and will likely contain duplicate results, one for each market in which the album is available.
+    ///   - locale: The locale-specific storefront/market from which to request. The default value is `Locale.current`, which represents the user's region settings at the time the method is called.
+    ///
+    ///     **Note:** If set to `nil`, results will be returned for all markets and will likely contain duplicate results, one for each market in which the album is available.
+    ///
     ///   - page: The parameters for paginating the results, specifying the index and number of items to return. If no parameters are supplied, the request will return the default number of items beginning with first item. The default value is `nil`.
     ///   - handler: The callback handler for the request. The parameters for this handler are:
     ///     - `albums`: A paginated collection of simplified albums, if available.
@@ -541,7 +553,10 @@ extension SKArtist {
     
     /// Creates and returns the request used to get the current artist's top tracks.
     ///
-    /// - Parameter locale: The locale-specific storefront/market from which to request. **Note:** The locale must contain a valid region code.
+    /// - Parameter locale: The locale-specific storefront/market from which to request.
+    ///
+    ///     **Note:** The locale must contain a valid region code.
+    ///
     /// - Returns: An `SKRequest` instance with which to perform the API request.
     public func makeTopTracksRequest(locale: Locale) -> SKRequest {
         
@@ -555,7 +570,10 @@ extension SKArtist {
     /// - Note: This method uses the `SPTAuth` default instance session to authenticate the underlying request. If this session does not contain a valid access token, the request will result in an error.
     ///
     /// - Parameters:
-    ///   - locale: The locale-specific catalog from which to request. The default value is `Locale.current`, which represents the user's region settings at the time the method is called. **Note:** The locale must contain a valid region code.
+    ///   - locale: The locale-specific catalog from which to request. The default value is `Locale.current`, which represents the user's region settings at the time the method is called.
+    ///
+    ///     **Note:** The locale must contain a valid region code.
+    ///
     ///   - handler: The callback handler for the request. The parameters for this handler are:
     ///     - `tracks`: An array returned by the request of up to 10 top tracks, if available.
     ///     - `error`: An error object identifying if and why the request failed, or `nil` if the request was successful.
@@ -810,11 +828,20 @@ extension SKPlaylist {
     /// Creates and returns the request used to create a new playlist.
     ///
     /// - Parameters:
-    ///   - userID: The [Spotify ID](https://developer.spotify.com/web-api/user-guide/#spotify-uris-and-ids) for the current authenticated user. **Note**: the access token provided to this request must have been issued on behalf of this user, who must have authorized either the "`playlist-modify-public`" or "`playlist-modify-private`" scope. See [Using Scopes](https://developer.spotify.com/web-api/using-scopes/) for more details.
+    ///   - userID: The [Spotify ID](https://developer.spotify.com/web-api/user-guide/#spotify-uris-and-ids) for the current authenticated user.
+    ///
+    ///     **Note**: the access token provided to this request must have been issued on behalf of this user, who must have authorized either the "`playlist-modify-public`" or "`playlist-modify-private`" scope. See [Using Scopes](https://developer.spotify.com/web-api/using-scopes/) for more details.
+    ///
     ///   - name: The name for the new playlist. This name does not need to be unique; a user may have several playlists with the same name.
     ///   - description: An optional description of the playlist.
-    ///   - isPublic: `true` if the playlist will be public, `false` if private. **Note**: to create private playlists, the user must have authorized the "`playlist-modify-private`" scope.
-    ///   - isCollaborative: `true` if the playlist will be collaborative, `false` otherwise. **Note**: to create collaborative playlists, the user must have authorized both "`playlist-modify-private`" and "`playlist-modify-public`" scopes.
+    ///   - isPublic: `true` if the playlist will be public, `false` if private.
+    ///
+    ///     **Note**: to create private playlists, the user must have authorized the "`playlist-modify-private`" scope.
+    ///
+    ///   - isCollaborative: `true` if the playlist will be collaborative, `false` otherwise.
+    ///
+    ///     **Note**: to create collaborative playlists, the user must have authorized both "`playlist-modify-private`" and "`playlist-modify-public`" scopes.
+    ///
     /// - Returns: An `SKRequest` instance with which to perform the API request.
     public static func makeNewPlaylistRequest(userID: String, name: String, description: String?, isPublic: Bool, isCollaborative: Bool) -> SKRequest {
         
@@ -839,8 +866,14 @@ extension SKPlaylist {
     /// - Parameters:
     ///   - name: The name for the new playlist. This name does not need to be unique; a user may have several playlists with the same name.
     ///   - description: An optional description of the playlist. The default value is `nil`.
-    ///   - isPublic: `true` if the playlist should be public, `false` if private. The default value is `true`. **Note**: to create private playlists, the user must have authorized the "`playlist-modify-private`" scope.
-    ///   - isCollaborative: `true` if the playlist should be collaborative, `false` otherwise. The default value is `false`. **Note**: to create collaborative playlists, the user must have authorized both "`playlist-modify-private`" and "`playlist-modify-public`" scopes.
+    ///   - isPublic: `true` if the playlist should be public, `false` if private. The default value is `true`.
+    ///
+    ///     **Note**: to create private playlists, the user must have authorized the "`playlist-modify-private`" scope.
+    ///
+    ///   - isCollaborative: `true` if the playlist should be collaborative, `false` otherwise. The default value is `false`.
+    ///
+    ///     **Note**: to create collaborative playlists, the user must have authorized both "`playlist-modify-private`" and "`playlist-modify-public`" scopes.
+    ///
     ///   - handler: The callback handler for the request. The parameters for this handler are:
     ///     - `playlist`: The newly-created playlist object, if the request was successful.
     ///     - `error`: An error object identifying if and why the request failed, or `nil` if the request was successful.
@@ -863,7 +896,10 @@ extension SKPlaylist {
     ///   - name: The new name for the playlist.
     ///   - description: A new description of the playlist.
     ///   - isPublic: If `true`, the playlist will be made public; if `false`, private.
-    ///   - isCollaborative: If `true`, the playlist will become collaborative and other users will be able to modify the playlist in their Spotify client. **Note**: setting this parameter to `true` is only applicable to non-public playlists.
+    ///   - isCollaborative: If `true`, the playlist will become collaborative and other users will be able to modify the playlist in their Spotify client.
+    ///
+    ///     **Note**: setting this parameter to `true` is only applicable to non-public playlists.
+    ///
     /// - Returns: An `SKRequest` instance with which to perform the API request.
     public func makeUpdateDetailsRequest(name: String?, description: String?, isPublic: Bool?, isCollaborative: Bool?) -> SKRequest {
         
@@ -893,7 +929,10 @@ extension SKPlaylist {
     ///   - name: The new name for the playlist. The default value is `nil`.
     ///   - description: A new description of the playlist. The default value is `nil`.
     ///   - isPublic: If `true`, the playlist will be made public; if `false`, private. The default value is `nil`.
-    ///   - isCollaborative: If `true`, the playlist will become collaborative and other users will be able to modify the playlist in their Spotify client. The default value is `nil`. **Note**: setting this parameter to `true` is only applicable to non-public playlists.
+    ///   - isCollaborative: If `true`, the playlist will become collaborative and other users will be able to modify the playlist in their Spotify client. The default value is `nil`.
+    ///
+    ///     **Note**: setting this parameter to `true` is only applicable to non-public playlists.
+    ///
     ///   - handler: The callback handler for the request, providing an error object identifying if and why the request failed, or `nil` if the request was successful.
     public func update(name: String? = nil, description: String? = nil, isPublic: Bool? = nil, isCollaborative: Bool? = nil, handler: @escaping SKErrorHandler) {
         if name == nil && description == nil && isPublic == nil && isCollaborative == nil { return }
@@ -960,7 +999,10 @@ extension SKPlaylist {
     /// The access token must have been issued on behalf of the user who owns the playlist, and must have the "`ugc-image-upload`" scope authorized. In addition, the token must also contain the "`playlist-modify-public`" and/or "`playlist-modify-private`" scopes, depending the access level of playlist. See [Using Scopes](https://developer.spotify.com/web-api/using-scopes/) for more details.
     ///
     /// - Parameters:
-    ///   - image: The image data to upload. The maximum encoded payload size is 256 KB. **Note**: if there is a problem generating Base-64 encoded JPEG image data from the given `UIImage`—for example, if the image has no data or if the underlying `CGImageRef` contains data in an unsupported bitmap format—then this method will do nothing and the provided callback handler will not be executed.
+    ///   - image: The image data to upload. The maximum encoded payload size is 256 KB.
+    ///
+    ///     **Note**: if there is a problem generating Base-64 encoded JPEG image data from the given `UIImage`—for example, if the image has no data or if the underlying `CGImageRef` contains data in an unsupported bitmap format—then this method will do nothing and the provided callback handler will not be executed.
+    ///
     ///   - quality: The compression quality of the resulting JPEG image, expressed as a value from 0.0 to 1.0. The value 0.0 represents the maximum compression (or lowest quality) while the value 1.0 represents the least compression (or best quality). The default value is 0.8.
     ///   - handler: The callback handler for the request, providing an error object identifying if and why the request failed, or `nil` if the request was successful.
     public func updateImage(with image: UIImage, quality: Float = 0.8, handler: @escaping SKErrorHandler) { // replaceImage(with image: ...)
@@ -1603,7 +1645,10 @@ extension SKPlaylist {
     
     /// Creates and returns the request used to add the current authenticated user as a follower of the playlist.
     ///
-    /// - Parameter public: A Boolean value indicating whether the playlist should be included in the user's public playlists. **Note**: to follow playlists privately, the user must authorize the "`playlist-modify-private`" scope. See [Using Scopes](https://developer.spotify.com/spotify-web-api/using-scopes/) for more details.
+    /// - Parameter public: A Boolean value indicating whether the playlist should be included in the user's public playlists.
+    ///
+    ///     **Note**: to follow playlists privately, the user must authorize the "`playlist-modify-private`" scope. See [Using Scopes](https://developer.spotify.com/spotify-web-api/using-scopes/) for more details.
+    ///
     /// - Returns: An `SKRequest` instance with which to perform the API request.
     public func makeFollowRequest(public: Bool) -> SKRequest {
         
@@ -1623,7 +1668,10 @@ extension SKPlaylist {
     /// Following a playlist publicly requires authorization of the "`playlist-modify-public`" scope; likewise, following a playlist privately requires authorization of the "`playlist-modify-private`" scope. See [Using Scopes](https://developer.spotify.com/web-api/using-scopes/) for more details.
     ///
     /// - Parameters:
-    ///   - public: A Boolean value indicating whether the playlist should be included in the user's public playlists. The default value is `true`. **Note**: to follow playlists privately, the user must have authorized the "`playlist-modify-private`" scope.
+    ///   - public: A Boolean value indicating whether the playlist should be included in the user's public playlists. The default value is `true`.
+    ///
+    ///     **Note**: to follow playlists privately, the user must have authorized the "`playlist-modify-private`" scope.
+    ///
     ///   - handler: The callback handler for the request, providing an error object identifying if and why the request failed, or `nil` if the request was successful.
     public func follow(makingPublic public: Bool = true, handler: @escaping SKErrorHandler) {
         makeFollowRequest(public: `public`).perform(handler: handler)
