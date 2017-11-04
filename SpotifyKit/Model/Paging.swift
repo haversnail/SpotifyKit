@@ -19,7 +19,7 @@ public struct Pagination {
     /// If `nil` or no value is supplied, then the first item in the page will represent the first item in the overall collection (i.e., the item at index `0`).
     public var offset: Int? = nil
     
-    /// The cursor identifying the last item in the previous page.
+    /// The key identifying the last item in the previous page.
     ///
     /// If `nil` or no value is supplied, then the first item in the page will represent the first item in the overall collection (i.e., the item at index `0`).
     public var cursor: String? = nil
@@ -65,15 +65,15 @@ public struct Pagination {
 /// This collection can either be *offset-based* or *cursor-based* depending on the [type of paging object](https://developer.spotify.com/web-api/object-model/#paging-object) returned by the API.
 public struct Page<Element: Decodable>: JSONDecodable {
     
-    /// A structure containing identifiers used to find the adjacent pages of items.
-    public struct Cursors: Decodable { // TODO: Consider removing type and just decode "after" as a top-level property.
-        
-        /// The cursor to use as a key to find the previous page of items.
-        public let before: String? // firstIdentifier
-        
-        /// The cursor to use as a key to find the next page of items.
-        public let after: String? // lastIdentifier
-    }
+//    /// A structure containing identifiers used to find the adjacent pages of items.
+//    public struct Cursors: Decodable {
+//
+//        /// The cursor to use as a key to find the previous page of items.
+//        public let before: String? // firstIdentifier
+//
+//        /// The cursor to use as a key to find the next page of items.
+//        public let after: String? // lastIdentifier
+//    }
     
     /// The array of objects.
     private let items: [Element]
@@ -84,14 +84,23 @@ public struct Page<Element: Decodable>: JSONDecodable {
     /// URL to the next page of items (`nil` if none).
     public let nextURL: URL?
     
-    /// The offset of the items returned (as set in the query or by default). This property will be `nil` if the collection is a cursor-based paging object.
+    /// The offset of the items returned (as set in the query or by default).
+    ///
+    /// This property will be `nil` if the collection uses cursor-based paging.
     public let offset: Int?
     
     /// URL to the previous page of items (`nil` if none).
     public let previousURL: URL?
     
-    /// The cursors used to find the next set of items. See The [Spotify Web API Object Model](https://developer.spotify.com/web-api/object-model/#cursor-object) for reference.
-    public let cursors: Cursors? // cursor: String?
+    /// The cursors used to find the next set of items.
+    ///
+    /// Given that the [cursor object](https://developer.spotify.com/web-api/object-model/#cursor-object) currently only contains a single "`after`" identifier, introducing a Cursor type adds unnecessary complexity. Therefore, this property is maintained at the `private` scope and is instead accessible through the  computed `cursor` property.
+    private let cursors: [String: String]?
+    
+    /// The key identifying the last item in the previous page.
+    ///
+    /// The cursor is used to find the next set of items in a cursor-based paging response. This property will be `nil` if the collection uses offset-based paging.
+    public var cursor: String? { return cursors?.first?.value }
     
     /// The total number of items available to return. Note that not all paging objects return this value (for example, when fetching a list of recently played tracks).
     /// - Note: To retrieve the number of items currently returned by the paging object, see "`count`" instead.
@@ -107,7 +116,7 @@ public struct Page<Element: Decodable>: JSONDecodable {
         case nextURL = "next"
         case offset
         case previousURL = "previous"
-        case cursors // cursor = "cursors"
+        case cursors
         case total
     }
 
