@@ -1384,9 +1384,10 @@ class RequestTests: XCTestCase {
                     XCTFail("'isFollowing' was nil."); return
                 }
                 
-                XCTAssertEqual(isFollowing.count, 2)
-                XCTAssertTrue(isFollowing[0])
-                XCTAssertTrue(isFollowing[1])
+                XCTAssertEqual(isFollowing.count, artists.count)
+                isFollowing.forEach {
+                    XCTAssertTrue($0, "the current user is still not following the artists.")
+                }
             }
         }
     }
@@ -1427,7 +1428,7 @@ class RequestTests: XCTestCase {
                     XCTFail("'isFollowing' was nil."); return
                 }
                 
-                XCTAssertTrue(isFollowing)
+                XCTAssertTrue(isFollowing, "the current user is still not following the user.")
             }
         }
     }
@@ -1463,9 +1464,10 @@ class RequestTests: XCTestCase {
                     XCTFail("'isFollowing' was nil."); return
                 }
                 
-                XCTAssertEqual(isFollowing.count, 2)
-                XCTAssertFalse(isFollowing[0])
-                XCTAssertFalse(isFollowing[1])
+                XCTAssertEqual(isFollowing.count, artists.count)
+                isFollowing.forEach {
+                    XCTAssertFalse($0, "the current user is still following the artists.")
+                }
             }
         }
     }
@@ -1501,7 +1503,7 @@ class RequestTests: XCTestCase {
                     XCTFail("'isFollowing' was nil."); return
                 }
                 
-                XCTAssertFalse(isFollowing)
+                XCTAssertFalse(isFollowing, "the current user is still following the user.")
             }
         }
     }
@@ -1554,14 +1556,14 @@ class RequestTests: XCTestCase {
             }
         }
         
-        // Re-follow playlist when test concludes:
-        addTeardownBlock {
-            playlist.follow { error in
-                if let error = error {
-                    print(error.localizedDescription)
-                }
-            }
-        }
+//        // Re-follow playlist when test concludes:
+//        addTeardownBlock {
+//            playlist.follow { error in
+//                if let error = error {
+//                    print(error.localizedDescription)
+//                }
+//            }
+//        }
     }
     
     func testIfUsersFollowPlaylist() {
@@ -1579,7 +1581,7 @@ class RequestTests: XCTestCase {
         SKTAssertQuery(in: request, contains: "ids=\(user.id)")
         
         // Act:
-        playlist.checkIfFollowed(by: [user]) { (isFollowing, error) in
+        playlist.checkIfFollowed(by: user) { (isFollowing, error) in
             defer { promise.fulfill() }
             
             // Assert results:
@@ -1590,8 +1592,7 @@ class RequestTests: XCTestCase {
                 XCTFail("'isFollowing' was nil."); return
             }
             
-            XCTAssertEqual(isFollowing.count, 1)
-            XCTAssertFalse(isFollowing[0])
+            XCTAssertFalse(isFollowing, "the given user is unexpectedly following the playlist.")
         }
     }
     
