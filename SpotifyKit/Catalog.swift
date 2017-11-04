@@ -1750,7 +1750,7 @@ extension SKPlaylist {
 
 extension SKCurrentUser {
     
-    // MARK: Get Followed Artists
+    // MARK: Get Followed Artists ✔︎
     
     /// Creates and returns the request used to get the current authenticated user's followed artists.
     ///
@@ -1787,6 +1787,216 @@ extension SKCurrentUser {
     }
     
     // public static func getFollowedUsers(page: Pagination? = nil, handler: @escaping (Page<SKUser>?, Error?) -> Void) // Currently unsupported by Spotify.
+}
+
+// MARK: - Library Requests
+
+/// A type representing a Spotify item that can be saved to the current authenticated user's Spotify music library.
+///
+/// Types that conform to this protocol provide a set of request factories and convenience methods to either save, remove, or check to see if the user has already saved the item. These types must also contain a valid [Spotify ID](https://developer.spotify.com/web-api/user-guide/#spotify-uris-and-ids).
+public protocol Savable {
+    
+    /// The [Spotify ID](https://developer.spotify.com/web-api/user-guide/#spotify-uris-and-ids) for the item. **Required.**
+    var id: String { get }
+    
+    /// Creates and returns the request used to save the item to the current authenticated user's Spotify music library.
+    ///
+    /// - Returns: An `SKRequest` instance with which to perform the API request.
+    func makeSaveToLibraryRequest() -> SKRequest
+    
+    /// Creates and returns the request used to remove the item from the current authenticated user's Spotify music library.
+    ///
+    /// - Returns: An `SKRequest` instance with which to perform the API request.
+    func makeRemoveFromLibraryRequest() -> SKRequest
+    
+    /// Creates and returns the request used to check whether the item has been saved to the current authenticated user's Spotify music library.
+    ///
+    /// - Returns: An `SKRequest` instance with which to perform the API request.
+    func makeSaveStatusRequest() -> SKRequest
+    
+    /// Saves the item to the current authenticated user's Spotify music library.
+    ///
+    /// - Note: This method uses the `SPTAuth` default instance session to authenticate the underlying request. If this session does not contain a valid access token, the request will result in an error. The access token must have been issued on behalf of the current user.
+    ///
+    /// Modifying the current user's "Your Music" collection requires authorization of the "`user-library-modify`" scope. See [Using Scopes](https://developer.spotify.com/spotify-web-api/using-scopes/) for more details.
+    ///
+    /// - Parameter handler: The callback handler for the request, providing an error object identifying if and why the request failed, or `nil` if the request was successful.
+    func saveToLibrary(handler: @escaping SKErrorHandler)
+    
+    /// Removes the item from the current authenticated user's Spotify music library.
+    ///
+    /// - Note: This method uses the `SPTAuth` default instance session to authenticate the underlying request. If this session does not contain a valid access token, the request will result in an error. The access token must have been issued on behalf of the current user.
+    ///
+    /// Modifying the current user's "Your Music" collection requires authorization of the "`user-library-modify`" scope. See [Using Scopes](https://developer.spotify.com/spotify-web-api/using-scopes/) for more details.
+    ///
+    /// - Parameter handler: The callback handler for the request, providing an error object identifying if and why the request failed, or `nil` if the request was successful.
+    func removeFromLibrary(handler: @escaping SKErrorHandler)
+    
+    /// Checks whether the item has been saved to the current authenticated user's Spotify music library.
+    ///
+    /// - Note: This method uses the `SPTAuth` default instance session to authenticate the underlying request. If this session does not contain a valid access token, the request will result in an error. The access token must have been issued on behalf of the current user.
+    ///
+    /// Reading the current user's "Your Music" collection requires authorization of the "`user-library-read`" scope. See [Using Scopes](https://developer.spotify.com/spotify-web-api/using-scopes/) for more details.
+    ///
+    /// - Parameter handler: The callback handler for the request. The parameters for this handler are:
+    ///     - `isSaved`: A Boolean value indicating whether the item has been saved to the current user's library: `true` if saved, `false` otherwise.
+    ///     - `error`: An error object identifying if and why the request failed, or `nil` if the request was successful.
+    func checkIfSaved(handler: @escaping (Bool?, Error?) -> Void)
+}
+
+// MARK: Default Implementation
+
+extension Savable {
+    
+    private var saveRequestParameters: [String: Any] {
+        get {
+            var parameters = [String: Any]()
+            parameters[Constants.QueryParameters.ids] = id
+            return parameters
+        }
+    }
+    
+    public func saveToLibrary(handler: @escaping SKErrorHandler) {
+        makeSaveToLibraryRequest().perform(handler: handler)
+    }
+    
+    public func removeFromLibrary(handler: @escaping SKErrorHandler) {
+        makeRemoveFromLibraryRequest().perform(handler: handler)
+    }
+
+    public func checkIfSaved(handler: @escaping (Bool?, Error?) -> Void) {
+        makeSaveStatusRequest().perform { (flags: [Bool]?, error) in
+            handler(flags?.first, error)
+        }
+    }
+}
+
+// MARK: Album Conformance
+
+extension Savable where Self: Album {
+    
+    public func makeSaveToLibraryRequest() -> SKRequest {
+        return SKRequest(method: .PUT, endpoint: Constants.Endpoints.mySavedAlbums, parameters: saveRequestParameters)!
+    }
+    
+    public func makeRemoveFromLibraryRequest() -> SKRequest {
+        return SKRequest(method: .DELETE, endpoint: Constants.Endpoints.mySavedAlbums, parameters: saveRequestParameters)!
+    }
+
+    public func makeSaveStatusRequest() -> SKRequest {
+        return SKRequest(method: .GET, endpoint: Constants.Endpoints.checkIfAlbumsSaved, parameters: saveRequestParameters)!
+    }
+}
+
+extension SKAlbum: Savable {}
+extension SKSavedAlbum: Savable {}
+
+// MARK: Track Conformance
+
+extension Savable where Self: Track {
+    
+    public func makeSaveToLibraryRequest() -> SKRequest {
+        return SKRequest(method: .PUT, endpoint: Constants.Endpoints.mySavedTracks, parameters: saveRequestParameters)!
+    }
+    
+    public func makeRemoveFromLibraryRequest() -> SKRequest {
+        return SKRequest(method: .DELETE, endpoint: Constants.Endpoints.mySavedTracks, parameters: saveRequestParameters)!
+    }
+    
+    public func makeSaveStatusRequest() -> SKRequest {
+        return SKRequest(method: .GET, endpoint: Constants.Endpoints.checkIfTracksSaved, parameters: saveRequestParameters)!
+    }
+}
+
+extension SKTrack: Savable {}
+extension SKSavedTrack: Savable {}
+extension SKPlaylistTrack: Savable {}
+
+// MARK: Collection Conformance
+
+extension Collection where Element: Savable {
+    
+    private var saveRequestParameters: [String: Any] {
+        get {
+            if self.isEmpty { assertionFailure("collection of Savable items must contain at least one value for the API request to be valid.") }
+            
+            var parameters = [String: Any]()
+            parameters[Constants.QueryParameters.ids] = self.isEmpty ? nil : self.map { $0.id }
+            return parameters
+        }
+    }
+    
+    private var saveRequestEndpoint: String {
+        switch Element.self {
+            case is Album.Type: return Constants.Endpoints.mySavedAlbums
+            case is Track.Type: return Constants.Endpoints.mySavedTracks
+            default: assertionFailure("Savable collection requests only support album and track endpoints at this time."); return ""
+        }
+    }
+    
+    private var saveStatusRequestEndpoint: String {
+        switch Element.self {
+            case is Album.Type: return Constants.Endpoints.checkIfAlbumsSaved
+            case is Track.Type: return Constants.Endpoints.checkIfTracksSaved
+            default: assertionFailure("Savable collection requests only support album and track endpoints at this time."); return ""
+        }
+    }
+    
+    /// Creates and returns the request used to save the items in the collection to the current authenticated user's Spotify music library.
+    ///
+    /// - Returns: An `SKRequest` instance with which to perform the API request.
+    public func makeSaveToLibraryRequest() -> SKRequest {
+        return SKRequest(method: .PUT, endpoint: saveRequestEndpoint, parameters: saveRequestParameters)!
+    }
+    
+    /// Creates and returns the request used to remove the items in the collection from the current authenticated user's Spotify music library.
+    ///
+    /// - Returns: An `SKRequest` instance with which to perform the API request.
+    public func makeRemoveFromLibraryRequest() -> SKRequest {
+        return SKRequest(method: .DELETE, endpoint: saveRequestEndpoint, parameters: saveRequestParameters)!
+    }
+    
+    /// Creates and returns the request used to check whether the items in the collection have been saved to the current authenticated user's Spotify music library.
+    ///
+    /// - Returns: An `SKRequest` instance with which to perform the API request.
+    public func makeSaveStatusRequest() -> SKRequest {
+        return SKRequest(method: .GET, endpoint: saveStatusRequestEndpoint, parameters: saveRequestParameters)!
+    }
+    
+    /// Saves the items in the collection to the current authenticated user's Spotify music library. A maximum of 50 items can be saved in one request.
+    ///
+    /// - Note: This method uses the `SPTAuth` default instance session to authenticate the underlying request. If this session does not contain a valid access token, the request will result in an error. The access token must have been issued on behalf of the current user.
+    ///
+    /// Modifying the current user's "Your Music" collection requires authorization of the "`user-library-modify`" scope. See [Using Scopes](https://developer.spotify.com/spotify-web-api/using-scopes/) for more details.
+    ///
+    /// - Parameter handler: The callback handler for the request, providing an error object identifying if and why the request failed, or `nil` if the request was successful.
+    public func saveToLibrary(handler: @escaping SKErrorHandler) {
+        makeSaveToLibraryRequest().perform(handler: handler)
+    }
+    
+    /// Removes the items in the collection from the current authenticated user's Spotify music library. A maximum of 50 items can be removed in one request.
+    ///
+    /// - Note: This method uses the `SPTAuth` default instance session to authenticate the underlying request. If this session does not contain a valid access token, the request will result in an error. The access token must have been issued on behalf of the current user.
+    ///
+    /// Modifying the current user's "Your Music" collection requires authorization of the "`user-library-modify`" scope. See [Using Scopes](https://developer.spotify.com/spotify-web-api/using-scopes/) for more details.
+    ///
+    /// - Parameter handler: The callback handler for the request, providing an error object identifying if and why the request failed, or `nil` if the request was successful.
+    public func removeFromLibrary(handler: @escaping SKErrorHandler) {
+        makeRemoveFromLibraryRequest().perform(handler: handler)
+    }
+    
+    /// Checks whether the items in the collection have been saved to the current authenticated user's Spotify music library.
+    ///
+    /// - Note: This method uses the `SPTAuth` default instance session to authenticate the underlying request. If this session does not contain a valid access token, the request will result in an error. The access token must have been issued on behalf of the current user.
+    ///
+    /// Reading the current user's "Your Music" collection requires authorization of the "`user-library-read`" scope. See [Using Scopes](https://developer.spotify.com/spotify-web-api/using-scopes/) for more details.
+    ///
+    /// - Parameter handler: The callback handler for the request. The parameters for this handler are:
+    ///     - `isSaved`: An array of Boolean values indicating whether the collection of items have been saved to the current user's library. If a particular item in the collection is saved, the resulting array will contain `true` at the corresponding index; `false` otherwise.
+    ///     - `error`: An error object identifying if and why the request failed, or `nil` if the request was successful.
+    public func checkIfSaved(handler: @escaping ([Bool]?, Error?) -> Void) {
+        makeSaveStatusRequest().perform(handler: handler)
+    }
 }
 
 // MARK: - Expandable Type Requests

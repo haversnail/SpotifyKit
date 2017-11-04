@@ -1596,6 +1596,168 @@ class RequestTests: XCTestCase {
         }
     }
     
+    // MARK: - Library Requests
+    
+    func testSaveAlbum() {
+        
+        // Arrange:
+        let album = try! SKAlbum(from: albumData)
+        let request = album.makeSaveToLibraryRequest()
+        let promise = makeRequestExpectation()
+        defer { wait(for: promise) }
+        
+        // Assert request:
+        XCTAssertEqual(request.method, .PUT)
+        XCTAssertEqual(request.url.path, "/v1/me/albums")
+        XCTAssertEqual(request.preparedURLRequest.url?.query, "ids=\(album.id)")
+        
+        // Act:
+        album.saveToLibrary { (error) in
+            
+            // Assert result:
+            if let error = error {
+                XCTFail(error.localizedDescription); return
+            }
+            
+            let request = album.makeSaveStatusRequest()
+            XCTAssertEqual(request.method, .GET)
+            XCTAssertEqual(request.url.path, "/v1/me/albums/contains")
+            XCTAssertEqual(request.preparedURLRequest.url?.query, "ids=\(album.id)")
+
+            album.checkIfSaved { (isSaved, error) in
+                defer { promise.fulfill() }
+                
+                if let error = error {
+                    XCTFail(error.localizedDescription); return
+                }
+                guard let isSaved = isSaved else {
+                    XCTFail("'isSaved' was nil."); return
+                }
+                
+                XCTAssertTrue(isSaved, "the album still has not been saved to the current user's library.")
+            }
+        }
+    }
+    
+    func testSaveTracks() {
+        
+        // Arrange:
+        let tracks = try! [SKTrack](from: trackArrayData)
+        let request = tracks.makeSaveToLibraryRequest()
+        let promise = makeRequestExpectation()
+        defer { wait(for: promise) }
+        
+        // Assert request:
+        XCTAssertEqual(request.method, .PUT)
+        XCTAssertEqual(request.url.path, "/v1/me/tracks")
+        XCTAssertEqual(request.preparedURLRequest.url?.query, "ids=\(tracks.map { $0.id }.joined(separator: ","))")
+        
+        // Act:
+        tracks.saveToLibrary { (error) in
+            
+            // Assert result:
+            if let error = error {
+                XCTFail(error.localizedDescription); return
+            }
+            
+            let request = tracks.makeSaveStatusRequest()
+            XCTAssertEqual(request.method, .GET)
+            XCTAssertEqual(request.url.path, "/v1/me/tracks/contains")
+            XCTAssertEqual(request.preparedURLRequest.url?.query, "ids=\(tracks.map { $0.id }.joined(separator: ","))")
+            
+            tracks.checkIfSaved { (isSaved, error) in
+                defer { promise.fulfill() }
+                
+                if let error = error {
+                    XCTFail(error.localizedDescription); return
+                }
+                guard let isSaved = isSaved else {
+                    XCTFail("'isSaved' was nil."); return
+                }
+                
+                XCTAssertEqual(isSaved.count, tracks.count)
+                isSaved.forEach {
+                    XCTAssertTrue($0, "the tracks still have not been saved to the current user's library.")
+                }
+            }
+        }
+    }
+    
+    func testRemoveAlbum() {
+        
+        // Arrange:
+        let album = try! SKAlbum(from: albumData)
+        let request = album.makeRemoveFromLibraryRequest()
+        let promise = makeRequestExpectation()
+        defer { wait(for: promise) }
+        
+        // Assert request:
+        XCTAssertEqual(request.method, .DELETE)
+        XCTAssertEqual(request.url.path, "/v1/me/albums")
+        XCTAssertEqual(request.preparedURLRequest.url?.query, "ids=\(album.id)")
+        
+        // Act:
+        album.removeFromLibrary { (error) in
+            
+            // Assert result:
+            if let error = error {
+                XCTFail(error.localizedDescription); return
+            }
+            
+            album.checkIfSaved { (isSaved, error) in
+                defer { promise.fulfill() }
+                
+                if let error = error {
+                    XCTFail(error.localizedDescription); return
+                }
+                guard let isSaved = isSaved else {
+                    XCTFail("'isSaved' was nil."); return
+                }
+                
+                XCTAssertFalse(isSaved, "the album still has not been removed from the current user's library.")
+            }
+        }
+    }
+    
+    func testRemoveTracks() {
+        
+        // Arrange:
+        let tracks = try! [SKTrack](from: trackArrayData)
+        let request = tracks.makeRemoveFromLibraryRequest()
+        let promise = makeRequestExpectation()
+        defer { wait(for: promise) }
+        
+        // Assert request:
+        XCTAssertEqual(request.method, .DELETE)
+        XCTAssertEqual(request.url.path, "/v1/me/tracks")
+        XCTAssertEqual(request.preparedURLRequest.url?.query, "ids=\(tracks.map { $0.id }.joined(separator: ","))")
+        
+        // Act:
+        tracks.removeFromLibrary { (error) in
+            
+            // Assert result:
+            if let error = error {
+                XCTFail(error.localizedDescription); return
+            }
+            
+            tracks.checkIfSaved { (isSaved, error) in
+                defer { promise.fulfill() }
+                
+                if let error = error {
+                    XCTFail(error.localizedDescription); return
+                }
+                guard let isSaved = isSaved else {
+                    XCTFail("'isSaved' was nil."); return
+                }
+                
+                XCTAssertEqual(isSaved.count, tracks.count)
+                isSaved.forEach {
+                    XCTAssertFalse($0, "the tracks still have not been removed from the current user's library.")
+                }
+            }
+        }
+    }
+    
     // MARK: - Expandable Requests
     
     func testExpandableRequest() {
