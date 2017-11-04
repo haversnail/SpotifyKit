@@ -1999,6 +1999,77 @@ extension Collection where Element: Savable {
     }
 }
 
+extension SKCurrentUser {
+    
+    // MARK: Get Saved Albums ✔︎
+    
+    /// Creates and returns the request used to get the current authenticated user's saved albums.
+    ///
+    /// - Parameters:
+    ///   - locale: The locale-specific storefront/market from which to request.
+    ///   - page: The parameters for paginating the results, specifying the index and number of items to return. If no parameters are supplied, the request will return the default number of items beginning with first item.
+    /// - Returns: An `SKRequest` instance with which to perform the API request.
+    public static func makeSavedAlbumsRequest(locale: Locale?, page: Pagination?) -> SKRequest {
+        
+        var parameters = [String: Any]()
+        parameters[Constants.QueryParameters.market] = locale?.regionCode
+        parameters[Constants.QueryParameters.limit] = page?.limit
+        parameters[Constants.QueryParameters.offset] = page?.offset
+        return SKRequest(method: .GET, endpoint: Constants.Endpoints.mySavedAlbums, parameters: parameters)!
+    }
+    
+    /// Gets the list of albums saved in the current authenticated user's Spotify music library.
+    ///
+    /// - Note: This method uses the `SPTAuth` default instance session to authenticate the underlying request. If this session does not contain a valid access token, the request will result in an error. The access token must have been issued on behalf of the current user.
+    ///
+    /// Reading the current user's "Your Music" collection requires authorization of the "`user-library-read`" scope. See [Using Scopes](https://developer.spotify.com/spotify-web-api/using-scopes/) for more details.
+    ///
+    /// - Parameters:
+    ///   - locale: The locale-specific storefront/market from which to request. The default value is the locale for the shared `SKCatalog` instance, which by default represents the user's region settings at the time the method is called.
+    ///   - page: The parameters for paginating the results, specifying the index and number of items to return. If no parameters are supplied, the request will return the default number of items beginning with first item. The default value is `nil`.
+    ///   - handler: The callback handler for the request. The parameters for this handler are:
+    ///     - `albums`: A paginated collection of saved albums, if available.
+    ///     - `error`: An error object identifying if and why the request failed, or `nil` if the request was successful.
+    public static func getSavedAlbums(for locale: Locale? = SKCatalog.local.locale, page: Pagination? = nil, handler: @escaping (Page<SKSavedAlbum>?, Error?) -> Void) {
+        
+        makeSavedAlbumsRequest(locale: locale, page: page).perform(handler: handler)
+    }
+    
+    // MARK: Get Saved Tracks ✔︎
+    
+    /// Creates and returns the request used to get the current authenticated user's saved tracks.
+    ///
+    /// - Parameters:
+    ///   - locale: The locale-specific storefront/market from which to request.
+    ///   - page: The parameters for paginating the results, specifying the index and number of items to return. If no parameters are supplied, the request will return the default number of items beginning with first item.
+    /// - Returns: An `SKRequest` instance with which to perform the API request.
+    public static func makeSavedTracksRequest(locale: Locale?, page: Pagination?) -> SKRequest {
+    
+        var parameters = [String: Any]()
+        parameters[Constants.QueryParameters.market] = locale?.regionCode
+        parameters[Constants.QueryParameters.limit] = page?.limit
+        parameters[Constants.QueryParameters.offset] = page?.offset
+        return SKRequest(method: .GET, endpoint: Constants.Endpoints.mySavedTracks, parameters: parameters)!
+    }
+    
+    /// Gets the list of tracks saved in the current authenticated user's Spotify music library.
+    ///
+    /// - Note: This method uses the `SPTAuth` default instance session to authenticate the underlying request. If this session does not contain a valid access token, the request will result in an error. The access token must have been issued on behalf of the current user.
+    ///
+    /// Reading the current user's "Your Music" collection requires authorization of the "`user-library-read`" scope. See [Using Scopes](https://developer.spotify.com/spotify-web-api/using-scopes/) for more details.
+    ///
+    /// - Parameters:
+    ///   - locale: The locale-specific storefront/market from which to request. The default value is the locale for the shared `SKCatalog` instance, which by default represents the user's region settings at the time the method is called.
+    ///   - page: The parameters for paginating the results, specifying the index and number of items to return. If no parameters are supplied, the request will return the default number of items beginning with first item. The default value is `nil`.
+    ///   - handler: The callback handler for the request. The parameters for this handler are:
+    ///     - `tracks`: A paginated collection of saved tracks, if available.
+    ///     - `error`: An error object identifying if and why the request failed, or `nil` if the request was successful.
+    public static func getSavedTracks(for locale: Locale? = SKCatalog.local.locale, page: Pagination? = nil, handler: @escaping (Page<SKSavedTrack>?, Error?) -> Void) {
+        
+        makeSavedTracksRequest(locale: locale, page: page).perform(handler: handler)
+    }
+}
+
 // MARK: - Expandable Type Requests
 
 /// A type that is represented in the [Spotify Web API](https://developer.spotify.com/web-api/) by both "simplified" and "full" versions.

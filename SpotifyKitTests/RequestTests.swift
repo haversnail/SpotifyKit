@@ -1337,7 +1337,6 @@ class RequestTests: XCTestCase {
             
             // Assert results:
             if let error = error {
-                print(error)
                 XCTFail(error.localizedDescription); return
             }
             guard let _ = artists else {
@@ -1597,6 +1596,66 @@ class RequestTests: XCTestCase {
     }
     
     // MARK: - Library Requests
+    
+    func testGetSavedAlbums() {
+        
+        // Arrange:
+        let locale = catalog.locale!
+        let page = Pagination(limit: 5, cursor: nil)
+        let request = SKCurrentUser.makeSavedAlbumsRequest(locale: locale, page: page)
+        let promise = makeRequestExpectation()
+        defer { wait(for: promise) }
+        
+        // Assert request:
+        XCTAssertEqual(request.method, .GET)
+        XCTAssertEqual(request.url.path, "/v1/me/albums")
+        SKTAssertQuery(in: request, contains: "market=US", "limit=5")
+        
+        // Act:
+        SKCurrentUser.getSavedAlbums(for: locale, page: page) { (albums, error) in
+            defer { promise.fulfill() }
+            
+            // Assert results:
+            if let error = error {
+                XCTFail(error.localizedDescription); return
+            }
+            guard let albums = albums else {
+                XCTFail("'albums' was nil."); return
+            }
+            
+            for album in albums { print(album.name) }
+        }
+    }
+    
+    func testGetSavedTracks() {
+        
+        // Arrange:
+        let locale = catalog.locale!
+        let page = Pagination(limit: 5, cursor: nil)
+        let request = SKCurrentUser.makeSavedTracksRequest(locale: locale, page: page)
+        let promise = makeRequestExpectation()
+        defer { wait(for: promise) }
+        
+        // Assert request:
+        XCTAssertEqual(request.method, .GET)
+        XCTAssertEqual(request.url.path, "/v1/me/tracks")
+        SKTAssertQuery(in: request, contains: "market=US", "limit=5")
+        
+        // Act:
+        SKCurrentUser.getSavedTracks(for: locale, page: page) { (tracks, error) in
+            defer { promise.fulfill() }
+            
+            // Assert results:
+            if let error = error {
+                XCTFail(error.localizedDescription); return
+            }
+            guard let tracks = tracks else {
+                XCTFail("'tracks' was nil."); return
+            }
+            
+            for track in tracks { print(track.name) }
+        }
+    }
     
     func testSaveAlbum() {
         
