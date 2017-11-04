@@ -393,7 +393,7 @@ class RequestTests: XCTestCase {
 
         // Arrange:
         let artist = try! SKArtist(from: artistData)
-        let locale = Locale(identifier: "en_US")
+        let locale = catalog.locale!
         let page = Pagination(limit: 3, page: 2)
         let request = artist.makeAlbumsRequest(types: [.album, .single], locale: locale, page: page)
         let promise = makeRequestExpectation()
@@ -424,7 +424,7 @@ class RequestTests: XCTestCase {
 
         // Arrange:
         let artist = try! SKArtist(from: artistData)
-        let locale = Locale(identifier: "en_US")
+        let locale = catalog.locale!
         let request = artist.makeTopTracksRequest(locale: locale)
         let promise = makeRequestExpectation()
         defer { wait(for: promise) }
