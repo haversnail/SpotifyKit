@@ -1748,7 +1748,46 @@ extension SKPlaylist {
     }
 }
 
-// TODO: Get Authenticated User's Followed Albums
+extension SKCurrentUser {
+    
+    // MARK: Get Followed Artists
+    
+    /// Creates and returns the request used to get the current authenticated user's followed artists.
+    ///
+    /// - Parameter page: The parameters for paginating the results, specifying the number of items to return and the ID of the last artist in the previous page, if any. If no parameters are supplied, the request will return the default number of items beginning with first item.
+    ///
+    ///     **Note**: This request uses cursor-based paging to traverse the list of followed artists. Providing an `offset` value for this request will do nothing.
+    ///
+    /// - Returns: An `SKRequest` instance with which to perform the API request.
+    public static func makeFollowedArtistsRequest(page: Pagination?) -> SKRequest {
+        
+        var parameters = [String: Any]()
+        parameters[Constants.QueryParameters.type] = SKArtist.type
+        parameters[Constants.QueryParameters.limit] = page?.limit
+        parameters[Constants.QueryParameters.cursor] = page?.cursor
+        return SKRequest(method: .GET, endpoint: Constants.Endpoints.myFollows, parameters: parameters)!
+    }
+    
+    /// Gets the current authenticated user's followed artists.
+    ///
+    /// - Note: This method uses the `SPTAuth` default instance session to authenticate the underlying request. If this session does not contain a valid access token, the request will result in an error. The access token must have been issued on behalf of the current user.
+    ///
+    /// Reading the list of items that the current authenticated user follows also requires authorization of the "`user-follow-read`" scope. See [Using Scopes](https://developer.spotify.com/spotify-web-api/using-scopes/) for more details.
+    ///
+    /// - Parameters:
+    ///   - page: The parameters for paginating the results, specifying the number of items to return and the ID of the last artist in the previous page, if any. If no parameters are supplied, the request will return the default number of items beginning with first item.
+    ///
+    ///     **Note**: This request uses cursor-based paging to traverse the list of followed artists. Providing an "`offset`" value for this request will do nothing.
+    ///
+    ///   - handler: The callback handler for the request. The parameters for this handler are:
+    ///     - `artists`: A paginated list of followed artists, if any.
+    ///     - `error`: An error object identifying if and why the request failed, or `nil` if the request was successful.
+    public static func getFollowedArtists(page: Pagination? = nil, handler: @escaping (Page<SKArtist>?, Error?) -> Void) {
+        makeFollowedArtistsRequest(page: page).perform(handler: handler)
+    }
+    
+    // public static func getFollowedUsers(page: Pagination? = nil, handler: @escaping (Page<SKUser>?, Error?) -> Void) // Currently unsupported by Spotify.
+}
 
 // MARK: - Expandable Type Requests
 

@@ -1308,15 +1308,45 @@ class RequestTests: XCTestCase {
             if let error = error {
                 XCTFail(error.localizedDescription); return
             }
-            guard let tracks = tracks else {
+            guard let _ = tracks else {
                 XCTFail("'tracks' was nil."); return
             }
             
-            for track in tracks { print(track.name) }
+            //for track in tracks { print(track.name) }
         }
     }
     
     // MARK: - Follow Requests
+    
+    func testGetFollowedArtists() {
+        
+        // Arrange:
+        let page = Pagination(limit: 5, cursor: nil)
+        let request = SKCurrentUser.makeFollowedArtistsRequest(page: page)
+        let promise = makeRequestExpectation()
+        defer { wait(for: promise) }
+        
+        // Assert request:
+        XCTAssertEqual(request.method, .GET)
+        XCTAssertEqual(request.url.path, "/v1/me/following")
+        SKTAssertQuery(in: request, contains: "type=artist", "limit=5")
+        
+        // Act:
+        SKCurrentUser.getFollowedArtists(page: page) { (artists, error) in
+            defer { promise.fulfill() }
+            
+            // Assert results:
+            if let error = error {
+                print(error)
+                XCTFail(error.localizedDescription); return
+            }
+            guard let _ = artists else {
+                XCTFail("'artists' was nil."); return
+            }
+            
+            //for artist in artists { print(artist.name) }
+        }
+    }
     
     func testFollowArtists() {
         

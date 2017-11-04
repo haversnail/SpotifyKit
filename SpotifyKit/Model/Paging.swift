@@ -95,7 +95,7 @@ public struct Page<Element: Decodable>: JSONDecodable {
     /// The cursors used to find the next set of items.
     ///
     /// Given that the [cursor object](https://developer.spotify.com/web-api/object-model/#cursor-object) currently only contains a single "`after`" identifier, introducing a Cursor type adds unnecessary complexity. Therefore, this property is maintained at the `private` scope and is instead accessible through the  computed `cursor` property.
-    private let cursors: [String: String]?
+    private let cursors: [String: String?]?
     
     /// The key identifying the last item in the previous page.
     ///
