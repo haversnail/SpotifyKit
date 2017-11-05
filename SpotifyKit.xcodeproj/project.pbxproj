@@ -43,6 +43,7 @@
 		119DC3D41F239A92003DB3BD /* Paging.swift in Sources */ = {isa = PBXBuildFile; fileRef = 119DC3D31F239A92003DB3BD /* Paging.swift */; };
 		119DC3D61F239B93003DB3BD /* Track.swift in Sources */ = {isa = PBXBuildFile; fileRef = 119DC3D51F239B93003DB3BD /* Track.swift */; };
 		119DC3DA1F239DDB003DB3BD /* ModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 119DC3D91F239DDB003DB3BD /* ModelTests.swift */; };
+		11BAFABF1FAF397000B653CA /* Player.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11BAFABE1FAF397000B653CA /* Player.swift */; };
 		11E001F21F491D800045A502 /* Device.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11E001F11F491D800045A502 /* Device.swift */; };
 		11E21DBF1F3EE7FD00736FF5 /* URL+RemoveQuery.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11E21DBE1F3EE7FD00736FF5 /* URL+RemoveQuery.swift */; };
 		11EC89F81F2C511F0066A5F0 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11EC89F71F2C511F0066A5F0 /* User.swift */; };
@@ -106,6 +107,7 @@
 		119DC3D31F239A92003DB3BD /* Paging.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Paging.swift; sourceTree = "<group>"; };
 		119DC3D51F239B93003DB3BD /* Track.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Track.swift; sourceTree = "<group>"; };
 		119DC3D91F239DDB003DB3BD /* ModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModelTests.swift; sourceTree = "<group>"; };
+		11BAFABE1FAF397000B653CA /* Player.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Player.swift; sourceTree = "<group>"; };
 		11E001F11F491D800045A502 /* Device.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Device.swift; sourceTree = "<group>"; };
 		11E21DBE1F3EE7FD00736FF5 /* URL+RemoveQuery.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "URL+RemoveQuery.swift"; sourceTree = "<group>"; };
 		11EC89F71F2C511F0066A5F0 /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
@@ -201,6 +203,7 @@
 				114A0F691F6E9C18009E652C /* Catalog.swift */,
 				119C68DF1F371D5A005CDADF /* Request.swift */,
 				114A0F6B1F6EAF33009E652C /* Constants.swift */,
+				11BAFABC1FAF392000B653CA /* Beta */,
 				119DC3D81F239D5A003DB3BD /* Model */,
 				1165D1BE1F305AD90076C340 /* Helpers */,
 				113D083C1F208BEC00BECB27 /* Info.plist */,
@@ -211,8 +214,8 @@
 		113D08451F208BEC00BECB27 /* SpotifyKitTests */ = {
 			isa = PBXGroup;
 			children = (
-				1122F9B01F248BB700A9AD89 /* ModelStubs */,
 				11166EAA1F9C79FF00F6D532 /* ImageStubs */,
+				1122F9B01F248BB700A9AD89 /* ModelStubs */,
 				119DC3D91F239DDB003DB3BD /* ModelTests.swift */,
 				117FF2BF1F3C1033007073D7 /* RequestTests.swift */,
 				113D08481F208BEC00BECB27 /* Info.plist */,
@@ -258,19 +261,35 @@
 				119DC3D11F2397FD003DB3BD /* Artist.swift */,
 				1122F9BF1F25F73A00A9AD89 /* AudioFeatures.swift */,
 				11F196261F28954B007D3718 /* Category.swift */,
-				11E001F11F491D800045A502 /* Device.swift */,
 				11EC89FD1F2D86D00066A5F0 /* Error.swift */,
 				1122F9B91F24A23D00A9AD89 /* Followers.swift */,
 				119DC3CF1F23948F003DB3BD /* Image.swift */,
 				119DC3D31F239A92003DB3BD /* Paging.swift */,
-				11353BF41F2EDA4D00F9924E /* PlaybackEvent.swift */,
 				113C5F6C1F26C235005D1DC6 /* Playlist.swift */,
 				11EC8A011F2DE2340066A5F0 /* Recommendations.swift */,
 				117FFD941F7229E100C76833 /* SearchResults.swift */,
 				119DC3D51F239B93003DB3BD /* Track.swift */,
 				113C5F721F26CB37005D1DC6 /* User.swift */,
+				11BAFABD1FAF395300B653CA /* Beta */,
 			);
 			path = Model;
+			sourceTree = "<group>";
+		};
+		11BAFABC1FAF392000B653CA /* Beta */ = {
+			isa = PBXGroup;
+			children = (
+				11BAFABE1FAF397000B653CA /* Player.swift */,
+			);
+			path = Beta;
+			sourceTree = "<group>";
+		};
+		11BAFABD1FAF395300B653CA /* Beta */ = {
+			isa = PBXGroup;
+			children = (
+				11E001F11F491D800045A502 /* Device.swift */,
+				11353BF41F2EDA4D00F9924E /* PlaybackEvent.swift */,
+			);
+			path = Beta;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -384,6 +403,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				11BAFABF1FAF397000B653CA /* Player.swift in Sources */,
 				117FFD951F7229E100C76833 /* SearchResults.swift in Sources */,
 				1122F9C01F25F73A00A9AD89 /* AudioFeatures.swift in Sources */,
 				119C68E01F371D5A005CDADF /* Request.swift in Sources */,
