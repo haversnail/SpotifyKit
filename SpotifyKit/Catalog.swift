@@ -2165,6 +2165,11 @@ public protocol Expandable {
     /// A boolean value indicating whether this instance represents a "simplified" version of the "full" Spotify object (i.e., all values unique to the full object are `nil`).
     var isSimplified: Bool { get }
     
+    /// Creates and returns the request used to retrieve the detailed version of the given object.
+    ///
+    /// - Returns: An `SKRequest` instance with which to perform the API request.
+    func makeFullObjectRequest() -> SKRequest
+    
     /// Performs a request for the detailed version of the item.
     ///
     /// If the given object already contains the requested properties, this method will do nothing and the provided callback handler will not be executed.
@@ -2179,9 +2184,6 @@ public protocol Expandable {
 
 extension Expandable where Self: JSONDecodable {
     
-    /// Creates and returns the request used to retrieve the detailed version of the given object.
-    ///
-    /// - Returns: An `SKRequest` instance with which to perform the API request.
     public func makeFullObjectRequest() -> SKRequest {
         return SKRequest(method: .GET, url: url)!
     }
