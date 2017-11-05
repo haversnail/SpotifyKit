@@ -1657,7 +1657,7 @@ class RequestTests: XCTestCase {
         }
     }
     
-    func testSaveAlbum() {
+    func testSaveAlbumToLibrary() {
         
         // Arrange:
         let album = try! SKAlbum(from: albumData)
@@ -1698,7 +1698,7 @@ class RequestTests: XCTestCase {
         }
     }
     
-    func testSaveTracks() {
+    func testSaveTracksToLibrary() {
         
         // Arrange:
         let tracks = try! [SKTrack](from: trackArrayData)
@@ -1742,7 +1742,7 @@ class RequestTests: XCTestCase {
         }
     }
     
-    func testRemoveAlbum() {
+    func testRemoveAlbumFromLibrary() {
         
         // Arrange:
         let album = try! SKAlbum(from: albumData)
@@ -1778,7 +1778,7 @@ class RequestTests: XCTestCase {
         }
     }
     
-    func testRemoveTracks() {
+    func testRemoveTracksFromLibrary() {
         
         // Arrange:
         let tracks = try! [SKTrack](from: trackArrayData)
