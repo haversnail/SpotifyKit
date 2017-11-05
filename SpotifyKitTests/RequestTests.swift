@@ -1817,6 +1817,67 @@ class RequestTests: XCTestCase {
         }
     }
     
+    // MARK: - Personalization Requests
+    
+    func testGetTopArtistsRequest() {
+        
+        // Arrange:
+        let page = Pagination(limit: 5)
+        let request = SKCurrentUser.makeTopArtistsRequest(range: .lastFourWeeks, page: page)
+        let promise = makeRequestExpectation()
+        defer { wait(for: promise) }
+        
+        // Assert request:
+        XCTAssertEqual(request.method, .GET)
+        XCTAssertEqual(request.url.path, "/v1/me/top/artists")
+        SKTAssertQuery(in: request, contains: "time_range=short_term", "limit=5")
+        
+        // Act:
+        SKCurrentUser.getTopArtists(from: .lastFourWeeks, page: page) { (artists, error) in
+            defer { promise.fulfill() }
+            
+            // Assert results:
+            if let error = error {
+                XCTFail(error.localizedDescription); return
+            }
+            guard let artists = artists else {
+                XCTFail("'artists' was nil."); return
+            }
+            
+            for artist in artists { print(artist.name) }
+        }
+    }
+    
+    func testGetTopTracksRequest() {
+        
+        // Arrange:
+        let page = Pagination(limit: 5)
+        let request = SKCurrentUser.makeTopTracksRequest(range: .lastFourWeeks, page: page)
+        let promise = makeRequestExpectation()
+        defer { wait(for: promise) }
+        
+        // Assert request:
+        XCTAssertEqual(request.method, .GET)
+        XCTAssertEqual(request.url.path, "/v1/me/top/tracks")
+        SKTAssertQuery(in: request, contains: "time_range=short_term", "limit=5")
+        
+        // Act:
+        SKCurrentUser.getTopTracks(from: .lastFourWeeks, page: page) { (tracks, error) in
+            defer { promise.fulfill() }
+            
+            // Assert results:
+            if let error = error {
+                print(error)
+                XCTFail(error.localizedDescription); return
+            }
+            guard let tracks = tracks else {
+                XCTFail("'tracks' was nil."); return
+            }
+            
+            for track in tracks { print(track.name) }
+        }
+    }
+    
     // MARK: - Expandable Requests
     
     func testExpandableRequest() {

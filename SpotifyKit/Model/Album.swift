@@ -50,7 +50,8 @@ public protocol Album {
     var albumType: SKAlbumType { get }
     
     /// The artists of the album. Each artist object includes a link in `url` to more detailed information about the artist.
-    var artists: [SKArtist] { get }
+    /// - Note: This property is not guaranteed to be included in every album, and thus may be `nil` when retrieving albums from particular API endpoints.
+    var artists: [SKArtist]? { get }
     
     /// The markets in which the album is available: [ISO 3166-1 alpha-2 country codes](http://en.wikipedia.org/wiki/ISO_3166-1_alpha-2). Note that an album is considered available in a market when at least 1 of its tracks is available in that market.
     ///
@@ -113,7 +114,7 @@ public struct SKAlbum: Album, JSONDecodable {
     private let type: ResourceType
 
     public let albumType: SKAlbumType
-    public let artists: [SKArtist]
+    public let artists: [SKArtist]?
     public let availableMarkets: [String]?
     public let externalURLs: [String: URL]
     public let url: URL
@@ -167,7 +168,7 @@ extension SKAlbum: Decodable {
         
         // Object Properties (Simplified)
         albumType = try values.decode(SKAlbumType.self, forKey: .albumType)//, toCase: .lowercase)
-        artists = try values.decode([SKArtist].self, forKey: .artists)
+        artists = try values.decodeIfPresent([SKArtist].self, forKey: .artists)
         availableMarkets = try values.decodeIfPresent([String].self, forKey: .availableMarkets)
         externalURLs = try values.decode([String: URL].self, forKey: .externalURLs)
         url = try values.decode(URL.self, forKey: .url)
@@ -231,7 +232,7 @@ public struct SKSavedAlbum: Album, JSONDecodable {
     // MARK: Album Properties
     
     public var albumType: SKAlbumType               { return album.albumType }
-    public var artists: [SKArtist]                  { return album.artists }
+    public var artists: [SKArtist]?                 { return album.artists }
     public var availableMarkets: [String]?          { return album.availableMarkets }
     public var externalURLs: [String : URL]         { return album.externalURLs }
     public var id: String                           { return album.id }

@@ -499,10 +499,6 @@ public struct SKCatalog {
                           page: page)
             .perform(handler: handler)
     }
-    
-    // TODO: - User Library
-    
-    // TODO: - Player
 }
 
 // MARK: - Artist Requests
@@ -2067,6 +2063,90 @@ extension SKCurrentUser {
     public static func getSavedTracks(for locale: Locale? = SKCatalog.local.locale, page: Pagination? = nil, handler: @escaping (Page<SKSavedTrack>?, Error?) -> Void) {
         
         makeSavedTracksRequest(locale: locale, page: page).perform(handler: handler)
+    }
+}
+
+// MARK: - Personalization Requests
+
+/// A type representing the possible time frames across which the current authenticated user's top artists and tracks can be calculated.
+public enum SKTimeRange: String { // TimeFrame // *Duration // *Interval
+    case beginningOfTime = "long_term" // longTerm // pastYears // beginningOfTime // allTime // severalYears
+    case lastSixMonths = "medium_term" // midTerm // pastMonths // pastYear // lastSixMonths
+    case lastFourWeeks = "short_term" // shortTerm // pastWeeks // pastMonth // lastFourWeeks
+}
+
+extension SKTimeRange: URLEncodable {}
+
+extension SKCurrentUser {
+    
+    // MARK: Get Top Artists
+    
+    /// Creates and returns the request used to get the current authenticated user's top artists.
+    ///
+    /// - Parameters:
+    ///   - range: The time frame across which affinities are computed. Possible values are `.lastFourWeeks`, `.lastSixMonths`, and `.beginningOfTime`, which spans several years of data including all new data as it becomes available.
+    ///   - page: The parameters for paginating the results, specifying the index and number of items to return. If no parameters are supplied, the request will return the default number of items beginning with first item.
+    /// - Returns: An `SKRequest` instance with which to perform the API request.
+    public static func makeTopArtistsRequest(range: SKTimeRange, page: Pagination?) -> SKRequest {
+        
+        var parameters = [String: Any]()
+        parameters[Constants.QueryParameters.timeRange] = range
+        parameters[Constants.QueryParameters.limit] = page?.limit
+        parameters[Constants.QueryParameters.offset] = page?.offset
+        return SKRequest(method: .GET, endpoint: Constants.Endpoints.myTopArtists, parameters: parameters)!
+    }
+    
+    /// Gets a list of the current authenticated user's top artists.
+    ///
+    /// - Remark: Top artists are based on calculated affinity. Affinity is a measure of the expected preference a user has for a particular track or artist.  It is based on user behavior, including play history, but does *not* include actions made while in incognito mode. Light or infrequent users of Spotify may not have sufficient play history to generate a full affinity data set.
+    ///
+    /// - Note: This method uses the `SPTAuth` default instance session to authenticate the underlying request. If this session does not contain a valid access token, the request will result in an error. The access token must have been issued on behalf of the current user.
+    ///
+    /// Reading the current user's top artists or tracks requires authorization of the "`user-top-read`" scope. See [Using Scopes](https://developer.spotify.com/spotify-web-api/using-scopes/) for more details.
+    ///
+    /// - Parameters:
+    ///   - range: The time frame across which affinities are computed. Possible values are `.lastFourWeeks`, `.lastSixMonths`, and `.beginningOfTime`, which spans several years of data including all new data as it becomes available. The default value is `.lastSixMonths`.
+    ///   - page: The parameters for paginating the results, specifying the index and number of items to return. If no parameters are supplied, the request will return the default number of items beginning with first item. The default value is `nil`.
+    ///   - handler: The callback handler for the request. The parameters for this handler are:
+    ///     - `artists`: A paginated collection of up to 50 artists, if available.
+    ///     - `error`: An error object identifying if and why the request failed, or `nil` if the request was successful.
+    public static func getTopArtists(from range: SKTimeRange = .lastSixMonths, page: Pagination? = nil, handler: @escaping (Page<SKArtist>?, Error?) -> Void) {
+        makeTopArtistsRequest(range: range, page: page).perform(handler: handler)
+    }
+    
+    // MARK: Get Top Tracks
+    
+    /// Creates and returns the request used to get the current authenticated user's top tracks.
+    ///
+    /// - Parameters:
+    ///   - range: The time frame across which affinities are computed. Possible values are `.lastFourWeeks`, `.lastSixMonths`, and `.beginningOfTime`, which spans several years of data including all new data as it becomes available.
+    ///   - page: The parameters for paginating the results, specifying the index and number of items to return. If no parameters are supplied, the request will return the default number of items beginning with first item.
+    /// - Returns: An `SKRequest` instance with which to perform the API request.
+    public static func makeTopTracksRequest(range: SKTimeRange, page: Pagination?) -> SKRequest {
+        
+        var parameters = [String: Any]()
+        parameters[Constants.QueryParameters.timeRange] = range
+        parameters[Constants.QueryParameters.limit] = page?.limit
+        parameters[Constants.QueryParameters.offset] = page?.offset
+        return SKRequest(method: .GET, endpoint: Constants.Endpoints.myTopTracks, parameters: parameters)!
+    }
+    
+    /// Gets a list of the current authenticated user's top tracks.
+    ///
+    /// - Remark: Top artists are based on calculated affinity. Affinity is a measure of the expected preference a user has for a particular track or artist.  It is based on user behavior, including play history, but does *not* include actions made while in incognito mode. Light or infrequent users of Spotify may not have sufficient play history to generate a full affinity data set.
+    ///
+    /// - Note: This method uses the `SPTAuth` default instance session to authenticate the underlying request. If this session does not contain a valid access token, the request will result in an error. The access token must have been issued on behalf of the current user.
+    ///
+    /// Reading the current user's top artists or tracks requires authorization of the "`user-top-read`" scope. See [Using Scopes](https://developer.spotify.com/spotify-web-api/using-scopes/) for more details.
+    ///
+    /// - Parameters:
+    ///   - range: The time frame across which affinities are computed. Possible values are `.lastFourWeeks`, `.lastSixMonths`, and `.beginningOfTime`, which spans several years of data including all new data as it becomes available. The default value is `.lastSixMonths`.
+    ///   - page: The parameters for paginating the results, specifying the index and number of items to return. If no parameters are supplied, the request will return the default number of items beginning with first item. The default value is `nil`.
+    ///   - handler: The callback handler for the request. The parameters for this handler are:
+    ///     - `tracks`: A paginated collection of up to 50 tracks, if available.
+    ///     - `error`: An error object identifying if and why the request failed, or `nil` if the request was successful.
+    public static func getTopTracks(from range: SKTimeRange = .lastSixMonths, page: Pagination? = nil, handler: @escaping (Page<SKTrack>?, Error?) -> Void) {
+        makeTopTracksRequest(range: range, page: page).perform(handler: handler)
     }
 }
 

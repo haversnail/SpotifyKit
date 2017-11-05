@@ -40,6 +40,7 @@ internal struct Constants {
         static let position = "position"
         static let type = "type"
         static let albumType = "album_type"
+        static let timeRange = "time_range"
         static let timestamp = "timestamp"
         static let seedArtists = "seed_artists"
         static let seedGenres = "seed_genres"
