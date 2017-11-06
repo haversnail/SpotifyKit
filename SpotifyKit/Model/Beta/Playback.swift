@@ -1,5 +1,5 @@
 //
-//  PlaybackEvent.swift
+//  Playback.swift
 //  SpotifyKit
 //
 //  Created by Alexander Havermale on 7/31/17.
@@ -8,40 +8,40 @@
 
 import Foundation
 
-/// A structure representing the recent playback of an audio track. See the [Play History](https://developer.spotify.com/web-api/object-model/#play-history-object) object for more details.
-public struct SKPlaybackEvent {
+// MARK: Playback Context
+
+public struct SKPlaybackContext: Decodable {
     
-    // MARK: - Embedded Types
-    
-    public struct PlaybackContext: Decodable {
-        
-        public enum ContextType: String, Codable {
-            case album
-            case artist
-            case playlist
-        }
-        
-        /// Known external URLs for this context. See ["external URL object"](https://developer.spotify.com/web-api/object-model/#external-url-object) for more details.
-        public let externalURLs: [String: URL]
-        
-        /// A link to the Web API endpoint providing full details of the context object.
-        public let url: URL
-        
-        /// The type of context from which this item was played back (e.g., `album`, `artist`, `playlist`). See `ContextType` for possible values.
-        public let type: ContextType
-        
-        /// The [Spotify URI](https://developer.spotify.com/web-api/user-guide/#spotify-uris-and-ids) for the context.
-        public let uri: String
-        
-        private enum CodingKeys: String, CodingKey {
-            case externalURLs = "external_urls"
-            case url = "href"
-            case type
-            case uri
-        }
+    public enum ContextType: String, Codable {
+        case album
+        case artist
+        case playlist
     }
     
-    // MARK: - Object Properties
+    /// Known external URLs for this context. See ["external URL object"](https://developer.spotify.com/web-api/object-model/#external-url-object) for more details.
+    public let externalURLs: [String: URL]
+    
+    /// A link to the Web API endpoint providing full details of the context object.
+    public let url: URL
+    
+    /// The type of context from which this item was played back. See `ContextType` for possible values.
+    public let type: ContextType
+    
+    /// The [Spotify URI](https://developer.spotify.com/web-api/user-guide/#spotify-uris-and-ids) for the context.
+    public let uri: String
+    
+    private enum CodingKeys: String, CodingKey {
+        case externalURLs = "external_urls"
+        case url = "href"
+        case type
+        case uri
+    }
+}
+
+// MARK: - Playback Event (Play History)
+
+/// A structure representing the recent playback of an audio track. See the [Play History](https://developer.spotify.com/web-api/object-model/#play-history-object) object for more details.
+public struct SKPlaybackEvent: Decodable {
     
     /// The track the user listened to.
     public let track: SKTrack
@@ -50,22 +50,22 @@ public struct SKPlaybackEvent {
     public let playbackDate: Date
     
     /// The context the track was played from.
-    public let context: PlaybackContext
-}
-
-// MARK: - Custom Decoding
-
-extension SKPlaybackEvent: Decodable {
+    public let context: SKPlaybackContext
     
     private enum CodingKeys: String, CodingKey {
         case track
         case playbackDate = "played_at"
         case context
     }
+}
+
+// MARK: Custom Decoding
+
+extension SKPlaybackEvent {
     
     public init(from decoder: Decoder) throws {
         let values = try decoder.container(keyedBy: CodingKeys.self)
-        context = try values.decode(PlaybackContext.self, forKey: .context)
+        context = try values.decode(SKPlaybackContext.self, forKey: .context)
         track = try values.decode(SKTrack.self, forKey: .track)
         let dateString = try values.decode(String.self, forKey: .playbackDate)
         
@@ -81,25 +81,28 @@ extension SKPlaybackEvent: Decodable {
     }
 }
 
-
-
-
-// MARK: - "Currently Playing Context" (βeta)
+// MARK: - Playback State (Currently Playing Context) (βeta)
 // FIXME: Rename and consider waiting to implement.
 
 public struct SKPlaybackState: JSONDecodable { // SPTPlaybackState
+    
+    public enum RepeatMode: String, Codable {
+        case off
+        case one = "track"
+        case all = "context"
+    }
     
     /// The device that is currently active.
     public let device: SKDevice // Optional in some responses
     
     ///
-    public let repeatMode: SPTRepeatMode // Optional in some responses
+    public let repeatMode: RepeatMode // Optional in some responses
     
     ///
     public let isShuffling: Bool // Optional in some responses
     
     /// ...can be `nil`.
-    public let context: SKPlaybackEvent.PlaybackContext?
+    public let context: SKPlaybackContext?
     
     /// The timestamp when the data was fetched.
     public let timestamp: Date // provided as int??
@@ -158,39 +161,9 @@ extension SKPlaybackState: SPTConvertible {
     
     public var sptInstance: SPTPlaybackState {
         return SPTPlaybackState(isPlaying: isPlaying,
-                                isRepeating: repeatMode == .context || repeatMode == .one,
+                                isRepeating: repeatMode == .all || repeatMode == .one,
                                 isShuffling: isShuffling,
                                 isActiveDevice: device.type == .mobile, // No good... find a better way.
                                 position: TimeInterval(_progress ?? 0))!
     }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
