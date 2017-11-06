@@ -98,7 +98,7 @@ class ModelTests: XCTestCase {
     }
     
     func testPlayHistory() {
-        guard let recentTracks = initTestObject(Page<SKPlaybackEvent>.self, from: recentTrackData) else { return }
+        guard let recentTracks = initTestObject(Page<SKRecentTrack>.self, from: recentTrackData) else { return }
         XCTAssertEqual(recentTracks[0].context.type, .playlist)
     }
     
