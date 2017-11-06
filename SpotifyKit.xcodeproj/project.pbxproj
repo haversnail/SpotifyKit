@@ -164,15 +164,14 @@
 				1122F9B51F248F9100A9AD89 /* Artist.swift */,
 				113C5F6A1F260DA4005D1DC6 /* AudioFeatures.swift */,
 				11F196281F289CFA007D3718 /* Category.swift */,
-				117BCC081F49503F00B1584F /* Devices.swift */,
 				11EC89FF1F2D8D740066A5F0 /* Errors.swift */,
 				113C5F6E1F26C73F005D1DC6 /* Playlist.swift */,
-				11353BF61F2EDD4A00F9924E /* RecentTracks.swift */,
 				11EC8A031F2DE7AE0066A5F0 /* Recommendations.swift */,
 				11EC89F91F2C56850066A5F0 /* SavedAlbums.swift */,
 				1119FD0B1F272DFE00EE47E2 /* SavedTracks.swift */,
 				1122F9B71F24929800A9AD89 /* Track.swift */,
 				11EC89F71F2C511F0066A5F0 /* User.swift */,
+				119E0FD71FB0ADB8004DB2FF /* Beta */,
 			);
 			path = ModelStubs;
 			sourceTree = "<group>";
@@ -272,27 +271,36 @@
 				117FFD941F7229E100C76833 /* SearchResults.swift */,
 				119DC3D51F239B93003DB3BD /* Track.swift */,
 				113C5F721F26CB37005D1DC6 /* User.swift */,
-				11BAFABD1FAF395300B653CA /* Beta */,
 			);
 			path = Model;
+			sourceTree = "<group>";
+		};
+		119E0FD71FB0ADB8004DB2FF /* Beta */ = {
+			isa = PBXGroup;
+			children = (
+				117BCC081F49503F00B1584F /* Devices.swift */,
+				11353BF61F2EDD4A00F9924E /* RecentTracks.swift */,
+			);
+			path = Beta;
 			sourceTree = "<group>";
 		};
 		11BAFABC1FAF392000B653CA /* Beta */ = {
 			isa = PBXGroup;
 			children = (
 				11BAFABE1FAF397000B653CA /* Player.swift */,
+				11BAFABD1FAF395300B653CA /* Model */,
 			);
 			path = Beta;
 			sourceTree = "<group>";
 		};
-		11BAFABD1FAF395300B653CA /* Beta */ = {
+		11BAFABD1FAF395300B653CA /* Model */ = {
 			isa = PBXGroup;
 			children = (
 				11E001F11F491D800045A502 /* Device.swift */,
 				11353BF41F2EDA4D00F9924E /* Playback.swift */,
 				119E0FD51FB09CC8004DB2FF /* RecentTrack.swift */,
 			);
-			path = Beta;
+			path = Model;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
