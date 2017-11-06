@@ -10,8 +10,6 @@ import Foundation
 
 public struct SKDevice: JSONDecodable {
     
-    // MARK: - Embedded Types
-    
     public enum DeviceType: String, Codable {
         case computer = "Computer"
         case mobile = "Smartphone"
@@ -30,17 +28,13 @@ public struct SKDevice: JSONDecodable {
         }
     }
     
-    // MARK: - Object Properties
-    
     /// The device ID, or `nil` if unavailable.
     public let id: String?
     
     /// A Boolean value indicating if this device is the currently active device.
     public let isActive: Bool
     
-    /// A Boolean value indicating whether controlling this device via the [Spotify Web API][API] is restricted. If `true`, then no [Web API][API] commands will be accepted by this device.
-    ///
-    /// [API]: https://developer.spotify.com/web-api/
+    /// A Boolean value indicating whether controlling this device via the [Spotify Web API](https://developer.spotify.com/web-api/) is restricted. If `true`, then no Web API commands will be accepted by this device.
     public let isRestricted: Bool
     
     /// The name of the device.
@@ -51,8 +45,16 @@ public struct SKDevice: JSONDecodable {
     
     /// The current volume in percent, or `nil` if unavailable.
     public let volume: Int?
+//    private let _volume: Int?
+//
+//    public var volume: Float? {
+//        switch _volume {
+//            case .some(let v): return Float(v / 100)
+//            case .none: return nil
+//        }
+//    }
 
-    // MARK: - Keys
+    // MARK: Keys
     
     private enum CodingKeys: String, CodingKey {
         case id

@@ -8,9 +8,48 @@
 
 import Foundation
 
-// MARK: Playback Context
+// MARK: Supporting Types
 
-public struct SKPlaybackContext: Decodable {
+public enum SKRepeatMode: String, Codable {
+    case off
+    case one = "track"
+    case all = "context"
+    
+    public init(_ value: SPTRepeatMode) {
+        switch value {
+            case .off: self = .off
+            case .one: self = .one
+            case .context: self = .all
+        }
+    }
+}
+
+extension SPTRepeatMode {
+    public init(_ value: SKRepeatMode) {
+        switch value {
+            case .off: self = .off
+            case .one: self = .one
+            case .all: self = .context
+        }
+    }
+}
+
+//public typealias SKRepeatMode = SPTRepeatMode
+//
+//extension SPTRepeatMode: Codable {
+//    public init?(rawValue: String) {
+//        switch rawValue {
+//        case "off": self = .off
+//        case "context": self = .context
+//        case "track": self = .one
+//        default: return nil
+//        }
+//    }
+//}
+
+// MARK: - Playback Context
+
+public struct SKPlaybackContext: Decodable { // SKPlaybackSource
     
     public enum ContextType: String, Codable {
         case album
@@ -18,17 +57,17 @@ public struct SKPlaybackContext: Decodable {
         case playlist
     }
     
+    /// The context in which  track . See `ContextType` for possible values.
+    public let type: ContextType
+    
     /// Known external URLs for this context. See ["external URL object"](https://developer.spotify.com/web-api/object-model/#external-url-object) for more details.
     public let externalURLs: [String: URL]
     
-    /// A link to the Web API endpoint providing full details of the context object.
-    public let url: URL
-    
-    /// The type of context from which this item was played back. See `ContextType` for possible values.
-    public let type: ContextType
-    
     /// The [Spotify URI](https://developer.spotify.com/web-api/user-guide/#spotify-uris-and-ids) for the context.
     public let uri: String
+    
+    /// A link to the Web API endpoint providing full details of the context object.
+    public let url: URL
     
     private enum CodingKeys: String, CodingKey {
         case externalURLs = "external_urls"
@@ -38,76 +77,29 @@ public struct SKPlaybackContext: Decodable {
     }
 }
 
-// MARK: - Playback Event (Play History)
-
-/// A structure representing the recent playback of an audio track. See the [Play History](https://developer.spotify.com/web-api/object-model/#play-history-object) object for more details.
-public struct SKPlaybackEvent: Decodable {
-    
-    /// The track the user listened to.
-    public let track: SKTrack
-    
-    /// The date and time the track was played, with millisecond precision.
-    public let playbackDate: Date
-    
-    /// The context the track was played from.
-    public let context: SKPlaybackContext
-    
-    private enum CodingKeys: String, CodingKey {
-        case track
-        case playbackDate = "played_at"
-        case context
-    }
-}
-
-// MARK: Custom Decoding
-
-extension SKPlaybackEvent {
-    
-    public init(from decoder: Decoder) throws {
-        let values = try decoder.container(keyedBy: CodingKeys.self)
-        context = try values.decode(SKPlaybackContext.self, forKey: .context)
-        track = try values.decode(SKTrack.self, forKey: .track)
-        let dateString = try values.decode(String.self, forKey: .playbackDate)
-        
-        let formatter = DateFormatter()
-        formatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSSZ" // Accounts for milliseconds returned in string.
-        formatter.timeZone = TimeZone(secondsFromGMT: 0)
-        
-        guard let date = formatter.date(from: dateString) else {
-            throw DecodingError.dataCorrupted(DecodingError.Context(codingPath: values.codingPath + [CodingKeys.playbackDate], debugDescription: "Cannot initialize \(Date.self) from invalid \(String.self) value \(dateString)"))
-        }
-        
-        playbackDate = date
-    }
-}
-
 // MARK: - Playback State (Currently Playing Context) (βeta)
-// FIXME: Rename and consider waiting to implement.
 
 public struct SKPlaybackState: JSONDecodable { // SPTPlaybackState
     
-    public enum RepeatMode: String, Codable {
-        case off
-        case one = "track"
-        case all = "context"
-    }
-    
     /// The device that is currently active.
-    public let device: SKDevice // Optional in some responses
+    // - Note: When retrieving the currently playing track, this property will be `nil`. // Just don't support that endpoint. It's redundant anyways.
+    public let device: SKDevice?
     
-    ///
-    public let repeatMode: RepeatMode // Optional in some responses
+    /// <#Description#>
+    // - Note: When retrieving the currently playing track, this property will be `nil`.
+    public let repeatMode: SKRepeatMode?
     
-    ///
-    public let isShuffling: Bool // Optional in some responses
+    /// <#Description#>
+    // - Note: When retrieving the currently playing track, this property will be `nil`.
+    public let isShuffling: Bool?
     
-    /// ...can be `nil`.
+    /// <#Description#>...can be `nil`.
     public let context: SKPlaybackContext?
     
     /// The timestamp when the data was fetched.
-    public let timestamp: Date // provided as int??
+    public let timestamp: Date // FIXME: Provided as Int... convert to Date.
     
-    
+    /// <#Description#>
     private let _progress: Int?
     
     /// The progress into the currently playing track. If no track is currently playing, this will be `nil`.
@@ -124,7 +116,7 @@ public struct SKPlaybackState: JSONDecodable { // SPTPlaybackState
     /// The currently playing track. If no track is currently playing, this will be `nil`.
     public let track: SKTrack?
     
-    // MARK: - Keys
+    // MARK: Keys
     
     private enum CodingKeys: String, CodingKey {
         case device
@@ -138,32 +130,25 @@ public struct SKPlaybackState: JSONDecodable { // SPTPlaybackState
     }
 }
 
-// MARK: - SPTRepeatMode Coding & Mapping
+//public protocol SPTConvertible { // SDKConvertible
+//    associatedtype ReferenceType
+//    func makeSPTInstance() -> ReferenceType
+//    //var sptInstance: ReferenceType { get }
+//}
+//
+//extension SKPlaybackState: SPTConvertible {
+//    
+//    public func makeSPTInstance() -> SPTPlaybackState? {
+//        
+//        guard let device = device, let repeatMode = repeatMode, let isShuffling = isShuffling, let progress = progress else {
+//            return nil
+//        }
+//        
+//        return SPTPlaybackState(isPlaying: isPlaying,
+//                                isRepeating: repeatMode == .all || repeatMode == .one,
+//                                isShuffling: isShuffling,
+//                                isActiveDevice: device.type == .mobile, // No good... find a better way.
+//                                position: TimeInterval(progress))!
+//    }
+//}
 
-extension SPTRepeatMode: Codable {
-    public init?(rawValue: String) {
-        switch rawValue {
-            case "off": self = .off
-            case "context": self = .context
-            case "track": self = .one
-            default: return nil
-        }
-    }
-}
-
-public protocol SPTConvertible {
-    associatedtype ReferenceType
-    var sptInstance: ReferenceType { get }
-}
-
-extension SKPlaybackState: SPTConvertible {
-    public typealias ReferenceType = SPTPlaybackState
-    
-    public var sptInstance: SPTPlaybackState {
-        return SPTPlaybackState(isPlaying: isPlaying,
-                                isRepeating: repeatMode == .all || repeatMode == .one,
-                                isShuffling: isShuffling,
-                                isActiveDevice: device.type == .mobile, // No good... find a better way.
-                                position: TimeInterval(_progress ?? 0))!
-    }
-}
