@@ -1909,14 +1909,14 @@ class RequestTests: XCTestCase {
     func testGetRecentTracksRequest() {
         
         // Arrange:
-        let request = SKPlayer.makeRecentTracksRequest(after: nil, limit: 5)
+        let request = SKPlayer.makeRecentTracksRequest(startAfterDate: nil, limit: 5)
         let promise = makeRequestExpectation()
         defer { wait(for: promise) }
         
         // Assert request:
         XCTAssertEqual(request.method, .GET)
         XCTAssertEqual(request.url.path, "/v1/me/player/recently-played")
-        SKTAssertQuery(in: request, contains: "time_range=short_term", "limit=5")
+        XCTAssertEqual(request.preparedURLRequest.url?.query, "limit=5")
         
         // Act:
         SKPlayer.getRecentTracks(limit: 5) { (tracks, error) in
