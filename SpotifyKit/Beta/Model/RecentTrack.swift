@@ -74,3 +74,9 @@ extension SKRecentTrack {
 // MARK: - Savable Conformance
 
 extension SKRecentTrack: Savable {}
+
+// MARK: - Cursor Pageable Conformance
+
+extension SKRecentTrack: CursorPageable {
+    public typealias CursorType = Date
+}

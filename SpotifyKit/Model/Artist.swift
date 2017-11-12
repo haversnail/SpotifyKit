@@ -77,3 +77,9 @@ extension SKArtist: Expandable {
             popularity == nil
     }
 }
+
+// MARK: - Cursor Pageable Conformance
+
+extension SKArtist: CursorPageable {
+    public typealias CursorType = String
+}

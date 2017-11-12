@@ -1750,17 +1750,16 @@ extension SKCurrentUser {
     
     /// Creates and returns the request used to get the current authenticated user's followed artists.
     ///
-    /// - Parameter page: The parameters for paginating the results, specifying the number of items to return and the ID of the last artist in the previous page, if any. If no parameters are supplied, the request will return the default number of items beginning with first item.
-    ///
-    ///     **Note**: This request uses cursor-based paging to traverse the list of followed artists. Providing an `offset` value for this request will do nothing.
-    ///
+    /// - Parameters:
+    ///   - lastID: The last artist's ID in the previous page, if any. Providing an artist ID for this request is similar to providing an offset value in other paginated requests.
+    ///   - limit: The number of items to return.
     /// - Returns: An `SKRequest` instance with which to perform the API request.
-    public static func makeFollowedArtistsRequest(page: Pagination?) -> SKRequest {
+    public static func makeFollowedArtistsRequest(lastID: String?, limit: Int?) -> SKRequest {
         
         var parameters = [String: Any]()
         parameters[Constants.QueryParameters.type] = SKArtist.type
-        parameters[Constants.QueryParameters.limit] = page?.limit
-        parameters[Constants.QueryParameters.cursor] = page?.cursor
+        parameters[Constants.QueryParameters.limit] = limit
+        parameters[Constants.QueryParameters.after] = lastID
         return SKRequest(method: .GET, endpoint: Constants.Endpoints.myFollows, parameters: parameters)!
     }
     
@@ -1771,15 +1770,13 @@ extension SKCurrentUser {
     /// Reading the list of items that the current authenticated user follows also requires authorization of the "`user-follow-read`" scope. See [Using Scopes](https://developer.spotify.com/spotify-web-api/using-scopes/) for more details.
     ///
     /// - Parameters:
-    ///   - page: The parameters for paginating the results, specifying the number of items to return and the ID of the last artist in the previous page, if any. If no parameters are supplied, the request will return the default number of items beginning with first item.
-    ///
-    ///     **Note**: This request uses cursor-based paging to traverse the list of followed artists. Providing an "`offset`" value for this request will do nothing.
-    ///
+    ///   - lastID: The last artist's ID in the previous page, if any. Providing an artist ID for this request is similar to providing an offset value in other paginated requests. The default value is `nil`.
+    ///   - limit: The number of items to return. The default value is `nil`.
     ///   - handler: The callback handler for the request. The parameters for this handler are:
-    ///     - `artists`: A paginated list of followed artists, if any.
-    ///     - `error`: An error object identifying if and why the request failed, or `nil` if the request was successful.
-    public static func getFollowedArtists(page: Pagination? = nil, handler: @escaping (Page<SKArtist>?, Error?) -> Void) {
-        makeFollowedArtistsRequest(page: page).perform(handler: handler)
+    ///       - `artists`: A cursor-based paginated list of followed artists, if any.
+    ///       - `error`: An error object identifying if and why the request failed, or `nil` if the request was successful.
+    public static func getFollowedArtists(afterID lastID: String? = nil, limit: Int? = nil, handler: @escaping (CursorPage<SKArtist>?, Error?) -> Void) {
+        makeFollowedArtistsRequest(lastID: lastID, limit: limit).perform(handler: handler)
     }
     
     // public static func getFollowedUsers(page: Pagination? = nil, handler: @escaping (Page<SKUser>?, Error?) -> Void) // Currently unsupported by Spotify.
@@ -2196,15 +2193,17 @@ extension Expandable where Self: JSONDecodable {
 
 // MARK: - Paging Requests
 
-extension Page {
+extension PagingCollection where Self: JSONDecodable {
+    
+    // MARK: Traversing Pages
     
     /// Gets the next page of items and provides it to the specified handler, or `nil` if no next page exists.
     ///
     /// - Note: This method uses the `SPTAuth` default instance session to authenticate the underlying request. If this session does not contain a valid access token, the request will result in an error.
     ///
     /// - Parameter handler: The callback handler for this request, providing the next page of elements if successful, or an error object identifying if and why the request or the decoding failed if unsuccessful.
-    public func getNext(handler: @escaping (Page<Element>?, Error?) -> Void) {
-        guard let url = nextURL else { handler(nil, nil); return }
+    public func getNext(handler: @escaping (Self?, Error?) -> Void) {
+        guard let url = nextURL/*, !self.isEmpty */else { handler(nil, nil); return }
         SKRequest(method: .GET, url: url)!.perform(handler: handler)
     }
     
@@ -2213,8 +2212,8 @@ extension Page {
     /// - Note: This method uses the `SPTAuth` default instance session to authenticate the underlying request. If this session does not contain a valid access token, the request will result in an error.
     ///
     /// - Parameter handler: The callback handler for this request, providing the previous page of elements if successful, or an error object identifying if and why the request or the decoding failed if unsuccessful.
-    public func getPrevious(handler: @escaping (Page<Element>?, Error?) -> Void) {
-        guard let url = previousURL else { handler(nil, nil); return }
+    public func getPrevious(handler: @escaping (Self?, Error?) -> Void) {
+        guard let url = previousURL/*, !self.isEmpty */else { handler(nil, nil); return }
         SKRequest(method: .GET, url: url)!.perform(handler: handler)
     }
 }

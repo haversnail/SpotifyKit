@@ -1321,8 +1321,7 @@ class RequestTests: XCTestCase {
     func testGetFollowedArtists() {
         
         // Arrange:
-        let page = Pagination(limit: 5, cursor: nil)
-        let request = SKCurrentUser.makeFollowedArtistsRequest(page: page)
+        let request = SKCurrentUser.makeFollowedArtistsRequest(lastID: nil, limit: 5)
         let promise = makeRequestExpectation()
         defer { wait(for: promise) }
         
@@ -1332,7 +1331,7 @@ class RequestTests: XCTestCase {
         SKTAssertQuery(in: request, contains: "type=artist", "limit=5")
         
         // Act:
-        SKCurrentUser.getFollowedArtists(page: page) { (artists, error) in
+        SKCurrentUser.getFollowedArtists(limit: 5) { (artists, error) in
             defer { promise.fulfill() }
             
             // Assert results:
@@ -1601,7 +1600,7 @@ class RequestTests: XCTestCase {
         
         // Arrange:
         let locale = catalog.locale!
-        let page = Pagination(limit: 5, cursor: nil)
+        let page = Pagination(limit: 5)
         let request = SKCurrentUser.makeSavedAlbumsRequest(locale: locale, page: page)
         let promise = makeRequestExpectation()
         defer { wait(for: promise) }
@@ -1631,7 +1630,7 @@ class RequestTests: XCTestCase {
         
         // Arrange:
         let locale = catalog.locale!
-        let page = Pagination(limit: 5, cursor: nil)
+        let page = Pagination(limit: 5)
         let request = SKCurrentUser.makeSavedTracksRequest(locale: locale, page: page)
         let promise = makeRequestExpectation()
         defer { wait(for: promise) }
