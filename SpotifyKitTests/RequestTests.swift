@@ -1905,6 +1905,45 @@ class RequestTests: XCTestCase {
             XCTAssertNotNil(artist.popularity, "property should contain a non-nil value.")
         }
     }
+    
+    func testGetRecentTracksRequest() {
+        
+        // Arrange:
+        let request = SKPlayer.makeRecentTracksRequest(after: nil, limit: 5)
+        let promise = makeRequestExpectation()
+        defer { wait(for: promise) }
+        
+        // Assert request:
+        XCTAssertEqual(request.method, .GET)
+        XCTAssertEqual(request.url.path, "/v1/me/player/recently-played")
+        SKTAssertQuery(in: request, contains: "time_range=short_term", "limit=5")
+        
+        // Act:
+        SKPlayer.getRecentTracks(limit: 5) { (tracks, error) in
+            defer { promise.fulfill() }
+            
+            // Assert results:
+            if let error = error {
+                print(error)
+                XCTFail(error.localizedDescription); return
+            }
+            guard let tracks = tracks else {
+                XCTFail("'tracks' is nil."); return
+            }
+            
+            // Assert cursors:
+            XCTAssertEqual(tracks.cursors.latest, tracks.first?.datePlayed)
+            XCTAssertEqual(tracks.cursors.earliest, tracks.last?.datePlayed)
+            
+//            guard let cursorDate = tracks.cursors.latest, let actualDate = tracks.first?.datePlayed else { return }
+//            let formatter = DateFormatter()
+//            formatter.dateStyle = .full
+//            formatter.timeStyle = .full
+//            formatter.locale = Locale.current
+//            print(formatter.string(from: cursorDate), "<~ \"after\" cursor date")
+//            print(formatter.string(from: actualDate), "<~ first track's playback date")
+        }
+    }
 }
 
 // MARK: - Request Test Assertions
