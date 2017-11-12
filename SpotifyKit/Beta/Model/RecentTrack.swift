@@ -13,7 +13,7 @@ import Foundation
 /// - SeeAlso: The Web API [Play History](https://developer.spotify.com/web-api/object-model/#play-history-object) object.
 public struct SKRecentTrack: Track, Decodable {
     
-    /// The date and time the track was played, with millisecond precision.
+    /// The date and time the track was last played, with millisecond precision.
     public let datePlayed: Date // playbackDate // dateLastPlayed
     
     /// The context from which the track was played, such as an album or playlist.
@@ -49,7 +49,7 @@ public struct SKRecentTrack: Track, Decodable {
     }
 }
 
-// MARK: Custom Decoding
+// MARK: - Custom Decoding
 
 extension SKRecentTrack {
     
@@ -71,6 +71,6 @@ extension SKRecentTrack {
     }
 }
 
-// MARK: Followable Conformance:
+// MARK: - Savable Conformance
 
-extension SKRecentTrack: Followable {}
+extension SKRecentTrack: Savable {}

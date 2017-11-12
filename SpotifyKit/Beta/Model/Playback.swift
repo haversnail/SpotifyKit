@@ -10,11 +10,21 @@ import Foundation
 
 // MARK: Supporting Types
 
+/// A mode for repeating playback in a Spotify player.
 public enum SKRepeatMode: String, Codable {
+    
+    /// Nothing is repeated during playback.
     case off
+    
+    /// A single track is repeated indefinitely.
     case one = "track"
+    
+    /// The current playback context is repeated indefinitely.
     case all = "context"
     
+    /// Creates an `SKRepeatMode` instance equal to that of
+    ///
+    /// - Parameter value: The
     public init(_ value: SPTRepeatMode) {
         switch value {
             case .off: self = .off
@@ -49,6 +59,7 @@ extension SPTRepeatMode {
 
 // MARK: - Playback Context
 
+/// A structure containing values identifying the context in which a particular track is played, such as an album, artist, or playlist.
 public struct SKPlaybackContext: Decodable { // SKPlaybackSource
     
     public enum ContextType: String, Codable {
@@ -57,7 +68,7 @@ public struct SKPlaybackContext: Decodable { // SKPlaybackSource
         case playlist
     }
     
-    /// The context in which  track . See `ContextType` for possible values.
+    /// The type of context, such as an album, artist, or playlist. See `ContextType` for more details.
     public let type: ContextType
     
     /// Known external URLs for this context. See ["external URL object"](https://developer.spotify.com/web-api/object-model/#external-url-object) for more details.
@@ -66,7 +77,7 @@ public struct SKPlaybackContext: Decodable { // SKPlaybackSource
     /// The [Spotify URI](https://developer.spotify.com/web-api/user-guide/#spotify-uris-and-ids) for the context.
     public let uri: String
     
-    /// A link to the Web API endpoint providing full details of the context object.
+    /// A link to the Web API endpoint providing full details of the context.
     public let url: URL
     
     private enum CodingKeys: String, CodingKey {
@@ -77,32 +88,43 @@ public struct SKPlaybackContext: Decodable { // SKPlaybackSource
     }
 }
 
-// MARK: - Playback State (Currently Playing Context) (βeta)
+// MARK: - Playback State (Currently Playing Object) (βeta)
 
-public struct SKPlaybackState: JSONDecodable { // SPTPlaybackState
+/// An aggregated collection of values defining the current state of a Spotify player.
+///
+/// - SeeAlso: The Web API [Currently Playing](https://developer.spotify.com/web-api/get-information-about-the-users-current-playback/) object.
+public struct SKPlaybackState: JSONDecodable {
     
     /// The device that is currently active.
-    // - Note: When retrieving the currently playing track, this property will be `nil`. // Just don't support that endpoint. It's redundant anyways.
-    public let device: SKDevice?
+    public let device: SKDevice? // - Note: When retrieving the currently playing track, this property will be `nil`. // Just don't support that endpoint. It's redundant anyways.
     
-    /// <#Description#>
-    // - Note: When retrieving the currently playing track, this property will be `nil`.
-    public let repeatMode: SKRepeatMode?
+    /// The current repeat mode. See `SKRepeatMode` for possible values.
+    public let repeatMode: SKRepeatMode? // - Note: When retrieving the currently playing track, this property will be `nil`.
     
-    /// <#Description#>
-    // - Note: When retrieving the currently playing track, this property will be `nil`.
-    public let isShuffling: Bool?
+    /// A Boolean value indicating whether shuffling is turned on.
+    public let isShuffling: Bool? // - Note: When retrieving the currently playing track, this property will be `nil`.
     
-    /// <#Description#>...can be `nil`.
+    /// The context in which the current track is played, such as an album, artist, or playlist.
+    ///
+    /// If no track is currently playing, this property will be `nil`.
     public let context: SKPlaybackContext?
     
-    /// The timestamp when the data was fetched.
-    public let timestamp: Date // FIXME: Provided as Int... convert to Date.
+    /// The Unix millisecond timestamp when the data was fetched.
+    private let _timestamp: Int
     
-    /// <#Description#>
+    /// The date and time that this data was fetched, with millisecond precision.
+    ///
+    /// You can use this date in conjuntion with the `progress` property to determine the currently elapsed playback time of the current track, if one is playing.
+    public var timestamp: Date {
+        return Date(timeIntervalSince1970: TimeInterval(_timestamp) / 1000)
+    }
+    
+    /// The progress into the currently playing track, in milliseconds.
     private let _progress: Int?
     
-    /// The progress into the currently playing track. If no track is currently playing, this will be `nil`.
+    /// The progress into the currently playing track in seconds, with millisecond precision.
+    ///
+    /// If no track is currently playing, this property will be `nil`.
     public var progress: TimeInterval? {
         switch _progress {
             case .some(let t): return TimeInterval(t) / 1000
@@ -113,7 +135,9 @@ public struct SKPlaybackState: JSONDecodable { // SPTPlaybackState
     /// A Boolean value indicating whether a track is currently playing.
     public let isPlaying: Bool
     
-    /// The currently playing track. If no track is currently playing, this will be `nil`.
+    /// The currently playing track.
+    ///
+    /// If no track is currently playing, this property will be `nil`.
     public let track: SKTrack?
     
     // MARK: Keys
@@ -123,10 +147,35 @@ public struct SKPlaybackState: JSONDecodable { // SPTPlaybackState
         case repeatMode = "repeat_state"
         case isShuffling = "shuffle_state"
         case context
-        case timestamp
+        case _timestamp = "timestamp"
         case _progress = "progress_ms"
         case isPlaying = "is_playing"
         case track = "item"
+    }
+}
+
+//public protocol SKValueConvertible {
+//    associatedtype ValueType
+//    init?(converting value: ValueType)
+//}
+
+extension SPTPlaybackState/*: SKValueConvertible */{
+    
+    public convenience init?(converting value: SKPlaybackState) {
+        
+        guard
+            let device = value.device,
+            let repeatMode = value.repeatMode,
+            let isShuffling = value.isShuffling,
+            let progress = value.progress else {
+                return nil
+        }
+        
+        self.init(isPlaying: value.isPlaying,
+                  isRepeating: repeatMode == .one || repeatMode == .all,
+                  isShuffling: isShuffling,
+                  isActiveDevice: device.type == .mobile, // No good... find a better way. "device.name" ...?
+                  position: progress)
     }
 }
 
@@ -137,13 +186,13 @@ public struct SKPlaybackState: JSONDecodable { // SPTPlaybackState
 //}
 //
 //extension SKPlaybackState: SPTConvertible {
-//    
+//
 //    public func makeSPTInstance() -> SPTPlaybackState? {
-//        
+//
 //        guard let device = device, let repeatMode = repeatMode, let isShuffling = isShuffling, let progress = progress else {
 //            return nil
 //        }
-//        
+//
 //        return SPTPlaybackState(isPlaying: isPlaying,
 //                                isRepeating: repeatMode == .all || repeatMode == .one,
 //                                isShuffling: isShuffling,
