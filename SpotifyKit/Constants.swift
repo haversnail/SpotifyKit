@@ -142,7 +142,7 @@ internal struct Constants {
         
         static var recentlyPlayed: String     { return player/"recently-played" }
         static var currentlyPlaying: String   { return player/"currently-playing" }
-        static var availableDevices: String   { return player/"devices" }
+        static var devices: String            { return player/"devices" }
         static var play: String               { return player/"play" }
         static var pause: String              { return player/"pause" }
         static var next: String               { return player/"next" }

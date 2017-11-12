@@ -15,9 +15,9 @@ public typealias JSONCodable = JSONDecodable & JSONEncodable
 /// A type that can decode itself from a JSON representation.
 public protocol JSONDecodable: Decodable {
     
-    /// Creates a SpotifyKit object from the specified JSON data.
+    /// Creates a SpotifyKit type from the specified JSON data.
     ///
-    /// - Parameter jsonData: The data object containing the JSON-encoded Spotify object.
+    /// - Parameter jsonData: The data containing the JSON-encoded [Spotify object](https://developer.spotify.com/web-api/object-model/).
     ///
     /// - Note: The default implementation of this method decodes date values using the ISO 8601 timestamp format [specified by the Web API](https://developer.spotify.com/web-api/user-guide/#timestamps). If your need another date decoding strategy, you must provide your own custom implementation.
     init(from jsonData: Data) throws
