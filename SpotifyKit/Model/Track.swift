@@ -186,8 +186,8 @@ extension SKTrack: Expandable {
     public var isSimplified: Bool {
         return
             album == nil &&
-                externalIDs == nil &&
-                popularity == nil
+            externalIDs == nil &&
+            popularity == nil
     }
 }
 
