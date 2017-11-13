@@ -12,7 +12,7 @@ import Foundation
 
 public struct SKPlayer {
     
-    // MARK: Get the Current User's Recently Played Tracks ✔︎
+    // MARK: - Get the Current User's Recently Played Tracks ✔︎
     
     /// Creates and returns the request used to get the current authenticated user's recent tracks.
     ///
@@ -84,7 +84,7 @@ public struct SKPlayer {
         makeRecentTracksRequest(endBeforeDate: date, limit: limit).perform(handler: handler)
     }
     
-    // MARK: Get a User's Available Devices ✔︎
+    // MARK: - Get a User's Available Devices ✔︎
     
     /// Creates and returns the request used to get the current authenticated user's available devices.
     ///
@@ -106,7 +106,7 @@ public struct SKPlayer {
         makeAvailableDevicesRequest().perform(handler: handler)
     }
     
-    // MARK: Get Information About the Current User's Playback State ✔︎
+    // MARK: - Get Information About the Current User's Playback State ✔︎
     
     /// Creates and returns the request used to get the current authenticated user's available devices.
     ///
@@ -134,7 +134,7 @@ public struct SKPlayer {
         makePlaybackStateRequest(locale: locale).perform(handler: handler)
     }
     
-    // MARK: Transfer Playback to Another Device ✔︎
+    // MARK: - Transfer Playback to Another Device ✔︎
     
     /// Creates and returns the request used to transfer playback to another device.
     ///
