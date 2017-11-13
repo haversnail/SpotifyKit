@@ -99,6 +99,7 @@ public typealias SKDecodableHandler<T: JSONDecodable> = (_ type: T?, _ error: Er
 ///
 /// - Parameter error: An error identifying if and why the request or decoding failed, or `nil` if the request was successful.
 public typealias SKErrorHandler = (_ error: Error?) -> Void
+//public typealias SKPlaylistSnapshotHandler = (_ snapshotID: String?, _ error: Error?) -> Void
 
 
 
