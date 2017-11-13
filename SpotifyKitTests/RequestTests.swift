@@ -1818,7 +1818,7 @@ class RequestTests: XCTestCase {
     
     // MARK: - Personalization Requests
     
-    func testGetTopArtistsRequest() {
+    func testGetTopArtists() {
         
         // Arrange:
         let page = Pagination(limit: 5)
@@ -1847,7 +1847,7 @@ class RequestTests: XCTestCase {
         }
     }
     
-    func testGetTopTracksRequest() {
+    func testGetTopTracks() {
         
         // Arrange:
         let page = Pagination(limit: 5)
@@ -1906,7 +1906,9 @@ class RequestTests: XCTestCase {
         }
     }
     
-    func testGetRecentTracksRequest() {
+    // MARK: - βeta Requests
+    
+    func testGetRecentTracks() {
         
         // Arrange:
         let request = SKPlayer.makeRecentTracksRequest(startAfterDate: nil, limit: 5)
