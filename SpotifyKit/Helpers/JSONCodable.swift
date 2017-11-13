@@ -35,7 +35,7 @@ extension JSONDecodable {
 public protocol JSONEncodable: Encodable {
     /// Encodes the given type to a JSON representation suitable for the [Spotify Web API](https://developer.spotify.com/web-api/).
     ///
-    /// - Returns: A `Data` object containing the payload.
+    /// - Returns: A `Data` value containing the payload.
     /// - Throws: Any errors encountered during encoding. See [EncodingError](apple-reference-documentation://hsJCtRo9pa) for more details.
     func data() throws -> Data
 }

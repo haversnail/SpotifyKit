@@ -13,7 +13,7 @@ public struct SKPlaylist: JSONDecodable {
     /// An enum representing the expected `type` value for a playlist object.
     private enum ResourceType: String, Codable { case playlist }
 
-    // MARK: - Object Properties (Simplified)
+    // MARK: - Properties (Simplified)
     
     /// `true` if the owner allows other users to modify the playlist.
     public let isCollaborative: Bool
@@ -55,7 +55,7 @@ public struct SKPlaylist: JSONDecodable {
     /// The resource object type: `"playlist"`.
     private let type: ResourceType
     
-    // MARK: - Object Properties (Full)
+    // MARK: - Properties (Full)
     
     /// A collection containing information about the tracks of the playlist.
     public let tracks: Page<SKPlaylistTrack>?
@@ -143,7 +143,7 @@ extension SKPlaylist: Expandable {
 
 // MARK: - Featured Playlists
 
-/// An object containing a paginated collection of featured playlists, accompanied by a localized message from Spotify.
+/// A structure containing a paginated collection of featured playlists, accompanied by a localized message from Spotify.
 public struct SKFeaturedPlaylists: JSONDecodable {
     public let localizedMessage: String
     public let playlists: Page<SKPlaylist>

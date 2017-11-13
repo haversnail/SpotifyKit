@@ -51,7 +51,7 @@ public struct SKTrackLink: Decodable {
 
 public protocol Track {
     
-    /// The artists who performed the track. Each artist object includes a link in `url` to more detailed information about the artist.
+    /// The artists who performed the track. Each artist includes a link in `url` to more detailed information about the artist.
     var artists: [SKArtist] { get }
     
     /// A list of the countries in which the track can be played, identified by their [ISO 3166-1 alpha-2](http://en.wikipedia.org/wiki/ISO_3166-1_alpha-2) code.
@@ -74,7 +74,7 @@ public protocol Track {
     /// The [Spotify ID](https://developer.spotify.com/web-api/user-guide/#spotify-uris-and-ids) for the track.
     var id: String { get }
     
-    /// Part of the object when [Track Relinking](https://developer.spotify.com/web-api/track-relinking-guide/) is applied. If `true`, the track is playable in the given market. Otherwise `false`.
+    /// A Boolean value that is available when [Track Relinking](https://developer.spotify.com/web-api/track-relinking-guide/) is applied. If `true`, the track is playable in the given market. Otherwise `false`.
     var isPlayable: Bool? { get }
     
     /// The name of the track.
@@ -83,7 +83,7 @@ public protocol Track {
     /// A URL to a 30-second preview (MP3 format) of the track. `nil` if not available.
     var previewURL: URL? { get }
     
-    /// Part of the object when [Track Relinking](https://developer.spotify.com/web-api/track-relinking-guide/) is applied and is only part of the object if the track linking, in fact, exists (meaning that the requested track has been replaced with a different track). The resource identifiers and locators in the `TrackLink` object contain information about the originally requested track.
+    /// A value that is available when [Track Relinking](https://developer.spotify.com/web-api/track-relinking-guide/) is applied and is only available if the track linking, in fact, exists (meaning that the requested track has been replaced with a different track). The resource identifiers and locators in the `TrackLink` instance contain information about the originally requested track.
     var trackLink: SKTrackLink? { get }
     
     /// The number of the track. If an album has several discs, the track number is the number on the specified disc.
@@ -95,7 +95,7 @@ public protocol Track {
     /// A link to the Web API endpoint providing full details of the track.
     var url: URL { get }
     
-    /// The album on which the track appears. The album object includes a link in `url` to full information about the album.
+    /// The album on which the track appears. The album includes a link in `url` to full information about the album.
     var album: SKAlbum? { get }
     
     /// Known external IDs for the track.
@@ -113,7 +113,7 @@ public protocol Track {
 
 public struct SKTrack: Track, JSONDecodable {
     
-    // MARK: Object Properties (Simplified)
+    // MARK: Properties (Simplified)
     
     /// The resource object type: `"track"`.
     private let type: ResourceType
@@ -149,7 +149,7 @@ public struct SKTrack: Track, JSONDecodable {
     public let uri: String
     public let url: URL
     
-    // MARK: Object Properties (Full)
+    // MARK: Properties (Full)
     
     public let album: SKAlbum?
     public let externalIDs: [String: String]?
@@ -206,7 +206,7 @@ public struct SKPlaylistTrack: Track, JSONDecodable {
     /// Whether this track is a [local file](https://developer.spotify.com/web-api/local-files-spotify-playlists/) or not.
     public let isLocal: Bool
     
-    /// The nested track object.
+    /// The nested track.
     private let track: SKTrack
     
     // MARK: Track Properties
@@ -246,7 +246,7 @@ public struct SKSavedTrack: Track, JSONDecodable {
     /// The date and time the track was saved.
     public let dateAdded: Date
     
-    /// The nested track object.
+    /// The nested track.
     private let track: SKTrack
     
     // MARK: Track Properties

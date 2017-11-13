@@ -8,18 +8,18 @@
 
 import Foundation
 
-// MARK: Recommendations Object
+// MARK: Recommendations Type
 
 public struct SKRecommendations: JSONDecodable {
     
-    /// An array of recommendation seed objects.
+    /// An array of recommendation seeds.
     public let seeds: [SKSeed]
     
     /// An array of simplified tracks, ordered according to the parameters supplied.
     public let tracks: [SKTrack]
 }
 
-// MARK: - Recommendations Seed Object
+// MARK: - Recommendations Seed Type
 
 public struct SKSeed: JSONDecodable {
     
@@ -44,7 +44,7 @@ public struct SKSeed: JSONDecodable {
     /// The entity type of this seed. One of `artist`, `track` or `genre`.
     public let type: SeedType
     
-    /// A link to the full track or artist data for this seed. For tracks, this will be a link to a full track object; for artists, a link to a full artist object; for genre seeds, this value will be `nil`.
+    /// A link to the full track or artist data for this seed. For tracks, this will be a link to a full track; for artists, a link to a full artist; for genre seeds, this value will be `nil`.
     public let url: URL?
     
     // MARK: Keys

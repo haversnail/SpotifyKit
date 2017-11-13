@@ -85,19 +85,19 @@ public enum HTTPStatusCode: Int, Codable {
 /// - Parameters:
 ///     - data: The data (typically an encoded JSON object) returned by the request, if any. If the data returned represents an API-specific error object, that object will be provided via the `error` parameter instead.
 ///     - status: The API-specific HTTP status code associated with the request reponse. If the underlying URL request could not be completed successfully, or the URL response contained an unexpected status code, this parameter will be `nil`.
-///     - error: An error object identifying if and why the request failed, or `nil` if the request was successful.
+///     - error: An error identifying if and why the request failed, or `nil` if the request was successful.
 public typealias SKRequestHandler = (_ data: Data?, _ status: HTTPStatusCode?, _ error: Error?) -> Void // or `SKRequest.ResponseHandler`?
 
 /// The callback handler for a request.
 ///
 /// - Parameters:
-///     - object: The object decoded from the JSON data returned by the request. If the object could not be decoded from the data received, the `error` parameter will provide details.
-///     - error: An error object identifying if and why the request or decoding failed, or `nil` if the request was successful.
-public typealias SKDecodableHandler<T: JSONDecodable> = (_ object: T?, _ error: Error?) -> Void
+///     - type: The type decoded from the JSON data returned by the request. If the type could not be decoded from the data received, the `error` parameter will provide details.
+///     - error: An error identifying if and why the request or decoding failed, or `nil` if the request was successful.
+public typealias SKDecodableHandler<T: JSONDecodable> = (_ type: T?, _ error: Error?) -> Void
 
 /// The callback handler for a request.
 ///
-/// - Parameter error: An error object identifying if and why the request or decoding failed, or `nil` if the request was successful.
+/// - Parameter error: An error identifying if and why the request or decoding failed, or `nil` if the request was successful.
 public typealias SKErrorHandler = (_ error: Error?) -> Void
 
 
@@ -285,7 +285,7 @@ public class SKRequest { // Inheriting from NSObject causes buildtime error: cla
     ///
     /// - Parameter handler: The callback handler for this request. The parameters for this handler are:
     ///     - `data`: The data (typically an encoded JSON object) returned by the request, if any.
-    ///     - `error`: An error object identifying if and why the request or decoding failed, or `nil` if the request was successful.
+    ///     - `error`: An error identifying if and why the request or decoding failed, or `nil` if the request was successful.
     public func perform(handler: @escaping SKRequestHandler) {
 
         //let urlSession = URLSession(configuration: .default)
@@ -356,7 +356,7 @@ public class SKRequest { // Inheriting from NSObject causes buildtime error: cla
     /// Performs the request, decoding the JSON data returned by the request to the given type and calling the specified handler when complete.
     ///
     /// - Parameter handler: The callback handler for this request. The parameters for this handler are:
-    ///     - `object`: The object decoded from the JSON data returned by the request.
+    ///     - `type`: The type decoded from the JSON data returned by the request.
     ///     - `error`: An error object identifying if and why the request failed, or `nil` if the request was successful.
     public func perform<T: JSONDecodable>(handler: @escaping SKDecodableHandler<T>) {
 
@@ -379,7 +379,7 @@ public class SKRequest { // Inheriting from NSObject causes buildtime error: cla
     
     /// Performs the request, calling the specified handler when complete.
     ///
-    /// - Parameter handler: The callback handler for the request, providing an error object identifying if and why the request failed, or `nil` if the request was successful.
+    /// - Parameter handler: The callback handler for the request, providing an error identifying if and why the request failed, or `nil` if the request was successful.
     public func perform(handler: @escaping SKErrorHandler) {
         perform { (_, _, error) in
             handler(error)
@@ -436,7 +436,7 @@ extension SPTSession {
     ///     - requestBody: A tuple value comprised of multipart data and its respective content type, if any.
     ///     - handler: The callback handler for this request. The parameters for this handler are:
     ///         - `data`: The data (typically an encoded JSON object) returned by the request, if any.
-    ///         - `error`: An error object identifying if and why the request failed, or `nil` if the request was successful.
+    ///         - `error`: An error identifying if and why the request failed, or `nil` if the request was successful.
     public func performRequest(method: HTTPRequestMethod, url: URL, parameters: [String: Any] = [:], requestBody: (Data, SKRequest.ContentType)? = nil, handler: @escaping SKRequestHandler) {
         
         makeRequest(method: method, url: url, parameters: parameters, requestBody: requestBody)?.perform(handler: handler)
@@ -453,7 +453,7 @@ extension SPTSession {
     ///     - requestBody: A tuple value comprised of multipart data and its respective content type, if any.
     ///     - handler: The callback handler for this request. The parameters for this handler are:
     ///         - `data`: The data (typically an encoded JSON object) returned by the request, if any.
-    ///         - `error`: An error object identifying if and why the request failed, or `nil` if the request was successful.
+    ///         - `error`: An error identifying if and why the request failed, or `nil` if the request was successful.
     public func performRequest(method: HTTPRequestMethod, endpoint: String, parameters: [String: Any] = [:], requestBody: (Data, SKRequest.ContentType)? = nil, handler: @escaping SKRequestHandler) {
         
         makeRequest(method: method, endpoint: endpoint, parameters: parameters, requestBody: requestBody)?.perform(handler: handler)

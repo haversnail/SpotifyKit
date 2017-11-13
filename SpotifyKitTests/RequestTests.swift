@@ -189,7 +189,7 @@ class RequestTests: XCTestCase {
                 XCTAssertEqual(album.id, "5DLhV9yOvZ7IxVmljMXtNm")
             } catch {
                 self.add(XCTAttachment(uniformTypeIdentifier: nil, name: "Album.json", payload: data))
-                XCTFail("could not initialize the SpotifyKit object from the given data. \(error.localizedDescription)")
+                XCTFail("could not initialize the SpotifyKit item from the given data. \(error.localizedDescription)")
             }
         }
     }
@@ -222,7 +222,7 @@ class RequestTests: XCTestCase {
                 XCTFail("HTTP status code is supposed to be '.unauthorized'"); return
             }
             guard let error = error as? SKError else {
-                XCTFail("error object is supposed to be of type 'SKError'"); return
+                XCTFail("error is supposed to be of type 'SKError'"); return
             }
             
             XCTAssertEqual(error.status, .unauthorized)
@@ -259,7 +259,7 @@ class RequestTests: XCTestCase {
                 XCTAssertEqual(album.id, "5DLhV9yOvZ7IxVmljMXtNm")
             } catch {
                 self.add(XCTAttachment(uniformTypeIdentifier: nil, name: "Album.json", payload: data))
-                XCTFail("could not initialize the SpotifyKit object from the given data. \(error.localizedDescription).")
+                XCTFail("could not initialize the SpotifyKit item from the given data. \(error.localizedDescription).")
             }
         }
         
@@ -591,7 +591,7 @@ class RequestTests: XCTestCase {
                 XCTFail("'features' was nil."); return
             }
             
-            XCTAssert(features.contains { $0 != nil }, "no 'features' object should be nil - request contained valid track IDs.")
+            XCTAssert(features.contains { $0 != nil }, "no 'features' instance should be nil - request contained valid track IDs.")
             XCTAssertEqual(features.map { $0!.uri }, tracks.map { $0.uri })
         }
     }
@@ -874,10 +874,10 @@ class RequestTests: XCTestCase {
                 XCTFail("'results' is nil."); return
             }
             
-            XCTAssertNotNil(results.albums, "results should have contained album objects.")
-            XCTAssertNotNil(results.playlists, "results should have contained playlist objects.")
-            XCTAssertNil(results.artists, "results should not have contained artist objects.")
-            XCTAssertNil(results.tracks, "results should not have contained track objects.")
+            XCTAssertNotNil(results.albums, "results should have contained albums.")
+            XCTAssertNotNil(results.playlists, "results should have contained playlists.")
+            XCTAssertNil(results.artists, "results should not have contained artists.")
+            XCTAssertNil(results.tracks, "results should not have contained tracks.")
             
             guard let albums = results.albums else { return }
             
@@ -1882,7 +1882,7 @@ class RequestTests: XCTestCase {
         
         // Arrange:
         let artist = try! SKArtist(from: simplifiedArtistData)
-        let request = artist.makeFullObjectRequest()
+        let request = artist.makeAllPropertiesRequest()
         let promise = makeRequestExpectation()
         defer { wait(for: promise) }
         
@@ -1890,7 +1890,7 @@ class RequestTests: XCTestCase {
         XCTAssertEqual(request.url, artist.url)
         
         // Act:
-        artist.getFullObject { (artist, error) in
+        artist.getAllProperties { (artist, error) in
             defer { promise.fulfill() }
             
             // Assert results:

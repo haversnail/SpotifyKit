@@ -8,7 +8,7 @@
 
 import Foundation
 
-// MARK: Error Object
+// MARK: Error Type
 
 public struct SKError: Error, JSONDecodable {
     
@@ -44,7 +44,7 @@ extension SKError: LocalizedError {
     public var errorDescription: String? { return "Received a \(status.rawValue) (\(status)) error: \(message)" }
 }
 
-// MARK: - Authentication Error Object
+// MARK: - Authentication Error Type
 
 public struct SKAuthenticationError: Error, JSONDecodable {
     

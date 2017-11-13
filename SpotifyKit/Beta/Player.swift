@@ -63,7 +63,7 @@ public struct SKPlayer {
     ///   - limit: The number of items to return. The default value is `nil`.
     ///   - handler: The callback handler for the request. The parameters for this handler are:
     ///       - `tracks`: A cursor-based paginated list of recent artists, if any.
-    ///       - `error`: An error object identifying if and why the request failed, or `nil` if the request was successful.
+    ///       - `error`: An error identifying if and why the request failed, or `nil` if the request was successful.
     public static func getRecentTracks(after date: Date? = nil, limit: Int? = nil, handler: @escaping (CursorPage<SKRecentTrack>?, Error?) -> Void) {
         makeRecentTracksRequest(startAfterDate: date, limit: limit).perform(handler: handler)
     }
@@ -79,7 +79,7 @@ public struct SKPlayer {
     ///   - limit: The number of items to return. The default value is `nil`.
     ///   - handler: The callback handler for the request. The parameters for this handler are:
     ///       - `tracks`: A cursor-based paginated list of recent artists, if any.
-    ///       - `error`: An error object identifying if and why the request failed, or `nil` if the request was successful.
+    ///       - `error`: An error identifying if and why the request failed, or `nil` if the request was successful.
     public static func getRecentTracks(before date: Date?, limit: Int? = nil, handler: @escaping (CursorPage<SKRecentTrack>?, Error?) -> Void) {
         makeRecentTracksRequest(endBeforeDate: date, limit: limit).perform(handler: handler)
     }
@@ -101,7 +101,7 @@ public struct SKPlayer {
     ///
     /// - Parameter handler: The callback handler for the request. The parameters for this handler are:
     ///     - `devices`: An array of available devices, if any.
-    ///     - `error`: An error object identifying if and why the request failed, or `nil` if the request was successful.
+    ///     - `error`: An error identifying if and why the request failed, or `nil` if the request was successful.
     public static func getAvailableDevices(handler: @escaping ([SKDevice]?, Error?) -> Void) {
         makeAvailableDevicesRequest().perform(handler: handler)
     }
@@ -129,7 +129,7 @@ public struct SKPlayer {
     ///   - locale: The locale-specific storefront/market from which to request. The default value is the locale for the shared `SKCatalog` instance, which by default represents the user's region settings at the time the method is called.
     ///   - handler: The callback handler for the request. The parameters for this handler are:
     ///       - `state`: An `SKPlaybackState` instance.
-    ///       - `error`: An error object identifying if and why the request failed, or `nil` if the request was successful.
+    ///       - `error`: An error identifying if and why the request failed, or `nil` if the request was successful.
     public static func getPlaybackState(for locale: Locale? = SKCatalog.local.locale, handler: @escaping (SKPlaybackState?, Error?) -> Void) {
         makePlaybackStateRequest(locale: locale).perform(handler: handler)
     }
@@ -165,7 +165,7 @@ public struct SKPlayer {
     /// - Parameters:
     ///   - device: The device on which playback should be transferred.
     ///   - forcePlayback: A Boolean value indicating whether the new device should begin playback: `true` ensures playback happens on the new device; `false` keeps the current playback state. The default value is `false`. Note that providing `false` will not *pause* playback.
-    ///   - handler: The callback handler for the request, providing an error object identifying if and why the request failed, or `nil` if the request was successful.
+    ///   - handler: The callback handler for the request, providing an error identifying if and why the request failed, or `nil` if the request was successful.
     public static func transfer(to device: SKDevice, forcingPlayback forcePlayback: Bool = false, handler: @escaping SKErrorHandler) {
         
         guard let deviceID = device.id else {

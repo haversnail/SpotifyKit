@@ -10,7 +10,7 @@ import Foundation
 
 // MARK: Search Results
 
-/// An object containing paged results for any albums, artists, tracks, or playlists returned by a search request.
+/// A structure containing paged results for any albums, artists, tracks, or playlists returned by a search request.
 public struct SKSearchResults: JSONDecodable {
     public let albums: Page<SKAlbum>?
     public let artists: Page<SKArtist>?
@@ -20,7 +20,7 @@ public struct SKSearchResults: JSONDecodable {
 
 // MARK: - Search Result Types
 
-/// An enumeration representing the types of SpotifyKit objects returned by a search request.
+/// An enumeration representing the types of SpotifyKit items returned by a search request.
 public enum SKSearchResultType: String {
     case albums = "album"
     case artists = "artist"

@@ -22,7 +22,7 @@ extension SKAlbumType: URLEncodable {}
 
 public struct SKCopyright: Decodable {
     
-    /// The types of copyrights that are provided by an `SKCopyright` object.
+    /// The types of copyrights that are provided by an `SKCopyright` instance.
     public enum CopyrightType: String, Codable {
         /// The copyright.
         case copyright = "C"
@@ -49,7 +49,7 @@ public protocol Album {
     /// The type of album. See `SKAlbumType` for possible values.
     var albumType: SKAlbumType { get }
     
-    /// The artists of the album. Each artist object includes a link in `url` to more detailed information about the artist.
+    /// The artists of the album. Each artist includes a link in `url` to more detailed information about the artist.
     /// - Note: This property is not guaranteed to be included in every album, and thus may be `nil` when retrieving albums from particular API endpoints.
     var artists: [SKArtist]? { get }
     
@@ -108,7 +108,7 @@ public struct SKAlbum: Album, JSONDecodable {
     /// An enum representing the expected `type` value for an album object.
     private enum ResourceType: String, Codable { case album }
     
-    // MARK: Object Properties (Simplified)
+    // MARK: Properties (Simplified)
     
     /// The resource object type: `"album"`.
     private let type: ResourceType
@@ -123,7 +123,7 @@ public struct SKAlbum: Album, JSONDecodable {
     public let name: String
     public let uri: String
     
-    // MARK: Object Properties (Full)
+    // MARK: Properties (Full)
 
     public let copyrights: [SKCopyright]?
     public let externalIDs: [String: String]?
@@ -163,10 +163,10 @@ extension SKAlbum: Decodable {
     public init(from decoder: Decoder) throws {
         let values = try decoder.container(keyedBy: CodingKeys.self)
         
-        // Verify the type of object we're decoding first:
+        // Verify the type of JSON object we're decoding first:
         type = try values.decode(ResourceType.self, forKey: .type)
         
-        // Object Properties (Simplified)
+        // Properties (Simplified)
         albumType = try values.decode(SKAlbumType.self, forKey: .albumType)//, toCase: .lowercase)
         artists = try values.decodeIfPresent([SKArtist].self, forKey: .artists)
         availableMarkets = try values.decodeIfPresent([String].self, forKey: .availableMarkets)
@@ -177,7 +177,7 @@ extension SKAlbum: Decodable {
         name = try values.decode(String.self, forKey: .name)
         uri = try values.decode(String.self, forKey: .uri)
         
-        // Object Properties (Full)
+        // Properties (Full)
         copyrights = try values.decodeIfPresent([SKCopyright].self, forKey: .copyrights)
         externalIDs = try values.decodeIfPresent([String: String].self, forKey: .externalIDs)
         genres = try values.decodeIfPresent([String].self, forKey: .genres)
@@ -226,7 +226,7 @@ public struct SKSavedAlbum: Album, JSONDecodable {
     /// The date and time the album was saved.
     public let dateAdded: Date
     
-    /// The nested album object.
+    /// The nested album.
     private let album: SKAlbum
     
     // MARK: Album Properties

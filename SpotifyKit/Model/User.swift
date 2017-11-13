@@ -22,14 +22,14 @@ public protocol User {
     var externalURLs: [String: URL] { get }
     
     /// Information about the followers of this user.
-    /// - Note: User objects that are part of a Playlist or Playlist Track object don't return this property.
+    /// - Note: Users that are part of a Playlist or Playlist Track instance don't return this property.
     var followers: SKFollowers? { get }
     
     /// The [Spotify ID](https://developer.spotify.com/web-api/user-guide/#spotify-uris-and-ids) for the user.
     var id: String { get }
     
     /// The user's profile image. If the user does not have a profile image set, this property will contain an empty array.
-    /// - Note: User objects that are part of a Playlist object don't return this property.
+    /// - Note: Users that are part of a Playlist instance don't return this property.
     var images: [SKImage]? { get }
     
     /// The [Spotify URI](https://developer.spotify.com/web-api/user-guide/#spotify-uris-and-ids) for this user.

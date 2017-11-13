@@ -15,7 +15,7 @@ public struct SKArtist: JSONDecodable {
     /// An enum representing the expected `type` value for an artist object.
     private enum ResourceType: String, Codable { case artist }
     
-    // MARK: - Object Properties (Simplified)
+    // MARK: - Properties (Simplified)
     
     /// Known external URLs for this artist. See ["external URL object"](https://developer.spotify.com/web-api/object-model/#external-url-object) for more details.
     public let externalURLs: [String: URL]
@@ -35,7 +35,7 @@ public struct SKArtist: JSONDecodable {
     /// The resource object type: `"artist"`.
     private let type: ResourceType
     
-    // MARK: - Object Properties (Full)
+    // MARK: - Properties (Full)
     
     /// Information about the followers of the artist.
     public let followers: SKFollowers?
