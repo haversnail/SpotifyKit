@@ -12,23 +12,33 @@ import Foundation
 public struct SKDevice: JSONDecodable {
     
     /// The possible devices that can support a Spotify player.
-    public struct DeviceType: RawRepresentable, Codable {
+    public enum DeviceType: String, Codable {
         
         /// A device that supports a desktop Spotify player.
-        public static let computer = DeviceType(rawValue: "Computer")
+        case computer = "Computer"
         
         /// A device that supports a mobile Spotify player, such as a smartphone or tablet.
-        public static let mobile = DeviceType(rawValue: "Smartphone")
+        case mobile = "Smartphone"
         
         /// A device that supports a speaker-based Spotify player, such as a portable Bluetooth speaker.
-        public static let speaker = DeviceType(rawValue: "Speaker")
+        case speaker = "Speaker"
         
         /// A device that supports a TV-based Spotify player, such as a Chromecast-enabled Smart TV.
-        public static let tv = DeviceType(rawValue: "CastVideo")
+        case tv = "CastVideo"
         
-        public var rawValue: String
-        public init?(rawValue: String) {
-            self.rawValue = rawValue
+        /// An unknown device type.
+        case unknown
+        
+        public init(rawValue: String) {
+            switch rawValue {
+                case "Computer":   self = .computer
+                case "Smartphone": self = .mobile
+                case "Speaker":    self = .speaker
+                case "CastVideo":  self = .tv
+                default:
+                    print("Discovered unknown device type: \"\(rawValue)\"")
+                    self = .unknown
+            }
         }
     }
     
