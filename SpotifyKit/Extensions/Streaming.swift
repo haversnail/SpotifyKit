@@ -94,15 +94,7 @@ extension SKPlaylist: Playable {
     }
 }
 
-extension Album where Self: Playable {
-    
-    /// Plays the item from the beginning.
-    ///
-    /// If the item represents a collection of tracks, such as an album or playlst, this method begins playing the first track in the context.
-    ///
-    /// - Note: This method uses the shared `SPTAudioStreamingController` instance to play the item. If the controller has not been initialized, started on its own thread, or logged into the Spotify service, then his method will do nothing.
-    ///
-    /// - Parameter handler: The callback handler for the request, providing an error identifying if and why the request failed, or `nil` if the request was successful.
+extension Playable where Self: Album {
     public func play(handler: @escaping SKErrorHandler) {
         SPTAudioStreamingController.sharedInstance()?.play(self, handler: handler)
     }
@@ -111,15 +103,7 @@ extension Album where Self: Playable {
 extension SKAlbum: Playable {}
 extension SKSavedAlbum: Playable {}
 
-extension Track where Self: Playable {
-    
-    /// Plays the item from the beginning.
-    ///
-    /// If the item represents a collection of tracks, such as an album or playlst, this method begins playing the first track in the context.
-    ///
-    /// - Note: This method uses the shared `SPTAudioStreamingController` instance to play the item. If the controller has not been initialized, started on its own thread, or logged into the Spotify service, then his method will do nothing.
-    ///
-    /// - Parameter handler: The callback handler for the request, providing an error identifying if and why the request failed, or `nil` if the request was successful.
+extension Playable where Self: Track {
     public func play(handler: @escaping SKErrorHandler) {
         SPTAudioStreamingController.sharedInstance()?.play(self, handler: handler)
     }
@@ -130,13 +114,7 @@ extension SKSavedTrack: Playable {}
 extension SKRecentTrack: Playable {}
 extension SKPlaylistTrack: Playable {}
 
-extension Track where Self: Queueable {
-    
-    /// Queues the item for playback.
-    ///
-    /// - Note: This method uses the shared `SPTAudioStreamingController` instance to queue the item. If the controller has not been initialized, started on its own thread, or logged into the Spotify service, then his method will do nothing.
-    ///
-    /// - Parameter handler: The callback handler for the request, providing an error identifying if and why the request failed, or `nil` if the request was successful.
+extension Queueable where Self: Track {
     public func queue(handler: @escaping SKErrorHandler) {
         SPTAudioStreamingController.sharedInstance()?.queue(self, handler: handler)
     }
