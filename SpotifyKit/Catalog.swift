@@ -50,9 +50,9 @@ public struct SKCatalog {
     /// - Parameters:
     ///   - id: The [Spotify ID](https://developer.spotify.com/web-api/user-guide/#spotify-uris-and-ids) for the album.
     ///   - handler: The callback handler for the request. The parameters for this handler are:
-    ///     - `album`: The requested full album, if available.
-    ///     - `error`: An error identifying if and why the request failed, or `nil` if the request was successful.
-    public func getAlbum(withID id: String, handler: @escaping (SKAlbum?, Error?) -> Void) {
+    ///       - `album`: The requested full album, if available.
+    ///       - `error`: An error identifying if and why the request failed, or `nil` if the request was successful.
+    public func getAlbum(withID id: String, completion handler: @escaping (SKAlbum?, Error?) -> Void) {
         makeAlbumRequest(id: id).perform(handler: handler)
     }
     
@@ -75,9 +75,9 @@ public struct SKCatalog {
     /// - Parameters:
     ///   - ids: A list of the [Spotify IDs](https://developer.spotify.com/web-api/user-guide/#spotify-uris-and-ids) for the albums. Maximum: 20 IDs.
     ///   - handler: The callback handler for the request. The parameters for this handler are:
-    ///     - `albums`: The requested list of full albums. If a particular album cannot be found for a given ID, the resulting array will contain `nil` at the corresponding index.
-    ///     - `error`: An error identifying if and why the request failed, or `nil` if the request was successful.
-    public func getAlbums(withIDs ids: [String], handler: @escaping ([SKAlbum?]?, Error?) -> Void) {
+    ///       - `albums`: The requested list of full albums. If a particular album cannot be found for a given ID, the resulting array will contain `nil` at the corresponding index.
+    ///       - `error`: An error identifying if and why the request failed, or `nil` if the request was successful.
+    public func getAlbums(withIDs ids: [String], completion handler: @escaping ([SKAlbum?]?, Error?) -> Void) {
         makeAlbumsRequest(ids: ids).perform(handler: handler)
     }
     
@@ -98,9 +98,9 @@ public struct SKCatalog {
     /// - Parameters:
     ///   - id: The [Spotify ID](https://developer.spotify.com/web-api/user-guide/#spotify-uris-and-ids) for the artist.
     ///   - handler: The callback handler for the request. The parameters for this handler are:
-    ///     - `artist`: The requested full artist, if available.
-    ///     - `error`: An error identifying if and why the request failed, or `nil` if the request was successful.
-    public func getArtist(withID id: String, handler: @escaping (SKArtist?, Error?) -> Void) {
+    ///       - `artist`: The requested full artist, if available.
+    ///       - `error`: An error identifying if and why the request failed, or `nil` if the request was successful.
+    public func getArtist(withID id: String, completion handler: @escaping (SKArtist?, Error?) -> Void) {
         makeArtistRequest(id: id).perform(handler: handler)
     }
     
@@ -124,7 +124,7 @@ public struct SKCatalog {
     ///   - handler: The callback handler for the request. The parameters for this handler are:
     ///     - `albums`: The requested list of full artists. If a particular artist cannot be found for a given ID, the resulting array will contain `nil` at the corresponding index.
     ///     - `error`: An error identifying if and why the request failed, or `nil` if the request was successful.
-    public func getArtists(withIDs ids: [String], handler: @escaping ([SKArtist?]?, Error?) -> Void) {
+    public func getArtists(withIDs ids: [String], completion handler: @escaping ([SKArtist?]?, Error?) -> Void) {
         makeArtistsRequest(ids: ids).perform(handler: handler)
     }
     
@@ -150,7 +150,7 @@ public struct SKCatalog {
     ///   - handler: The callback handler for the request. The parameters for this handler are:
     ///     - `track`: The requested full track, if available.
     ///     - `error`: An error identifying if and why the request failed, or `nil` if the request was successful.
-    public func getTrack(withID id: String, handler: @escaping (SKTrack?, Error?) -> Void) {
+    public func getTrack(withID id: String, completion handler: @escaping (SKTrack?, Error?) -> Void) {
         makeTrackRequest(id: id).perform(handler: handler)
     }
     
@@ -175,7 +175,7 @@ public struct SKCatalog {
     ///   - handler: The callback handler for the request. The parameters for this handler are:
     ///     - `tracks`: The requested list of full tracks. If a particular track cannot be found for a given ID, the resulting array will contain `nil` at the corresponding index.
     ///     - `error`: An error identifying if and why the request failed, or `nil` if the request was successful.
-    public func getTracks(withIDs ids: [String], handler: @escaping ([SKTrack?]?, Error?) -> Void) {
+    public func getTracks(withIDs ids: [String], completion handler: @escaping ([SKTrack?]?, Error?) -> Void) {
         makeTracksRequest(ids: ids).perform(handler: handler)
     }
     
@@ -212,7 +212,7 @@ public struct SKCatalog {
     ///   - handler: The callback handler for the request. The parameters for this handler are:
     ///     - `featuredPlaylists`: An `SKFeaturedPlaylists` instance, which contains a paginated collection of playlists accompanied by a localized message string.
     ///     - `error`: An error identifying if and why the request failed, or `nil` if the request was successful.
-    public func getFeaturedPlaylists(for date: Date? = Date(), page: Pagination? = nil, handler: @escaping (SKFeaturedPlaylists?, Error?) -> Void) {
+    public func getFeaturedPlaylists(for date: Date? = Date(), page: Pagination? = nil, completion handler: @escaping (SKFeaturedPlaylists?, Error?) -> Void) {
         makeFeaturedPlaylistsRequest(date: date, page: page).perform(handler: handler)
     }
     
@@ -238,7 +238,7 @@ public struct SKCatalog {
     ///   - handler: The callback handler for the request. The parameters for this handler are:
     ///     - `albums`: A paginated collection of newly released albums.
     ///     - `error`: An error identifying if and why the request failed, or `nil` if the request was successful.
-    public func getNewReleases(page: Pagination? = nil, handler: @escaping (Page<SKAlbum>?, Error?) -> Void) {
+    public func getNewReleases(page: Pagination? = nil, completion handler: @escaping (Page<SKAlbum>?, Error?) -> Void) {
         makeNewReleasesRequest(page: page).perform(handler: handler)
     }
     
@@ -269,7 +269,7 @@ public struct SKCatalog {
     ///   - handler: The callback handler for the request. The parameters for this handler are:
     ///     - `categories`: A paginated collection of available Spotify categories.
     ///     - `error`: An error identifying if and why the request failed, or `nil` if the request was successful.
-    public func getCategories(page: Pagination? = nil, handler: @escaping (Page<SKCategory>?, Error?) -> Void) {
+    public func getCategories(page: Pagination? = nil, completion handler: @escaping (Page<SKCategory>?, Error?) -> Void) {
         makeCategoriesRequest(page: page).perform(handler: handler)
     }
     
@@ -298,7 +298,7 @@ public struct SKCatalog {
     ///   - handler: The callback handler for the request. The parameters for this handler are:
     ///     - `category`: The requested category, if available.
     ///     - `error`: An error identifying if and why the request failed, or `nil` if the request was successful.
-    public func getCategory(withID id: String, handler: @escaping (SKCategory?, Error?) -> Void) {
+    public func getCategory(withID id: String, completion handler: @escaping (SKCategory?, Error?) -> Void) {
         makeCategoryRequest(id: id).perform(handler: handler)
     }
     
@@ -316,7 +316,7 @@ public struct SKCatalog {
     /// - Parameter handler: The callback handler for the request. The parameters for this handler are:
     ///     - `genres`: The list of available genres.
     ///     - `error`: An error identifying if and why the request failed, or `nil` if the request was successful.
-    public func getAvailableGenres(handler: @escaping ([String]?, Error?) -> Void) {
+    public func getAvailableGenres(completion handler: @escaping ([String]?, Error?) -> Void) {
         makeAvailableGenresRequest().perform(handler: handler)
     }
     
@@ -388,11 +388,11 @@ public struct SKCatalog {
                                           tracks: [SKTrack],
                                           filteredBy attributes: Set<SKTrackAttribute> = [],
                                           limit: Int? = nil,
-                                          handler: @escaping (SKRecommendations?, Error?) -> Void) {
+                                          completion handler: @escaping (SKRecommendations?, Error?) -> Void) {
         
         makeRecommendationsRequest(genres: genres, artists: artists, tracks: tracks, attributes: attributes, limit: limit).perform(handler: handler)
     }
-    //public func getRecommendations<T: Seedable>(basedOn seeds: [T], filteredBy attributes: Set<SKTrackAttribute> = [], limit: Int? = nil, handler: @escaping (SKRecommendations?, Error?) -> Void)
+    //public func getRecommendations<T: Seedable>(basedOn seeds: [T], filteredBy attributes: Set<SKTrackAttribute> = [], limit: Int? = nil, completion handler: @escaping (SKRecommendations?, Error?) -> Void)
     
     // MARK: - Search
     
@@ -489,7 +489,7 @@ public struct SKCatalog {
                        inOrder: Bool = false,
                        filteredBy filters: Set<SKSearchFieldFilter> = [],
                        page: Pagination? = nil,
-                       handler: @escaping (SKSearchResults?, Error?) -> Void) {
+                       completion handler: @escaping (SKSearchResults?, Error?) -> Void) {
         
         makeSearchRequest(types: types,
                           keywords: keywords,
@@ -542,7 +542,7 @@ extension SKArtist {
     ///   - handler: The callback handler for the request. The parameters for this handler are:
     ///     - `albums`: A paginated collection of simplified albums, if available.
     ///     - `error`: An error identifying if and why the request failed, or `nil` if the request was successful.
-    public func getAlbums(filteredBy types: Set<SKAlbumType> = [], for locale: Locale? = SKCatalog.local.locale, page: Pagination? = nil, handler: @escaping (Page<SKAlbum>?, Error?) -> Void) {
+    public func getAlbums(filteredBy types: Set<SKAlbumType> = [], for locale: Locale? = SKCatalog.local.locale, page: Pagination? = nil, completion handler: @escaping (Page<SKAlbum>?, Error?) -> Void) {
         makeAlbumsRequest(types: types, locale: locale, page: page).perform(handler: handler)
     }
     
@@ -574,7 +574,7 @@ extension SKArtist {
     ///   - handler: The callback handler for the request. The parameters for this handler are:
     ///     - `tracks`: An array returned by the request of up to 10 top tracks, if available.
     ///     - `error`: An error identifying if and why the request failed, or `nil` if the request was successful.
-    public func getTopTracks(for locale: Locale = SKCatalog.local.locale!, handler: @escaping ([SKTrack]?, Error?) -> Void) {
+    public func getTopTracks(for locale: Locale = SKCatalog.local.locale!, completion handler: @escaping ([SKTrack]?, Error?) -> Void) {
         makeTopTracksRequest(locale: locale).perform(handler: handler)
     }
     
@@ -596,7 +596,7 @@ extension SKArtist {
     /// - Parameter handler: The callback handler for the request. The parameters for this handler are:
     ///     - `artists`: An array returned by the request of up to 20 related artists, if available.
     ///     - `error`: An error identifying if and why the request failed, or `nil` if the request was successful.
-    public func getRelatedArtists(handler: @escaping ([SKArtist]?, Error?) -> Void) {
+    public func getRelatedArtists(completion handler: @escaping ([SKArtist]?, Error?) -> Void) {
         makeRelatedArtistsRequest().perform(handler: handler)
     }
 }
@@ -632,7 +632,7 @@ extension SKCategory {
     ///   - handler: The callback handler for the request. The parameters for this handler are:
     ///     - `playlists`: A paginated collection of simplified playlists, if available.
     ///     - `error`: An error identifying if and why the request failed, or `nil` if the request was successful.
-    public func getPlaylists(for locale: Locale? = SKCatalog.local.locale, page: Pagination? = nil, handler: @escaping (Page<SKPlaylist>?, Error?) -> Void) {
+    public func getPlaylists(for locale: Locale? = SKCatalog.local.locale, page: Pagination? = nil, completion handler: @escaping (Page<SKPlaylist>?, Error?) -> Void) {
         makePlaylistsRequest(locale: locale, page: page).perform(handler: handler)
     }
     
@@ -658,7 +658,7 @@ extension SKTrack {
     /// - Parameter handler: The callback handler for the request. The parameters for this handler are:
     ///     - `features`: The requested audio features, if available.
     ///     - `error`: An error identifying if and why the request failed, or `nil` if the request was successful.
-    public func getAudioFeatures(handler: @escaping (SKAudioFeatures?, Error?) -> Void) {
+    public func getAudioFeatures(completion handler: @escaping (SKAudioFeatures?, Error?) -> Void) {
         makeAudioFeaturesRequest().perform(handler: handler)
     }
 }
@@ -689,7 +689,7 @@ extension Collection where Element: Track {
     /// - Parameter handler: The callback handler for the request. The parameters for this handler are:
     ///     - `features`: An array of audio features corresponding to the tracks in this array. If audio features for a particular track ID cannot be found, the resulting array will contain a `nil` value at the corresponding index.
     ///     - `error`: An error identifying if and why the request failed, or `nil` if the request was successful.
-    public func getAudioFeatures(handler: @escaping ([SKAudioFeatures?]?, Error?) -> Void) {
+    public func getAudioFeatures(completion handler: @escaping ([SKAudioFeatures?]?, Error?) -> Void) {
         makeAudioFeaturesRequest().perform(handler: handler)
     }
 }
@@ -717,7 +717,7 @@ extension SKUser {
     ///   - handler: The callback handler for the request. The parameters for this handler are:
     ///     - `user`: The requested user, if available.
     ///     - `error`: An error identifying if and why the request failed, or `nil` if the request was successful.
-    public static func getUser(withID id: String, handler: @escaping (SKUser?, Error?) -> Void) {
+    public static func getUser(withID id: String, completion handler: @escaping (SKUser?, Error?) -> Void) {
         makeUserRequest(id: id).perform(handler: handler)
     }
     
@@ -748,7 +748,7 @@ extension SKUser {
     ///   - handler: The callback handler for the request. The parameters for this handler are:
     ///     - `user`: The current authenticated user, if available.
     ///     - `error`: An error identifying if and why the request failed, or `nil` if the request was successful.
-    public func getPlaylists(page: Pagination? = nil, handler: @escaping (Page<SKPlaylist>?, Error?) -> Void) {
+    public func getPlaylists(page: Pagination? = nil, completion handler: @escaping (Page<SKPlaylist>?, Error?) -> Void) {
         makePlaylistsRequest(page: page).perform(handler: handler)
     }
 }
@@ -780,7 +780,7 @@ extension SKCurrentUser {
     ///   - handler: The callback handler for the request. The parameters for this handler are:
     ///     - `user`: The current authenticated user, if available.
     ///     - `error`: An error identifying if and why the request failed, or `nil` if the request was successful.
-    public static func getCurrentUser(handler: @escaping (SKCurrentUser?, Error?) -> Void) { // getAuthenticatedUser
+    public static func getCurrentUser(completion handler: @escaping (SKCurrentUser?, Error?) -> Void) { // getAuthenticatedUser
         makeCurrentUserRequest().perform(handler: handler)
     }
     
@@ -811,7 +811,7 @@ extension SKCurrentUser {
     ///   - handler: The callback handler for the request. The parameters for this handler are:
     ///     - `user`: The current authenticated user, if available.
     ///     - `error`: An error identifying if and why the request failed, or `nil` if the request was successful.
-    public func getPlaylists(page: Pagination? = nil, handler: @escaping (Page<SKPlaylist>?, Error?) -> Void) {
+    public func getPlaylists(page: Pagination? = nil, completion handler: @escaping (Page<SKPlaylist>?, Error?) -> Void) {
         makePlaylistsRequest(page: page).perform(handler: handler)
     }
 }
@@ -874,7 +874,7 @@ extension SKPlaylist {
     ///   - handler: The callback handler for the request. The parameters for this handler are:
     ///     - `playlist`: The newly-created playlist, if the request was successful.
     ///     - `error`: An error identifying if and why the request failed, or `nil` if the request was successful.
-    public static func createPlaylist(named name: String, description: String? = nil, isPublic: Bool = true, isCollaborative: Bool = false, handler: @escaping (SKPlaylist?, Error?) -> Void) {
+    public static func createPlaylist(named name: String, description: String? = nil, isPublic: Bool = true, isCollaborative: Bool = false, completion handler: @escaping (SKPlaylist?, Error?) -> Void) {
         
         guard let userID = SPTAuth.defaultInstance()?.session?.canonicalUsername else { // TODO: Remove dependency on iOS SDK classes in the future.
             assertionFailure("the 'SPTAuth' default instance session must contain a valid username."); return
@@ -931,7 +931,7 @@ extension SKPlaylist {
     ///     **Note**: setting this parameter to `true` is only applicable to non-public playlists.
     ///
     ///   - handler: The callback handler for the request, providing an error identifying if and why the request failed, or `nil` if the request was successful.
-    public func update(name: String? = nil, description: String? = nil, isPublic: Bool? = nil, isCollaborative: Bool? = nil, handler: @escaping SKErrorHandler) {
+    public func update(name: String? = nil, description: String? = nil, isPublic: Bool? = nil, isCollaborative: Bool? = nil, completion handler: @escaping SKErrorHandler) {
         if name == nil && description == nil && isPublic == nil && isCollaborative == nil { return }
         
         makeUpdateDetailsRequest(name: name, description: description, isPublic: isPublic, isCollaborative: isCollaborative).perform(handler: handler)
@@ -959,7 +959,7 @@ extension SKPlaylist {
     /// - Parameters:
     ///   - data: The image data to upload. The payload must contain Base-64 encoded JPEG image data. The maximum encoded payload size is 256 KB.
     ///   - handler: The callback handler for the request, providing an error identifying if and why the request failed, or `nil` if the request was successful.
-    public func updateImage(with data: Data, handler: @escaping SKErrorHandler) { // uploadImage(_ data: ...) // replaceImage(with data: ...)
+    public func updateImage(with data: Data, completion handler: @escaping SKErrorHandler) { // uploadImage(_ data: ...) // replaceImage(with data: ...)
         
         // If the size exceeds the maximum file size, call the handler now and return a custom error message (API doesn't return an error for this):
         guard data.count <= Constants.maxImageSize else {
@@ -1002,7 +1002,7 @@ extension SKPlaylist {
     ///
     ///   - quality: The compression quality of the resulting JPEG image, expressed as a value from 0.0 to 1.0. The value 0.0 represents the maximum compression (or lowest quality) while the value 1.0 represents the least compression (or best quality). The default value is 0.8.
     ///   - handler: The callback handler for the request, providing an error identifying if and why the request failed, or `nil` if the request was successful.
-    public func updateImage(with image: UIImage, quality: Float = 0.8, handler: @escaping SKErrorHandler) { // replaceImage(with image: ...)
+    public func updateImage(with image: UIImage, quality: Float = 0.8, completion handler: @escaping SKErrorHandler) { // replaceImage(with image: ...)
         
         guard let data = UIImageJPEGRepresentation(image, CGFloat(quality)) else {
             print("UIImage could not be converted to a JPEG representation."); return
@@ -1012,7 +1012,7 @@ extension SKPlaylist {
         //let base64Data = data.base64EncodedData()
         //print("Image data size (after encoding):", Float(base64Data.count) / 1000, "KB")
         
-        updateImage(with: data.base64EncodedData(), handler: handler)
+        updateImage(with: data.base64EncodedData(), completion: handler)
     }
     
     // MARK: Get a Playlist's Tracks ✔︎
@@ -1044,7 +1044,7 @@ extension SKPlaylist {
     ///   - handler: The callback handler for the request. The parameters for this handler are:
     ///     - `tracks`: A paginated collection of full playlist tracks, if available.
     ///     - `error`: An error identifying if and why the request failed, or `nil` if the request was successful.
-    public func getTracks(for locale: Locale? = SKCatalog.local.locale, page: Pagination? = nil, handler: @escaping (Page<SKPlaylistTrack>?, Error?) -> Void) {
+    public func getTracks(for locale: Locale? = SKCatalog.local.locale, page: Pagination? = nil, completion handler: @escaping (Page<SKPlaylistTrack>?, Error?) -> Void) {
         makeTracksRequest(locale: locale, page: page).perform(handler: handler)
     }
     
@@ -1077,7 +1077,7 @@ extension SKPlaylist {
     ///   - handler: The callback handler for the request. The parameters for this handler are:
     ///     - `snapshotID`: On success, the snapshot ID string identifying the version of this playlist that reflects the given changes. This value can be used to identify this specific version in subsequent requests.
     ///     - `error`: An error identifying if and why the request failed, or `nil` if the request was successful.
-    public func add<T: Collection>(_ tracks: T, at position: Int? = nil, handler: @escaping (String?, Error?) -> Void) where T.Element: Track {
+    public func add<T: Collection>(_ tracks: T, at position: Int? = nil, completion handler: @escaping (String?, Error?) -> Void) where T.Element: Track {
         makeAddTracksRequest(tracks: tracks, position: position).perform { (snapshotID: [String: String]?, error) in
             handler(snapshotID?.first?.value, error)
         }
@@ -1095,8 +1095,8 @@ extension SKPlaylist {
     ///   - handler: The callback handler for the request. The parameters for this handler are:
     ///     - `snapshotID`: On success, the snapshot ID string identifying the version of this playlist that reflects the given changes. This value can be used to identify this specific version in subsequent requests.
     ///     - `error`: An error identifying if and why the request failed, or `nil` if the request was successful.
-    public func add<T: Track>(_ track: T, at position: Int? = nil, handler: @escaping (String?, Error?) -> Void) {
-        add([track], handler: handler)
+    public func add<T: Track>(_ track: T, at position: Int? = nil, completion handler: @escaping (String?, Error?) -> Void) {
+        add([track], completion: handler)
     }
 
     // MARK: Remove Tracks from a Playlist ✔︎
@@ -1151,7 +1151,7 @@ extension SKPlaylist {
     ///   - handler: The callback handler for the request. The parameters for this handler are:
     ///     - `snapshotID`: On success, the snapshot ID string identifying the version of this playlist that reflects the given changes. This value can be used to identify this specific version in subsequent requests.
     ///     - `error`: An error identifying if and why the request failed, or `nil` if the request was successful.
-    public func remove(at positions: [Int], inSnapshot snapshotID: String = "", handler: @escaping (String?, Error?) -> Void) { // removeTracks
+    public func remove(at positions: [Int], inSnapshot snapshotID: String = "", completion handler: @escaping (String?, Error?) -> Void) { // removeTracks
         
         let snapshotID = snapshotID.isEmpty ? self.snapshotID : snapshotID
         
@@ -1172,9 +1172,9 @@ extension SKPlaylist {
     ///   - handler: The callback handler for the request. The parameters for this handler are:
     ///     - `snapshotID`: On success, the snapshot ID string identifying the version of this playlist that reflects the given changes. This value can be used to identify this specific version in subsequent requests.
     ///     - `error`: An error identifying if and why the request failed, or `nil` if the request was successful.
-    public func remove(at position: Int, inSnapshot snapshotID: String = "", handler: @escaping (String?, Error?) -> Void) { // removeTrack
+    public func remove(at position: Int, inSnapshot snapshotID: String = "", completion handler: @escaping (String?, Error?) -> Void) { // removeTrack
         
-        remove(at: [position], inSnapshot: snapshotID, handler: handler)
+        remove(at: [position], inSnapshot: snapshotID, completion: handler)
     }
     
     /// Removes all occurrences of the specified tracks from the playlist.
@@ -1185,7 +1185,7 @@ extension SKPlaylist {
     ///   - handler: The callback handler for the request. The parameters for this handler are:
     ///     - `snapshotID`: On success, the snapshot ID string identifying the version of this playlist that reflects the given changes. This value can be used to identify this specific version in subsequent requests.
     ///     - `error`: An error identifying if and why the request failed, or `nil` if the request was successful.
-    public func removeOccurrences<T: Collection>(of tracks: T, inSnapshot snapshotID: String? = nil, handler: @escaping (String?, Error?) -> Void) where T.Element: Track {
+    public func removeOccurrences<T: Collection>(of tracks: T, inSnapshot snapshotID: String? = nil, completion handler: @escaping (String?, Error?) -> Void) where T.Element: Track {
         
         makeRemoveTracksRequest(tracks: tracks, snapshotID: snapshotID).perform { (snapshotID: [String: String]?, error) in
             handler(snapshotID?.first?.value, error)
@@ -1200,9 +1200,9 @@ extension SKPlaylist {
     ///   - handler: The callback handler for the request. The parameters for this handler are:
     ///     - `snapshotID`: On success, the snapshot ID string identifying the version of this playlist that reflects the given changes. This value can be used to identify this specific version in subsequent requests.
     ///     - `error`: An error identifying if and why the request failed, or `nil` if the request was successful.
-    public func removeOccurrences<T: Track>(of track: T, inSnapshot snapshotID: String? = nil, handler: @escaping (String?, Error?) -> Void) {
+    public func removeOccurrences<T: Track>(of track: T, inSnapshot snapshotID: String? = nil, completion handler: @escaping (String?, Error?) -> Void) {
         
-        removeOccurrences(of: [track], inSnapshot: snapshotID, handler: handler)
+        removeOccurrences(of: [track], inSnapshot: snapshotID, completion: handler)
     }
     
     // MARK: Reorder a Playlist's Tracks ✔︎
@@ -1279,7 +1279,7 @@ extension SKPlaylist {
     ///   - handler: The callback handler for the request. The parameters for this handler are:
     ///     - `snapshotID`: On success, the snapshot ID string identifying the version of this playlist that reflects the given changes. This value can be used to identify this specific version in subsequent requests.
     ///     - `error`: An error identifying if and why the request failed, or `nil` if the request was successful.
-    public func move(at indices: Range<Int>, before position: Int, inSnapshot snapshotID: String? = nil, handler: @escaping (String?, Error?) -> Void) { // moveTracks
+    public func move(at indices: Range<Int>, before position: Int, inSnapshot snapshotID: String? = nil, completion handler: @escaping (String?, Error?) -> Void) { // moveTracks
         
         makeMoveTracksRequest(startIndex: indices.lowerBound,
                               rangeLength: indices.count == 1 ? nil : indices.count,
@@ -1341,8 +1341,8 @@ extension SKPlaylist {
     ///   - handler: The callback handler for the request. The parameters for this handler are:
     ///     - `snapshotID`: On success, the snapshot ID string identifying the version of this playlist that reflects the given changes. This value can be used to identify this specific version in subsequent requests.
     ///     - `error`: An error identifying if and why the request failed, or `nil` if the request was successful.
-    public func move(at indices: ClosedRange<Int>, before position: Int, inSnapshot snapshotID: String? = nil, handler: @escaping (String?, Error?) -> Void) {
-        move(at: Range(indices), before: position, handler: handler)
+    public func move(at indices: ClosedRange<Int>, before position: Int, inSnapshot snapshotID: String? = nil, completion handler: @escaping (String?, Error?) -> Void) {
+        move(at: Range(indices), before: position, completion: handler)
     }
     
     /// Reorders a track or a group of tracks in a playlist.
@@ -1395,7 +1395,7 @@ extension SKPlaylist {
     ///   - handler: The callback handler for the request. The parameters for this handler are:
     ///     - `snapshotID`: On success, the snapshot ID string identifying the version of this playlist that reflects the given changes. This value can be used to identify this specific version in subsequent requests.
     ///     - `error`: An error identifying if and why the request failed, or `nil` if the request was successful.
-    public func move(at index: Int, before position: Int, inSnapshot snapshotID: String? = nil, handler: @escaping (String?, Error?) -> Void) { // moveTrack
+    public func move(at index: Int, before position: Int, inSnapshot snapshotID: String? = nil, completion handler: @escaping (String?, Error?) -> Void) { // moveTrack
         
         makeMoveTracksRequest(startIndex: index, rangeLength: nil, position: position, snapshotID: snapshotID)
             .perform { (snapshotID: [String: String]?, error) in
@@ -1429,7 +1429,7 @@ extension SKPlaylist {
     ///   - handler: The callback handler for the request. The parameters for this handler are:
     ///     - `snapshotID`: On success, the snapshot ID string identifying the version of this playlist that reflects the given changes. This value can be used to identify this specific version in subsequent requests.
     ///     - `error`: An error identifying if and why the request failed, or `nil` if the request was successful.
-    public func replace<T: Collection>(with tracks: T, handler: @escaping (String?, Error?) -> Void) where T.Element: Track {
+    public func replace<T: Collection>(with tracks: T, completion handler: @escaping (String?, Error?) -> Void) where T.Element: Track {
         
         makeReplaceTracksRequest(tracks: tracks).perform { (snapshotID: [String: String]?, error) in
             handler(snapshotID?.first?.value, error)
@@ -1471,7 +1471,7 @@ public protocol Followable {
     /// Modifying the list of items that the current authenticated user follows also requires authorization of the "`user-follow-modify`" scope. See [Using Scopes](https://developer.spotify.com/spotify-web-api/using-scopes/) for more details.
     ///
     /// - Parameter handler: The callback handler for the request, providing an error identifying if and why the request failed, or `nil` if the request was successful.
-    func follow(handler: @escaping SKErrorHandler)
+    func follow(completion handler: @escaping SKErrorHandler)
     
     /// Removes the current authenticated user as a follower of the item.
     ///
@@ -1480,7 +1480,7 @@ public protocol Followable {
     /// Modifying the list of items that the current authenticated user follows also requires authorization of the "`user-follow-modify`" scope. See [Using Scopes](https://developer.spotify.com/spotify-web-api/using-scopes/) for more details.
     ///
     /// - Parameter handler: The callback handler for the request, providing an error identifying if and why the request failed, or `nil` if the request was successful.
-    func unfollow(handler: @escaping SKErrorHandler)
+    func unfollow(completion handler: @escaping SKErrorHandler)
     
     /// Checks whether the current authenticated user is following the item.
     ///
@@ -1491,7 +1491,7 @@ public protocol Followable {
     /// - Parameter handler: The callback handler for the request. The parameters for this handler are:
     ///     - `isFollowing`: A Boolean value indicating whether the current authenticated user is following the item: `true` if following, `false` otherwise.
     ///     - `error`: An error identifying if and why the request failed, or `nil` if the request was successful.
-    func checkIfFollowing(handler: @escaping (Bool?, Error?) -> Void)
+    func checkIfFollowing(completion handler: @escaping (Bool?, Error?) -> Void)
 }
 
 // MARK: Internal Requirements
@@ -1539,15 +1539,15 @@ extension Followable {
         return SKRequest(method: .GET, endpoint: Constants.Endpoints.checkIfFollowing, parameters: followRequestParameters)!
     }
     
-    public func follow(handler: @escaping SKErrorHandler) {
+    public func follow(completion handler: @escaping SKErrorHandler) {
         makeFollowRequest().perform(handler: handler)
     }
     
-    public func unfollow(handler: @escaping SKErrorHandler) {
+    public func unfollow(completion handler: @escaping SKErrorHandler) {
         makeUnfollowRequest().perform(handler: handler)
     }
     
-    public func checkIfFollowing(handler: @escaping (Bool?, Error?) -> Void) {
+    public func checkIfFollowing(completion handler: @escaping (Bool?, Error?) -> Void) {
         makeFollowStatusRequest().perform { (flags: [Bool]?, error) in
             handler(flags?.first, error)
         }
@@ -1606,7 +1606,7 @@ extension Collection/*: Followable */where Element: Followable {
     /// Modifying the list of items that the current authenticated user follows also requires authorization of the "`user-follow-modify`" scope. See [Using Scopes](https://developer.spotify.com/spotify-web-api/using-scopes/) for more details.
     ///
     /// - Parameter handler: The callback handler for the request, providing an error identifying if and why the request failed, or `nil` if the request was successful.
-    public func follow(handler: @escaping SKErrorHandler) {
+    public func follow(completion handler: @escaping SKErrorHandler) {
         makeFollowRequest().perform(handler: handler)
     }
     
@@ -1617,7 +1617,7 @@ extension Collection/*: Followable */where Element: Followable {
     /// Modifying the list of items that the current authenticated user follows also requires authorization of the "`user-follow-modify`" scope. See [Using Scopes](https://developer.spotify.com/spotify-web-api/using-scopes/) for more details.
     ///
     /// - Parameter handler: The callback handler for the request, providing an error identifying if and why the request failed, or `nil` if the request was successful.
-    public func unfollow(handler: @escaping SKErrorHandler) {
+    public func unfollow(completion handler: @escaping SKErrorHandler) {
         makeUnfollowRequest().perform(handler: handler)
     }
     
@@ -1630,7 +1630,7 @@ extension Collection/*: Followable */where Element: Followable {
     /// - Parameter handler: The callback handler for the request. The parameters for this handler are:
     ///     - `isFollowing`: An array of Boolean values indicating whether the current authenticated user is following the item at the corresponding index. If a particular item is followed by the current authenticated user, the resulting array will contain `true` at the corresponding index; `false` otherwise.
     ///     - `error`: An error identifying if and why the request failed, or `nil` if the request was successful.
-    public func checkIfFollowing(handler: @escaping ([Bool]?, Error?) -> Void) {
+    public func checkIfFollowing(completion handler: @escaping ([Bool]?, Error?) -> Void) {
         makeFollowStatusRequest().perform(handler: handler)
 //        makeFollowStatusRequest().perform { (bools: [Bool]?, error) in
 //            guard error == nil else { handler(nil, error); return }
@@ -1682,7 +1682,7 @@ extension SKPlaylist {
     ///     **Note**: to follow playlists privately, the user must have authorized the "`playlist-modify-private`" scope.
     ///
     ///   - handler: The callback handler for the request, providing an error identifying if and why the request failed, or `nil` if the request was successful.
-    public func follow(makingPublic public: Bool = true, handler: @escaping SKErrorHandler) {
+    public func follow(makingPublic public: Bool = true, completion handler: @escaping SKErrorHandler) {
         makeFollowRequest(public: `public`).perform(handler: handler)
     }
     
@@ -1702,7 +1702,7 @@ extension SKPlaylist {
     /// Unfollowing a publicly-followed playlist requires authorization of the "`playlist-modify-public`" scope; likewise, unfollowing a privately-followed playlist requires authorization of the "`playlist-modify-private`" scope. See [Using Scopes](https://developer.spotify.com/web-api/using-scopes/) for more details.
     ///
     /// - Parameter handler: The callback handler for the request, providing an error identifying if and why the request failed, or `nil` if the request was successful.
-    public func unfollow(handler: @escaping SKErrorHandler) {
+    public func unfollow(completion handler: @escaping SKErrorHandler) {
         makeUnfollowRequest().perform(handler: handler)
     }
     
@@ -1733,7 +1733,7 @@ extension SKPlaylist {
     ///   - handler: The callback handler for the request. The parameters for this handler are:
     ///     - `isFollowing`: An array of Boolean values indicating whether the given users are following the playlist. For each user that is following, the resulting array will contain `true` at the corresponding index; `false` otherwise.
     ///     - `error`: An error identifying if and why the request failed, or `nil` if the request was successful.
-    public func checkIfFollowed<T: Collection>(by users: T, handler: @escaping ([Bool]?, Error?) -> Void) where T.Element: User {
+    public func checkIfFollowed<T: Collection>(by users: T, completion handler: @escaping ([Bool]?, Error?) -> Void) where T.Element: User {
         makeFollowStatusRequest(users: users).perform(handler: handler)
     }
     
@@ -1750,7 +1750,7 @@ extension SKPlaylist {
     ///   - handler: The callback handler for the request. The parameters for this handler are:
     ///     - `isFollowing`: A Boolean value indicating whether the given user is following the playlist: `true` if following, `false` otherwise.
     ///     - `error`: An error identifying if and why the request failed, or `nil` if the request was successful.
-    public func checkIfFollowed<T: User>(by user: T, handler: @escaping (Bool?, Error?) -> Void) {
+    public func checkIfFollowed<T: User>(by user: T, completion handler: @escaping (Bool?, Error?) -> Void) {
         makeFollowStatusRequest(users: [user]).perform { (flags: [Bool]?, error) in
             handler(flags?.first, error)
         }
@@ -1788,11 +1788,11 @@ extension SKCurrentUser {
     ///   - handler: The callback handler for the request. The parameters for this handler are:
     ///       - `artists`: A cursor-based paginated list of followed artists, if any.
     ///       - `error`: An error identifying if and why the request failed, or `nil` if the request was successful.
-    public static func getFollowedArtists(afterID lastID: String? = nil, limit: Int? = nil, handler: @escaping (CursorPage<SKArtist>?, Error?) -> Void) {
+    public static func getFollowedArtists(afterID lastID: String? = nil, limit: Int? = nil, completion handler: @escaping (CursorPage<SKArtist>?, Error?) -> Void) {
         makeFollowedArtistsRequest(lastID: lastID, limit: limit).perform(handler: handler)
     }
     
-    // public static func getFollowedUsers(page: Pagination? = nil, handler: @escaping (Page<SKUser>?, Error?) -> Void) // Currently unsupported by Spotify.
+    // public static func getFollowedUsers(page: Pagination? = nil, completion handler: @escaping (Page<SKUser>?, Error?) -> Void) // Currently unsupported by Spotify.
 }
 
 // MARK: - Library Requests
@@ -1827,7 +1827,7 @@ public protocol Savable {
     /// Modifying the current user's "Your Music" collection requires authorization of the "`user-library-modify`" scope. See [Using Scopes](https://developer.spotify.com/spotify-web-api/using-scopes/) for more details.
     ///
     /// - Parameter handler: The callback handler for the request, providing an error identifying if and why the request failed, or `nil` if the request was successful.
-    func saveToLibrary(handler: @escaping SKErrorHandler)
+    func saveToLibrary(completion handler: @escaping SKErrorHandler)
     
     /// Removes the item from the current authenticated user's Spotify music library.
     ///
@@ -1836,7 +1836,7 @@ public protocol Savable {
     /// Modifying the current user's "Your Music" collection requires authorization of the "`user-library-modify`" scope. See [Using Scopes](https://developer.spotify.com/spotify-web-api/using-scopes/) for more details.
     ///
     /// - Parameter handler: The callback handler for the request, providing an error identifying if and why the request failed, or `nil` if the request was successful.
-    func removeFromLibrary(handler: @escaping SKErrorHandler)
+    func removeFromLibrary(completion handler: @escaping SKErrorHandler)
     
     /// Checks whether the item has been saved to the current authenticated user's Spotify music library.
     ///
@@ -1847,7 +1847,7 @@ public protocol Savable {
     /// - Parameter handler: The callback handler for the request. The parameters for this handler are:
     ///     - `isSaved`: A Boolean value indicating whether the item has been saved to the current user's library: `true` if saved, `false` otherwise.
     ///     - `error`: An error identifying if and why the request failed, or `nil` if the request was successful.
-    func checkIfSaved(handler: @escaping (Bool?, Error?) -> Void)
+    func checkIfSaved(completion handler: @escaping (Bool?, Error?) -> Void)
 }
 
 // MARK: Default Implementation
@@ -1862,15 +1862,15 @@ extension Savable {
         }
     }
     
-    public func saveToLibrary(handler: @escaping SKErrorHandler) {
+    public func saveToLibrary(completion handler: @escaping SKErrorHandler) {
         makeSaveToLibraryRequest().perform(handler: handler)
     }
     
-    public func removeFromLibrary(handler: @escaping SKErrorHandler) {
+    public func removeFromLibrary(completion handler: @escaping SKErrorHandler) {
         makeRemoveFromLibraryRequest().perform(handler: handler)
     }
 
-    public func checkIfSaved(handler: @escaping (Bool?, Error?) -> Void) {
+    public func checkIfSaved(completion handler: @escaping (Bool?, Error?) -> Void) {
         makeSaveStatusRequest().perform { (flags: [Bool]?, error) in
             handler(flags?.first, error)
         }
@@ -1976,7 +1976,7 @@ extension Collection where Element: Savable {
     /// Modifying the current user's "Your Music" collection requires authorization of the "`user-library-modify`" scope. See [Using Scopes](https://developer.spotify.com/spotify-web-api/using-scopes/) for more details.
     ///
     /// - Parameter handler: The callback handler for the request, providing an error identifying if and why the request failed, or `nil` if the request was successful.
-    public func saveToLibrary(handler: @escaping SKErrorHandler) {
+    public func saveToLibrary(completion handler: @escaping SKErrorHandler) {
         makeSaveToLibraryRequest().perform(handler: handler)
     }
     
@@ -1987,7 +1987,7 @@ extension Collection where Element: Savable {
     /// Modifying the current user's "Your Music" collection requires authorization of the "`user-library-modify`" scope. See [Using Scopes](https://developer.spotify.com/spotify-web-api/using-scopes/) for more details.
     ///
     /// - Parameter handler: The callback handler for the request, providing an error identifying if and why the request failed, or `nil` if the request was successful.
-    public func removeFromLibrary(handler: @escaping SKErrorHandler) {
+    public func removeFromLibrary(completion handler: @escaping SKErrorHandler) {
         makeRemoveFromLibraryRequest().perform(handler: handler)
     }
     
@@ -2000,7 +2000,7 @@ extension Collection where Element: Savable {
     /// - Parameter handler: The callback handler for the request. The parameters for this handler are:
     ///     - `isSaved`: An array of Boolean values indicating whether the collection of items have been saved to the current user's library. If a particular item in the collection is saved, the resulting array will contain `true` at the corresponding index; `false` otherwise.
     ///     - `error`: An error identifying if and why the request failed, or `nil` if the request was successful.
-    public func checkIfSaved(handler: @escaping ([Bool]?, Error?) -> Void) {
+    public func checkIfSaved(completion handler: @escaping ([Bool]?, Error?) -> Void) {
         makeSaveStatusRequest().perform(handler: handler)
     }
 }
@@ -2036,7 +2036,7 @@ extension SKCurrentUser {
     ///   - handler: The callback handler for the request. The parameters for this handler are:
     ///     - `albums`: A paginated collection of saved albums, if available.
     ///     - `error`: An error identifying if and why the request failed, or `nil` if the request was successful.
-    public static func getSavedAlbums(for locale: Locale? = SKCatalog.local.locale, page: Pagination? = nil, handler: @escaping (Page<SKSavedAlbum>?, Error?) -> Void) {
+    public static func getSavedAlbums(for locale: Locale? = SKCatalog.local.locale, page: Pagination? = nil, completion handler: @escaping (Page<SKSavedAlbum>?, Error?) -> Void) {
         
         makeSavedAlbumsRequest(locale: locale, page: page).perform(handler: handler)
     }
@@ -2070,7 +2070,7 @@ extension SKCurrentUser {
     ///   - handler: The callback handler for the request. The parameters for this handler are:
     ///     - `tracks`: A paginated collection of saved tracks, if available.
     ///     - `error`: An error identifying if and why the request failed, or `nil` if the request was successful.
-    public static func getSavedTracks(for locale: Locale? = SKCatalog.local.locale, page: Pagination? = nil, handler: @escaping (Page<SKSavedTrack>?, Error?) -> Void) {
+    public static func getSavedTracks(for locale: Locale? = SKCatalog.local.locale, page: Pagination? = nil, completion handler: @escaping (Page<SKSavedTrack>?, Error?) -> Void) {
         
         makeSavedTracksRequest(locale: locale, page: page).perform(handler: handler)
     }
@@ -2120,7 +2120,7 @@ extension SKCurrentUser {
     ///   - handler: The callback handler for the request. The parameters for this handler are:
     ///     - `artists`: A paginated collection of up to 50 artists, if available.
     ///     - `error`: An error identifying if and why the request failed, or `nil` if the request was successful.
-    public static func getTopArtists(from range: SKTimeRange = .lastSixMonths, page: Pagination? = nil, handler: @escaping (Page<SKArtist>?, Error?) -> Void) {
+    public static func getTopArtists(from range: SKTimeRange = .lastSixMonths, page: Pagination? = nil, completion handler: @escaping (Page<SKArtist>?, Error?) -> Void) {
         makeTopArtistsRequest(range: range, page: page).perform(handler: handler)
     }
     
@@ -2155,7 +2155,7 @@ extension SKCurrentUser {
     ///   - handler: The callback handler for the request. The parameters for this handler are:
     ///     - `tracks`: A paginated collection of up to 50 tracks, if available.
     ///     - `error`: An error identifying if and why the request failed, or `nil` if the request was successful.
-    public static func getTopTracks(from range: SKTimeRange = .lastSixMonths, page: Pagination? = nil, handler: @escaping (Page<SKTrack>?, Error?) -> Void) {
+    public static func getTopTracks(from range: SKTimeRange = .lastSixMonths, page: Pagination? = nil, completion handler: @escaping (Page<SKTrack>?, Error?) -> Void) {
         makeTopTracksRequest(range: range, page: page).perform(handler: handler)
     }
 }
@@ -2187,7 +2187,7 @@ public protocol Expandable {
     /// - Note: This method uses the `SPTAuth` default instance session to authenticate the underlying request. If this session does not contain a valid access token, the request will result in an error.
     ///
     /// - Parameter handler: The callback handler for this request, providing the detailed item if successful, or an error identifying if and why the request or the decoding failed if unsuccessful.
-    func getAllProperties(handler: @escaping (Self?, Error?) -> Void)
+    func getAllProperties(completion handler: @escaping (Self?, Error?) -> Void)
     //func simplified() -> Self
     //mutating func simplify()
 }
@@ -2198,7 +2198,7 @@ extension Expandable where Self: JSONDecodable {
         return SKRequest(method: .GET, url: url)!
     }
     
-    public func getAllProperties(handler: @escaping (Self?, Error?) -> Void) {
+    public func getAllProperties(completion handler: @escaping (Self?, Error?) -> Void) {
         guard isSimplified else { return }
         makeAllPropertiesRequest().perform(handler: handler)
     }
@@ -2215,7 +2215,7 @@ extension PagingCollection where Self: JSONDecodable {
     /// - Note: This method uses the `SPTAuth` default instance session to authenticate the underlying request. If this session does not contain a valid access token, the request will result in an error.
     ///
     /// - Parameter handler: The callback handler for this request, providing the next page of elements if successful, or an error identifying if and why the request or the decoding failed if unsuccessful.
-    public func getNext(handler: @escaping (Self?, Error?) -> Void) {
+    public func getNext(completion handler: @escaping (Self?, Error?) -> Void) {
         guard let url = nextURL/*, !self.isEmpty */else { handler(nil, nil); return }
         SKRequest(method: .GET, url: url)!.perform(handler: handler)
     }
@@ -2225,7 +2225,7 @@ extension PagingCollection where Self: JSONDecodable {
     /// - Note: This method uses the `SPTAuth` default instance session to authenticate the underlying request. If this session does not contain a valid access token, the request will result in an error.
     ///
     /// - Parameter handler: The callback handler for this request, providing the previous page of elements if successful, or an error identifying if and why the request or the decoding failed if unsuccessful.
-    public func getPrevious(handler: @escaping (Self?, Error?) -> Void) {
+    public func getPrevious(completion handler: @escaping (Self?, Error?) -> Void) {
         guard let url = previousURL/*, !self.isEmpty */else { handler(nil, nil); return }
         SKRequest(method: .GET, url: url)!.perform(handler: handler)
     }
