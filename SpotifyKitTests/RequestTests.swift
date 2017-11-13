@@ -1946,6 +1946,61 @@ class RequestTests: XCTestCase {
 //            print(formatter.string(from: actualDate), "<~ first track's playback date")
         }
     }
+    
+    func testGetAvailableDevices() {
+        
+        // Arrange:
+        let request = SKPlayer.makeAvailableDevicesRequest()
+        let promise = makeRequestExpectation()
+        defer { wait(for: promise) }
+        
+        // Assert request:
+        XCTAssertEqual(request.method, .GET)
+        XCTAssertEqual(request.url.path, "/v1/me/player/devices")
+        
+        // Act:
+        SKPlayer.getAvailableDevices { (devices, error) in
+            defer { promise.fulfill() }
+            
+            // Assert results:
+            if let error = error {
+                print(error)
+                XCTFail(error.localizedDescription); return
+            }
+            guard let _ = devices else {
+                XCTFail("'devices' is nil."); return
+            }
+            
+            //for device in devices { print(device.name) }
+        }
+    }
+    
+    func testGetPlaybackState() {
+        
+        // Arrange:
+        let request = SKPlayer.makePlaybackStateRequest(locale: catalog.locale)
+        let promise = makeRequestExpectation()
+        defer { wait(for: promise) }
+        
+        // Assert request:
+        XCTAssertEqual(request.method, .GET)
+        XCTAssertEqual(request.url.path, "/v1/me/player")
+        XCTAssertEqual(request.preparedURLRequest.url?.query, "market=US")
+
+        // Act:
+        SKPlayer.getPlaybackState(for: catalog.locale) { (state, error) in
+            defer { promise.fulfill() }
+            
+            // Assert results:
+            if let error = error {
+                print(error)
+                XCTFail(error.localizedDescription); return
+            }
+            guard let _ = state else {
+                XCTFail("'state' is nil."); return
+            }
+        }
+    }
 }
 
 // MARK: - Request Test Assertions

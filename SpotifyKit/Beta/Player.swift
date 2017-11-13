@@ -83,4 +83,54 @@ public struct SKPlayer {
     public static func getRecentTracks(before date: Date?, limit: Int? = nil, handler: @escaping (CursorPage<SKRecentTrack>?, Error?) -> Void) {
         makeRecentTracksRequest(endBeforeDate: date, limit: limit).perform(handler: handler)
     }
+    
+    // MARK: Get a User's Available Devices ✔︎
+    
+    /// Creates and returns the request used to get the current authenticated user's available devices.
+    ///
+    /// - Returns: An `SKRequest` instance with which to perform the API request.
+    public static func makeAvailableDevicesRequest() -> SKRequest {
+        return SKRequest(method: .GET, endpoint: Constants.Endpoints.devices)!
+    }
+    
+    /// Gets a list of the current authenticated user's available devices.
+    ///
+    /// - Note: This method uses the `SPTAuth` default instance session to authenticate the underlying request. If this session does not contain a valid access token, the request will result in an error. The access token must have been issued on behalf of the current user.
+    ///
+    /// Reading the list of the current user's available devices also requires authorization of the "`user-read-playback-state`" scope. See [Using Scopes](https://developer.spotify.com/spotify-web-api/using-scopes/) for more details.
+    ///
+    /// - Parameter handler: The callback handler for the request. The parameters for this handler are:
+    ///     - `devices`: An array of available devices, if any.
+    ///     - `error`: An error object identifying if and why the request failed, or `nil` if the request was successful.
+    public static func getAvailableDevices(handler: @escaping ([SKDevice]?, Error?) -> Void) {
+        makeAvailableDevicesRequest().perform(handler: handler)
+    }
+    
+    // MARK: Get Information About the Current User's Playback State ✔︎
+    
+    /// Creates and returns the request used to get the current authenticated user's available devices.
+    ///
+    /// - Parameter locale: The locale-specific storefront/market from which to request.
+    /// - Returns: An `SKRequest` instance with which to perform the API request.
+    public static func makePlaybackStateRequest(locale: Locale?) -> SKRequest {
+        
+        var parameters = [String: Any]()
+        parameters[Constants.QueryParameters.market] = locale?.regionCode
+        return SKRequest(method: .GET, endpoint: Constants.Endpoints.player, parameters: parameters)!
+    }
+    
+    /// Gets the active Spotify player's current playback state, including the currently playing track if applicable.
+    ///
+    /// - Note: This method uses the `SPTAuth` default instance session to authenticate the underlying request. If this session does not contain a valid access token, the request will result in an error. The access token must have been issued on behalf of the current user.
+    ///
+    /// Reading the current Spotify player's playback information also requires authorization of the "`user-read-playback-state`" scope. See [Using Scopes](https://developer.spotify.com/spotify-web-api/using-scopes/) for more details.
+    ///
+    /// - Parameters:
+    ///   - locale: The locale-specific storefront/market from which to request. The default value is the locale for the shared `SKCatalog` instance, which by default represents the user's region settings at the time the method is called.
+    ///   - handler: The callback handler for the request. The parameters for this handler are:
+    ///       - `state`: An `SKPlaybackState` instance.
+    ///       - `error`: An error object identifying if and why the request failed, or `nil` if the request was successful.
+    public static func getPlaybackState(for locale: Locale? = SKCatalog.local.locale, handler: @escaping (SKPlaybackState?, Error?) -> Void) {
+        makePlaybackStateRequest(locale: locale).perform(handler: handler)
+    }
 }
