@@ -1866,7 +1866,6 @@ class RequestTests: XCTestCase {
             
             // Assert results:
             if let error = error {
-                print(error)
                 XCTFail(error.localizedDescription); return
             }
             guard let tracks = tracks else {
@@ -1926,7 +1925,6 @@ class RequestTests: XCTestCase {
             
             // Assert results:
             if let error = error {
-                print(error)
                 XCTFail(error.localizedDescription); return
             }
             guard let tracks = tracks else {
@@ -1964,7 +1962,6 @@ class RequestTests: XCTestCase {
             
             // Assert results:
             if let error = error {
-                print(error)
                 XCTFail(error.localizedDescription); return
             }
             guard let _ = devices else {
@@ -1993,7 +1990,6 @@ class RequestTests: XCTestCase {
             
             // Assert results:
             if let error = error {
-                print(error)
                 XCTFail(error.localizedDescription); return
             }
             guard let _ = state else {
