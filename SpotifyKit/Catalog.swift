@@ -13,6 +13,7 @@ import Foundation
 /// - Note: All request-performing methods (e.g., "`getAlbum`" or "`search`") use the `SPTAuth` default instance session to authenticate the underlying request. If this session does not contain a valid access token, the request will result in an error. If you want to customize the request by injecting your own custom URL/API session or by decoding the response yourself, you can do so using any of the accompanying factory methods (e.g., "`makeAlbumRequest`" or "`makeSearchRequest`") to create and return the `SKRequest` instance itself.
 public struct SKCatalog {
     
+    /// The shared local catalog instance, which represents the user's region settings at the time the property is read.
     public static var local: SKCatalog { return SKCatalog(locale: Locale.current) } // var current // Locale.autoupdatingCurrent
     
     /// The locale representing the specific storefront/market from which to request catalog content.
@@ -1515,7 +1516,13 @@ extension Followable {
         get {
             var parameters = [String: Any]()
             parameters[Constants.QueryParameters.ids] = id
-            parameters[Constants.QueryParameters.type] = (Self.self as? _Followable.Type)?.type // Self.type
+            
+            guard let type = (Self.self as? _Followable.Type)?.type else {
+                assertionFailure("Followable requests only support artists and users at this time.");
+                return parameters
+            }
+            
+            parameters[Constants.QueryParameters.type] = type // Self.type
             return parameters
         }
     }
@@ -1560,7 +1567,13 @@ extension Collection/*: Followable */where Element: Followable {
             
             var parameters = [String: Any]()
             parameters[Constants.QueryParameters.ids] = self.isEmpty ? nil : self.map { $0.id }
-            parameters[Constants.QueryParameters.type] = (Element.self as? _Followable.Type)?.type // Element.type
+            
+            guard let type = (Element.self as? _Followable.Type)?.type else {
+                assertionFailure("Followable collection requests only support artists and users at this time.")
+                return parameters
+            }
+            
+            parameters[Constants.QueryParameters.type] = type // Element.type
             return parameters
         }
     }
