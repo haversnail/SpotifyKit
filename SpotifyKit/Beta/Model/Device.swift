@@ -8,21 +8,22 @@
 
 import Foundation
 
+/// A representation of a device that supports a Spotify player.
 public struct SKDevice: JSONDecodable {
     
-    /// The type of device this instance represents.
+    /// The possible devices that can support a Spotify player.
     public struct DeviceType: RawRepresentable, Codable {
         
-        /// A device that supports a desktop Spotify client application.
+        /// A device that supports a desktop Spotify player.
         public static let computer = DeviceType(rawValue: "Computer")
         
-        /// A device that supports a mobile Spotify client application, such as a smartphone or tablet.
+        /// A device that supports a mobile Spotify player, such as a smartphone or tablet.
         public static let mobile = DeviceType(rawValue: "Smartphone")
         
-        /// A device that supports a speaker-based Spotify client application, such as a portable Bluetooth speaker.
+        /// A device that supports a speaker-based Spotify player, such as a portable Bluetooth speaker.
         public static let speaker = DeviceType(rawValue: "Speaker")
         
-        /// A device that supports a TV-based Spotify client application, such as a Chromecast-enabled Smart TV.
+        /// A device that supports a TV-based Spotify player, such as a Chromecast-enabled Smart TV.
         public static let tv = DeviceType(rawValue: "CastVideo")
         
         public var rawValue: String

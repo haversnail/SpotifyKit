@@ -22,19 +22,23 @@ public enum SKRepeatMode: String, Codable {
     /// The current playback context is repeated indefinitely.
     case all = "context"
     
-    /// Creates an `SKRepeatMode` instance equal to that of
+    /// Creates an `SKRepeatMode` equal to that of the given `SPTRepeatMode` value.
     ///
-    /// - Parameter value: The
+    /// - Parameter value: The `SPTRepeatMode` value.
     public init(_ value: SPTRepeatMode) {
         switch value {
-            case .off: self = .off
-            case .one: self = .one
+            case .off:     self = .off
+            case .one:     self = .one
             case .context: self = .all
         }
     }
 }
 
 extension SPTRepeatMode {
+    
+    /// Creates an `SPTRepeatMode` equal to that of the given `SKRepeatMode` value.
+    ///
+    /// - Parameter value: The `SKRepeatMode` value.
     public init(_ value: SKRepeatMode) {
         switch value {
             case .off: self = .off
@@ -62,9 +66,16 @@ extension SPTRepeatMode {
 /// A structure containing values identifying the context in which a particular track is played, such as an album, artist, or playlist.
 public struct SKPlaybackContext: Decodable { // SKPlaybackSource
     
+    /// The possible contexts in which a track can be played.
     public enum ContextType: String, Codable {
+        
+        /// The current track is being played as part of an album.
         case album
+        
+        /// The current track is being played as part of an artist's tracks.
         case artist
+        
+        /// The current track is being played as part of a playlist.
         case playlist
     }
     
@@ -156,12 +167,12 @@ public struct SKPlaybackState: JSONDecodable {
 
 //public protocol SKValueConvertible {
 //    associatedtype ValueType
-//    init?(converting value: ValueType)
+//    init?(from value: ValueType) // init?(converting:)
 //}
 
 extension SPTPlaybackState/*: SKValueConvertible */{
     
-    public convenience init?(converting value: SKPlaybackState) {
+    public convenience init?(from value: SKPlaybackState) {
         
         guard
             let device = value.device,
@@ -174,7 +185,7 @@ extension SPTPlaybackState/*: SKValueConvertible */{
         self.init(isPlaying: value.isPlaying,
                   isRepeating: repeatMode == .one || repeatMode == .all,
                   isShuffling: isShuffling,
-                  isActiveDevice: device.type == .mobile, // No good... find a better way. "device.name" ...?
+                  isActiveDevice: UIDevice.current.name == device.name,
                   position: progress)
     }
 }
@@ -200,4 +211,3 @@ extension SPTPlaybackState/*: SKValueConvertible */{
 //                                position: TimeInterval(progress))!
 //    }
 //}
-
