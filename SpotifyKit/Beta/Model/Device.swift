@@ -10,21 +10,24 @@ import Foundation
 
 public struct SKDevice: JSONDecodable {
     
-    public enum DeviceType: String, Codable {
-        case computer = "Computer"
-        case mobile = "Smartphone"
-        case speaker = "Speaker"
-        case tv = "CastVideo"
-        case unknown
+    /// The type of device this instance represents.
+    public struct DeviceType: RawRepresentable, Codable {
         
-        public init(rawValue: String) {
-            switch rawValue {
-                case "Computer":    self = .computer
-                case "Smartphone":  self = .mobile
-                case "Speaker":     self = .speaker
-                case "CastVideo":   self = .tv
-                default: self = .unknown
-            }
+        /// A device that supports a desktop Spotify client application.
+        public static let computer = DeviceType(rawValue: "Computer")
+        
+        /// A device that supports a mobile Spotify client application, such as a smartphone or tablet.
+        public static let mobile = DeviceType(rawValue: "Smartphone")
+        
+        /// A device that supports a speaker-based Spotify client application, such as a portable Bluetooth speaker.
+        public static let speaker = DeviceType(rawValue: "Speaker")
+        
+        /// A device that supports a TV-based Spotify client application, such as a Chromecast-enabled Smart TV.
+        public static let tv = DeviceType(rawValue: "CastVideo")
+        
+        public var rawValue: String
+        public init?(rawValue: String) {
+            self.rawValue = rawValue
         }
     }
     
@@ -44,15 +47,15 @@ public struct SKDevice: JSONDecodable {
     public let type: DeviceType
     
     /// The current volume in percent, or `nil` if unavailable.
-    public let volume: Int?
-//    private let _volume: Int?
-//
-//    public var volume: Float? {
-//        switch _volume {
-//            case .some(let v): return Float(v / 100)
-//            case .none: return nil
-//        }
-//    }
+    private let _volume: Int?
+
+    /// The device's current volume, ranging from `0.0` to `1.0` on a linear scale, or `nil` if unavailable.
+    public var volume: Float? {
+        switch _volume {
+            case .some(let v): return Float(v / 100)
+            case .none: return nil
+        }
+    }
 
     // MARK: Keys
     
@@ -62,6 +65,6 @@ public struct SKDevice: JSONDecodable {
         case isRestricted = "is_restricted"
         case name
         case type
-        case volume = "volume_percent"
+        case _volume = "volume_percent"
     }
 }
