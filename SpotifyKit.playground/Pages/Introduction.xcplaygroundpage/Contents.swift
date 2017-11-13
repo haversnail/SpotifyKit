@@ -21,5 +21,4 @@
 import SpotifyKit
 import Foundation
 
-//: ****
 //: [Next](@next)
