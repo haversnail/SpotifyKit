@@ -133,4 +133,47 @@ public struct SKPlayer {
     public static func getPlaybackState(for locale: Locale? = SKCatalog.local.locale, handler: @escaping (SKPlaybackState?, Error?) -> Void) {
         makePlaybackStateRequest(locale: locale).perform(handler: handler)
     }
+    
+    // MARK: Transfer Playback to Another Device ✔︎
+    
+    /// Creates and returns the request used to transfer playback to another device.
+    ///
+    /// - Parameters:
+    ///   - deviceID: The ID of the device on which playback should be transferred.
+    ///   - forcePlayback: A Boolean value indicating whether the new device should begin playback: `true` ensures playback happens on the new device; `false` keeps the current playback state. Note that providing `false` will not *pause* playback.
+    ///
+    /// - Returns: An `SKRequest` instance with which to perform the API request.
+    public static func makeTransferRequest(deviceID: String, forcePlayback: Bool) -> SKRequest {
+        
+        let request = SKRequest(method: .PUT, endpoint: Constants.Endpoints.player)!
+        
+        typealias RequestBody = Constants.RequestBodies.TransferPlaybackBody
+        let data = try! RequestBody(deviceIDs: [deviceID], forcePlayback: forcePlayback).data()
+        
+        request.addMultipartData(data, type: .json)
+        return request
+    }
+    
+    /// Transfers playback to the given device.
+    ///
+    /// - Important: The given `SKDevice` instance **must** have an ID. If the device contains a `nil` ID value, then this method will immediately call the handler and provide an `SKError` instance denoting a bad request.
+    ///
+    /// - Note: This method uses the `SPTAuth` default instance session to authenticate the underlying request. If this session does not contain a valid access token, the request will result in an error. The access token must have been issued on behalf of the current user.
+    ///
+    /// Modifying the playback state, to include the active device, also requires authorization of the "`user-modify-playback-state`" scope. See [Using Scopes](https://developer.spotify.com/spotify-web-api/using-scopes/) for more details.
+    ///
+    /// - Parameters:
+    ///   - device: The device on which playback should be transferred.
+    ///   - forcePlayback: A Boolean value indicating whether the new device should begin playback: `true` ensures playback happens on the new device; `false` keeps the current playback state. The default value is `false`. Note that providing `false` will not *pause* playback.
+    ///   - handler: The callback handler for the request, providing an error object identifying if and why the request failed, or `nil` if the request was successful.
+    public static func transfer(to device: SKDevice, forcingPlayback forcePlayback: Bool = false, handler: @escaping SKErrorHandler) {
+        
+        guard let deviceID = device.id else {
+            let error = SKError(status: .badRequest, message: "The device provided does not contain an ID.")
+            handler(error)
+            return
+        }
+        
+        makeTransferRequest(deviceID: deviceID, forcePlayback: forcePlayback).perform(handler: handler)
+    }
 }

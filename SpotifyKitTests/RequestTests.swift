@@ -2001,6 +2001,33 @@ class RequestTests: XCTestCase {
             }
         }
     }
+    
+    func testTransferActiveDevice() {
+        
+        // Arrange:
+        let device = try! SKDevice(from: deviceData) // FIXME: Update JSON data to match your test device.
+        let request = SKPlayer.makeTransferRequest(deviceID: device.id!, forcePlayback: true)
+        let promise = makeRequestExpectation()
+        defer { wait(for: promise) }
+        
+        // Assert request:
+        XCTAssertEqual(request.method, .PUT)
+        XCTAssertEqual(request.url.path, "/v1/me/player")
+        
+        guard let body = decode(Constants.RequestBodies.TransferPlaybackBody.self, from: request) else { return }
+        XCTAssertEqual(body.deviceIDs.first, device.id)
+        XCTAssertEqual(body.forcePlayback, true)
+        
+        // Act:
+        SKPlayer.transfer(to: device, forcingPlayback: true) { (error) in
+            defer { promise.fulfill() }
+            
+            // Assert results:
+            if let error = error {
+                XCTFail(error.localizedDescription); return
+            }
+        }
+    }
 }
 
 // MARK: - Request Test Assertions

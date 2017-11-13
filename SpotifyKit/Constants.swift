@@ -108,6 +108,16 @@ internal struct Constants {
                 case snapshotID = "snapshot_id"
             }
         }
+        
+        struct TransferPlaybackBody: JSONCodable {
+            let deviceIDs: [String]
+            let forcePlayback: Bool?
+            
+            private enum CodingKeys: String, CodingKey {
+                case deviceIDs = "device_ids"
+                case forcePlayback = "play"
+            }
+        }
     }
     
     // MARK: - API Endpoints
