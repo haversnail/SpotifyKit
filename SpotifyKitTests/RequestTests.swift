@@ -154,7 +154,7 @@ class RequestTests: XCTestCase {
         XCTAssertEqual(request?.preparedURLRequest.value(forHTTPHeaderField: "Authorization"), "Bearer \(SPTAuth.defaultInstance().session.accessToken!)")
         
         // Set multipart request body:
-        request?.addMultipartData(requestBody, type: .json)
+        request?.add(requestBody, type: .json)
         
         // Assert updated URL request:
         XCTAssertEqual(request?.preparedURLRequest.httpBody, requestBody)

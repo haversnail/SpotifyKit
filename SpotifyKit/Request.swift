@@ -8,7 +8,7 @@
 
 import Foundation
 
-/// The HTTP [REST] verbs used for API requests. See the API [Requests] guide for more details.
+/// The HTTP [REST] verbs used for API requests. See the Spotify Web API [Requests] guide for more details.
 ///
 /// [REST]: http://en.wikipedia.org/wiki/Representational_state_transfer
 /// [Requests]: https://developer.spotify.com/web-ai/user-guide/#requests
@@ -273,12 +273,12 @@ public class SKRequest { // Inheriting from NSObject causes buildtime error: cla
     
     // MARK: - Sending Requests
     
-    /// Specifies a multipart request body for a PUT, POST, or DELETE request.
+    /// Adds multipart request body data for a PUT, POST, or DELETE request.
     ///
     /// - Parameters:
     ///     - data: The data for the request body, typically an encoded JSON object.
     ///     - type: The MIME content type of the request body. The default value is "`application/json`."
-    public func addMultipartData(_ data: Data, type: ContentType = .json) { // or `_ body: JSONEncodable`?
+    public func add(_ data: Data, type: ContentType = .json) { // addMultipartData(_:type:) // or `_ body: JSONEncodable`?
         requestBody = (data: data, type: type)
     }
 
@@ -358,7 +358,7 @@ public class SKRequest { // Inheriting from NSObject causes buildtime error: cla
     ///
     /// - Parameter handler: The callback handler for this request. The parameters for this handler are:
     ///     - `type`: The type decoded from the JSON data returned by the request.
-    ///     - `error`: An error object identifying if and why the request failed, or `nil` if the request was successful.
+    ///     - `error`: An error object identifying if and why the request or decoding failed, or `nil` if the request was successful.
     public func perform<T: JSONDecodable>(handler: @escaping SKDecodableHandler<T>) {
 
         perform { (data, _, error) in

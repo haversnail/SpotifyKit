@@ -850,7 +850,7 @@ extension SKPlaylist {
                                     isPublic: isPublic,
                                     isCollaborative: isCollaborative).data()
         
-        request.addMultipartData(data, type: .json)
+        request.add(data, type: .json)
         return request
     }
     
@@ -910,7 +910,7 @@ extension SKPlaylist {
                                     isPublic: isPublic,
                                     isCollaborative: isCollaborative).data()
         
-        request.addMultipartData(data, type: .json)
+        request.add(data, type: .json)
         return request
     }
     
@@ -946,7 +946,7 @@ extension SKPlaylist {
     public func makeUpdateImageRequest(data: Data) -> SKRequest { // makeUploadImageRequest(data: Data) // makeReplaceImageRequest(data: Data)
         
         let request = SKRequest(method: .PUT, endpoint: Constants.Endpoints.imageForPlaylist(id: id, ownerID: owner.id))!
-        request.addMultipartData(data, type: .jpeg)
+        request.add(data, type: .jpeg)
         return request
     }
     
@@ -1114,7 +1114,7 @@ extension SKPlaylist {
         let tracks = tracks?.map { RequestBody.Track(uri: $0.uri) }
         let data = try! RequestBody(tracks: tracks, positions: positions, snapshotID: snapshotID).data()
         
-        request.addMultipartData(data, type: .json)
+        request.add(data, type: .json)
         return request
     }
     
@@ -1225,7 +1225,7 @@ extension SKPlaylist {
                                     newIndex: position,
                                     snapshotID: snapshotID).data()
         
-        request.addMultipartData(data, type: .json)
+        request.add(data, type: .json)
         return request
     }
     
@@ -1666,7 +1666,7 @@ extension SKPlaylist {
         typealias RequestBody = Constants.RequestBodies.PlaylistFollowBody
         let data = try! RequestBody(isPublic: `public`).data()
         
-        request.addMultipartData(data, type: .json)
+        request.add(data, type: .json)
         return request
     }
     

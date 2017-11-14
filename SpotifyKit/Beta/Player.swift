@@ -150,7 +150,7 @@ public struct SKPlayer {
         typealias RequestBody = Constants.RequestBodies.TransferPlaybackBody
         let data = try! RequestBody(deviceIDs: [deviceID], forcePlayback: forcePlayback).data()
         
-        request.addMultipartData(data, type: .json)
+        request.add(data, type: .json)
         return request
     }
     
