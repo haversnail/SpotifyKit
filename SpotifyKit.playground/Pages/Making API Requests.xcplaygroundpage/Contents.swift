@@ -7,7 +7,7 @@
  
  It is designed to streamline both the preparation and the execution of the URL request by providing easy-to-use mechanisms for adding an access token, URL query parameters, and multipart body data, and for performing the request with API-specific responses in mind.
  
- As you'll see in [Other Request Factories](Catalog%20&%20Other%20Request%20Factories), nearly all of the available API requests have been created for you by factory methods; however, should you wish to create the requests yourself or add a [beta request](https://developer.spotify.com/web-api/working-with-connect/) that isn't already provided, for example, the following walkthrough will help you get started.
+ As you'll see in [Request Factories](Request%20Factories), nearly all of the available API requests have been created for you by factory methods; however, should you wish to create the requests yourself or add a [beta request](https://developer.spotify.com/web-api/working-with-connect/) that isn't already provided, for example, the following walkthrough will help you get started.
  
  ## Creating an `SKRequest` instance
  You create a new request instance by providing the HTTP request method such as `GET`, `PUT`, `POST`, etc., and the URL for the API endpoint:
@@ -15,11 +15,6 @@
 
 import SpotifyKit
 import Foundation
-import PlaygroundSupport
-
-// Just a little Playground setup:
-PlaygroundPage.current.needsIndefiniteExecution = true
-SPTAuth.defaultInstance().session = SPTSession(userName: username, accessToken: accessToken, expirationDate: Date.distantFuture)
 
 let method: HTTPRequestMethod = .GET
 let url = URL(string: "https://api.spotify.com/v1/artists/53XhwfbYqKCa1cC15pYq2q")!
@@ -46,7 +41,7 @@ let sameRequest = SKRequest(method: method, endpoint: "/v1/artists/53XhwfbYqKCa1
 let parameters: [String: Any] = ["ids": "53XhwfbYqKCa1cC15pYq2q,7mnBLXK823vNxN3UWB7Gfz"]
 let getArtistsRequest = SKRequest(method: .GET, endpoint: "/v1/artists", parameters: parameters)
 
-//: - Note: If the given URL contains any query items, those items will be removed from the URL and stored in the `parameters` property.
+//: - Note: If the given URL contains any query items, those items will be removed from the URL and appended to the `parameters` dictionary instead. However, note that any values supplied by the `parameters` argument will overwrite existing URL query items that share the same name.
 
 //: ## Adding Request Body Data
 //: For API endpoints that require a request body, you can add a `Data` value (and accompanying content type) to the request as such:
@@ -63,42 +58,50 @@ let newPlaylistRequest = SKRequest(method: .POST, endpoint: "/v1/users/ahavermal
 newPlaylistRequest.add(data, type: .json)
 
 //: ## Authorizing Requests
-//: `SKRequest` objects use the Spotify [iOS SDK](https://github.com/spotify/ios-sdk)'s `SpotifyAuthentication` framework to authorize the underlying URL requests. By default, each request instance contains an `apiSession` property that references the [`SPTAuth`](https://spotify.github.io/ios-sdk/Classes/SPTAuth.html) default instance session, which should contain the current access token:
+//: `SKRequest` objects use the Spotify [iOS SDK](https://github.com/spotify/ios-sdk)'s `SpotifyAuthentication` framework to authorize their underlying URL request. By default, each request instance contains a weak `apiSession` property that references the [`SPTAuth`](https://spotify.github.io/ios-sdk/Classes/SPTAuth.html) default instance session, which should contain the current access token if the `SPTAuth` session was set before the instantiation of the request:
 
-let token = request?.apiSession?.accessToken
+SPTAuth.defaultInstance().session = SPTSession(userName: username,
+                                               accessToken: accessToken,
+                                               expirationDate: Date.distantFuture)
 
-//: Optionally, you can provide a custom session object, so long as it contains a valid access token:
+let authorizedRequest = SKRequest(method: method, endpoint: url)
+let token = authorizedRequest?.apiSession?.accessToken
+
+//: Optionally, you can provide a custom session object after the request has been created, so long as it contains a valid access token:
 
 sameRequest?.apiSession = SPTSession(userName: "ahavermale",
                                      accessToken: "s0m3th1ng-val1d",
-                                     expirationDate: Date.distantFuture) // The active session object.
+                                     expirationDate: Date.distantFuture) // Your active session object.
 
 /*:
  ## Performing Requests
- Once the URL request has been prepared, you execute the request by calling any of the available `perform(handler:)` methods. Requests contain three different `perform` methods, each with their own handler and level of granularity:
+ Once the URL request has been prepared, you execute the request by calling one of the `perform(handler:)` methods. There are three available methods for performing the request, each with their own closure type and level of granularity:
+ 
+ * An `SKRequestHandler` closure, which returns the raw JSON data (if any), the HTTP status code, and/or an error if unsuccessful:
  */
 
-// Returns the raw JSON data (if any), the HTTP status code, and/or an error type if unsuccessful:
 request?.perform { (data: Data?, status: HTTPStatusCode?, error: Error?) in
     
-    if let data = data { data /* ... */ }
-    if let status = status { status /* ... */ }
-    if let error = error { error /* ... */ }
+    if let data = data { /* ... */ }
+    if let status = status { /* ... */ }
+    if let error = error { /* ... */ }
 }
 
-// Either returns the data already decoded as the expected type, or an error if unsuccessful:
+//: * An `SKDecodableHandler` closure, which either returns the data already decoded as the given type, or an error if unsuccessful:
+
 request?.perform { (artist: SKArtist?, error: Error?) in
     
-    if let artist = artist { artist /* ... */ }
-    if let error = error { error /* ... */ }
+    if let artist = artist { /* ... */ }
+    if let error = error { /* ... */ }
 }
 
-// Only returns an error if the request was unsuccessful:
+//: * Or, for simpler requests, an `SKErrorHandler` closure, which only returns an error if the request was unsuccessful:
+
 request?.perform { (error: Error?) in
     
-    if let error = error { error /* ... */ }
+    if let error = error { /* ... */ }
 }
 
-//: - callout(See Also): Refer to the `SKRequestHandler`, `SKDecodableHandler`, and `SKErrorHandler` types for more details.
-
+//: The next page will cover how these responses are decoded.
+//: ***
 //: [Table of Contents](Introduction) | [Previous](@previous) | [Next](@next)

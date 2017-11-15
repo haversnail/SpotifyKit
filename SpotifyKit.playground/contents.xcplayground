@@ -5,7 +5,7 @@
         <page name='Making API Requests'/>
         <page name='Decoding Responses'/>
         <page name='Pagination'/>
-        <page name='Catalog &amp; Other Request Factories'/>
+        <page name='Request Factories'/>
         <page name='SDK Integration'/>
         <page name='LICENSE'/>
     </pages>

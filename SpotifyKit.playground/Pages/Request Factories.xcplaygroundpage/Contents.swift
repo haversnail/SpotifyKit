@@ -2,17 +2,18 @@
  [Table of Contents](Introduction) | [Previous](@previous) | [Next](@next)
  ***
  
- # Pagination
- Most endpoints return results via "[paging objects]()" that paginate large lists into smaller collections.
+ # SKCatalog & Other Request Factories
+ Introduction goes here.
  
- ## Offset-Based Paging
+ ## The Catalog Struct
  ...
  
- ## Cursor-Based Paging
+ ## Other Requests
  ...
  
- ## Navigating Paginated Responses
+ ## Factory Methods
  ...
+ 
  */
 
 import SpotifyKit
