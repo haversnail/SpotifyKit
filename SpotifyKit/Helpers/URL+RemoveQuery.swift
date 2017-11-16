@@ -15,9 +15,9 @@ extension URL {
     /// If the URL has no query (e.g., `http://www.example.com`), then this function will return the URL unchanged.
     internal func deletingQuery() -> URL {
         if query == nil { return self }
-        var urlComponents = URLComponents(url: self, resolvingAgainstBaseURL: true)
-        urlComponents?.query = nil
-        return urlComponents?.url ?? self
+        var components = URLComponents(url: self, resolvingAgainstBaseURL: true)
+        components?.query = nil
+        return components?.url ?? self
     }
     
     /// Reconstructs the URL after removing any query.

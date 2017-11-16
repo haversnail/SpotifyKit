@@ -8,10 +8,7 @@
 
 import Foundation
 
-/// The HTTP [REST] verbs used for API requests. See the Spotify Web API [Requests] guide for more details.
-///
-/// [REST]: http://en.wikipedia.org/wiki/Representational_state_transfer
-/// [Requests]: https://developer.spotify.com/web-ai/user-guide/#requests
+/// The HTTP [REST](http://en.wikipedia.org/wiki/Representational_state_transfer) verbs used for API requests. See the Spotify Web API [Requests guide](https://developer.spotify.com/web-ai/user-guide/#requests) for more details.
 public enum HTTPRequestMethod: String {
     
     /// Used for retrieving resources.
@@ -29,11 +26,7 @@ public enum HTTPRequestMethod: String {
 
 
 
-/// The [Response Status Codes] used by the API, as defined in the [RFC 2616] and [RFC 6585].
-///
-/// [Response Status Codes]: https://developer.spotify.com/web-api/user-guide/#response-status-codes
-/// [RFC 2616]: https://www.ietf.org/rfc/rfc2616.txt
-/// [RFC 6585]: https://www.ietf.org/rfc/rfc6585.txt
+/// The [Response Status Codes](https://developer.spotify.com/web-api/user-guide/#response-status-codes) used by the API, as defined in the [RFC 2616](https://www.ietf.org/rfc/rfc2616.txt) and [RFC 6585](https://www.ietf.org/rfc/rfc6585.txt).
 public enum HTTPStatusCode: Int, Codable {
     
     /// The request has succeeded. The client can read the result of the request in the body and the headers of the response.
@@ -105,20 +98,14 @@ public typealias SKErrorHandler = (_ error: Error?) -> Void
 
 // MARK: - Request Class
 
-/// The `SKRequest` object encapsulates the properties of an HTTP request, providing a convenient template for you to make requests to the [Spotify Web API].
+/// The `SKRequest` object encapsulates the properties of an HTTP request, providing a convenient template for you to make requests to the [Spotify Web API](https://developer.spotify.com/web-api/).
 ///
-/// This class is inspired by the [Social] Framework's [SLRequest] class, and aims to mimic its structure and functionality in order to provide a comparable service for interacting with the [Spotify Web API].
-///
-/// [Spotify Web API]: https://developer.spotify.com/web-api/
-/// [Social]: apple-reference-documentation://cssocial
-/// [SLRequest]: apple-reference-documentation://hsp4_7YsJD
+/// This class is inspired by the Social Framework's [SLRequest](apple-reference-documentation://hsp4_7YsJD) class, and aims to mimic its structure and functionality in order to provide a comparable service for interacting with the Spotify Web API.
 public class SKRequest { // Inheriting from NSObject causes buildtime error: class conflicts with StoreKit's `SKRequest` class.
     
-    /// The MIME content types available for sending multipart requests to the [Spotify Web API][API].
+    /// The MIME content types available for sending multipart requests to the [Spotify Web API](https://developer.spotify.com/web-api/).
     ///
-    /// - Note: The only content types currently accepted by the [Spotify Web API][API] are "`application/json`" and "`image/jpeg`" for all PUT, POST, or DELETE requests. If/when more content types become part of the API, they will be made available here.
-    ///
-    /// [API]: https://developer.spotify.com/web-api/
+    /// - Note: The only content types currently accepted by the Spotify Web API are "`application/json`" and "`image/jpeg`" for all PUT, POST, or DELETE requests. If/when more content types become part of the API, they will be made available here.
     public enum ContentType: String {
         
         /// Represents UTF-8 encoded JSON data. This is the format for nearly all PUT, POST, and DELETE requests to the API.
