@@ -24,6 +24,12 @@ public protocol JSONDecodable: Decodable {
 }
 
 extension JSONDecodable {
+    
+    /// Creates a SpotifyKit type from the specified JSON data.
+    ///
+    /// - Parameter jsonData: The data containing the JSON-encoded [Spotify object](https://developer.spotify.com/web-api/object-model/).
+    ///
+    /// - Note: The default implementation of this method decodes date values using the ISO 8601 timestamp format [specified by the Web API](https://developer.spotify.com/web-api/user-guide/#timestamps). If your need another date decoding strategy, you must provide your own custom implementation.
     public init(from jsonData: Data) throws {
         let decoder = JSONDecoder()
         decoder.dateDecodingStrategy = .iso8601
@@ -33,6 +39,7 @@ extension JSONDecodable {
 
 /// A type that can encode itself to a JSON representation.
 public protocol JSONEncodable: Encodable {
+    
     /// Encodes the given type to a JSON representation suitable for the [Spotify Web API](https://developer.spotify.com/web-api/).
     ///
     /// - Returns: A `Data` value containing the payload.
