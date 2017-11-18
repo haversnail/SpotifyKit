@@ -4,8 +4,8 @@
         <page name='Introduction'/>
         <page name='Making API Requests'/>
         <page name='Decoding Responses'/>
-        <page name='Pagination'/>
         <page name='Request Factories'/>
+        <page name='Pagination'/>
         <page name='SDK Integration'/>
         <page name='LICENSE'/>
     </pages>

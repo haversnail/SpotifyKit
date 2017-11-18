@@ -109,8 +109,6 @@ newPlaylistRequest.perform { (playlist: SKPlaylist?, error) in
     }
 }
 
-//: As you'll see in [Request Factories](Request%20Factories), nearly all of the encoding and decoding has been done for you behind the scenes; however, should you wish to handle requests and responses yourself, using `JSONDecodable` and `JSONEncodable` will help you in the process.
-//:
-//: Next we'll take a quick look at how paginated responses are handled.
+//: Should you wish to create requests and handle responses yourself, using `JSONDecodable` and `JSONEncodable` can help you in the process. However, as you'll see next in [Request Factories](Request%20Factories), much of the encoding and decoding has been done for you behind the scenes.
 //: ***
 //: [Table of Contents](Introduction) | [Previous](@previous) | [Next](@next)

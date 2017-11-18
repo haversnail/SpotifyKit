@@ -6,8 +6,8 @@
  ## Table of Contents
  - [Making API Requests](Making%20API%20Requests)
  - [Decoding Responses](Decoding%20Responses)
- - [Pagination](Pagination)
  - [`SKCatalog` & Other Request Factories](Request%20Factories)
+ - [Pagination](Pagination)
  - [SDK Integration](SDK%20Integration)
  - [LICENSE](LICENSE)
  
