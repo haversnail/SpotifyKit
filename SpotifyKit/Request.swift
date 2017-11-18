@@ -8,8 +8,8 @@
 
 import Foundation
 
-/// The HTTP [REST](http://en.wikipedia.org/wiki/Representational_state_transfer) verbs used for API requests. See the Spotify Web API [Requests guide](https://developer.spotify.com/web-ai/user-guide/#requests) for more details.
-public enum HTTPRequestMethod: String {
+/// The HTTP [REST](http://en.wikipedia.org/wiki/Representational_state_transfer) verbs used by the Spotify Web API. See the API [requests guide](https://developer.spotify.com/web-ai/user-guide/#requests) for more details.
+public enum HTTPRequestMethod: String { // SKRequestMethod
     
     /// Used for retrieving resources.
     case GET
@@ -26,8 +26,8 @@ public enum HTTPRequestMethod: String {
 
 
 
-/// The [Response Status Codes](https://developer.spotify.com/web-api/user-guide/#response-status-codes) used by the API, as defined in the [RFC 2616](https://www.ietf.org/rfc/rfc2616.txt) and [RFC 6585](https://www.ietf.org/rfc/rfc6585.txt).
-public enum HTTPStatusCode: Int, Codable {
+/// The [Response Status Codes](https://developer.spotify.com/web-api/user-guide/#response-status-codes) used by the Spotify Web API, as defined in the [RFC 2616](https://www.ietf.org/rfc/rfc2616.txt) and [RFC 6585](https://www.ietf.org/rfc/rfc6585.txt).
+public enum HTTPStatusCode: Int, Codable { // SKRequestStatus // SKResponseStatus // SKStatusCode
     
     /// The request has succeeded. The client can read the result of the request in the body and the headers of the response.
     case ok = 200
@@ -125,23 +125,26 @@ public class SKRequest { // Inheriting from NSObject causes buildtime error: cla
 
     /// The parameters for this request, if any. If no parameters are supplied, this will be an empty dictionary.
     public let parameters: [String: Any] // or `[AnyHashable : URLEncodable]`?
+    
+//    public static var defaultURLSession: URLSession = {
+//        let configuration = URLSessionConfiguration.default
+//        return URLSession(configuration: configuration)
+//    }()
+//    
+//    public weak static var defaultAPISession: SPTSession? = SPTAuth.defaultInstance()?.session
 
     /// The URL session used to perform the request.
     ///
     /// Set this property if you wish to provide a custom URL session object with which to perform the underlying network request. The default value is a URL session instance with the [default configuration](apple-reference-documentation://hs7s_hgSaq).
     /// - Important: The session will be invalidated upon deinitialization of this `SKRequest` instance (except if this session references the [shared singleton URLSession](apple-reference-documentation://hswpyQK_SL)).
-    public lazy var urlSession: URLSession = URLSession(configuration: .default) // or `URLSession.shared`?
-//    public lazy var urlSession: URLSession = {
-//        let configuration = URLSessionConfiguration.default
-//        return URLSession(configuration: configuration)
-//    }()
+    public lazy var urlSession: URLSession = URLSession(configuration: .default) // or `URLSession.shared`? // SKRequest.defaultURLSession
 
     /// The authenticated Spotify API session used to authorize the request.
     ///
     /// Setting this property with your active `SPTSession` instance ensures your API request is accompanied by the appropriate OAuth access token.
     ///
     /// The default value is the current `session` object referenced by the [SPTAuth](https://spotify.github.io/ios-sdk/Classes/SPTAuth.html) class's default instance.
-    public weak var apiSession: SPTSession? = SPTAuth.defaultInstance()?.session // or `nil`?
+    public weak var apiSession: SPTSession? = SPTAuth.defaultInstance()?.session // or `nil`? // SKRequest.defaultAPISession
     
     /// A tuple value storing multipart request body data and its associated MIME content type.
     internal var requestBody: (data: Data, type: ContentType)? = nil // fileprivate
