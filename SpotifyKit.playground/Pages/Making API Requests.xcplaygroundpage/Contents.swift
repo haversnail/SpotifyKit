@@ -58,7 +58,7 @@ let newPlaylistRequest = SKRequest(method: .POST, endpoint: "/v1/users/ahavermal
 newPlaylistRequest.add(data, type: .json)
 
 //: ## Authorizing Requests
-//: `SKRequest` objects use the Spotify [iOS SDK](https://github.com/spotify/ios-sdk)'s `SpotifyAuthentication` framework to authorize their underlying URL request. By default, each request instance contains a weak `apiSession` property that references the [`SPTAuth`](https://spotify.github.io/ios-sdk/Classes/SPTAuth.html) default instance session, which should contain the current access token if the `SPTAuth` session was set before the instantiation of the request:
+//: `SKRequest` objects use the [Spotify iOS SDK](https://github.com/spotify/ios-sdk)'s `SpotifyAuthentication` framework to authorize their underlying URL request. By default, each request instance contains a weak `apiSession` property that references the [`SPTAuth`](https://spotify.github.io/ios-sdk/Classes/SPTAuth.html) default instance session, which should contain the current access token if the `SPTAuth` session was set before the instantiation of the request:
 
 SPTAuth.defaultInstance().session = SPTSession(userName: username,
                                                accessToken: accessToken,
@@ -104,16 +104,20 @@ request.perform { (error: Error?) in
 }
 
 //: ## Further Customization
-//: - Callout(Pro Tip): If you want to customize the underlying URL session for a particular request, you can do so using the `urlSession` property:
+//: If you want to customize the underlying URL session for a particular request, you can do so using the `urlSession` property:
 
 let myURLSession = URLSession(configuration: .default)
 request.urlSession = myURLSession
 
-//: Likewise, if you want to customize the default URL session for all `SKRequest` instances, you can do so using the static `defaultURLSession` property:
+/*:
+ - Note: Unless you're referencing the [shared URL session singleton](apple-reference-documentation://hswpyQK_SL), the session will be invalidated upon deinitialization of the `SKRequest` instance.
+ 
+ \
+ \
+ Or, if you just want the prepared URL request for use outside of the `SKRequest`, you can access it with the `preparedURLRequest` property:
+ */
 
-SKRequest.defaultURLSession = myURLSession
-
-//: - Note: Unless you're referencing the [shared URL session singleton](apple-reference-documentation://hswpyQK_SL), the session will be invalidated upon deinitialization of the `SKRequest` instance.
+let urlRequest = authorizedRequest.preparedURLRequest
 
 //: The next page will go into detail on how the request's responses are decoded.
 //: ***

@@ -25,6 +25,7 @@ import Foundation
 import PlaygroundSupport
 
 PlaygroundPage.current.needsIndefiniteExecution = true
+SPTAuth.defaultInstance().session = SPTSession(userName: username, accessToken: accessToken, expirationDate: Date.distantFuture)
 
 struct ExampleAlbum: JSONDecodable {
     let name: String
@@ -38,7 +39,7 @@ struct ExampleAlbum: JSONDecodable {
     }
 }
 
-//: Here we're conforming our `ExampleAlbum` type to `JSONDecodable` just like we would conform to [`Decodable`](apple-reference-documentation://hs4cSpS_o7), providing any custom coding keys if necessary—and because `JSONDecodable` already specifies a default implementation for its initializer, this is all we need to do before providing it the JSON data we want to decode:
+//: Here we're conforming our `ExampleAlbum` type to `JSONDecodable` just like we would to [`Decodable`](apple-reference-documentation://hs4cSpS_o7), defining any custom coding keys if necessary. The `JSONDecodable` initializer already has a default implementation, so this is all we need to do to decode the JSON object:
 
 let albumData = """
 {
@@ -50,9 +51,7 @@ let albumData = """
 
 let album = try! ExampleAlbum(from: albumData)
 
-//: A practical use for this initializer is in the completion handler of an `SKRequest`, where we're expecting a JSON payload that represents a specific object:
-
-SPTAuth.defaultInstance().session = SPTSession(userName: username, accessToken: accessToken, expirationDate: Date.distantFuture)
+//: A practical use for this initializer is in the completion handler of an `SKRequest`, where we would expect a JSON payload to represent a specific object:
 
 let artistRequest = SKRequest(method: .GET, endpoint: "/v1/artists/7mnBLXK823vNxN3UWB7Gfz")!
 
@@ -62,6 +61,7 @@ artistRequest.perform { (data, status, error) in
     if let data = data {
         do {
             let artist = try SKArtist(from: data)
+            print(artist.name)
             // Do all the things.
         } catch {
             print(error.localizedDescription)
@@ -69,9 +69,18 @@ artistRequest.perform { (data, status, error) in
     }
 }
 
+//: In fact, this is similar to what the generic `perform` method does: given a type that conforms to `JSONDecodable`, the method will decode the data for you, passing along any decoding errors it encounters to the completion handler:
+
+artistRequest.perform { (artist: SKArtist?, error) in
+    // Check for any errors here.
+    
+    if let artist = artist {
+        print(artist.name)
+        // Still do all the things.
+    }
+}
+
 /*:
- In fact, this is similar to what the generic `perform` method does; given a type that conforms to `JSONDecodable`, the method will decode the data for you, passing along any decoding errors it encounters to the completion handler.
- 
  - Note:
     All **SpotifyKit** types that can be returned by the Web API as top-level items conform to `JSONDecodable`. Other notable types that also conform to `JSONDecodable` are:
     * [`Array`](apple-reference-documentation://hs7p05Ce6o) *(**Note**: associated type `Element` must conform to `Decodable`.)*
@@ -81,9 +90,9 @@ artistRequest.perform { (data, status, error) in
 
 /*:
  ## Encoding JSON Data
- Similarly, the `JSONEncodable` protocol provides a method with a default implementation to encode the conforming type into JSON data formatted for the Web API.
+ Similarly, the `JSONEncodable` protocol provides a method with a default implementation to encode the given type as JSON data formatted for the Web API.
  
- Although no **SpotifyKit** types adopt this protocol directly, the `JSONEncodable` protocol can be used to encode values as data for request bodies:
+ Although no **SpotifyKit** types adopt this protocol directly, `JSONEncodable` can be used to encode structs as data for a request body:
  */
 
 struct PlaylistDetails: JSONEncodable {
@@ -105,10 +114,10 @@ newPlaylistRequest.add(data, type: .json)
 newPlaylistRequest.perform { (playlist: SKPlaylist?, error) in
     
     if let playlist = playlist {
-        // Soo, you may have a new playlist in your Spotify library...
+        // I'd check my library if I were you!
     }
 }
 
-//: Should you wish to create requests and handle responses yourself, using `JSONDecodable` and `JSONEncodable` can help you in the process. However, as you'll see next in [Request Factories](Request%20Factories), much of the encoding and decoding has been done for you behind the scenes.
+//: Should you wish to create requests and handle responses yourself, using `JSONDecodable` and `JSONEncodable` can help you in the process. However, as you'll see next in [Request Factories](Request%20Factories), much of the encoding and decoding has already been done for you.
 //: ***
 //: [Table of Contents](Introduction) | [Previous](@previous) | [Next](@next)
