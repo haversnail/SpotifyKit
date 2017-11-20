@@ -13,7 +13,7 @@ import Foundation
 /// - Note: All request-performing methods (e.g., "`getAlbum`" or "`search`") use the `SPTAuth` default instance session to authenticate the underlying request. If this session does not contain a valid access token, the request will result in an error. If you want to customize the request by injecting your own custom URL/API session or by decoding the response yourself, you can do so using any of the accompanying factory methods (e.g., "`makeAlbumRequest`" or "`makeSearchRequest`") to create and return the `SKRequest` instance itself.
 public struct SKCatalog {
     
-    /// The shared local catalog instance, which represents the user's region settings at the time the property is read.
+    /// The local catalog instance, which represents the user's region settings at the time the property is read.
     public static var local: SKCatalog { return SKCatalog(locale: Locale.current) } // var current // Locale.autoupdatingCurrent
     
     /// The locale representing the specific storefront/market from which to request catalog content.
