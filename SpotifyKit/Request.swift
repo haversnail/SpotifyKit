@@ -404,7 +404,7 @@ extension SPTSession {
     ///
     /// - Parameters:
     ///   - method: The HTTP verb to use for this request: `GET`, `PUT`, `POST`, or `DELETE`.
-    ///   - url: The destination URL for this request.
+    ///   - endpoint: The destination endpoint for this request.
     ///   - parameters: The parameters for this request, if any.
     ///   - requestBody: A tuple value comprised of multipart data and its respective content type, if any.
     /// - Returns: An authorized `SKRequest` instance, or `nil` if a request cannot be instantiated with the given parameters.
