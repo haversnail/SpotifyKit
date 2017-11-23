@@ -18,7 +18,7 @@ extension SPTAudioStreamingController {
     ///   - track: The SpotifyKit track to play.
     ///   - position: The position, in seconds, from which to begin playback. The default value is `0`, playing the track from the beginning.
     ///   - handler: The callback handler for the request, providing an error identifying if and why the request failed, or `nil` if the request was successful.
-    public func play<T: Track>(_ track: T, from position: TimeInterval = 0, handler: @escaping SKErrorHandler) {
+    public func play<T: Track>(_ track: T, from position: TimeInterval = 0, completion handler: @escaping SKErrorHandler) {
         
         playSpotifyURI(track.uri, startingWith: 0, startingWithPosition: position, callback: handler)
     }
@@ -30,7 +30,7 @@ extension SPTAudioStreamingController {
     ///   - index: The index of the track within the album to begin playing. The default value is `0`, beginning with the first track in the album.
     ///   - position: The position, in seconds, from which to begin playback of the given track. The default value is `0`, playing the track from the beginning.
     ///   - handler: The callback handler for the request, providing an error identifying if and why the request failed, or `nil` if the request was successful.
-    public func play<T: Album>(_ album: T, at index: Int = 0, from position: TimeInterval = 0, handler: @escaping SKErrorHandler) {
+    public func play<T: Album>(_ album: T, at index: Int = 0, from position: TimeInterval = 0, completion handler: @escaping SKErrorHandler) {
         
         playSpotifyURI(album.uri, startingWith: UInt(index), startingWithPosition: position, callback: handler)
     }
@@ -42,7 +42,7 @@ extension SPTAudioStreamingController {
     ///   - index: The index of the track within the playlist to begin playing. The default value is `0`, beginning with the first track in the playlist.
     ///   - position: The position, in seconds, from which to begin playback of the given track. The default value is `0`, playing the track from the beginning.
     ///   - handler: The callback handler for the request, providing an error identifying if and why the request failed, or `nil` if the request was successful.
-    public func play(_ playlist: SKPlaylist, at index: Int = 0, from position: TimeInterval = 0, handler: @escaping SKErrorHandler) {
+    public func play(_ playlist: SKPlaylist, at index: Int = 0, from position: TimeInterval = 0, completion handler: @escaping SKErrorHandler) {
         
         playSpotifyURI(playlist.uri, startingWith: UInt(index), startingWithPosition: position, callback: handler)
     }
@@ -52,7 +52,7 @@ extension SPTAudioStreamingController {
     /// - Parameters:
     ///   - track: The SpotifyKit track to add to the playback queue.
     ///   - handler: The callback handler for the request, providing an error identifying if and why the request failed, or `nil` if the request was successful.
-    public func queue<T: Track>(_ track: T, handler: @escaping SKErrorHandler) {
+    public func queue<T: Track>(_ track: T, completion handler: @escaping SKErrorHandler) {
         
         queueSpotifyURI(track.uri, callback: handler)
     }
@@ -69,10 +69,10 @@ public protocol Playable {
     ///
     /// If the item represents a collection of tracks, such as an album or playlst, this method begins playing the first track in the context.
     ///
-    /// - Note: This method uses the shared `SPTAudioStreamingController` instance to play the item. If the controller has not been initialized, started on its own thread, or logged into the Spotify service, then his method will do nothing.
+    /// - Note: This method uses the shared `SPTAudioStreamingController` instance to play the item. If the controller has not been initialized, started on its own thread, or logged into the Spotify service, then this method will do nothing.
     ///
     /// - Parameter handler: The callback handler for the request, providing an error identifying if and why the request failed, or `nil` if the request was successful.
-    func play(handler: @escaping SKErrorHandler)
+    func play(completion handler: @escaping SKErrorHandler)
 }
 
 /// A type that can be added to the streaming queue with the [Spotify Audio Playback](https://github.com/spotify/ios-sdk) framework.
@@ -82,21 +82,21 @@ public protocol Queueable {
     
     /// Queues the item for playback.
     ///
-    /// - Note: This method uses the shared `SPTAudioStreamingController` instance to queue the item. If the controller has not been initialized, started on its own thread, or logged into the Spotify service, then his method will do nothing.
+    /// - Note: This method uses the shared `SPTAudioStreamingController` instance to queue the item. If the controller has not been initialized, started on its own thread, or logged into the Spotify service, then this method will do nothing.
     ///
     /// - Parameter handler: The callback handler for the request, providing an error identifying if and why the request failed, or `nil` if the request was successful.
-    func queue(handler: @escaping SKErrorHandler)
+    func queue(completion handler: @escaping SKErrorHandler)
 }
 
 extension SKPlaylist: Playable {
-    public func play(handler: @escaping SKErrorHandler/* = { _ in }*/) {
-        SPTAudioStreamingController.sharedInstance()?.play(self, handler: handler)
+    public func play(completion handler: @escaping SKErrorHandler/* = { _ in }*/) {
+        SPTAudioStreamingController.sharedInstance()?.play(self, completion: handler)
     }
 }
 
 extension Playable where Self: Album {
-    public func play(handler: @escaping SKErrorHandler) {
-        SPTAudioStreamingController.sharedInstance()?.play(self, handler: handler)
+    public func play(completion handler: @escaping SKErrorHandler) {
+        SPTAudioStreamingController.sharedInstance()?.play(self, completion: handler)
     }
 }
 
@@ -104,8 +104,8 @@ extension SKAlbum: Playable {}
 extension SKSavedAlbum: Playable {}
 
 extension Playable where Self: Track {
-    public func play(handler: @escaping SKErrorHandler) {
-        SPTAudioStreamingController.sharedInstance()?.play(self, handler: handler)
+    public func play(completion handler: @escaping SKErrorHandler) {
+        SPTAudioStreamingController.sharedInstance()?.play(self, completion: handler)
     }
 }
 
@@ -115,8 +115,8 @@ extension SKRecentTrack: Playable {}
 extension SKPlaylistTrack: Playable {}
 
 extension Queueable where Self: Track {
-    public func queue(handler: @escaping SKErrorHandler) {
-        SPTAudioStreamingController.sharedInstance()?.queue(self, handler: handler)
+    public func queue(completion handler: @escaping SKErrorHandler) {
+        SPTAudioStreamingController.sharedInstance()?.queue(self, completion: handler)
     }
 }
 
