@@ -5,7 +5,7 @@
  # Decoding Responses
  Nearly every request sent to the [Spotify Web API](https://developer.spotify.com/web-api/) returns some sort of JSON-encoded data, typically representing one of the objects outlined in the API's [object model](https://developer.spotify.com/web-api/object-model/). One of the core functions of this framework is decoding these JSON objects into "Swift-esque," protocol-oriented value types that you can use within your own application.
  
- With the introduction of the Encoding & Decoding APIs in the Swift 4 [Standard Library](apple-reference-documentation://ts2902609) and Xcode 9 [SDK](apple-reference-documentation://ts2877770), parsing JSON payloads has become relatively painless—however, the the following page will illustrate how **SpotifyKit** makes this process even easier for you by introducing some simple protocols along with the framework.
+ With the introduction of the Encoding & Decoding APIs in the Swift 4 [Standard Library](apple-reference-documentation://ts2902609) and Xcode 9 [SDK](apple-reference-documentation://ts2877770), parsing JSON payloads has become relatively painless—however, the following page will illustrate how **SpotifyKit** makes this process even easier for you by introducing some simple protocols along with the framework.
  
  ## JSON Codable Protocols
  
