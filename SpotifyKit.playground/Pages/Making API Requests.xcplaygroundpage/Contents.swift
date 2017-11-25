@@ -75,7 +75,7 @@ sameRequest.apiSession = SPTSession(userName: "ahavermale",
 
 /*:
  ## Performing Requests
- Once the URL request has been prepared, you execute the request by calling one of the `perform(handler:)` methods. There are three available methods for performing the request, each with their own closure type and level of granularity:
+ Once the URL request has been prepared, you execute the request by calling one of the `perform(completion:)` methods. There are three available methods for performing the request, each with their own closure type and level of granularity:
  
  * An `SKRequestHandler` closure, which returns the raw JSON data (if any), the HTTP status code, and/or an error if unsuccessful:
  */

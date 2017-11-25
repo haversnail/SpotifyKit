@@ -77,7 +77,7 @@ public struct SKPlayer {
     ///       - `tracks`: A cursor-based paginated list of recent artists, if any.
     ///       - `error`: An error identifying if and why the request failed, or `nil` if the request was successful.
     public static func getRecentTracks(after date: Date? = nil, limit: Int? = nil, completion handler: @escaping (CursorPage<SKRecentTrack>?, Error?) -> Void) {
-        makeRecentTracksRequest(startAfterDate: date, limit: limit).perform(handler: handler)
+        makeRecentTracksRequest(startAfterDate: date, limit: limit).perform(completion: handler)
     }
     
     /// Gets the current authenticated user's recently played tracks.
@@ -93,7 +93,7 @@ public struct SKPlayer {
     ///       - `tracks`: A cursor-based paginated list of recent artists, if any.
     ///       - `error`: An error identifying if and why the request failed, or `nil` if the request was successful.
     public static func getRecentTracks(before date: Date?, limit: Int? = nil, completion handler: @escaping (CursorPage<SKRecentTrack>?, Error?) -> Void) {
-        makeRecentTracksRequest(endBeforeDate: date, limit: limit).perform(handler: handler)
+        makeRecentTracksRequest(endBeforeDate: date, limit: limit).perform(completion: handler)
     }
     
     // MARK: - Get a User's Available Devices ✔︎
@@ -115,7 +115,7 @@ public struct SKPlayer {
     ///     - `devices`: An array of available devices, if any.
     ///     - `error`: An error identifying if and why the request failed, or `nil` if the request was successful.
     public static func getAvailableDevices(completion handler: @escaping ([SKDevice]?, Error?) -> Void) {
-        makeAvailableDevicesRequest().perform(handler: handler)
+        makeAvailableDevicesRequest().perform(completion: handler)
     }
     
     // MARK: - Get Information About the Current User's Playback State ✔︎
@@ -143,7 +143,7 @@ public struct SKPlayer {
     ///       - `state`: An `SKPlaybackState` instance.
     ///       - `error`: An error identifying if and why the request failed, or `nil` if the request was successful.
     public static func getPlaybackState(for locale: Locale? = SKCatalog.local.locale, completion handler: @escaping (SKPlaybackState?, Error?) -> Void) {
-        makePlaybackStateRequest(locale: locale).perform(handler: handler)
+        makePlaybackStateRequest(locale: locale).perform(completion: handler)
     }
     
     // MARK: - Transfer Playback to Another Device ✔︎
@@ -186,6 +186,6 @@ public struct SKPlayer {
             return
         }
         
-        makeTransferRequest(deviceID: deviceID, forcePlayback: forcePlayback).perform(handler: handler)
+        makeTransferRequest(deviceID: deviceID, forcePlayback: forcePlayback).perform(completion: handler)
     }
 }

@@ -273,7 +273,7 @@ public class SKRequest { // Inheriting from NSObject causes buildtime error: cla
         }
     }
     
-    // MARK: - Sending Requests
+    // MARK: - Preparing Requests
     
     /// Adds multipart request body data for a PUT, POST, or DELETE request.
     ///
@@ -283,13 +283,15 @@ public class SKRequest { // Inheriting from NSObject causes buildtime error: cla
     public func add(_ data: Data, type: ContentType = .json) { // addMultipartData(_:type:) // or `_ body: JSONEncodable`?
         requestBody = (data: data, type: type)
     }
+    
+    // MARK: - Sending Requests
 
     /// Performs the request, handling API-specific responses and calling the specified handler when complete.
     ///
     /// - Parameter handler: The callback handler for this request. The parameters for this handler are:
     ///     - `data`: The data (typically an encoded JSON object) returned by the request, if any.
     ///     - `error`: An error identifying if and why the request or decoding failed, or `nil` if the request was successful.
-    public func perform(handler: @escaping SKRequestHandler) {
+    public func perform(completion handler: @escaping SKRequestHandler) {
 
         //let urlSession = URLSession(configuration: .default)
         let task = urlSession.dataTask(with: preparedURLRequest) { (data, response, error) in // let taskHandler: (Data?, URLResponse?, Error?) -> Void =
@@ -361,7 +363,7 @@ public class SKRequest { // Inheriting from NSObject causes buildtime error: cla
     /// - Parameter handler: The callback handler for this request. The parameters for this handler are:
     ///     - `type`: The type decoded from the JSON data returned by the request.
     ///     - `error`: An error object identifying if and why the request or decoding failed, or `nil` if the request was successful.
-    public func perform<T: JSONDecodable>(handler: @escaping SKDecodableHandler<T>) {
+    public func perform<T: JSONDecodable>(completion handler: @escaping SKDecodableHandler<T>) {
 
         perform { (data, _, error) in
             guard data != nil, error == nil else {
@@ -383,7 +385,7 @@ public class SKRequest { // Inheriting from NSObject causes buildtime error: cla
     /// Performs the request, calling the specified handler when complete.
     ///
     /// - Parameter handler: The callback handler for the request, providing an error identifying if and why the request failed, or `nil` if the request was successful.
-    public func perform(handler: @escaping SKErrorHandler) {
+    public func perform(completion handler: @escaping SKErrorHandler) {
         perform { (_, _, error) in
             handler(error)
         }
@@ -442,7 +444,7 @@ extension SPTSession {
     ///         - `error`: An error identifying if and why the request failed, or `nil` if the request was successful.
     public func performRequest(method: HTTPRequestMethod, url: URL, parameters: [String: Any] = [:], requestBody: (Data, SKRequest.ContentType)? = nil, handler: @escaping SKRequestHandler) {
         
-        makeRequest(method: method, url: url, parameters: parameters, requestBody: requestBody)?.perform(handler: handler)
+        makeRequest(method: method, url: url, parameters: parameters, requestBody: requestBody)?.perform(completion: handler)
     }
 
     /// A convenience method that performs an authorized request to the [Spotify Web API](https://developer.spotify.com/web-api/) using the given session.
@@ -459,6 +461,6 @@ extension SPTSession {
     ///         - `error`: An error identifying if and why the request failed, or `nil` if the request was successful.
     public func performRequest(method: HTTPRequestMethod, endpoint: String, parameters: [String: Any] = [:], requestBody: (Data, SKRequest.ContentType)? = nil, handler: @escaping SKRequestHandler) {
         
-        makeRequest(method: method, endpoint: endpoint, parameters: parameters, requestBody: requestBody)?.perform(handler: handler)
+        makeRequest(method: method, endpoint: endpoint, parameters: parameters, requestBody: requestBody)?.perform(completion: handler)
     }
 }
