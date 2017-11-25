@@ -24,6 +24,8 @@ import Foundation
 
 extension SPTAudioStreamingController {
     
+    // MARK: Playback
+    
     /// Plays a Spotify track.
     ///
     /// - Parameters:
@@ -59,6 +61,8 @@ extension SPTAudioStreamingController {
         playSpotifyURI(playlist.uri, startingWith: UInt(index), startingWithPosition: position, callback: handler)
     }
     
+    // MARK: Queueing
+    
     /// Queues a Spotify track.
     ///
     /// - Parameters:
@@ -74,7 +78,7 @@ extension SPTAudioStreamingController {
 
 /// A type that can be streamed with the [Spotify Audio Playback](https://github.com/spotify/ios-sdk) framework.
 ///
-/// Types that conform to this protocol implement a convenience method that calls the shared `SPTAudioStreamingController` instance's `play` method, beginning playback of the item that performed the method,
+/// Types that conform to this protocol implement a convenience method that calls the shared `SPTAudioStreamingController` instance's `play(_:)` method, beginning playback of the item that performed the method,
 public protocol Playable {
     
     /// Plays the item from the beginning.
