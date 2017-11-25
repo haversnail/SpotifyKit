@@ -71,7 +71,7 @@ class RequestTests: XCTestCase {
     
     func decode<T: JSONDecodable>(_ type: T.Type, from request: SKRequest, file: StaticString = #file, line: UInt = #line) -> T? {
         
-        guard let data = request.requestBody?.data else {
+        guard let data = request.body?.data else {
             XCTFail("the request does not contain multipart body data.", file: file, line: line)
             return nil
         }
@@ -248,6 +248,8 @@ class RequestTests: XCTestCase {
         // Arrange:
         let url = URL(string: "https://api.spotify.com/v1/albums/5DLhV9yOvZ7IxVmljMXtNm")!
         let session = SPTAuth.defaultInstance().session!
+        let request1 = session.makeRequest(method: .GET, url: url)
+        let request2 = session.makeRequest(method: .GET, endpoint: url.path)
         let promise = makeRequestExpectation()
         promise.expectedFulfillmentCount = 2 // Make sure both requests finish successfully.
         defer { wait(for: promise) }
@@ -276,8 +278,8 @@ class RequestTests: XCTestCase {
         }
         
         // Act:
-        session.performRequest(method: .GET, url: url, handler: handler)
-        session.performRequest(method: .GET, endpoint: url.path, handler: handler)
+        request1?.perform(completion: handler)
+        request2?.perform(completion: handler)
     }
     
     // MARK: - Album Requests
@@ -1119,7 +1121,7 @@ class RequestTests: XCTestCase {
         // Assert request:
         XCTAssertEqual(request.method, .PUT)
         XCTAssertEqual(request.url.path, "/v1/users/\(playlist.owner.id)/playlists/\(playlist.id)/images")
-        XCTAssertEqual(request.requestBody!.data, data)
+        XCTAssertEqual(request.body!.data, data)
         
         // Act:
         playlist.updateImage(with: image) { (error) in

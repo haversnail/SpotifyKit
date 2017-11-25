@@ -33,7 +33,9 @@ internal struct Constants {
         private init() {}
         static let authorization = "Authorization"
         static let contentType = "Content-Type"
-        //static let matchETag = "If-None-Match"
+        static let retryAfter = "Retry-After"
+//        static let ifNoneMatch = "If-None-Match"
+//        static let eTag = "etag"
     }
     
     // MARK: - URL Query Parameters

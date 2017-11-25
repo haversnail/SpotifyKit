@@ -25,7 +25,7 @@ import Foundation
 public struct SKError: Error, JSONDecodable {
     
     /// The HTTP status code (also returned in the response header; see `HTTPStatusCode` for possible values or [Response Status Codes](https://developer.spotify.com/web-api/user-guide/#response-status-codes) for more information).
-    public let status: HTTPStatusCode
+    public let status: SKResponseStatus
     
     /// A short description of the cause of the error.
     public let message: String
@@ -45,7 +45,7 @@ extension SKError: Decodable {
     public init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: ContainerKeys.self)
         let values = try container.nestedContainer(keyedBy: CodingKeys.self, forKey: .error)
-        status = try values.decode(HTTPStatusCode.self, forKey: .status)
+        status = try values.decode(SKResponseStatus.self, forKey: .status)
         message = try values.decode(String.self, forKey: .message)
     }
 }
@@ -53,7 +53,9 @@ extension SKError: Decodable {
 // MARK: Error Localization
 
 extension SKError: LocalizedError {
-    public var errorDescription: String? { return "Received a \(status.rawValue) (\(status)) error: \(message)" }
+    public var errorDescription: String? {
+        return "Received a \"\(status)\" (\(status.code)) error: \(message)"
+    }
 }
 
 // MARK: - Authentication Error Type
@@ -75,5 +77,7 @@ public struct SKAuthenticationError: Error, JSONDecodable {
 // MARK: Error Localization
 
 extension SKAuthenticationError: LocalizedError {
-    public var errorDescription: String? { return "Received a \"\(error)\" error: \(errorDetails)" }
+    public var errorDescription: String? {
+        return "Received a \"\(error)\" error: \(errorDetails)"
+    }
 }

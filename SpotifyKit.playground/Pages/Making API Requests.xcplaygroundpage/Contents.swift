@@ -16,7 +16,7 @@
 import SpotifyKit
 import Foundation
 
-let method: HTTPRequestMethod = .GET
+let method: SKRequest.HTTPMethod = .GET
 let url = URL(string: "https://api.spotify.com/v1/artists/53XhwfbYqKCa1cC15pYq2q")!
 let request = SKRequest(method: method, url: url)!
 
@@ -77,11 +77,11 @@ sameRequest.apiSession = SPTSession(userName: "ahavermale",
  ## Performing Requests
  Once the URL request has been prepared, you execute the request by calling one of the `perform(completion:)` methods. There are three available methods for performing the request, each with their own closure type and level of granularity:
  
- * An `SKRequestHandler` closure, which returns the raw JSON data (if any), the HTTP status code, and/or an error if unsuccessful:
+ * An `SKRequestHandler` closure, which returns the raw JSON data (if any), the HTTP response status code, and/or an error if unsuccessful:
  */
 
 
-request.perform { (data: Data?, status: HTTPStatusCode?, error: Error?) in
+request.perform { (data: Data?, status: SKResponseStatus?, error: Error?) in
     
     if let data = data { /* ... */ }
     if let status = status { /* ... */ }

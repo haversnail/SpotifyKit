@@ -22,7 +22,7 @@ SPTAuth.defaultInstance().session = SPTSession(userName: username, accessToken: 
 
 /*:
  ## Authentication
- As mentioned in [Making API Requests](Making%20API%20Requests), the `SKRequest` class uses an [`SPTSession`](https://spotify.github.io/ios-sdk/Classes/SPTSession.html) instance to authenticate its underlying URL request. Although custom session objects would normally be assigned after the creation of a request, **SpotifyKit** also adds the flexibility to create a request directly from the session object itself:
+ As mentioned in [Making API Requests](Making%20API%20Requests), the `SKRequest` class uses an [`SPTSession`](https://spotify.github.io/ios-sdk/Classes/SPTSession.html) instance to authenticate its underlying URL request. Although custom session objects would normally be assigned after the creation of a request, **SpotifyKit** also adds the flexibility to create a request directly from the session object itself.
  */
 
 import Foundation
@@ -31,13 +31,7 @@ import PlaygroundSupport
 PlaygroundPage.current.needsIndefiniteExecution = true
 
 let session = SPTAuth.defaultInstance().session!
-let request = session.makeRequest(method: .GET, endpoint: "/v1/artists/6YWdHD3R863Apw1hkx3BwC")
-
-//: Or, you could use the `performRequest` method, handling preparation and execution all at once:
-
-session.performRequest(method: .GET, endpoint: "/v1/artists/4FZ3j1oH43e7cukCALsCwf") { (data, status, error) in
-    // Handle thangs.
-}
+let authorizedRequest = session.makeRequest(method: .GET, endpoint: "/v1/artists/6YWdHD3R863Apw1hkx3BwC")
 
 /*:
  ## Audio Playback
