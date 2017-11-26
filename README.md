@@ -29,7 +29,7 @@ An intuitive and comprehensive Swift wrapper for the [Spotify Web API][Web API].
 
 If you use [Carthage][Carthage] to manage your project's dependencies, add the following line to your `Cartfile`:
 ```bash
-github "haversnail/spotifykit" ~> 1.0
+github "haversnail/SpotifyKit" ~> 1.0
 ```
 and run `carthage update` to check out and build SpotifyKit and its dependencies.
 
@@ -51,7 +51,7 @@ And don't forget to link the `AVFoundation.framework` if you intend to use the S
 
 #### Manual Setup
 
-1. Check out or download the `haversnail/spotifykit` repository.
+1. Check out or download the `haversnail/SpotifyKit` repository.
 
 2. Using [Carthage][Carthage], run `carthage bootstrap --no-build` from the repo's root directory. This will check out the [iOS SDK][iOS SDK] dependency without attempting to build the already-built framework binaries.
 
