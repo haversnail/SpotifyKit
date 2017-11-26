@@ -1,0 +1,139 @@
+module: SpotifyKit
+module_version: 1.0
+swift_version: 4.0.2
+min_acl: public
+author: Alex Havermale
+author_url: https://github.com/haversnail
+github_url: https://github.com/haversnail/spotifykit
+copyright: "Copyright 2017 Alex Havermale. Licensed under the [Apache License, Version 2.0](http://www.apache.org/licenses/LICENSE-2.0)."
+
+theme: fullwidth # apple
+readme: docs/README.md
+#documentation: docs/*.md
+#docset_icon: SpotifyKit.playground/Resources/Logo.png
+#hide-documentation-coverage
+
+custom_categories:
+
+    - name: Handling API Requests
+      children:
+        - SKRequest
+        #   - HTTPMethod
+        #   - ContentType
+        - SKRequestHandler
+        - SKDecodableHandler
+        - SKErrorHandler
+        - SKResponseStatus
+        - SKError
+        - SKAuthenticationError
+
+    - name: Encoding & Decoding
+      children:
+        - JSONEncodable
+        - JSONDecodable
+        - Array
+        - Dictionary
+        - Optional
+        - RawRepresentable
+
+    - name: Pagination
+      children:
+        - PagingCollection
+        - OffsetPagingCollection
+        - CursorPagingCollection
+        - CursorPageable
+        - Page
+        - CursorPage
+        - CursorProtocol
+        - Cursors
+        - Pagination
+
+    - name: Albums
+      children:
+        - Album
+        - SKAlbum
+        - SKSavedAlbum
+        - SKAlbumType
+
+    - name: Artists
+      children:
+        - SKArtist
+
+    - name: Playlists
+      children:
+        - SKPlaylist
+
+    - name: Tracks
+      children:
+        - Track
+        - SKTrack
+        - SKSavedTrack
+        - SKPlaylistTrack
+        - SKRecentTrack
+        - SKTrackLinks
+        - SKAudioFeatures
+        #   - Pitch
+        #   - Mode
+
+    - name: Catalog
+      children:
+        - SKCatalog
+        - SKCategory
+        - SKFeaturedPlaylists
+        - SKRecommendations
+        - SKSeed
+        #   - SeedType
+        - SKTrackAttribute
+
+    - name: Search
+      children:
+        - SKSearchResults
+        - SKSearchResultType
+        - SKSearchFieldFilter
+        - SKSearchTag
+        - Set
+
+    - name: Profiles & User Actions
+      children:
+        - User
+        - SKUser
+        - SKCurrentUser
+        #   - ProductType
+        - Followable
+        - Savable
+
+    - name: Player (βeta)
+      children:
+        - SKPlayer
+        - SKDevice
+        #   - DeviceType
+        - SKPlaybackContext
+        #   - ContextType
+        - SKPlaybackState
+        - SKRepeatMode
+
+    - name: iOS SDK Extensions
+      children:
+        - SPTSession
+        - SPTRepeatMode
+        - SPTAudioStreamingController
+        - Playable
+        - Queueable
+
+    - name: Other Requests
+      children:
+          - Collection
+          - Expandable
+
+    # - name: Other Enumerations
+    #   children:
+    #       - SKContentRating
+    #       - SKDatePrecision
+    #       - SKTimeRange
+
+    # - name: Other Structures
+    #   children:
+    #       - SKCopyright
+    #       #     - CopyrightType
+    #       - SKFollowers
+    #       - SKImage
