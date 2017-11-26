@@ -1575,6 +1575,8 @@ extension SKUser: Followable {}
 
 extension Collection/*: Followable */where Element: Followable {
     
+    // MARK: Follow/Unfollow Several Items
+    
     private var followRequestParameters: [String: Any] {
         get {
             if self.isEmpty { assertionFailure("collection of Followable items must contain at least one value for the API request to be valid.") }
@@ -1935,6 +1937,8 @@ extension SKPlaylistTrack: Savable {}
 // MARK: Collection Conformance
 
 extension Collection where Element: Savable {
+    
+    // MARK: Save/Unsave Several Items
     
     private var saveRequestParameters: [String: Any] {
         get {
