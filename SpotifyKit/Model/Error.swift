@@ -54,7 +54,7 @@ extension SKError: Decodable {
 
 extension SKError: LocalizedError {
     public var errorDescription: String? {
-        return "Received a \"\(status)\" (\(status.code)) error: \(message)"
+        return "Received a(n) \"\(status)\" (\(status.code)) error: \(message)"
     }
 }
 
@@ -62,15 +62,15 @@ extension SKError: LocalizedError {
 
 public struct SKAuthenticationError: Error, JSONDecodable {
     
-    /// A high level description of the error as specified in [RFC 6749 Section 5.2](https://tools.ietf.org/html/rfc6749#section-5.2).
-    public let error: String
+    /// A high-level description of the error, as specified in [RFC 6749 Section 5.2](https://tools.ietf.org/html/rfc6749#section-5.2).
+    public let status: String
     
-    /// A more detailed description of the error as specified in [RFC 6749 Section 4.1.2.1](https://tools.ietf.org/html/rfc6749#section-4.1.2.1).
-    public let errorDetails: String
+    /// A more detailed description of the error, as specified in [RFC 6749 Section 4.1.2.1](https://tools.ietf.org/html/rfc6749#section-4.1.2.1).
+    public let message: String
     
     private enum CodingKeys: String, CodingKey {
-        case error
-        case errorDetails = "error_description" // Renamed to avoid confusion with the `LocalizedError` protocol property.
+        case status = "error"
+        case message = "error_description" // Renamed to avoid confusion with the `LocalizedError` protocol property.
     }
 }
 
@@ -78,6 +78,6 @@ public struct SKAuthenticationError: Error, JSONDecodable {
 
 extension SKAuthenticationError: LocalizedError {
     public var errorDescription: String? {
-        return "Received a \"\(error)\" error: \(errorDetails)"
+        return "Received a(n) \"\(status)\" error: \(message)"
     }
 }

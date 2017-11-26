@@ -101,12 +101,12 @@ class ModelTests: XCTestCase {
     
     func testError() {
         guard let error = initTestObject(SKError.self, from: errorData) else { return }
-        XCTAssertEqual(error.localizedDescription, "Received a 401 (unauthorized) error: The access token expired")
+        XCTAssertEqual(error.localizedDescription, "Received a(n) \"Unauthorized\" (401) error: The access token expired")
     }
     
     func testAuthError() {
         guard let error = initTestObject(SKAuthenticationError.self, from: authenticationErrorData) else { return }
-        XCTAssertEqual(error.localizedDescription, "Received a \"invalid_client\" error: Invalid client secret")
+        XCTAssertEqual(error.localizedDescription, "Received a(n) \"invalid_client\" error: Invalid client secret")
     }
     
     func testPlayHistory() {
