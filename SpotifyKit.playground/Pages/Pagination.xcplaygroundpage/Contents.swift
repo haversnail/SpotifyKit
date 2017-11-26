@@ -72,7 +72,7 @@ SKPlayer.getRecentTracks(limit: 5) { (tracks, error) in
     }
 }
 
-//: To better understand the dynamic between these paging collection protocols and their associated types, check out the **SpotifyKit** [documentation]().
+//: To better understand the dynamic between these paging collection protocols and their associated types, check out the **SpotifyKit** [documentation](https://haversnail.github.io/SpotifyKit/).
 
 /*:
  ## Navigating Paginated Responses

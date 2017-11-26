@@ -55,7 +55,7 @@ SKCatalog.local.getArtist(withID: "1hCkSJcXREhrodeIHQdav8") { (artist, error) in
     }
 }
 
-//: Be sure to check out the **SpotifyKit** [documentation]() for a full list of types and their available request methods.
+//: Be sure to check out the **SpotifyKit** [documentation](https://haversnail.github.io/SpotifyKit/) for a full list of types and their available request methods.
 
 //: > ## Beta Requests
 //: > As mentioned earlier, **SpotifyKit** does not contain a request method for *every* available endpoint—in particular, the beta ["Web API Connect"](https://developer.spotify.com/web-api/working-with-connect/) endpoints. Many of these endpoints are designed to control playback of the user's current Spotify player; since **SpotifyKit** also includes the headers from the [Spotify iOS SDK](https://github.com/spotify/ios-sdk), playback control is already available through the `SpotifyAudioPlayback` framework, making request methods for those endpoints redundant. Therefore, **SpotifyKit** only includes those beta requests that aren't available through the SDK, such as transferring playback between devices, and **not** those that control playback. Should you wish to create requests for those endpoints yourself, however, you can easily do so using the techniques covered in the [previous pages](Making%20API%20Requests).

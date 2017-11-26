@@ -6,7 +6,7 @@ An intuitive and comprehensive Swift wrapper for the [Spotify Web API][Web API].
 [![Carthage](https://img.shields.io/badge/Carthage-compatible-4BC51D.svg "Carthage compatible")][Carthage]
 [![iOS SDK](https://img.shields.io/badge/iOS%20SDK-beta--25-blue.svg "Spotify iOS SDK release")][iOS SDK]
 ![Platforms](https://img.shields.io/badge/platform-iOS-lightgrey.svg "Platforms")
-[![Docs](docs/badge.svg "Documentation coverage")](docs/)
+[![Docs](docs/badge.svg "Documentation coverage")][Docs]
 
 ## Getting Started
 
@@ -88,7 +88,7 @@ This creates module maps for the newly checked-out frameworks, which should elim
 
 ### Documentation
 
-- 📖 Read the full SpotifyKit **documentation** [here](docs/), courtesy of [Jazzy](https://github.com/realm/jazzy).
+- 📖 Read the full SpotifyKit **documentation** [here][Docs], courtesy of [Jazzy](https://github.com/realm/jazzy).
 
 ## Roadmap
 
@@ -137,6 +137,7 @@ This creates module maps for the newly checked-out frameworks, which should elim
 
 ⚖️ See [LICENSE](LICENSE.txt) for more details.
 
+[Docs]: https://haversnail.github.io/SpotifyKit/
 [Web API]: https://developer.spotify.com/web-api/
 [iOS SDK]: https://github.com/spotify/ios-sdk
 [Swift]: https://swift.org

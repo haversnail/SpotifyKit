@@ -28,7 +28,7 @@ This is the first public release of the SpotifyKit framework. As such, the follo
     - Renamed beta [Currently Playing](https://developer.spotify.com/web-api/get-information-about-the-users-current-playback/) objects to `SKPlaybackState`.
     - Refactored [Cursor](https://developer.spotify.com/web-api/object-model/#cursor-object) objects as embedded structs with a generic cursor type that depends on the type of elements in the paging collection.
     - Decodes objects without fixed key names or with a variable or number of keys (i.e., [External ID](https://developer.spotify.com/web-api/object-model/#external-id-object) objects, [External URL](https://developer.spotify.com/web-api/object-model/#external-url-object) objects, etc.) as `[String : String]` or `[String : URL]` dictionary objects.
-    - Represents objects with both a "simplified" and "full" version as one type, with an optional set of properties for any simplified instances. See the `Expandable` protocol in the documentation for more details.
+    - Represents objects with both a "simplified" and "full" version as one type, with an optional set of properties for any simplified instances. See the `Expandable` protocol in the [documentation][Docs] for more details.
 
 - **Object Properties:**
     - Changed standardized string attributes to enumeration types (e.g., `SKAlbumType`, `SKDatePrecision`, etc.).
@@ -55,6 +55,7 @@ This is the first public release of the SpotifyKit framework. As such, the follo
 [1.0.2]: https://github.com/haversnail/spotifykit/compare/v1.0.1...v1.0.2
 [1.0.1]: https://github.com/haversnail/spotifykit/compare/v1.0.0...v1.0.1
 
+[Docs]: https://haversnail.github.io/SpotifyKit/
 [iOS SDK]: https://github.com/spotify/ios-sdk
 [Web API]: https://developer.spotify.com/web-api/
 [Object Model]: https://developer.spotify.com/web-api/object-model/
