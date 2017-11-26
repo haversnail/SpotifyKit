@@ -20,11 +20,14 @@
 
 import Foundation
 
-// MARK: Error Type
+// MARK: Error
 
+/// An error returned by the Spotify Web API.
+///
+/// - SeeAlso: The Web API [Error](https://developer.spotify.com/web-api/user-guide/#error-object) object.
 public struct SKError: Error, JSONDecodable {
     
-    /// The HTTP status code (also returned in the response header; see `HTTPStatusCode` for possible values or [Response Status Codes](https://developer.spotify.com/web-api/user-guide/#response-status-codes) for more information).
+    /// The HTTP response status returned by the Web API.
     public let status: SKResponseStatus
     
     /// A short description of the cause of the error.
@@ -32,6 +35,8 @@ public struct SKError: Error, JSONDecodable {
 }
 
 extension SKError: Decodable {
+    
+    // MARK: Custom Decoding
     
     private enum ContainerKeys: String, CodingKey {
         case error
@@ -50,16 +55,20 @@ extension SKError: Decodable {
     }
 }
 
-// MARK: Error Localization
-
 extension SKError: LocalizedError {
+    
+    // MARK: Localized Description
+    
     public var errorDescription: String? {
         return "Received a(n) \"\(status)\" (\(status.code)) error: \(message)"
     }
 }
 
-// MARK: - Authentication Error Type
+// MARK: - Authentication Error
 
+/// An authentication error returned by the Spotify Web API.
+///
+/// - SeeAlso: The Web API [Authentication Error](https://developer.spotify.com/web-api/user-guide/#authentication-error-object) object.
 public struct SKAuthenticationError: Error, JSONDecodable {
     
     /// A high-level description of the error, as specified in [RFC 6749 Section 5.2](https://tools.ietf.org/html/rfc6749#section-5.2).
@@ -74,9 +83,10 @@ public struct SKAuthenticationError: Error, JSONDecodable {
     }
 }
 
-// MARK: Error Localization
-
 extension SKAuthenticationError: LocalizedError {
+    
+    // MARK: Localized Description
+    
     public var errorDescription: String? {
         return "Received a(n) \"\(status)\" error: \(message)"
     }

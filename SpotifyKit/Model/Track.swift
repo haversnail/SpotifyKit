@@ -25,9 +25,16 @@ import Foundation
 /// An enum representing the expected `type` value for a track object.
 fileprivate enum ResourceType: String, Codable { case track }
 
+/// An enumeration value representing the content rating for a Spotify media item, such as a track.
 public enum SKContentRating: Int {
+    
+    /// The item does not contain any explicit lyrics.
     case clean
+    
+    /// The item contains explicit lyrics.
     case explicit
+    
+    /// The item does not indicate whether it contains explicit lyrics.
     case unknown
 }
 
@@ -64,6 +71,9 @@ public struct SKTrackLinks: Decodable {
 
 // MARK: - Track Protocol
 
+/// A type representing a Spotify track.
+///
+/// The `Track` protocol serves as the base protocol to which all Spotify track types conform. Its requirements include properties for both "simplified" and "full" versions of a Spotify track. See the Spotify Web API [Object Model](https://developer.spotify.com/web-api/object-model/#track-object-full) for more details.
 public protocol Track {
     
     /// The artists who performed the track. Each artist includes a link in `url` to more detailed information about the artist.
@@ -126,9 +136,12 @@ public protocol Track {
 
 // MARK: - Track Type
 
+/// A Spotify track.
+///
+/// - SeeAlso: The Web API [Simplified](https://developer.spotify.com/web-api/user-guide/#track-object-simplified) and [Full](https://developer.spotify.com/web-api/user-guide/#track-object-full) Track objects.
 public struct SKTrack: Track, JSONDecodable {
     
-    // MARK: Properties (Simplified)
+    // MARK: Simplified Track Properties
     
     /// The resource object type: `"track"`.
     private let type: ResourceType
@@ -164,7 +177,7 @@ public struct SKTrack: Track, JSONDecodable {
     public let uri: String
     public let url: URL
     
-    // MARK: Properties (Full)
+    // MARK: Full Track Properties
     
     public let album: SKAlbum?
     public let externalIDs: [String: String]?
@@ -208,6 +221,9 @@ extension SKTrack: Expandable {
 
 // MARK: - Playlist Track Type
 
+/// A Spotify track that has been added to a Spotify playlist.
+///
+/// - SeeAlso: The Web API [Playlist Track](https://developer.spotify.com/web-api/object-model/#playlist-track-object) object.
 public struct SKPlaylistTrack: Track, JSONDecodable {
     
     /// The date and time the track was added.
@@ -256,6 +272,9 @@ public struct SKPlaylistTrack: Track, JSONDecodable {
 
 // MARK: - Saved Track Type
 
+/// A Spotify track that has been saved to the current authenticated user's music library.
+///
+/// - SeeAlso: The Web API [Saved Track](https://developer.spotify.com/web-api/object-model/#saved-track-object) object.
 public struct SKSavedTrack: Track, JSONDecodable {
     
     /// The date and time the track was saved.

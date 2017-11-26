@@ -20,6 +20,9 @@
 
 import Foundation
 
+/// A Spotify category representing the genres and moods available in the Spotify catalog.
+///
+/// - SeeAlso: The Web API [Category](https://developer.spotify.com/web-api/object-model/#category-object) object.
 public struct SKCategory: JSONDecodable {
 
     /// A link to the Web API endpoint returning full details of the category.

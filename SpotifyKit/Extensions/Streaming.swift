@@ -20,7 +20,7 @@
 
 import Foundation
 
-// MARK: Streaming Convenience Methods
+// MARK: Audio Playback Framework Extensions
 
 extension SPTAudioStreamingController {
     

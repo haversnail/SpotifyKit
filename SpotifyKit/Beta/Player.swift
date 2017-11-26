@@ -22,9 +22,10 @@ import Foundation
 
 // MARK: Player Requests
 
+/// A structure used to make requests to the Spotify Web API regarding the current authenticated user's Spotify player.
 public struct SKPlayer {
     
-    // MARK: - Get the Current User's Recently Played Tracks ✔︎
+    // MARK: - Get the Current User's Recently Played Tracks
     
     /// Creates and returns the request used to get the current authenticated user's recent tracks.
     ///
@@ -68,7 +69,7 @@ public struct SKPlayer {
     ///
     /// - Note: This method uses the `SPTAuth` default instance session to authenticate the underlying request. If this session does not contain a valid access token, the request will result in an error. The access token must have been issued on behalf of the current user.
     ///
-    /// Reading the current user's recently played tracks also requires authorization of the "`user-read-recently-played`" scope. See [Using Scopes](https://developer.spotify.com/spotify-web-api/using-scopes/) for more details.
+    /// Reading the current user's recently played tracks also requires authorization of the `user-read-recently-played` scope. See [Using Scopes](https://developer.spotify.com/spotify-web-api/using-scopes/) for more details.
     ///
     /// - Parameters:
     ///   - date: A date after which to request the tracks. The response will include any tracks within the limit that have been played after, but not including, the given date and time, with millisecond precision. The default value is `nil`, which returns the most recent tracks.
@@ -84,7 +85,7 @@ public struct SKPlayer {
     ///
     /// - Note: This method uses the `SPTAuth` default instance session to authenticate the underlying request. If this session does not contain a valid access token, the request will result in an error. The access token must have been issued on behalf of the current user.
     ///
-    /// Reading the current user's recently played tracks also requires authorization of the "`user-read-recently-played`" scope. See [Using Scopes](https://developer.spotify.com/spotify-web-api/using-scopes/) for more details.
+    /// Reading the current user's recently played tracks also requires authorization of the `user-read-recently-played` scope. See [Using Scopes](https://developer.spotify.com/spotify-web-api/using-scopes/) for more details.
     ///
     /// - Parameters:
     ///   - date: A date before which to request the tracks. The response will include any tracks within the limit that have been played up to, but not including, the given date and time, with millisecond precision.
@@ -96,7 +97,7 @@ public struct SKPlayer {
         makeRecentTracksRequest(endBeforeDate: date, limit: limit).perform(completion: handler)
     }
     
-    // MARK: - Get a User's Available Devices ✔︎
+    // MARK: - Get a User's Available Devices
     
     /// Creates and returns the request used to get the current authenticated user's available devices.
     ///
@@ -109,16 +110,16 @@ public struct SKPlayer {
     ///
     /// - Note: This method uses the `SPTAuth` default instance session to authenticate the underlying request. If this session does not contain a valid access token, the request will result in an error. The access token must have been issued on behalf of the current user.
     ///
-    /// Reading the list of the current user's available devices also requires authorization of the "`user-read-playback-state`" scope. See [Using Scopes](https://developer.spotify.com/spotify-web-api/using-scopes/) for more details.
+    /// Reading the list of the current user's available devices also requires authorization of the `user-read-playback-state` scope. See [Using Scopes](https://developer.spotify.com/spotify-web-api/using-scopes/) for more details.
     ///
     /// - Parameter handler: The callback handler for the request. The parameters for this handler are:
-    ///     - `devices`: An array of available devices, if any.
-    ///     - `error`: An error identifying if and why the request failed, or `nil` if the request was successful.
+    ///       - `devices`: An array of available devices, if any.
+    ///       - `error`: An error identifying if and why the request failed, or `nil` if the request was successful.
     public static func getAvailableDevices(completion handler: @escaping ([SKDevice]?, Error?) -> Void) {
         makeAvailableDevicesRequest().perform(completion: handler)
     }
     
-    // MARK: - Get Information About the Current User's Playback State ✔︎
+    // MARK: - Get Information About the Current User's Playback State
     
     /// Creates and returns the request used to get the current authenticated user's available devices.
     ///
@@ -135,7 +136,7 @@ public struct SKPlayer {
     ///
     /// - Note: This method uses the `SPTAuth` default instance session to authenticate the underlying request. If this session does not contain a valid access token, the request will result in an error. The access token must have been issued on behalf of the current user.
     ///
-    /// Reading the current Spotify player's playback information also requires authorization of the "`user-read-playback-state`" scope. See [Using Scopes](https://developer.spotify.com/spotify-web-api/using-scopes/) for more details.
+    /// Reading the current Spotify player's playback information also requires authorization of the `user-read-playback-state` scope. See [Using Scopes](https://developer.spotify.com/spotify-web-api/using-scopes/) for more details.
     ///
     /// - Parameters:
     ///   - locale: The locale-specific storefront/market from which to request. The default value is the locale for the shared `SKCatalog` instance, which by default represents the user's region settings at the time the method is called.
@@ -146,7 +147,7 @@ public struct SKPlayer {
         makePlaybackStateRequest(locale: locale).perform(completion: handler)
     }
     
-    // MARK: - Transfer Playback to Another Device ✔︎
+    // MARK: - Transfer Playback to Another Device
     
     /// Creates and returns the request used to transfer playback to another device.
     ///
@@ -172,7 +173,7 @@ public struct SKPlayer {
     ///
     /// - Note: This method uses the `SPTAuth` default instance session to authenticate the underlying request. If this session does not contain a valid access token, the request will result in an error. The access token must have been issued on behalf of the current user.
     ///
-    /// Modifying the playback state, to include the active device, also requires authorization of the "`user-modify-playback-state`" scope. See [Using Scopes](https://developer.spotify.com/spotify-web-api/using-scopes/) for more details.
+    /// Modifying the playback state, to include the active device, also requires authorization of the `user-modify-playback-state` scope. See [Using Scopes](https://developer.spotify.com/spotify-web-api/using-scopes/) for more details.
     ///
     /// - Parameters:
     ///   - device: The device on which playback should be transferred.

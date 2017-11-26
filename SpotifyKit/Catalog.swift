@@ -22,18 +22,20 @@ import Foundation
 
 /// A structure used to make requests to the Spotify catalog for top-level items such as albums, artists, tracks, playlists, and others.
 ///
-/// - Note: All request-performing methods (e.g., "`getAlbum`" or "`search`") use the `SPTAuth` default instance session to authenticate the underlying request. If this session does not contain a valid access token, the request will result in an error. If you want to customize the request by injecting your own custom URL/API session or by decoding the response yourself, you can do so using any of the accompanying factory methods (e.g., "`makeAlbumRequest`" or "`makeSearchRequest`") to create and return the `SKRequest` instance itself.
+/// - Note: All request-performing methods (e.g., `getAlbum` or `search`) use the `SPTAuth` default instance session to authenticate the underlying request. If this session does not contain a valid access token, the request will result in an error. If you want to customize the request by injecting your own custom URL/API session or by decoding the response yourself, you can do so using any of the accompanying factory methods (e.g., `makeAlbumRequest` or `makeSearchRequest`) to create and return the `SKRequest` instance itself.
 public struct SKCatalog {
+//public struct SKStorefront
     
     /// The local catalog instance, which represents the user's region settings at the time the property is read.
-    public static var local: SKCatalog { return SKCatalog(locale: Locale.current) } // var current // Locale.autoupdatingCurrent
+    public static var local: SKCatalog { return SKCatalog(locale: Locale.current) }
+    //public static var local = SKCatalog(locale: Locale.autoupdatingCurrent)
     
     /// The locale representing the specific storefront/market from which to request catalog content.
     ///
-    /// All requests that include a "`market`," "`country`," or "`locale`" parameter will refer to the region and language codes provided by this property. If set to `nil`, many requests will return results for all available markets.
+    /// All requests that include a `market`, `country`, or `locale` parameter will refer to the region and language codes provided by this property. If set to `nil`, many requests will return results for all available markets.
     ///
     /// - Important: Some requests are required to specify a locale or country code, and will result in an error if no locale is set before performing the request. This requirement will be annotated by all applicable requests.
-    public var locale: Locale? // var storefront // = Locale.current // = nil
+    public var locale: Locale?
     
     /// Creates a new, reusable catalog instance with the specified storefront.
     ///
@@ -44,7 +46,7 @@ public struct SKCatalog {
     
     // MARK: - Albums
     
-    // MARK: Get an Album ✔︎
+    // MARK: Get an Album
     
     /// Creates and returns the request used to get an album.
     ///
@@ -68,7 +70,7 @@ public struct SKCatalog {
         makeAlbumRequest(id: id).perform(completion: handler)
     }
     
-    // MARK: Get Several Albums ✔︎
+    // MARK: Get Several Albums
     
     /// Creates and returns the request used to get several albums.
     ///
@@ -95,7 +97,7 @@ public struct SKCatalog {
     
     // MARK: - Artists
     
-    // MARK: Get an Artist ✔︎
+    // MARK: Get an Artist
     
     /// Creates and returns the request used to get an artist.
     ///
@@ -116,7 +118,7 @@ public struct SKCatalog {
         makeArtistRequest(id: id).perform(completion: handler)
     }
     
-    // MARK: Get Several Artists ✔︎
+    // MARK: Get Several Artists
     
     /// Creates and returns the request used to get several artists.
     ///
@@ -134,15 +136,15 @@ public struct SKCatalog {
     /// - Parameters:
     ///   - ids: A list of the [Spotify IDs](https://developer.spotify.com/web-api/user-guide/#spotify-uris-and-ids) for the artists. Maximum: 50 IDs.
     ///   - handler: The callback handler for the request. The parameters for this handler are:
-    ///     - `albums`: The requested list of full artists. If a particular artist cannot be found for a given ID, the resulting array will contain `nil` at the corresponding index.
-    ///     - `error`: An error identifying if and why the request failed, or `nil` if the request was successful.
+    ///       - `albums`: The requested list of full artists. If a particular artist cannot be found for a given ID, the resulting array will contain `nil` at the corresponding index.
+    ///       - `error`: An error identifying if and why the request failed, or `nil` if the request was successful.
     public func getArtists(withIDs ids: [String], completion handler: @escaping ([SKArtist?]?, Error?) -> Void) {
         makeArtistsRequest(ids: ids).perform(completion: handler)
     }
     
     // MARK: - Tracks
     
-    // MARK: Get a Track ✔︎
+    // MARK: Get a Track
     
     /// Creates and returns the request used to get a track.
     ///
@@ -160,13 +162,13 @@ public struct SKCatalog {
     /// - Parameters:
     ///   - id: The [Spotify ID](https://developer.spotify.com/web-api/user-guide/#spotify-uris-and-ids) for the track.
     ///   - handler: The callback handler for the request. The parameters for this handler are:
-    ///     - `track`: The requested full track, if available.
-    ///     - `error`: An error identifying if and why the request failed, or `nil` if the request was successful.
+    ///       - `track`: The requested full track, if available.
+    ///       - `error`: An error identifying if and why the request failed, or `nil` if the request was successful.
     public func getTrack(withID id: String, completion handler: @escaping (SKTrack?, Error?) -> Void) {
         makeTrackRequest(id: id).perform(completion: handler)
     }
     
-    // MARK: Get Several Tracks ✔︎
+    // MARK: Get Several Tracks
     
     /// Creates and returns the request used to get several tracks.
     ///
@@ -185,15 +187,15 @@ public struct SKCatalog {
     /// - Parameters:
     ///   - ids: A list of the [Spotify IDs](https://developer.spotify.com/web-api/user-guide/#spotify-uris-and-ids) for the tracks. Maximum: 50 IDs.
     ///   - handler: The callback handler for the request. The parameters for this handler are:
-    ///     - `tracks`: The requested list of full tracks. If a particular track cannot be found for a given ID, the resulting array will contain `nil` at the corresponding index.
-    ///     - `error`: An error identifying if and why the request failed, or `nil` if the request was successful.
+    ///       - `tracks`: The requested list of full tracks. If a particular track cannot be found for a given ID, the resulting array will contain `nil` at the corresponding index.
+    ///       - `error`: An error identifying if and why the request failed, or `nil` if the request was successful.
     public func getTracks(withIDs ids: [String], completion handler: @escaping ([SKTrack?]?, Error?) -> Void) {
         makeTracksRequest(ids: ids).perform(completion: handler)
     }
     
     // MARK: - Browse
     
-    // MARK: Get Featured Playlists ✔︎
+    // MARK: Get Featured Playlists
     
     /// Creates and returns the request used to get a list of Spotify featured playlists.
     ///
@@ -222,13 +224,13 @@ public struct SKCatalog {
     ///   - date: A timestamp used to tailor results to a specific date and time of day. For example, if retrieving featured playlists for 3:00 PM, 23 October 2014, the catalog would return a list of playlists relevant to that time and day of the week, accompanied by a specific localized message (e.g., *"Get ready to rock your Thursday! #Rocktober"*). If `nil` is provided, the response defaults to the current UTC time. The default value is the current date and time, relative to the user's current time zone.
     ///   - page: The parameters for paginating the results, specifying the index and number of items to return. If no parameters are supplied, the request will return the default number of items beginning with first item. The default value is `nil`.
     ///   - handler: The callback handler for the request. The parameters for this handler are:
-    ///     - `featuredPlaylists`: An `SKFeaturedPlaylists` instance, which contains a paginated collection of playlists accompanied by a localized message string.
-    ///     - `error`: An error identifying if and why the request failed, or `nil` if the request was successful.
+    ///       - `featuredPlaylists`: An `SKFeaturedPlaylists` instance, which contains a paginated collection of playlists accompanied by a localized message string.
+    ///       - `error`: An error identifying if and why the request failed, or `nil` if the request was successful.
     public func getFeaturedPlaylists(for date: Date? = Date(), page: Pagination? = nil, completion handler: @escaping (SKFeaturedPlaylists?, Error?) -> Void) {
         makeFeaturedPlaylistsRequest(date: date, page: page).perform(completion: handler)
     }
     
-    // MARK: Get New Releases ✔︎
+    // MARK: Get New Releases
     
     /// Creates and returns the request used to get a list of new album releases.
     ///
@@ -248,13 +250,13 @@ public struct SKCatalog {
     /// - Parameters:
     ///   - page: The parameters for paginating the results, specifying the index and number of items to return. If no parameters are supplied, the request will return the default number of items beginning with first item. The default value is `nil`.
     ///   - handler: The callback handler for the request. The parameters for this handler are:
-    ///     - `albums`: A paginated collection of newly released albums.
-    ///     - `error`: An error identifying if and why the request failed, or `nil` if the request was successful.
+    ///       - `albums`: A paginated collection of newly released albums.
+    ///       - `error`: An error identifying if and why the request failed, or `nil` if the request was successful.
     public func getNewReleases(page: Pagination? = nil, completion handler: @escaping (Page<SKAlbum>?, Error?) -> Void) {
         makeNewReleasesRequest(page: page).perform(completion: handler)
     }
     
-    // MARK: Get a List of Categories ✔︎
+    // MARK: Get a List of Categories
     
     /// Creates and returns the request used to get a list of categories.
     ///
@@ -279,13 +281,13 @@ public struct SKCatalog {
     /// - Parameters:
     ///   - page: The parameters for paginating the results, specifying the index and number of items to return. If no parameters are supplied, the request will return the default number of items beginning with first item. The default value is `nil`.
     ///   - handler: The callback handler for the request. The parameters for this handler are:
-    ///     - `categories`: A paginated collection of available Spotify categories.
-    ///     - `error`: An error identifying if and why the request failed, or `nil` if the request was successful.
+    ///       - `categories`: A paginated collection of available Spotify categories.
+    ///       - `error`: An error identifying if and why the request failed, or `nil` if the request was successful.
     public func getCategories(page: Pagination? = nil, completion handler: @escaping (Page<SKCategory>?, Error?) -> Void) {
         makeCategoriesRequest(page: page).perform(completion: handler)
     }
     
-    // MARK: Get a Category ✔︎
+    // MARK: Get a Category
     
     /// Creates and returns the request used to get a single category.
     ///
@@ -308,13 +310,13 @@ public struct SKCatalog {
     /// - Parameters:
     ///   - id: id: The [Spotify category ID](https://developer.spotify.com/web-api/user-guide/#spotify-uris-and-ids) for the category.
     ///   - handler: The callback handler for the request. The parameters for this handler are:
-    ///     - `category`: The requested category, if available.
-    ///     - `error`: An error identifying if and why the request failed, or `nil` if the request was successful.
+    ///       - `category`: The requested category, if available.
+    ///       - `error`: An error identifying if and why the request failed, or `nil` if the request was successful.
     public func getCategory(withID id: String, completion handler: @escaping (SKCategory?, Error?) -> Void) {
         makeCategoryRequest(id: id).perform(completion: handler)
     }
     
-    // MARK: Get Available Genre Seeds ✔︎
+    // MARK: Get Available Genre Seeds
     
     /// Creates and returns the request used to get available genre seeds for recommendations.
     ///
@@ -326,13 +328,13 @@ public struct SKCatalog {
     /// Gets a list of available genre seeds used for recommendations.
     ///
     /// - Parameter handler: The callback handler for the request. The parameters for this handler are:
-    ///     - `genres`: The list of available genres.
-    ///     - `error`: An error identifying if and why the request failed, or `nil` if the request was successful.
+    ///       - `genres`: The list of available genres.
+    ///       - `error`: An error identifying if and why the request failed, or `nil` if the request was successful.
     public func getAvailableGenres(completion handler: @escaping ([String]?, Error?) -> Void) {
         makeAvailableGenresRequest().perform(completion: handler)
     }
     
-    // MARK: Get Recommendations ✔︎
+    // MARK: Get Recommendations
     
     /// Creates and returns the request used to get recommendations based on seed genres, artists, and tracks.
     ///
@@ -343,7 +345,7 @@ public struct SKCatalog {
     /// In cases where seed artists and tracks are very new or obscure, the request may not have enough data to generate a list of tracks.
     ///
     /// - Parameters:
-    ///   - genres: A list of seed genres. For possible values, use the "`getAvailableGenres`" method to retrieve a list of genres available as seeds for this request.
+    ///   - genres: A list of seed genres. For possible values, use the `getAvailableGenres` method to retrieve a list of genres available as seeds for this request.
     ///   - artists: A list of seed artists.
     ///   - tracks: A list of seed tracks.
     ///   - attributes: A list of tunable track attributes by which to filter results. Each attribute allows you to specify a minimum value, maximum value, and target value.
@@ -380,7 +382,7 @@ public struct SKCatalog {
     /// In cases where seed artists and tracks are very new or obscure, the request may not have enough data to generate a list of tracks.
     ///
     /// - Parameters:
-    ///   - genres: A list of seed genres. For possible values, use the "`getAvailableGenres`" method to retrieve a list of genres available as seeds for this request.
+    ///   - genres: A list of seed genres. For possible values, use the `getAvailableGenres` method to retrieve a list of genres available as seeds for this request.
     ///   - artists: A list of seed artists.
     ///   - tracks: A list of seed tracks.
     ///   - attributes: A list of tunable track attributes by which to filter results. Each attribute allows you to specify a minimum value, maximum value, and target value.
@@ -395,7 +397,7 @@ public struct SKCatalog {
         
         makeRecommendationsRequest(genres: genres, artists: artists, tracks: tracks, attributes: attributes, limit: limit).perform(completion: handler)
     }
-    //public func getRecommendations<T: Seedable>(basedOn seeds: [T], filteredBy attributes: Set<SKTrackAttribute> = [], limit: Int? = nil, completion handler: @escaping (SKRecommendations?, Error?) -> Void)
+    //public func getRecommendations<T: Seed>(basedOn seeds: [T], filteredBy attributes: Set<SKTrackAttribute> = [], limit: Int? = nil, completion handler: @escaping (SKRecommendations?, Error?) -> Void) // Seedable // SeedItem // SeedType
     
     // MARK: - Search
     
@@ -509,7 +511,7 @@ public struct SKCatalog {
 
 extension SKArtist {
     
-    // MARK: Get an Artist's Albums ✔︎
+    // MARK: Get an Artist's Albums
     
     /// Creates and returns the request used to get the current artist's albums.
     ///
@@ -543,13 +545,13 @@ extension SKArtist {
     ///
     ///   - page: The parameters for paginating the results, specifying the index and number of items to return. If no parameters are supplied, the request will return the default number of items beginning with first item. The default value is `nil`.
     ///   - handler: The callback handler for the request. The parameters for this handler are:
-    ///     - `albums`: A paginated collection of simplified albums, if available.
-    ///     - `error`: An error identifying if and why the request failed, or `nil` if the request was successful.
+    ///       - `albums`: A paginated collection of simplified albums, if available.
+    ///       - `error`: An error identifying if and why the request failed, or `nil` if the request was successful.
     public func getAlbums(filteredBy types: Set<SKAlbumType> = [], for locale: Locale? = SKCatalog.local.locale, page: Pagination? = nil, completion handler: @escaping (Page<SKAlbum>?, Error?) -> Void) {
         makeAlbumsRequest(types: types, locale: locale, page: page).perform(completion: handler)
     }
     
-    // MARK: Get an Artist's Top Tracks ✔︎
+    // MARK: Get an Artist's Top Tracks
     
     /// Creates and returns the request used to get the current artist's top tracks.
     ///
@@ -575,13 +577,13 @@ extension SKArtist {
     ///     **Note:** The locale must contain a valid region code.
     ///
     ///   - handler: The callback handler for the request. The parameters for this handler are:
-    ///     - `tracks`: An array returned by the request of up to 10 top tracks, if available.
-    ///     - `error`: An error identifying if and why the request failed, or `nil` if the request was successful.
+    ///       - `tracks`: An array returned by the request of up to 10 top tracks, if available.
+    ///       - `error`: An error identifying if and why the request failed, or `nil` if the request was successful.
     public func getTopTracks(for locale: Locale = SKCatalog.local.locale!, completion handler: @escaping ([SKTrack]?, Error?) -> Void) {
         makeTopTracksRequest(locale: locale).perform(completion: handler)
     }
     
-    // MARK: Get an Artist's Related Artists ✔︎
+    // MARK: Get an Artist's Related Artists
     
     /// Creates and returns the request used to get a list of artists similar to the current artist.
     ///
@@ -597,8 +599,8 @@ extension SKArtist {
     /// - Note: This method uses the `SPTAuth` default instance session to authenticate the underlying request. If this session does not contain a valid access token, the request will result in an error.
     ///
     /// - Parameter handler: The callback handler for the request. The parameters for this handler are:
-    ///     - `artists`: An array returned by the request of up to 20 related artists, if available.
-    ///     - `error`: An error identifying if and why the request failed, or `nil` if the request was successful.
+    ///       - `artists`: An array returned by the request of up to 20 related artists, if available.
+    ///       - `error`: An error identifying if and why the request failed, or `nil` if the request was successful.
     public func getRelatedArtists(completion handler: @escaping ([SKArtist]?, Error?) -> Void) {
         makeRelatedArtistsRequest().perform(completion: handler)
     }
@@ -608,7 +610,7 @@ extension SKArtist {
 
 extension SKCategory {
     
-    // MARK: Get a Category's Playlists ✔︎
+    // MARK: Get a Category's Playlists
     
     /// Creates and returns the request used to get playlists for the current category.
     ///
@@ -633,8 +635,8 @@ extension SKCategory {
     ///   - locale: The locale-specific storefront/market from which to request. The default value is the locale for the shared `SKCatalog` instance, which by default represents the user's region settings at the time the method is called.
     ///   - page: The parameters for paginating the results, specifying the index and number of items to return. If no parameters are supplied, the request will return the default number of items beginning with first item. The default value is `nil`.
     ///   - handler: The callback handler for the request. The parameters for this handler are:
-    ///     - `playlists`: A paginated collection of simplified playlists, if available.
-    ///     - `error`: An error identifying if and why the request failed, or `nil` if the request was successful.
+    ///       - `playlists`: A paginated collection of simplified playlists, if available.
+    ///       - `error`: An error identifying if and why the request failed, or `nil` if the request was successful.
     public func getPlaylists(for locale: Locale? = SKCatalog.local.locale, page: Pagination? = nil, completion handler: @escaping (Page<SKPlaylist>?, Error?) -> Void) {
         makePlaylistsRequest(locale: locale, page: page).perform(completion: handler)
     }
@@ -645,7 +647,7 @@ extension SKCategory {
 
 extension SKTrack {
     
-    // MARK: Get Audio Features ✔︎
+    // MARK: Get Audio Features
     
     /// Creates and returns the request used to get audio features for the current track.
     ///
@@ -659,8 +661,8 @@ extension SKTrack {
     /// - Note: This method uses the `SPTAuth` default instance session to authenticate the underlying request. If this session does not contain a valid access token, the request will result in an error.
     ///
     /// - Parameter handler: The callback handler for the request. The parameters for this handler are:
-    ///     - `features`: The requested audio features, if available.
-    ///     - `error`: An error identifying if and why the request failed, or `nil` if the request was successful.
+    ///       - `features`: The requested audio features, if available.
+    ///       - `error`: An error identifying if and why the request failed, or `nil` if the request was successful.
     public func getAudioFeatures(completion handler: @escaping (SKAudioFeatures?, Error?) -> Void) {
         makeAudioFeaturesRequest().perform(completion: handler)
     }
@@ -668,7 +670,7 @@ extension SKTrack {
 
 extension Collection where Element: Track {
     
-    // MARK: Get Audio Features for Several Tracks ✔︎
+    // MARK: Get Audio Features for Several Tracks
     
     /// Creates and returns the request used to get audio features for the current collection of tracks.
     ///
@@ -690,8 +692,8 @@ extension Collection where Element: Track {
     /// - Important: The maximum number of IDs the API can process for a single request to this endpoint is 100. If the current array contains more than 100 items, the request may result in an error.
     ///
     /// - Parameter handler: The callback handler for the request. The parameters for this handler are:
-    ///     - `features`: An array of audio features corresponding to the tracks in this array. If audio features for a particular track ID cannot be found, the resulting array will contain a `nil` value at the corresponding index.
-    ///     - `error`: An error identifying if and why the request failed, or `nil` if the request was successful.
+    ///       - `features`: An array of audio features corresponding to the tracks in this array. If audio features for a particular track ID cannot be found, the resulting array will contain a `nil` value at the corresponding index.
+    ///       - `error`: An error identifying if and why the request failed, or `nil` if the request was successful.
     public func getAudioFeatures(completion handler: @escaping ([SKAudioFeatures?]?, Error?) -> Void) {
         makeAudioFeaturesRequest().perform(completion: handler)
     }
@@ -701,7 +703,7 @@ extension Collection where Element: Track {
 
 extension SKUser {
     
-    // MARK: Get a User's Profile ✔︎
+    // MARK: Get a User's Profile
     
     /// Creates and returns the request used to get a user.
     ///
@@ -718,13 +720,13 @@ extension SKUser {
     /// - Parameters:
     ///   - id: The user's [Spotify user ID](https://developer.spotify.com/web-api/user-guide/#spotify-uris-and-ids).
     ///   - handler: The callback handler for the request. The parameters for this handler are:
-    ///     - `user`: The requested user, if available.
-    ///     - `error`: An error identifying if and why the request failed, or `nil` if the request was successful.
+    ///       - `user`: The requested user, if available.
+    ///       - `error`: An error identifying if and why the request failed, or `nil` if the request was successful.
     public static func getUser(withID id: String, completion handler: @escaping (SKUser?, Error?) -> Void) {
         makeUserRequest(id: id).perform(completion: handler)
     }
     
-    // MARK: Get a User's Playlists ✔︎
+    // MARK: Get a User's Playlists
     
     /// Creates and returns the request used to get the user's playlists.
     ///
@@ -742,15 +744,15 @@ extension SKUser {
     ///
     /// - Note: This method uses the `SPTAuth` default instance session to authenticate the underlying request. If this session does not contain a valid access token, the request will result in an error. The access token must have been issued on behalf of the current user.
     ///
-    /// Private playlists are only retrievable for the *current user* and requires the "`playlist-read-private`" scope to have been authorized by the user. Note that this scope alone will not return collaborative playlists, even though they are always private.
+    /// Private playlists are only retrievable for the *current user* and requires the `playlist-read-private` scope to have been authorized by the user. Note that this scope alone will not return collaborative playlists, even though they are always private.
     ///
     /// See [Using Scopes](https://developer.spotify.com/spotify-web-api/using-scopes/) for more details.
     ///
     /// - Parameters:
     ///   - page: The parameters for paginating the results, specifying the index and number of items to return. If no parameters are supplied, the request will return the default number of items beginning with first item. The default value is `nil`.
     ///   - handler: The callback handler for the request. The parameters for this handler are:
-    ///     - `user`: The current authenticated user, if available.
-    ///     - `error`: An error identifying if and why the request failed, or `nil` if the request was successful.
+    ///       - `user`: The current authenticated user, if available.
+    ///       - `error`: An error identifying if and why the request failed, or `nil` if the request was successful.
     public func getPlaylists(page: Pagination? = nil, completion handler: @escaping (Page<SKPlaylist>?, Error?) -> Void) {
         makePlaylistsRequest(page: page).perform(completion: handler)
     }
@@ -758,12 +760,12 @@ extension SKUser {
 
 extension SKCurrentUser {
     
-    // MARK: Get the Current User's Profile ✔︎
+    // MARK: Get the Current User's Profile
     
     /// Creates and returns the request used to get the current authenticated user.
     ///
     /// - Returns: An `SKRequest` instance with which to perform the API request.
-    public static func makeCurrentUserRequest() -> SKRequest { // makeAuthenticatedUserRequest
+    public static func makeCurrentUserRequest() -> SKRequest {
         return SKRequest(method: .GET, endpoint: Constants.Endpoints.me)!
     }
     
@@ -772,22 +774,22 @@ extension SKCurrentUser {
     /// - Note: This method uses the `SPTAuth` default instance session to authenticate the underlying request. If this session does not contain a valid access token, the request will result in an error. The access token must have been issued on behalf of the current user.
     ///
     /// To retrieve all user properties, the access token also must have been generated with certain scopes authorized. In particular:
-    /// * Reading the user's email address requires the "`user-read-email`" scope.
-    /// * Reading the user's country and product subscription level requires the "`user-read-private`" scope.
-    /// * Reading the user's date of birth requires the "`user-read-birthdate`" scope.
+    /// * Reading the user's email address requires the `user-read-email` scope.
+    /// * Reading the user's country and product subscription level requires the `user-read-private` scope.
+    /// * Reading the user's date of birth requires the `user-read-birthdate` scope.
     ///
     /// See [Using Scopes](https://developer.spotify.com/spotify-web-api/using-scopes/) for more details.
     ///
     /// - Parameters:
     ///   - id: The user's [Spotify user ID](https://developer.spotify.com/web-api/user-guide/#spotify-uris-and-ids).
     ///   - handler: The callback handler for the request. The parameters for this handler are:
-    ///     - `user`: The current authenticated user, if available.
-    ///     - `error`: An error identifying if and why the request failed, or `nil` if the request was successful.
-    public static func getCurrentUser(completion handler: @escaping (SKCurrentUser?, Error?) -> Void) { // getAuthenticatedUser
+    ///       - `user`: The current authenticated user, if available.
+    ///       - `error`: An error identifying if and why the request failed, or `nil` if the request was successful.
+    public static func getCurrentUser(completion handler: @escaping (SKCurrentUser?, Error?) -> Void) {
         makeCurrentUserRequest().perform(completion: handler)
     }
     
-    // MARK: Get the Current User's Playlists ✔︎
+    // MARK: Get the Current User's Playlists
     
     /// Creates and returns the request used to get the current authenticated user's playlists.
     ///
@@ -805,15 +807,15 @@ extension SKCurrentUser {
     ///
     /// - Note: This method uses the `SPTAuth` default instance session to authenticate the underlying request. If this session does not contain a valid access token, the request will result in an error. The access token must have been issued on behalf of the current user.
     ///
-    /// Private playlists are only retrievable for the *current user* and requires the "`playlist-read-private`" scope to have been authorized by the user. Note that this scope alone will not return collaborative playlists, even though they are always private.
+    /// Private playlists are only retrievable for the *current user* and requires the `playlist-read-private` scope to have been authorized by the user. Note that this scope alone will not return collaborative playlists, even though they are always private.
     ///
     /// See [Using Scopes](https://developer.spotify.com/spotify-web-api/using-scopes/) for more details.
     ///
     /// - Parameters:
     ///   - page: The parameters for paginating the results, specifying the index and number of items to return. If no parameters are supplied, the request will return the default number of items beginning with first item. The default value is `nil`.
     ///   - handler: The callback handler for the request. The parameters for this handler are:
-    ///     - `user`: The current authenticated user, if available.
-    ///     - `error`: An error identifying if and why the request failed, or `nil` if the request was successful.
+    ///       - `user`: The current authenticated user, if available.
+    ///       - `error`: An error identifying if and why the request failed, or `nil` if the request was successful.
     public func getPlaylists(page: Pagination? = nil, completion handler: @escaping (Page<SKPlaylist>?, Error?) -> Void) {
         makePlaylistsRequest(page: page).perform(completion: handler)
     }
@@ -823,24 +825,24 @@ extension SKCurrentUser {
 
 extension SKPlaylist {
     
-    // MARK: Create a Playlist ✔︎
+    // MARK: Create a Playlist
     
     /// Creates and returns the request used to create a new playlist.
     ///
     /// - Parameters:
     ///   - userID: The [Spotify ID](https://developer.spotify.com/web-api/user-guide/#spotify-uris-and-ids) for the current authenticated user.
     ///
-    ///     **Note**: the access token provided to this request must have been issued on behalf of this user, who must have authorized either the "`playlist-modify-public`" or "`playlist-modify-private`" scope. See [Using Scopes](https://developer.spotify.com/web-api/using-scopes/) for more details.
+    ///     **Note**: the access token provided to this request must have been issued on behalf of this user, who must have authorized either the `playlist-modify-public` or `playlist-modify-private` scope. See [Using Scopes](https://developer.spotify.com/web-api/using-scopes/) for more details.
     ///
     ///   - name: The name for the new playlist. This name does not need to be unique; a user may have several playlists with the same name.
     ///   - description: An optional description of the playlist.
     ///   - isPublic: `true` if the playlist will be public, `false` if private.
     ///
-    ///     **Note**: to create private playlists, the user must have authorized the "`playlist-modify-private`" scope.
+    ///     **Note**: to create private playlists, the user must have authorized the `playlist-modify-private` scope.
     ///
     ///   - isCollaborative: `true` if the playlist will be collaborative, `false` otherwise.
     ///
-    ///     **Note**: to create collaborative playlists, the user must have authorized both "`playlist-modify-private`" and "`playlist-modify-public`" scopes.
+    ///     **Note**: to create collaborative playlists, the user must have authorized both `playlist-modify-private` and `playlist-modify-public` scopes.
     ///
     /// - Returns: An `SKRequest` instance with which to perform the API request.
     public static func makeNewPlaylistRequest(userID: String, name: String, description: String?, isPublic: Bool, isCollaborative: Bool) -> SKRequest {
@@ -861,22 +863,22 @@ extension SKPlaylist {
     ///
     /// - Note: This method uses the `SPTAuth` default instance session to provide the user ID for, and the access token to authenticate, the underlying request. If this session does not contain a valid access token, the request will result in an error; if this session does not contain a valid username, then this method will do nothing.
     ///
-    /// The access token must have been issued on behalf of the current user, who must have authorized either the "`playlist-modify-public`" or "`playlist-modify-private`" scope. See [Using Scopes](https://developer.spotify.com/web-api/using-scopes/) for more details.
+    /// The access token must have been issued on behalf of the current user, who must have authorized either the `playlist-modify-public` or `playlist-modify-private` scope. See [Using Scopes](https://developer.spotify.com/web-api/using-scopes/) for more details.
     ///
     /// - Parameters:
     ///   - name: The name for the new playlist. This name does not need to be unique; a user may have several playlists with the same name.
     ///   - description: An optional description of the playlist. The default value is `nil`.
     ///   - isPublic: `true` if the playlist should be public, `false` if private. The default value is `true`.
     ///
-    ///     **Note**: to create private playlists, the user must have authorized the "`playlist-modify-private`" scope.
+    ///     **Note**: to create private playlists, the user must have authorized the `playlist-modify-private` scope.
     ///
     ///   - isCollaborative: `true` if the playlist should be collaborative, `false` otherwise. The default value is `false`.
     ///
-    ///     **Note**: to create collaborative playlists, the user must have authorized both "`playlist-modify-private`" and "`playlist-modify-public`" scopes.
+    ///     **Note**: to create collaborative playlists, the user must have authorized both `playlist-modify-private` and `playlist-modify-public` scopes.
     ///
     ///   - handler: The callback handler for the request. The parameters for this handler are:
-    ///     - `playlist`: The newly-created playlist, if the request was successful.
-    ///     - `error`: An error identifying if and why the request failed, or `nil` if the request was successful.
+    ///       - `playlist`: The newly-created playlist, if the request was successful.
+    ///       - `error`: An error identifying if and why the request failed, or `nil` if the request was successful.
     public static func createPlaylist(named name: String, description: String? = nil, isPublic: Bool = true, isCollaborative: Bool = false, completion handler: @escaping (SKPlaylist?, Error?) -> Void) {
         
         guard let userID = SPTAuth.defaultInstance()?.session?.canonicalUsername else { // TODO: Remove dependency on iOS SDK classes in the future.
@@ -886,7 +888,7 @@ extension SKPlaylist {
         makeNewPlaylistRequest(userID: userID, name: name, description: description, isPublic: isPublic, isCollaborative: isCollaborative).perform(completion: handler)
     }
     
-    // MARK: Update a Playlist's Details ✔︎
+    // MARK: Update a Playlist's Details
     
     /// Creates and returns the request used to update a playlist's details.
     ///
@@ -921,7 +923,7 @@ extension SKPlaylist {
     ///
     /// - Note: This method uses the `SPTAuth` default instance session to authenticate the underlying request. If this session does not contain a valid access token, the request will result in an error. The access token must have been issued on behalf of the current user.
     ///
-    /// Changing the details for a public playlist requires authorization of the "`playlist-modify-public`" scope; likewise, changing the details for a private playlist requires authorization of the "`playlist-modify-private`" scope. See [Using Scopes](https://developer.spotify.com/web-api/using-scopes/) for more details.
+    /// Changing the details for a public playlist requires authorization of the `playlist-modify-public` scope; likewise, changing the details for a private playlist requires authorization of the `playlist-modify-private` scope. See [Using Scopes](https://developer.spotify.com/web-api/using-scopes/) for more details.
     ///
     /// If all parameters have been set to nil, then this method will do nothing.
     ///
@@ -940,13 +942,15 @@ extension SKPlaylist {
         makeUpdateDetailsRequest(name: name, description: description, isPublic: isPublic, isCollaborative: isCollaborative).perform(completion: handler)
     }
     
-    // MARK: Upload a Custom Playlist Cover Image ✔︎
+    // MARK: Upload a Custom Playlist Cover Image
     
     /// Creates and returns the request used to upload a custom playlist cover image.
     ///
     /// - Parameter data: The image data to upload. The payload must contain Base-64 encoded JPEG image data. The maximum encoded payload size is 256 KB.
     /// - Returns: An `SKRequest` instance with which to perform the API request.
-    public func makeUpdateImageRequest(data: Data) -> SKRequest { // makeUploadImageRequest(data: Data) // makeReplaceImageRequest(data: Data)
+    public func makeUpdateImageRequest(data: Data) -> SKRequest {
+    // public func makeUploadImageRequest(...)
+    // public func makeReplaceImageRequest(...)
         
         let request = SKRequest(method: .PUT, endpoint: Constants.Endpoints.imageForPlaylist(id: id, ownerID: owner.id))!
         request.add(data, type: .jpeg)
@@ -957,12 +961,14 @@ extension SKPlaylist {
     ///
     /// - Note: This method uses the `SPTAuth` default instance session to authenticate the underlying request. If this session does not contain a valid access token, the request will result in an error.
     ///
-    /// The access token must have been issued on behalf of the user who owns the playlist, and must have the "`ugc-image-upload`" scope authorized. In addition, the token must also contain the "`playlist-modify-public`" and/or "`playlist-modify-private`" scopes, depending the access level of playlist. See [Using Scopes](https://developer.spotify.com/web-api/using-scopes/) for more details.
+    /// The access token must have been issued on behalf of the user who owns the playlist, and must have the `ugc-image-upload` scope authorized. In addition, the token must also contain the `playlist-modify-public` and/or `playlist-modify-private` scopes, depending the access level of playlist. See [Using Scopes](https://developer.spotify.com/web-api/using-scopes/) for more details.
     ///
     /// - Parameters:
     ///   - data: The image data to upload. The payload must contain Base-64 encoded JPEG image data. The maximum encoded payload size is 256 KB.
     ///   - handler: The callback handler for the request, providing an error identifying if and why the request failed, or `nil` if the request was successful.
-    public func updateImage(with data: Data, completion handler: @escaping SKErrorHandler) { // uploadImage(_ data: ...) // replaceImage(with data: ...)
+    public func updateImage(with data: Data, completion handler: @escaping SKErrorHandler) {
+    // public func uploadImage(_ data: Data, ...)
+    // public func replaceImage(with data: Data, ...)
         
         // If the size exceeds the maximum file size, call the handler now and return a custom error message (API doesn't return an error for this):
         guard data.count <= Constants.maxImageSize else {
@@ -996,7 +1002,7 @@ extension SKPlaylist {
     ///
     /// - Note: This method uses the `SPTAuth` default instance session to authenticate the underlying request. If this session does not contain a valid access token, the request will result in an error.
     ///
-    /// The access token must have been issued on behalf of the user who owns the playlist, and must have the "`ugc-image-upload`" scope authorized. In addition, the token must also contain the "`playlist-modify-public`" and/or "`playlist-modify-private`" scopes, depending the access level of playlist. See [Using Scopes](https://developer.spotify.com/web-api/using-scopes/) for more details.
+    /// The access token must have been issued on behalf of the user who owns the playlist, and must have the `ugc-image-upload` scope authorized. In addition, the token must also contain the `playlist-modify-public` and/or `playlist-modify-private` scopes, depending the access level of playlist. See [Using Scopes](https://developer.spotify.com/web-api/using-scopes/) for more details.
     ///
     /// - Parameters:
     ///   - image: The image data to upload. The maximum encoded payload size is 256 KB.
@@ -1005,7 +1011,8 @@ extension SKPlaylist {
     ///
     ///   - quality: The compression quality of the resulting JPEG image, expressed as a value from 0.0 to 1.0. The value 0.0 represents the maximum compression (or lowest quality) while the value 1.0 represents the least compression (or best quality). The default value is 0.8.
     ///   - handler: The callback handler for the request, providing an error identifying if and why the request failed, or `nil` if the request was successful.
-    public func updateImage(with image: UIImage, quality: Float = 0.8, completion handler: @escaping SKErrorHandler) { // replaceImage(with image: ...)
+    public func updateImage(with image: UIImage, quality: Float = 0.8, completion handler: @escaping SKErrorHandler) {
+    // public func replaceImage(...)
         
         guard let data = UIImageJPEGRepresentation(image, CGFloat(quality)) else {
             print("UIImage could not be converted to a JPEG representation."); return
@@ -1018,7 +1025,7 @@ extension SKPlaylist {
         updateImage(with: data.base64EncodedData(), completion: handler)
     }
     
-    // MARK: Get a Playlist's Tracks ✔︎
+    // MARK: Get a Playlist's Tracks
     
     /// Creates and returns the request used to get a playlist's tracks.
     ///
@@ -1045,13 +1052,13 @@ extension SKPlaylist {
     ///   - locale: The locale-specific storefront/market from which to request. The default value is the locale for the shared `SKCatalog` instance, which by default represents the user's region settings at the time the method is called.
     ///   - page: The parameters for paginating the results, specifying the index and number of items to return. If no parameters are supplied, the request will return the default number of items beginning with first item. The default value is `nil`.
     ///   - handler: The callback handler for the request. The parameters for this handler are:
-    ///     - `tracks`: A paginated collection of full playlist tracks, if available.
-    ///     - `error`: An error identifying if and why the request failed, or `nil` if the request was successful.
+    ///       - `tracks`: A paginated collection of full playlist tracks, if available.
+    ///       - `error`: An error identifying if and why the request failed, or `nil` if the request was successful.
     public func getTracks(for locale: Locale? = SKCatalog.local.locale, page: Pagination? = nil, completion handler: @escaping (Page<SKPlaylistTrack>?, Error?) -> Void) {
         makeTracksRequest(locale: locale, page: page).perform(completion: handler)
     }
     
-    // MARK: Add Tracks to a Playlist ✔︎
+    // MARK: Add Tracks to a Playlist
     
     /// Creates and returns the request used to add tracks to the playlist.
     ///
@@ -1072,14 +1079,14 @@ extension SKPlaylist {
     ///
     /// - Note: This method uses the `SPTAuth` default instance session to authenticate the underlying request. If this session does not contain a valid access token, the request will result in an error. The access token must have been issued on behalf of the current user.
     ///
-    /// Adding tracks to a public playlist requires authorization of the "`playlist-modify-public`" scope; likewise, adding tracks to a private playlist (including collaborative playlists) requires authorization of the "`playlist-modify-private`" scope. See [Using Scopes](https://developer.spotify.com/web-api/using-scopes/) for more details.
+    /// Adding tracks to a public playlist requires authorization of the `playlist-modify-public` scope; likewise, adding tracks to a private playlist (including collaborative playlists) requires authorization of the `playlist-modify-private` scope. See [Using Scopes](https://developer.spotify.com/web-api/using-scopes/) for more details.
     ///
     /// - Parameters:
     ///   - tracks: A list of tracks to add.
     ///   - position: The index at which to insert the tracks. If omitted or set to `nil`, the tracks will be appended to the playlist. The default value is `nil`.
     ///   - handler: The callback handler for the request. The parameters for this handler are:
-    ///     - `snapshotID`: On success, the snapshot ID string identifying the version of this playlist that reflects the given changes. This value can be used to identify this specific version in subsequent requests.
-    ///     - `error`: An error identifying if and why the request failed, or `nil` if the request was successful.
+    ///       - `snapshotID`: On success, the snapshot ID string identifying the version of this playlist that reflects the given changes. This value can be used to identify this specific version in subsequent requests.
+    ///       - `error`: An error identifying if and why the request failed, or `nil` if the request was successful.
     public func add<T: Collection>(_ tracks: T, at position: Int? = nil, completion handler: @escaping (String?, Error?) -> Void) where T.Element: Track {
         makeAddTracksRequest(tracks: tracks, position: position).perform { (snapshotID: [String: String]?, error) in
             handler(snapshotID?.first?.value, error)
@@ -1090,19 +1097,19 @@ extension SKPlaylist {
     ///
     /// - Note: This method uses the `SPTAuth` default instance session to authenticate the underlying request. If this session does not contain a valid access token, the request will result in an error. The access token must have been issued on behalf of the current user.
     ///
-    /// Adding tracks to a public playlist requires authorization of the "`playlist-modify-public`" scope; likewise, adding tracks to a private playlist (including collaborative playlists) requires authorization of the "`playlist-modify-private`" scope. See [Using Scopes](https://developer.spotify.com/web-api/using-scopes/) for more details.
+    /// Adding tracks to a public playlist requires authorization of the `playlist-modify-public` scope; likewise, adding tracks to a private playlist (including collaborative playlists) requires authorization of the `playlist-modify-private` scope. See [Using Scopes](https://developer.spotify.com/web-api/using-scopes/) for more details.
     ///
     /// - Parameters:
     ///   - track: The track to add.
     ///   - position: The index at which to insert the track. If omitted or set to `nil`, the track will be appended to the playlist. The default value is `nil`.
     ///   - handler: The callback handler for the request. The parameters for this handler are:
-    ///     - `snapshotID`: On success, the snapshot ID string identifying the version of this playlist that reflects the given changes. This value can be used to identify this specific version in subsequent requests.
-    ///     - `error`: An error identifying if and why the request failed, or `nil` if the request was successful.
+    ///       - `snapshotID`: On success, the snapshot ID string identifying the version of this playlist that reflects the given changes. This value can be used to identify this specific version in subsequent requests.
+    ///       - `error`: An error identifying if and why the request failed, or `nil` if the request was successful.
     public func add<T: Track>(_ track: T, at position: Int? = nil, completion handler: @escaping (String?, Error?) -> Void) {
         add([track], completion: handler)
     }
 
-    // MARK: Remove Tracks from a Playlist ✔︎
+    // MARK: Remove Tracks from a Playlist
     
     /// Creates and returns the request used to remove tracks from the playlist.
     ///
@@ -1146,15 +1153,16 @@ extension SKPlaylist {
     ///
     /// - Note: This method uses the `SPTAuth` default instance session to authenticate the underlying request. If this session does not contain a valid access token, the request will result in an error. The access token must have been issued on behalf of the current user.
     ///
-    /// Removing tracks from a public playlist requires authorization of the "`playlist-modify-public`" scope; likewise, removing tracks from a private playlist requires authorization of the "`playlist-modify-private`" scope. See [Using Scopes](https://developer.spotify.com/web-api/using-scopes/) for more details.
+    /// Removing tracks from a public playlist requires authorization of the `playlist-modify-public` scope; likewise, removing tracks from a private playlist requires authorization of the `playlist-modify-private` scope. See [Using Scopes](https://developer.spotify.com/web-api/using-scopes/) for more details.
     ///
     /// - Parameters:
     ///   - positions: An array of integers representing the indices of the tracks to remove. The values provided must be valid indices within the list of tracks. A maximum of 100 values can be sent at once.
     ///   - snapshotID: The specific playlist snapshot against which to perform the changes. This parameter is required to guard against concurrent edits to the playlist. When making subsequent playlist requests, use this parameter to supply the most recent snapshot identifier to avoid editing conflicts. The default value is the playlist's current `snapshotID`.
     ///   - handler: The callback handler for the request. The parameters for this handler are:
-    ///     - `snapshotID`: On success, the snapshot ID string identifying the version of this playlist that reflects the given changes. This value can be used to identify this specific version in subsequent requests.
-    ///     - `error`: An error identifying if and why the request failed, or `nil` if the request was successful.
-    public func remove(at positions: [Int], inSnapshot snapshotID: String = "", completion handler: @escaping (String?, Error?) -> Void) { // removeTracks
+    ///       - `snapshotID`: On success, the snapshot ID string identifying the version of this playlist that reflects the given changes. This value can be used to identify this specific version in subsequent requests.
+    ///       - `error`: An error identifying if and why the request failed, or `nil` if the request was successful.
+    public func remove(at positions: [Int], inSnapshot snapshotID: String = "", completion handler: @escaping (String?, Error?) -> Void) {
+    // public func removeTracks(...)
         
         let snapshotID = snapshotID.isEmpty ? self.snapshotID : snapshotID
         
@@ -1167,15 +1175,16 @@ extension SKPlaylist {
     ///
     /// - Note: This method uses the `SPTAuth` default instance session to authenticate the underlying request. If this session does not contain a valid access token, the request will result in an error. The access token must have been issued on behalf of the current user.
     ///
-    /// Removing tracks from a public playlist requires authorization of the "`playlist-modify-public`" scope; likewise, removing tracks from a private playlist requires authorization of the "`playlist-modify-private`" scope. See [Using Scopes](https://developer.spotify.com/web-api/using-scopes/) for more details.
+    /// Removing tracks from a public playlist requires authorization of the `playlist-modify-public` scope; likewise, removing tracks from a private playlist requires authorization of the `playlist-modify-private` scope. See [Using Scopes](https://developer.spotify.com/web-api/using-scopes/) for more details.
     ///
     /// - Parameters:
     ///   - position: An integer representing the index of the track to remove. The value provided must be a valid index within the list of tracks.
     ///   - snapshotID: The specific playlist snapshot against which to perform the changes. This parameter is required to guard against concurrent edits to the playlist. When making subsequent playlist requests, use this parameter to supply the most recent snapshot identifier to avoid editing conflicts. The default value is the playlist's current `snapshotID`.
     ///   - handler: The callback handler for the request. The parameters for this handler are:
-    ///     - `snapshotID`: On success, the snapshot ID string identifying the version of this playlist that reflects the given changes. This value can be used to identify this specific version in subsequent requests.
-    ///     - `error`: An error identifying if and why the request failed, or `nil` if the request was successful.
-    public func remove(at position: Int, inSnapshot snapshotID: String = "", completion handler: @escaping (String?, Error?) -> Void) { // removeTrack
+    ///       - `snapshotID`: On success, the snapshot ID string identifying the version of this playlist that reflects the given changes. This value can be used to identify this specific version in subsequent requests.
+    ///       - `error`: An error identifying if and why the request failed, or `nil` if the request was successful.
+    public func remove(at position: Int, inSnapshot snapshotID: String = "", completion handler: @escaping (String?, Error?) -> Void) {
+    // public func removeTrack(...)
         
         remove(at: [position], inSnapshot: snapshotID, completion: handler)
     }
@@ -1186,8 +1195,8 @@ extension SKPlaylist {
     ///   - tracks: The list of tracks to remove. The tracks' URIs must match those already in the playlist, otherwise the request will result in an error.
     ///   - snapshotID: A specific playlist snapshot against which to perform the changes. When making subsequent playlist requests, use this parameter to supply the most recent snapshot identifier to avoid editing conflicts. The API will validate that the specified tracks exist and make the changes, even if more recent changes have been made to the playlist. The default value is `nil`.
     ///   - handler: The callback handler for the request. The parameters for this handler are:
-    ///     - `snapshotID`: On success, the snapshot ID string identifying the version of this playlist that reflects the given changes. This value can be used to identify this specific version in subsequent requests.
-    ///     - `error`: An error identifying if and why the request failed, or `nil` if the request was successful.
+    ///       - `snapshotID`: On success, the snapshot ID string identifying the version of this playlist that reflects the given changes. This value can be used to identify this specific version in subsequent requests.
+    ///       - `error`: An error identifying if and why the request failed, or `nil` if the request was successful.
     public func removeOccurrences<T: Collection>(of tracks: T, inSnapshot snapshotID: String? = nil, completion handler: @escaping (String?, Error?) -> Void) where T.Element: Track {
         
         makeRemoveTracksRequest(tracks: tracks, snapshotID: snapshotID).perform { (snapshotID: [String: String]?, error) in
@@ -1201,14 +1210,14 @@ extension SKPlaylist {
     ///   - track: The track to remove. The track's URI must match one already in the playlist, otherwise the request will result in an error.
     ///   - snapshotID: A specific playlist snapshot against which to perform the changes. When making subsequent playlist requests, use this parameter to supply the most recent snapshot identifier to avoid editing conflicts. The API will validate that the specified track exists and make the changes, even if more recent changes have been made to the playlist. The default value is `nil`.
     ///   - handler: The callback handler for the request. The parameters for this handler are:
-    ///     - `snapshotID`: On success, the snapshot ID string identifying the version of this playlist that reflects the given changes. This value can be used to identify this specific version in subsequent requests.
-    ///     - `error`: An error identifying if and why the request failed, or `nil` if the request was successful.
+    ///       - `snapshotID`: On success, the snapshot ID string identifying the version of this playlist that reflects the given changes. This value can be used to identify this specific version in subsequent requests.
+    ///       - `error`: An error identifying if and why the request failed, or `nil` if the request was successful.
     public func removeOccurrences<T: Track>(of track: T, inSnapshot snapshotID: String? = nil, completion handler: @escaping (String?, Error?) -> Void) {
         
         removeOccurrences(of: [track], inSnapshot: snapshotID, completion: handler)
     }
     
-    // MARK: Reorder a Playlist's Tracks ✔︎
+    // MARK: Reorder a Playlist's Tracks
     
     /// Creates and returns the request used to reorder tracks in a playlist.
     ///
@@ -1280,9 +1289,10 @@ extension SKPlaylist {
     ///   - position: The index of the track before which the reordered track(s) should be inserted. To move tracks to the end of the playlist, set this parameter to the track list's "past the end" position—that is, the position one greater than the last valid index. With the exception of this value, this parameter must be a valid index within the list of tracks.
     ///   - snapshotID: A specific playlist snapshot against which to perform the changes. The default value is `nil`.
     ///   - handler: The callback handler for the request. The parameters for this handler are:
-    ///     - `snapshotID`: On success, the snapshot ID string identifying the version of this playlist that reflects the given changes. This value can be used to identify this specific version in subsequent requests.
-    ///     - `error`: An error identifying if and why the request failed, or `nil` if the request was successful.
-    public func move(at indices: Range<Int>, before position: Int, inSnapshot snapshotID: String? = nil, completion handler: @escaping (String?, Error?) -> Void) { // moveTracks
+    ///       - `snapshotID`: On success, the snapshot ID string identifying the version of this playlist that reflects the given changes. This value can be used to identify this specific version in subsequent requests.
+    ///       - `error`: An error identifying if and why the request failed, or `nil` if the request was successful.
+    public func move(at indices: Range<Int>, before position: Int, inSnapshot snapshotID: String? = nil, completion handler: @escaping (String?, Error?) -> Void) {
+    // public func moveTracks(...)
         
         makeMoveTracksRequest(startIndex: indices.lowerBound,
                               rangeLength: indices.count == 1 ? nil : indices.count,
@@ -1342,8 +1352,8 @@ extension SKPlaylist {
     ///   - position: The index of the track before which the reordered track(s) should be inserted. To move tracks to the end of the playlist, set this parameter to the track list's "past the end" position—that is, the position one greater than the last valid index. With the exception of this value, this parameter must be a valid index within the list of tracks.
     ///   - snapshotID: A specific playlist snapshot against which to perform the changes. The default value is `nil`.
     ///   - handler: The callback handler for the request. The parameters for this handler are:
-    ///     - `snapshotID`: On success, the snapshot ID string identifying the version of this playlist that reflects the given changes. This value can be used to identify this specific version in subsequent requests.
-    ///     - `error`: An error identifying if and why the request failed, or `nil` if the request was successful.
+    ///       - `snapshotID`: On success, the snapshot ID string identifying the version of this playlist that reflects the given changes. This value can be used to identify this specific version in subsequent requests.
+    ///       - `error`: An error identifying if and why the request failed, or `nil` if the request was successful.
     public func move(at indices: ClosedRange<Int>, before position: Int, inSnapshot snapshotID: String? = nil, completion handler: @escaping (String?, Error?) -> Void) {
         move(at: Range(indices), before: position, completion: handler)
     }
@@ -1396,9 +1406,10 @@ extension SKPlaylist {
     ///   - position: The index of the track before which the reordered track(s) should be inserted. To move tracks to the end of the playlist, set this parameter to the track list's "past the end" position—that is, the position one greater than the last valid index. With the exception of this value, this parameter must be a valid index within the list of tracks.
     ///   - snapshotID: A specific playlist snapshot against which to perform the changes. The default value is `nil`.
     ///   - handler: The callback handler for the request. The parameters for this handler are:
-    ///     - `snapshotID`: On success, the snapshot ID string identifying the version of this playlist that reflects the given changes. This value can be used to identify this specific version in subsequent requests.
-    ///     - `error`: An error identifying if and why the request failed, or `nil` if the request was successful.
-    public func move(at index: Int, before position: Int, inSnapshot snapshotID: String? = nil, completion handler: @escaping (String?, Error?) -> Void) { // moveTrack
+    ///       - `snapshotID`: On success, the snapshot ID string identifying the version of this playlist that reflects the given changes. This value can be used to identify this specific version in subsequent requests.
+    ///       - `error`: An error identifying if and why the request failed, or `nil` if the request was successful.
+    public func move(at index: Int, before position: Int, inSnapshot snapshotID: String? = nil, completion handler: @escaping (String?, Error?) -> Void) {
+    // public func moveTrack(...)
         
         makeMoveTracksRequest(startIndex: index, rangeLength: nil, position: position, snapshotID: snapshotID)
             .perform { (snapshotID: [String: String]?, error) in
@@ -1406,7 +1417,7 @@ extension SKPlaylist {
         }
     }
     
-    // MARK: Replace a Playlist's Tracks ✔︎
+    // MARK: Replace a Playlist's Tracks
     
     /// Creates and returns the request used to replace tracks in the playlist.
     ///
@@ -1425,13 +1436,13 @@ extension SKPlaylist {
     ///
     /// - Note: This method uses the `SPTAuth` default instance session to authenticate the underlying request. If this session does not contain a valid access token, the request will result in an error. The access token must have been issued on behalf of the current user.
     ///
-    /// Replacing tracks in a public playlist requires authorization of the "`playlist-modify-public`" scope; likewise, replacing tracks in a private playlist requires authorization of the "`playlist-modify-private`" scope. See [Using Scopes](https://developer.spotify.com/web-api/using-scopes/) for more details.
+    /// Replacing tracks in a public playlist requires authorization of the `playlist-modify-public` scope; likewise, replacing tracks in a private playlist requires authorization of the `playlist-modify-private` scope. See [Using Scopes](https://developer.spotify.com/web-api/using-scopes/) for more details.
     ///
     /// - Parameters:
     ///   - tracks: The list of tracks with which to replace the contents of the playlist. To clear all tracks from the playlist, set this parameter to an empty array.
     ///   - handler: The callback handler for the request. The parameters for this handler are:
-    ///     - `snapshotID`: On success, the snapshot ID string identifying the version of this playlist that reflects the given changes. This value can be used to identify this specific version in subsequent requests.
-    ///     - `error`: An error identifying if and why the request failed, or `nil` if the request was successful.
+    ///       - `snapshotID`: On success, the snapshot ID string identifying the version of this playlist that reflects the given changes. This value can be used to identify this specific version in subsequent requests.
+    ///       - `error`: An error identifying if and why the request failed, or `nil` if the request was successful.
     public func replace<T: Collection>(with tracks: T, completion handler: @escaping (String?, Error?) -> Void) where T.Element: Track {
         
         makeReplaceTracksRequest(tracks: tracks).perform { (snapshotID: [String: String]?, error) in
@@ -1471,7 +1482,7 @@ public protocol Followable {
     ///
     /// - Note: This method uses the `SPTAuth` default instance session to authenticate the underlying request. If this session does not contain a valid access token, the request will result in an error. The access token must have been issued on behalf of the current user.
     ///
-    /// Modifying the list of items that the current authenticated user follows also requires authorization of the "`user-follow-modify`" scope. See [Using Scopes](https://developer.spotify.com/spotify-web-api/using-scopes/) for more details.
+    /// Modifying the list of items that the current authenticated user follows also requires authorization of the `user-follow-modify` scope. See [Using Scopes](https://developer.spotify.com/spotify-web-api/using-scopes/) for more details.
     ///
     /// - Parameter handler: The callback handler for the request, providing an error identifying if and why the request failed, or `nil` if the request was successful.
     func follow(completion handler: @escaping SKErrorHandler)
@@ -1480,7 +1491,7 @@ public protocol Followable {
     ///
     /// - Note: This method uses the `SPTAuth` default instance session to authenticate the underlying request. If this session does not contain a valid access token, the request will result in an error. The access token must have been issued on behalf of the current user.
     ///
-    /// Modifying the list of items that the current authenticated user follows also requires authorization of the "`user-follow-modify`" scope. See [Using Scopes](https://developer.spotify.com/spotify-web-api/using-scopes/) for more details.
+    /// Modifying the list of items that the current authenticated user follows also requires authorization of the `user-follow-modify` scope. See [Using Scopes](https://developer.spotify.com/spotify-web-api/using-scopes/) for more details.
     ///
     /// - Parameter handler: The callback handler for the request, providing an error identifying if and why the request failed, or `nil` if the request was successful.
     func unfollow(completion handler: @escaping SKErrorHandler)
@@ -1489,11 +1500,11 @@ public protocol Followable {
     ///
     /// - Note: This method uses the `SPTAuth` default instance session to authenticate the underlying request. If this session does not contain a valid access token, the request will result in an error. The access token must have been issued on behalf of the current user.
     ///
-    /// Reading the list of items that the current authenticated user follows also requires authorization of the "`user-follow-read`" scope. See [Using Scopes](https://developer.spotify.com/spotify-web-api/using-scopes/) for more details.
+    /// Reading the list of items that the current authenticated user follows also requires authorization of the `user-follow-read` scope. See [Using Scopes](https://developer.spotify.com/spotify-web-api/using-scopes/) for more details.
     ///
     /// - Parameter handler: The callback handler for the request. The parameters for this handler are:
-    ///     - `isFollowing`: A Boolean value indicating whether the current authenticated user is following the item: `true` if following, `false` otherwise.
-    ///     - `error`: An error identifying if and why the request failed, or `nil` if the request was successful.
+    ///       - `isFollowing`: A Boolean value indicating whether the current authenticated user is following the item: `true` if following, `false` otherwise.
+    ///       - `error`: An error identifying if and why the request failed, or `nil` if the request was successful.
     func checkIfFollowing(completion handler: @escaping (Bool?, Error?) -> Void)
 }
 
@@ -1606,7 +1617,7 @@ extension Collection/*: Followable */where Element: Followable {
     ///
     /// - Note: This method uses the `SPTAuth` default instance session to authenticate the underlying request. If this session does not contain a valid access token, the request will result in an error. The access token must have been issued on behalf of the current user.
     ///
-    /// Modifying the list of items that the current authenticated user follows also requires authorization of the "`user-follow-modify`" scope. See [Using Scopes](https://developer.spotify.com/spotify-web-api/using-scopes/) for more details.
+    /// Modifying the list of items that the current authenticated user follows also requires authorization of the `user-follow-modify` scope. See [Using Scopes](https://developer.spotify.com/spotify-web-api/using-scopes/) for more details.
     ///
     /// - Parameter handler: The callback handler for the request, providing an error identifying if and why the request failed, or `nil` if the request was successful.
     public func follow(completion handler: @escaping SKErrorHandler) {
@@ -1617,7 +1628,7 @@ extension Collection/*: Followable */where Element: Followable {
     ///
     /// - Note: This method uses the `SPTAuth` default instance session to authenticate the underlying request. If this session does not contain a valid access token, the request will result in an error. The access token must have been issued on behalf of the current user.
     ///
-    /// Modifying the list of items that the current authenticated user follows also requires authorization of the "`user-follow-modify`" scope. See [Using Scopes](https://developer.spotify.com/spotify-web-api/using-scopes/) for more details.
+    /// Modifying the list of items that the current authenticated user follows also requires authorization of the `user-follow-modify` scope. See [Using Scopes](https://developer.spotify.com/spotify-web-api/using-scopes/) for more details.
     ///
     /// - Parameter handler: The callback handler for the request, providing an error identifying if and why the request failed, or `nil` if the request was successful.
     public func unfollow(completion handler: @escaping SKErrorHandler) {
@@ -1628,11 +1639,11 @@ extension Collection/*: Followable */where Element: Followable {
     ///
     /// - Note: This method uses the `SPTAuth` default instance session to authenticate the underlying request. If this session does not contain a valid access token, the request will result in an error. The access token must have been issued on behalf of the current user.
     ///
-    /// Reading the list of items that the current authenticated user follows also requires authorization of the "`user-follow-read`" scope. See [Using Scopes](https://developer.spotify.com/spotify-web-api/using-scopes/) for more details.
+    /// Reading the list of items that the current authenticated user follows also requires authorization of the `user-follow-read` scope. See [Using Scopes](https://developer.spotify.com/spotify-web-api/using-scopes/) for more details.
     ///
     /// - Parameter handler: The callback handler for the request. The parameters for this handler are:
-    ///     - `isFollowing`: An array of Boolean values indicating whether the current authenticated user is following the item at the corresponding index. If a particular item is followed by the current authenticated user, the resulting array will contain `true` at the corresponding index; `false` otherwise.
-    ///     - `error`: An error identifying if and why the request failed, or `nil` if the request was successful.
+    ///       - `isFollowing`: An array of Boolean values indicating whether the current authenticated user is following the item at the corresponding index. If a particular item is followed by the current authenticated user, the resulting array will contain `true` at the corresponding index; `false` otherwise.
+    ///       - `error`: An error identifying if and why the request failed, or `nil` if the request was successful.
     public func checkIfFollowing(completion handler: @escaping ([Bool]?, Error?) -> Void) {
         makeFollowStatusRequest().perform(completion: handler)
 //        makeFollowStatusRequest().perform { (bools: [Bool]?, error) in
@@ -1653,13 +1664,13 @@ extension Collection/*: Followable */where Element: Followable {
 
 extension SKPlaylist {
     
-    // MARK: Follow a Playlist ✔︎
+    // MARK: Follow a Playlist
     
     /// Creates and returns the request used to add the current authenticated user as a follower of the playlist.
     ///
     /// - Parameter public: A Boolean value indicating whether the playlist should be included in the user's public playlists.
     ///
-    ///     **Note**: to follow playlists privately, the user must authorize the "`playlist-modify-private`" scope. See [Using Scopes](https://developer.spotify.com/spotify-web-api/using-scopes/) for more details.
+    ///     **Note**: to follow playlists privately, the user must authorize the `playlist-modify-private` scope. See [Using Scopes](https://developer.spotify.com/spotify-web-api/using-scopes/) for more details.
     ///
     /// - Returns: An `SKRequest` instance with which to perform the API request.
     public func makeFollowRequest(public: Bool) -> SKRequest {
@@ -1677,19 +1688,19 @@ extension SKPlaylist {
     ///
     /// - Note: This method uses the `SPTAuth` default instance session to authenticate the underlying request. If this session does not contain a valid access token, the request will result in an error. The access token must have been issued on behalf of the current user.
     ///
-    /// Following a playlist publicly requires authorization of the "`playlist-modify-public`" scope; likewise, following a playlist privately requires authorization of the "`playlist-modify-private`" scope. See [Using Scopes](https://developer.spotify.com/web-api/using-scopes/) for more details.
+    /// Following a playlist publicly requires authorization of the `playlist-modify-public` scope; likewise, following a playlist privately requires authorization of the `playlist-modify-private` scope. See [Using Scopes](https://developer.spotify.com/web-api/using-scopes/) for more details.
     ///
     /// - Parameters:
     ///   - public: A Boolean value indicating whether the playlist should be included in the user's public playlists. The default value is `true`.
     ///
-    ///     **Note**: to follow playlists privately, the user must have authorized the "`playlist-modify-private`" scope.
+    ///     **Note**: to follow playlists privately, the user must have authorized the `playlist-modify-private` scope.
     ///
     ///   - handler: The callback handler for the request, providing an error identifying if and why the request failed, or `nil` if the request was successful.
     public func follow(makingPublic public: Bool = true, completion handler: @escaping SKErrorHandler) {
         makeFollowRequest(public: `public`).perform(completion: handler)
     }
     
-    // MARK: Unfollow a Playlist ✔︎
+    // MARK: Unfollow a Playlist
     
     /// Creates and returns the request used to remove the current authenticated user as a follower of the playlist.
     ///
@@ -1702,14 +1713,14 @@ extension SKPlaylist {
     ///
     /// - Note: This method uses the `SPTAuth` default instance session to authenticate the underlying request. If this session does not contain a valid access token, the request will result in an error. The access token must have been issued on behalf of the current user.
     ///
-    /// Unfollowing a publicly-followed playlist requires authorization of the "`playlist-modify-public`" scope; likewise, unfollowing a privately-followed playlist requires authorization of the "`playlist-modify-private`" scope. See [Using Scopes](https://developer.spotify.com/web-api/using-scopes/) for more details.
+    /// Unfollowing a publicly-followed playlist requires authorization of the `playlist-modify-public` scope; likewise, unfollowing a privately-followed playlist requires authorization of the `playlist-modify-private` scope. See [Using Scopes](https://developer.spotify.com/web-api/using-scopes/) for more details.
     ///
     /// - Parameter handler: The callback handler for the request, providing an error identifying if and why the request failed, or `nil` if the request was successful.
     public func unfollow(completion handler: @escaping SKErrorHandler) {
         makeUnfollowRequest().perform(completion: handler)
     }
     
-    // MARK: Check if Users Follow a Playlist ✔︎
+    // MARK: Check if Users Follow a Playlist
     
     /// Creates and returns the request used to check whether the given users are following the playlist.
     ///
@@ -1729,13 +1740,13 @@ extension SKPlaylist {
     ///
     /// Following a playlist can be done publicly or privately. Checking if a user publicly follows a playlist doesn't require any scopes; if the user is publicly following the playlist, the resulting Boolean value will be `true`.
     ///
-    /// However, checking if the user is privately following a playlist is only possible for the current authenticated user when that user has granted access to the "`playlist-read-private`" scope. See [Using Scopes](https://developer.spotify.com/web-api/using-scopes/) for more details.
+    /// However, checking if the user is privately following a playlist is only possible for the current authenticated user when that user has granted access to the `playlist-read-private` scope. See [Using Scopes](https://developer.spotify.com/web-api/using-scopes/) for more details.
     ///
     /// - Parameters:
     ///   - users: The users against which to perform the check. Maximum: 5 users.
     ///   - handler: The callback handler for the request. The parameters for this handler are:
-    ///     - `isFollowing`: An array of Boolean values indicating whether the given users are following the playlist. For each user that is following, the resulting array will contain `true` at the corresponding index; `false` otherwise.
-    ///     - `error`: An error identifying if and why the request failed, or `nil` if the request was successful.
+    ///       - `isFollowing`: An array of Boolean values indicating whether the given users are following the playlist. For each user that is following, the resulting array will contain `true` at the corresponding index; `false` otherwise.
+    ///       - `error`: An error identifying if and why the request failed, or `nil` if the request was successful.
     public func checkIfFollowed<T: Collection>(by users: T, completion handler: @escaping ([Bool]?, Error?) -> Void) where T.Element: User {
         makeFollowStatusRequest(users: users).perform(completion: handler)
     }
@@ -1746,13 +1757,13 @@ extension SKPlaylist {
     ///
     /// Following a playlist can be done publicly or privately. Checking if a user publicly follows a playlist doesn't require any scopes; if the user is publicly following the playlist, the resulting Boolean value will be `true`.
     ///
-    /// However, checking if the user is privately following a playlist is only possible for the current authenticated user when that user has granted access to the "`playlist-read-private`" scope. See [Using Scopes](https://developer.spotify.com/web-api/using-scopes/) for more details.
+    /// However, checking if the user is privately following a playlist is only possible for the current authenticated user when that user has granted access to the `playlist-read-private` scope. See [Using Scopes](https://developer.spotify.com/web-api/using-scopes/) for more details.
     ///
     /// - Parameters:
     ///   - user: The user against which to perform the check.
     ///   - handler: The callback handler for the request. The parameters for this handler are:
-    ///     - `isFollowing`: A Boolean value indicating whether the given user is following the playlist: `true` if following, `false` otherwise.
-    ///     - `error`: An error identifying if and why the request failed, or `nil` if the request was successful.
+    ///       - `isFollowing`: A Boolean value indicating whether the given user is following the playlist: `true` if following, `false` otherwise.
+    ///       - `error`: An error identifying if and why the request failed, or `nil` if the request was successful.
     public func checkIfFollowed<T: User>(by user: T, completion handler: @escaping (Bool?, Error?) -> Void) {
         makeFollowStatusRequest(users: [user]).perform { (flags: [Bool]?, error) in
             handler(flags?.first, error)
@@ -1762,7 +1773,7 @@ extension SKPlaylist {
 
 extension SKCurrentUser {
     
-    // MARK: Get Followed Artists ✔︎
+    // MARK: Get Followed Artists
     
     /// Creates and returns the request used to get the current authenticated user's followed artists.
     ///
@@ -1783,7 +1794,7 @@ extension SKCurrentUser {
     ///
     /// - Note: This method uses the `SPTAuth` default instance session to authenticate the underlying request. If this session does not contain a valid access token, the request will result in an error. The access token must have been issued on behalf of the current user.
     ///
-    /// Reading the list of items that the current authenticated user follows also requires authorization of the "`user-follow-read`" scope. See [Using Scopes](https://developer.spotify.com/spotify-web-api/using-scopes/) for more details.
+    /// Reading the list of items that the current authenticated user follows also requires authorization of the `user-follow-read` scope. See [Using Scopes](https://developer.spotify.com/spotify-web-api/using-scopes/) for more details.
     ///
     /// - Parameters:
     ///   - lastID: The last artist's ID in the previous page, if any. Providing an artist ID for this request is similar to providing an offset value in other paginated requests. The default value is `nil`.
@@ -1827,7 +1838,7 @@ public protocol Savable {
     ///
     /// - Note: This method uses the `SPTAuth` default instance session to authenticate the underlying request. If this session does not contain a valid access token, the request will result in an error. The access token must have been issued on behalf of the current user.
     ///
-    /// Modifying the current user's "Your Music" collection requires authorization of the "`user-library-modify`" scope. See [Using Scopes](https://developer.spotify.com/spotify-web-api/using-scopes/) for more details.
+    /// Modifying the current user's "Your Music" collection requires authorization of the `user-library-modify` scope. See [Using Scopes](https://developer.spotify.com/spotify-web-api/using-scopes/) for more details.
     ///
     /// - Parameter handler: The callback handler for the request, providing an error identifying if and why the request failed, or `nil` if the request was successful.
     func saveToLibrary(completion handler: @escaping SKErrorHandler)
@@ -1836,7 +1847,7 @@ public protocol Savable {
     ///
     /// - Note: This method uses the `SPTAuth` default instance session to authenticate the underlying request. If this session does not contain a valid access token, the request will result in an error. The access token must have been issued on behalf of the current user.
     ///
-    /// Modifying the current user's "Your Music" collection requires authorization of the "`user-library-modify`" scope. See [Using Scopes](https://developer.spotify.com/spotify-web-api/using-scopes/) for more details.
+    /// Modifying the current user's "Your Music" collection requires authorization of the `user-library-modify` scope. See [Using Scopes](https://developer.spotify.com/spotify-web-api/using-scopes/) for more details.
     ///
     /// - Parameter handler: The callback handler for the request, providing an error identifying if and why the request failed, or `nil` if the request was successful.
     func removeFromLibrary(completion handler: @escaping SKErrorHandler)
@@ -1845,11 +1856,11 @@ public protocol Savable {
     ///
     /// - Note: This method uses the `SPTAuth` default instance session to authenticate the underlying request. If this session does not contain a valid access token, the request will result in an error. The access token must have been issued on behalf of the current user.
     ///
-    /// Reading the current user's "Your Music" collection requires authorization of the "`user-library-read`" scope. See [Using Scopes](https://developer.spotify.com/spotify-web-api/using-scopes/) for more details.
+    /// Reading the current user's "Your Music" collection requires authorization of the `user-library-read` scope. See [Using Scopes](https://developer.spotify.com/spotify-web-api/using-scopes/) for more details.
     ///
     /// - Parameter handler: The callback handler for the request. The parameters for this handler are:
-    ///     - `isSaved`: A Boolean value indicating whether the item has been saved to the current user's library: `true` if saved, `false` otherwise.
-    ///     - `error`: An error identifying if and why the request failed, or `nil` if the request was successful.
+    ///       - `isSaved`: A Boolean value indicating whether the item has been saved to the current user's library: `true` if saved, `false` otherwise.
+    ///       - `error`: An error identifying if and why the request failed, or `nil` if the request was successful.
     func checkIfSaved(completion handler: @escaping (Bool?, Error?) -> Void)
 }
 
@@ -1976,7 +1987,7 @@ extension Collection where Element: Savable {
     ///
     /// - Note: This method uses the `SPTAuth` default instance session to authenticate the underlying request. If this session does not contain a valid access token, the request will result in an error. The access token must have been issued on behalf of the current user.
     ///
-    /// Modifying the current user's "Your Music" collection requires authorization of the "`user-library-modify`" scope. See [Using Scopes](https://developer.spotify.com/spotify-web-api/using-scopes/) for more details.
+    /// Modifying the current user's "Your Music" collection requires authorization of the `user-library-modify` scope. See [Using Scopes](https://developer.spotify.com/spotify-web-api/using-scopes/) for more details.
     ///
     /// - Parameter handler: The callback handler for the request, providing an error identifying if and why the request failed, or `nil` if the request was successful.
     public func saveToLibrary(completion handler: @escaping SKErrorHandler) {
@@ -1987,7 +1998,7 @@ extension Collection where Element: Savable {
     ///
     /// - Note: This method uses the `SPTAuth` default instance session to authenticate the underlying request. If this session does not contain a valid access token, the request will result in an error. The access token must have been issued on behalf of the current user.
     ///
-    /// Modifying the current user's "Your Music" collection requires authorization of the "`user-library-modify`" scope. See [Using Scopes](https://developer.spotify.com/spotify-web-api/using-scopes/) for more details.
+    /// Modifying the current user's "Your Music" collection requires authorization of the `user-library-modify` scope. See [Using Scopes](https://developer.spotify.com/spotify-web-api/using-scopes/) for more details.
     ///
     /// - Parameter handler: The callback handler for the request, providing an error identifying if and why the request failed, or `nil` if the request was successful.
     public func removeFromLibrary(completion handler: @escaping SKErrorHandler) {
@@ -1998,11 +2009,11 @@ extension Collection where Element: Savable {
     ///
     /// - Note: This method uses the `SPTAuth` default instance session to authenticate the underlying request. If this session does not contain a valid access token, the request will result in an error. The access token must have been issued on behalf of the current user.
     ///
-    /// Reading the current user's "Your Music" collection requires authorization of the "`user-library-read`" scope. See [Using Scopes](https://developer.spotify.com/spotify-web-api/using-scopes/) for more details.
+    /// Reading the current user's "Your Music" collection requires authorization of the `user-library-read` scope. See [Using Scopes](https://developer.spotify.com/spotify-web-api/using-scopes/) for more details.
     ///
     /// - Parameter handler: The callback handler for the request. The parameters for this handler are:
-    ///     - `isSaved`: An array of Boolean values indicating whether the collection of items have been saved to the current user's library. If a particular item in the collection is saved, the resulting array will contain `true` at the corresponding index; `false` otherwise.
-    ///     - `error`: An error identifying if and why the request failed, or `nil` if the request was successful.
+    ///       - `isSaved`: An array of Boolean values indicating whether the collection of items have been saved to the current user's library. If a particular item in the collection is saved, the resulting array will contain `true` at the corresponding index; `false` otherwise.
+    ///       - `error`: An error identifying if and why the request failed, or `nil` if the request was successful.
     public func checkIfSaved(completion handler: @escaping ([Bool]?, Error?) -> Void) {
         makeSaveStatusRequest().perform(completion: handler)
     }
@@ -2010,7 +2021,7 @@ extension Collection where Element: Savable {
 
 extension SKCurrentUser {
     
-    // MARK: Get Saved Albums ✔︎
+    // MARK: Get Saved Albums
     
     /// Creates and returns the request used to get the current authenticated user's saved albums.
     ///
@@ -2031,20 +2042,20 @@ extension SKCurrentUser {
     ///
     /// - Note: This method uses the `SPTAuth` default instance session to authenticate the underlying request. If this session does not contain a valid access token, the request will result in an error. The access token must have been issued on behalf of the current user.
     ///
-    /// Reading the current user's "Your Music" collection requires authorization of the "`user-library-read`" scope. See [Using Scopes](https://developer.spotify.com/spotify-web-api/using-scopes/) for more details.
+    /// Reading the current user's "Your Music" collection requires authorization of the `user-library-read` scope. See [Using Scopes](https://developer.spotify.com/spotify-web-api/using-scopes/) for more details.
     ///
     /// - Parameters:
     ///   - locale: The locale-specific storefront/market from which to request. The default value is the locale for the shared `SKCatalog` instance, which by default represents the user's region settings at the time the method is called.
     ///   - page: The parameters for paginating the results, specifying the index and number of items to return. If no parameters are supplied, the request will return the default number of items beginning with first item. The default value is `nil`.
     ///   - handler: The callback handler for the request. The parameters for this handler are:
-    ///     - `albums`: A paginated collection of saved albums, if available.
-    ///     - `error`: An error identifying if and why the request failed, or `nil` if the request was successful.
+    ///       - `albums`: A paginated collection of saved albums, if available.
+    ///       - `error`: An error identifying if and why the request failed, or `nil` if the request was successful.
     public static func getSavedAlbums(for locale: Locale? = SKCatalog.local.locale, page: Pagination? = nil, completion handler: @escaping (Page<SKSavedAlbum>?, Error?) -> Void) {
         
         makeSavedAlbumsRequest(locale: locale, page: page).perform(completion: handler)
     }
     
-    // MARK: Get Saved Tracks ✔︎
+    // MARK: Get Saved Tracks
     
     /// Creates and returns the request used to get the current authenticated user's saved tracks.
     ///
@@ -2065,14 +2076,14 @@ extension SKCurrentUser {
     ///
     /// - Note: This method uses the `SPTAuth` default instance session to authenticate the underlying request. If this session does not contain a valid access token, the request will result in an error. The access token must have been issued on behalf of the current user.
     ///
-    /// Reading the current user's "Your Music" collection requires authorization of the "`user-library-read`" scope. See [Using Scopes](https://developer.spotify.com/spotify-web-api/using-scopes/) for more details.
+    /// Reading the current user's "Your Music" collection requires authorization of the `user-library-read` scope. See [Using Scopes](https://developer.spotify.com/spotify-web-api/using-scopes/) for more details.
     ///
     /// - Parameters:
     ///   - locale: The locale-specific storefront/market from which to request. The default value is the locale for the shared `SKCatalog` instance, which by default represents the user's region settings at the time the method is called.
     ///   - page: The parameters for paginating the results, specifying the index and number of items to return. If no parameters are supplied, the request will return the default number of items beginning with first item. The default value is `nil`.
     ///   - handler: The callback handler for the request. The parameters for this handler are:
-    ///     - `tracks`: A paginated collection of saved tracks, if available.
-    ///     - `error`: An error identifying if and why the request failed, or `nil` if the request was successful.
+    ///       - `tracks`: A paginated collection of saved tracks, if available.
+    ///       - `error`: An error identifying if and why the request failed, or `nil` if the request was successful.
     public static func getSavedTracks(for locale: Locale? = SKCatalog.local.locale, page: Pagination? = nil, completion handler: @escaping (Page<SKSavedTrack>?, Error?) -> Void) {
         
         makeSavedTracksRequest(locale: locale, page: page).perform(completion: handler)
@@ -2082,10 +2093,20 @@ extension SKCurrentUser {
 // MARK: - Personalization Requests
 
 /// A type representing the possible time frames across which the current authenticated user's top artists and tracks can be calculated.
-public enum SKTimeRange: String { // TimeFrame // *Duration // *Interval
-    case beginningOfTime = "long_term" // longTerm // pastYears // beginningOfTime // allTime // severalYears
-    case lastSixMonths = "medium_term" // midTerm // pastMonths // pastYear // lastSixMonths
-    case lastFourWeeks = "short_term" // shortTerm // pastWeeks // pastMonth // lastFourWeeks
+public enum SKTimeRange: String {
+// public enum SKTimeFrame // *Duration // *Interval
+    
+    /// A time range spanning the past several years, beginning with the Spotify user's first use.
+    case beginningOfTime = "long_term"
+    // case longTerm // pastYears // beginningOfTime // allTime // severalYears
+    
+    /// A time range spanning the last six months.
+    case lastSixMonths = "medium_term"
+    // case midTerm // pastMonths // pastYear // lastSixMonths
+    
+    /// A time range spanning the last four weeks.
+    case lastFourWeeks = "short_term"
+    // case shortTerm // pastWeeks // pastMonth // lastFourWeeks
 }
 
 extension SKTimeRange: URLEncodable {}
@@ -2115,14 +2136,14 @@ extension SKCurrentUser {
     ///
     /// - Note: This method uses the `SPTAuth` default instance session to authenticate the underlying request. If this session does not contain a valid access token, the request will result in an error. The access token must have been issued on behalf of the current user.
     ///
-    /// Reading the current user's top artists or tracks requires authorization of the "`user-top-read`" scope. See [Using Scopes](https://developer.spotify.com/spotify-web-api/using-scopes/) for more details.
+    /// Reading the current user's top artists or tracks requires authorization of the `user-top-read` scope. See [Using Scopes](https://developer.spotify.com/spotify-web-api/using-scopes/) for more details.
     ///
     /// - Parameters:
     ///   - range: The time frame across which affinities are computed. Possible values are `.lastFourWeeks`, `.lastSixMonths`, and `.beginningOfTime`, which spans several years of data including all new data as it becomes available. The default value is `.lastSixMonths`.
     ///   - page: The parameters for paginating the results, specifying the index and number of items to return. If no parameters are supplied, the request will return the default number of items beginning with first item. The default value is `nil`.
     ///   - handler: The callback handler for the request. The parameters for this handler are:
-    ///     - `artists`: A paginated collection of up to 50 artists, if available.
-    ///     - `error`: An error identifying if and why the request failed, or `nil` if the request was successful.
+    ///       - `artists`: A paginated collection of up to 50 artists, if available.
+    ///       - `error`: An error identifying if and why the request failed, or `nil` if the request was successful.
     public static func getTopArtists(from range: SKTimeRange = .lastSixMonths, page: Pagination? = nil, completion handler: @escaping (Page<SKArtist>?, Error?) -> Void) {
         makeTopArtistsRequest(range: range, page: page).perform(completion: handler)
     }
@@ -2150,14 +2171,14 @@ extension SKCurrentUser {
     ///
     /// - Note: This method uses the `SPTAuth` default instance session to authenticate the underlying request. If this session does not contain a valid access token, the request will result in an error. The access token must have been issued on behalf of the current user.
     ///
-    /// Reading the current user's top artists or tracks requires authorization of the "`user-top-read`" scope. See [Using Scopes](https://developer.spotify.com/spotify-web-api/using-scopes/) for more details.
+    /// Reading the current user's top artists or tracks requires authorization of the `user-top-read` scope. See [Using Scopes](https://developer.spotify.com/spotify-web-api/using-scopes/) for more details.
     ///
     /// - Parameters:
     ///   - range: The time frame across which affinities are computed. Possible values are `.lastFourWeeks`, `.lastSixMonths`, and `.beginningOfTime`, which spans several years of data including all new data as it becomes available. The default value is `.lastSixMonths`.
     ///   - page: The parameters for paginating the results, specifying the index and number of items to return. If no parameters are supplied, the request will return the default number of items beginning with first item. The default value is `nil`.
     ///   - handler: The callback handler for the request. The parameters for this handler are:
-    ///     - `tracks`: A paginated collection of up to 50 tracks, if available.
-    ///     - `error`: An error identifying if and why the request failed, or `nil` if the request was successful.
+    ///       - `tracks`: A paginated collection of up to 50 tracks, if available.
+    ///       - `error`: An error identifying if and why the request failed, or `nil` if the request was successful.
     public static func getTopTracks(from range: SKTimeRange = .lastSixMonths, page: Pagination? = nil, completion handler: @escaping (Page<SKTrack>?, Error?) -> Void) {
         makeTopTracksRequest(range: range, page: page).perform(completion: handler)
     }
@@ -2169,7 +2190,7 @@ extension SKCurrentUser {
 ///
 /// Types that conform to this protocol provide a set of convenience methods to retrieve the full version of a simplified SpotifyKit type, and are required to have a URL providing the API endpoint to the full details of the item.
 ///
-/// These types also implement an "`isSimplified`" property, a Boolean value indicating whether an instance of this type represents a "simplified" version of the "full" [Spotify object](https://developer.spotify.com/web-api/object-model/).
+/// These types also implement an `isSimplified` property, a Boolean value indicating whether an instance of this type represents a "simplified" version of the "full" [Spotify object](https://developer.spotify.com/web-api/object-model/).
 public protocol Expandable {
     
     /// A link to the [Web API endpoint](https://developer.spotify.com/web-api/endpoint-reference/) providing full details of the item. **Required.**

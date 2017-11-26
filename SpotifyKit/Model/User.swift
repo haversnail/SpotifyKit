@@ -25,6 +25,9 @@ fileprivate enum ResourceType: String, Codable { case user }
 
 // MARK: - User Protocol
 
+/// A type representing a Spotify user.
+///
+/// The `User` protocol serves as the base protocol to which all Spotify user types conform. Its requirements include all the publicly available properties of a user. See the Spotify Web API [Object Model](https://developer.spotify.com/web-api/object-model/#user-object-public) for more details.
 public protocol User {
     
     /// The name displayed on the user's profile. `nil` if not available.
@@ -53,6 +56,9 @@ public protocol User {
 
 // MARK: - User Type
 
+/// A Spotify user.
+///
+/// - SeeAlso: The Web API [Public User](https://developer.spotify.com/web-api/user-guide/#user-object-public) object.
 public struct SKUser: User, JSONDecodable {
     
     /// The resource object type: `"user"`.
@@ -82,15 +88,20 @@ public struct SKUser: User, JSONDecodable {
 
 // MARK: - Current Authenticated User Type
 
-public struct SKCurrentUser: User, JSONDecodable { // SKAuthenticatedUser
-        
-    /// - SeeAlso: https:/spotify.github.io/ios-sdk/Constants/SPTProduct.html
+/// The current authenticated Spotify user.
+///
+/// - SeeAlso: The Web API [Private User](https://developer.spotify.com/web-api/user-guide/#user-object-private) object.
+public struct SKCurrentUser: User, JSONDecodable {
+    
+    /// The available Spotify product levels to which the current user can be subscribed.
+    ///
+    /// - SeeAlso: The Spotify iOS SDK [type](https:/spotify.github.io/ios-sdk/Constants/SPTProduct.html).
     public enum ProductType: String, Codable {
         case free
-        case open // TODO: Test for this case.
+        case open
         case premium
         case unlimited
-        case unknown // TODO: Test for this case.
+        case unknown
     }
     
     /// The resource object type: `"user"`.

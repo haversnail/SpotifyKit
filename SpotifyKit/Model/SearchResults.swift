@@ -45,7 +45,8 @@ extension SKSearchResultType: URLEncodable {}
 extension Set where Element == SKSearchResultType {
     
     /// A convenience property containing all possible search result types: `.album`, `.artist`, `.track`, and `.playlist`.
-    public static let all: Set<SKSearchResultType> = [.albums, .artists, .tracks, .playlists] // Consider using an OptionSet instead.
+    public static let all: Set<SKSearchResultType> = [.albums, .artists, .tracks, .playlists]
+    // Consider using an OptionSet instead.
 }
 
 // MARK: - Search Filters

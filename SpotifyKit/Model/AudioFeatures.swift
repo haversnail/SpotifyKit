@@ -20,15 +20,22 @@
 
 import Foundation
 
-public struct SKAudioFeatures: JSONDecodable { // TODO: Make JSON Codable?
+/// The "audio features" representing a specific track's audio attributes.
+///
+/// - SeeAlso: The Web API [Audio Features](https://developer.spotify.com/web-api/object-model/#audio-features-object) object.
+public struct SKAudioFeatures: JSONDecodable {
     
     /// An enum representing the expected `type` value for an audio features object.
     private enum ResourceType: String, Codable { case audioFeatures = "audio_features" }
     
+    /// The possible keys in which the track can be.
+    ///
+    /// Integers map to pitches using standard [Pitch Class notation](https://en.wikipedia.org/wiki/Pitch_class). E.g. 0 = C, 1 = C♯/D♭, 2 = D, and so on.
     public enum Pitch: Int, Codable {
         case C, Db, D, Eb, E, F, Gb, G, Ab, A, Bb, B
     }
     
+    /// The possible modes in which the track can be: *major* or *minor*.
     public enum Mode: Int, Codable {
         case minor
         case major
@@ -59,7 +66,7 @@ public struct SKAudioFeatures: JSONDecodable { // TODO: Make JSON Codable?
     /// Predicts whether a track contains no vocals. "Ooh" and "aah" sounds are treated as instrumental in this context. Rap or spoken word tracks are clearly "vocal". The closer the instrumentalness value is to 1.0, the greater likelihood the track contains no vocal content. Values above 0.5 are intended to represent instrumental tracks, but confidence is higher as the value approaches 1.0.
     public let instrumentalness: Float
     
-    /// The key the track is in. Integers map to pitches using standard [Pitch Class notation](https://en.wikipedia.org/wiki/Pitch_class). E.g. 0 = C, 1 = C♯/D♭, 2 = D, and so on. See `SKAudioFeatures.PitchClass` for all possible values.
+    /// The key the track is in. See `SKAudioFeatures.Pitch` for all possible values.
     public let key: Pitch
     
     /// Detects the presence of an audience in the recording. Higher liveness values represent an increased probability that the track was performed live. A value above 0.8 provides strong likelihood that the track is live.
@@ -121,11 +128,45 @@ extension SKAudioFeatures.Mode: URLEncodable {}
 
 // MARK: - Tunable Track Attributes
 
+//public struct SKTrackAttribute {
+//
+//    internal let min: URLEncodable?
+//    internal let max: URLEncodable?
+//    internal let target: URLEncodable?
+//
+//    internal enum AttributeKey: String {
+//        case accousticness
+//        case danceability
+//        case duration = "duration_ms"
+//        case energy
+//        case instrumentalness
+//        case key
+//        case liveness
+//        case loudness
+//        case mode
+//        case popularity
+//        case speechiness
+//        case tempo
+//        case timeSignature = "time_signature"
+//        case valence
+//    }
+//
+//    internal let key: AttributeKey
+//
+//    static func accousticness(min: Float? = nil, max: Float? = nil, target: Float? = nil) -> SKTrackAttribute {
+//        return SKTrackAttribute(min: min, max: max, target: target, key: .accousticness)
+//    }
+//}
+
+/// An enumeration representing the audio attributes available in "audio features."
+///
+/// Each attribute accepts a minimum, maximum, and target value of the appropriate type.
 public enum SKTrackAttribute {
 
     internal typealias AttributeRange<T> = (min: T?, max: T?, target: T?) // TODO: Change typealias to public once SE-0155 is implemented.
 
-    case accousticness(min: Float?, max: Float?, target: Float?) // accousticness(AttributeRange<Float>) // <- Would require additional parentheses. :(
+    // case accousticness(AttributeRange<Float>) // <- Would require additional parentheses. :(
+    case accousticness(min: Float?, max: Float?, target: Float?)
     case danceability(min: Float?, max: Float?, target: Float?)
     case duration(min: TimeInterval?, max: TimeInterval?, target: TimeInterval?)
     case energy(min: Float?, max: Float?, target: Float?)

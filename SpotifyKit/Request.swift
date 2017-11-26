@@ -20,127 +20,21 @@
 
 import Foundation
 
-/// The [Response Status Codes][Guide] used by the Spotify Web API, as defined in the [RFC 2616] and [RFC 6585].
-///
-/// [Guide]: https://developer.spotify.com/web-api/user-guide/#response-status-codes
-/// [RFC 2616]: https://www.ietf.org/rfc/rfc2616.txt
-/// [RFC 6585]: https://www.ietf.org/rfc/rfc6585.txt
-public struct SKResponseStatus {
-    
-    /// The underlying HTTP status code.
-    public let code: Int
-    
-    // MARK: API Status Codes
-    
-    /// The request has succeeded. The client can read the result of the request in the body and the headers of the response.
-    public static let ok = SKResponseStatus(code: 200)
-    
-    /// The request has been fulfilled and resulted in a new resource being created.
-    public static let created = SKResponseStatus(code: 201)
-    
-    /// The request has been accepted for processing, but the processing has not been completed.
-    public static let accepted = SKResponseStatus(code: 202)
-    
-    /// The request has succeeded but returns no message body.
-    public static let noContent = SKResponseStatus(code: 204)
-    
-    /// The response has not changed. See [Conditional requests](https://developer.spotify.com/web-api/user-guide/#conditional-requests) for more details.
-    public static let notModified = SKResponseStatus(code: 304)
-    
-    /// The request could not be understood by the server due to malformed syntax. The message body will contain more information. See [Error Details](https://developer.spotify.com/web-api/user-guide/#error-details) for more details.
-    public static let badRequest = SKResponseStatus(code: 400)
-    
-    /// The request requires user authentication or, if the request included authorization credentials, authorization has been refused for those credentials.
-    public static let unauthorized = SKResponseStatus(code: 401)
-    
-    /// The server understood the request, but is refusing to fulfill it.
-    public static let forbidden = SKResponseStatus(code: 403)
-    
-    /// The requested resource could not be found. This error can be due to a temporary or permanent condition.
-    public static let notFound = SKResponseStatus(code: 404)
-    
-    /// [Rate limiting](https://developer.spotify.com/web-api/user-guide/#rate-limiting) has been applied.
-    public static let tooManyRequests = SKResponseStatus(code: 429)
-    
-    /// An internal server error has occurred. Although unlikely, if you receive this error, please report it [here](https://github.com/spotify/web-api/issues).
-    public static let internalServerError = SKResponseStatus(code: 500)
-    
-    /// The server was acting as a gateway or proxy and received an invalid response from the upstream server.
-    public static let badGateway = SKResponseStatus(code: 502)
-    
-    /// The server is currently unable to handle the request due to a temporary condition which will be alleviated after some delay. You can choose to resend the request again.
-    public static let serviceUnavailable = SKResponseStatus(code: 503)
-}
-
-extension SKResponseStatus: Equatable {
-    
-    // MARK: Comparing Status Codes
-    
-    public static func ==(lhs: SKResponseStatus, rhs: SKResponseStatus) -> Bool {
-        return lhs.code == rhs.code
-    }
-}
-
-extension SKResponseStatus: Decodable {
-    
-    // MARK: Decoding
-    
-    public init(from decoder: Decoder) throws {
-        let value = try decoder.singleValueContainer()
-        self.code = try value.decode(Int.self)
-    }
-}
-
-extension SKResponseStatus: CustomStringConvertible {
-    
-    // MARK: Localized Status Description
-    
-    public var description: String {
-        switch self {
-            case .ok:                   return "OK"
-            case .created:              return "Created"
-            case .accepted:             return "Accepted"
-            case .noContent:            return "No Content"
-            case .notModified:          return "Not Modified"
-            case .badRequest:           return "Bad Request"
-            case .unauthorized:         return "Unauthorized"
-            case .forbidden:            return "Forbidden"
-            case .notFound:             return "Not Found"
-            case .tooManyRequests:      return "Too Many Requests"
-            case .internalServerError:  return "Internal Server Error"
-            case .badGateway:           return "Bad Gateway"
-            case .serviceUnavailable:   return "Service Unavailable"
-            default:
-                return "Unexpected status: " + HTTPURLResponse.localizedString(forStatusCode: code)
-        }
-    }
-}
-
-extension SKResponseStatus: CustomDebugStringConvertible {
-    public var debugDescription: String {
-        return description + " (\(code))"
-    }
-}
-
-//public struct SKResponse {
-//    let status: SKResponseStatus
-//    let body: Data?
-//    let entityTag: String?
-//}
+// MARK: Request Handlers
 
 /// The callback handler for a request.
 ///
 /// - Parameters:
-///     - data: The data (typically an encoded JSON object) returned by the request, if any. If the data returned represents an API-specific error object, that object will be provided via the `error` parameter instead.
-///     - status: The API-specific HTTP status code associated with the response. If the underlying URL request could not be completed successfully, or the URL response contained an unexpected status code, this parameter will be `nil`.
-///     - error: An error identifying if and why the request failed, or `nil` if the request was successful.
+///   - data: The data (typically an encoded JSON object) returned by the request, if any. If the data returned represents an API-specific error object, that object will be provided via the `error` parameter instead.
+///   - status: The API-specific HTTP status code associated with the response. If the underlying URL request could not be completed successfully, or the URL response contained an unexpected status code, this parameter will be `nil`.
+///   - error: An error identifying if and why the request failed, or `nil` if the request was successful.
 public typealias SKRequestHandler = (_ data: Data?, _ status: SKResponseStatus?, _ error: Error?) -> Void
 
 /// The callback handler for a request.
 ///
 /// - Parameters:
-///     - type: The type decoded from the JSON data returned by the request. If the type could not be decoded from the data received, the `error` parameter will provide details.
-///     - error: An error identifying if and why the request or decoding failed, or `nil` if the request was successful.
+///   - type: The type decoded from the JSON data returned by the request. If the type could not be decoded from the data received, the `error` parameter will provide details.
+///   - error: An error identifying if and why the request or decoding failed, or `nil` if the request was successful.
 public typealias SKDecodableHandler<T: JSONDecodable> = (_ type: T?, _ error: Error?) -> Void
 
 /// The callback handler for a request.
@@ -154,7 +48,8 @@ public typealias SKErrorHandler = (_ error: Error?) -> Void
 /// An abstract class that represents a request to the [Spotify Web API](https://developer.spotify.com/web-api/).
 ///
 /// An `SKRequest` object encapsulates the properties of an HTTP request, providing a convenient template for you to create, prepare, and send requests to the Web API. See the API [Requests Guide](https://developer.spotify.com/web-api/user-guide/#requests) for more details.
-public class SKRequest { // Inheriting from NSObject causes buildtime error: class conflicts with StoreKit's `SKRequest` class.
+public class SKRequest {
+// - Note: Inheriting from NSObject causes buildtime error: class conflicts with StoreKit's `SKRequest` class.
     
     // MARK: Supporting Types
     
@@ -293,9 +188,9 @@ public class SKRequest { // Inheriting from NSObject causes buildtime error: cla
     /// If the URL provided does not contain either the Web API base URL (`https://api.spotify.com`), or the Web API accounts service URL (`https://accounts.spotify.com`), this initializer will fail.
     ///
     /// - Parameters:
-    ///     - method: The HTTP verb to use for this API request. For possible values, see `SKRequest.HTTPMethod`.
-    ///     - url: The full destination URL for this API request, comprised of either the Web API base URL (`https://api.spotify.com`) or the accounts service URL (`https://accounts.spotify.com`) and the specific endpoint from which to request data.
-    ///     - parameters: The parameters to send along with the API request, if any. The values are encoded as a URL query string and appended to the destination URL.
+    ///   - method: The HTTP verb to use for this API request. For possible values, see `SKRequest.HTTPMethod`.
+    ///   - url: The full destination URL for this API request, comprised of either the Web API base URL (`https://api.spotify.com`) or the accounts service URL (`https://accounts.spotify.com`) and the specific endpoint from which to request data.
+    ///   - parameters: The parameters to send along with the API request, if any. The values are encoded as a URL query string and appended to the destination URL.
     /// - Note: If the URL provided already contains a query string, those query items will be removed from the stored `url` property and made available through the `parameters` property instead. When both a `parameters` argument and a URL with existing query items are supplied, both are stored in the `parameters` property. Values supplied by the `parameters` argument will overwrite any conflicting values supplied by the URL query.
     public init?(method: HTTPMethod, url: URL, parameters: [String: Any] = [:]) {
         
@@ -320,9 +215,9 @@ public class SKRequest { // Inheriting from NSObject causes buildtime error: cla
     /// If a valid API URL cannot be derived from the given endpoint, this initializer will fail.
     ///
     /// - Parameters:
-    ///     - method: The HTTP verb to use for this API request. For possible values, see `SKRequest.HTTPMethod`.
-    ///     - endpoint: The destination endpoint for this API request, relative to the Web API base URL (`https://api.spotify.com`).
-    ///     - parameters: The parameters to send along with the API request, if any. The values are encoded as a URL query string and appended to the destination URL.
+    ///   - method: The HTTP verb to use for this API request. For possible values, see `SKRequest.HTTPMethod`.
+    ///   - endpoint: The destination endpoint for this API request, relative to the Web API base URL (`https://api.spotify.com`).
+    ///   - parameters: The parameters to send along with the API request, if any. The values are encoded as a URL query string and appended to the destination URL.
     public convenience init?(method: HTTPMethod, endpoint: String, parameters: [String: Any] = [:]) {
         
         guard let url = URL(string: endpoint, relativeTo: Constants.baseURL) else { return nil }
@@ -341,8 +236,8 @@ public class SKRequest { // Inheriting from NSObject causes buildtime error: cla
     /// Adds multipart request body data for a PUT, POST, or DELETE request.
     ///
     /// - Parameters:
-    ///     - data: The data for the request body, typically an encoded JSON object.
-    ///     - type: The MIME content type of the request body. The default value is "`application/json`."
+    ///   - data: The data for the request body, typically an encoded JSON object.
+    ///   - type: The MIME content type of the request body. The default value is `.json`.
     public func add(_ data: Data, type: ContentType = .json) {
         body = (data: data, type: type)
     }
@@ -471,7 +366,117 @@ public class SKRequest { // Inheriting from NSObject causes buildtime error: cla
     }
 }
 
-// MARK: - SpotifyAuthentication Extensions
+// MARK: - Response Status Codes
+
+/// The [Response Status Codes][Guide] used by the Spotify Web API, as defined in the [RFC 2616] and [RFC 6585].
+///
+/// [Guide]: https://developer.spotify.com/web-api/user-guide/#response-status-codes
+/// [RFC 2616]: https://www.ietf.org/rfc/rfc2616.txt
+/// [RFC 6585]: https://www.ietf.org/rfc/rfc6585.txt
+public struct SKResponseStatus {
+    
+    /// The underlying HTTP status code.
+    public let code: Int
+    
+    // MARK: API Status Codes
+    
+    /// The request has succeeded. The client can read the result of the request in the body and the headers of the response.
+    public static let ok = SKResponseStatus(code: 200)
+    
+    /// The request has been fulfilled and resulted in a new resource being created.
+    public static let created = SKResponseStatus(code: 201)
+    
+    /// The request has been accepted for processing, but the processing has not been completed.
+    public static let accepted = SKResponseStatus(code: 202)
+    
+    /// The request has succeeded but returns no message body.
+    public static let noContent = SKResponseStatus(code: 204)
+    
+    /// The response has not changed. See [Conditional requests](https://developer.spotify.com/web-api/user-guide/#conditional-requests) for more details.
+    public static let notModified = SKResponseStatus(code: 304)
+    
+    /// The request could not be understood by the server due to malformed syntax. The message body will contain more information. See [Error Details](https://developer.spotify.com/web-api/user-guide/#error-details) for more details.
+    public static let badRequest = SKResponseStatus(code: 400)
+    
+    /// The request requires user authentication or, if the request included authorization credentials, authorization has been refused for those credentials.
+    public static let unauthorized = SKResponseStatus(code: 401)
+    
+    /// The server understood the request, but is refusing to fulfill it.
+    public static let forbidden = SKResponseStatus(code: 403)
+    
+    /// The requested resource could not be found. This error can be due to a temporary or permanent condition.
+    public static let notFound = SKResponseStatus(code: 404)
+    
+    /// [Rate limiting](https://developer.spotify.com/web-api/user-guide/#rate-limiting) has been applied.
+    public static let tooManyRequests = SKResponseStatus(code: 429)
+    
+    /// An internal server error has occurred. Although unlikely, if you receive this error, please report it [here](https://github.com/spotify/web-api/issues).
+    public static let internalServerError = SKResponseStatus(code: 500)
+    
+    /// The server was acting as a gateway or proxy and received an invalid response from the upstream server.
+    public static let badGateway = SKResponseStatus(code: 502)
+    
+    /// The server is currently unable to handle the request due to a temporary condition which will be alleviated after some delay. You can choose to resend the request again.
+    public static let serviceUnavailable = SKResponseStatus(code: 503)
+}
+
+extension SKResponseStatus: CustomStringConvertible {
+    
+    // MARK: Status Description
+    
+    public var description: String {
+        switch self {
+        case .ok:                   return "OK"
+        case .created:              return "Created"
+        case .accepted:             return "Accepted"
+        case .noContent:            return "No Content"
+        case .notModified:          return "Not Modified"
+        case .badRequest:           return "Bad Request"
+        case .unauthorized:         return "Unauthorized"
+        case .forbidden:            return "Forbidden"
+        case .notFound:             return "Not Found"
+        case .tooManyRequests:      return "Too Many Requests"
+        case .internalServerError:  return "Internal Server Error"
+        case .badGateway:           return "Bad Gateway"
+        case .serviceUnavailable:   return "Service Unavailable"
+        default:
+            return "Unexpected status: " + HTTPURLResponse.localizedString(forStatusCode: code)
+        }
+    }
+}
+
+extension SKResponseStatus: CustomDebugStringConvertible {
+    public var debugDescription: String {
+        return description + " (\(code))"
+    }
+}
+
+extension SKResponseStatus: Equatable {
+    
+    // MARK: Comparing Status Codes
+    
+    public static func ==(lhs: SKResponseStatus, rhs: SKResponseStatus) -> Bool {
+        return lhs.code == rhs.code
+    }
+}
+
+extension SKResponseStatus: Decodable {
+    
+    // MARK: Custom Decoding
+    
+    public init(from decoder: Decoder) throws {
+        let value = try decoder.singleValueContainer()
+        self.code = try value.decode(Int.self)
+    }
+}
+
+//public struct SKResponse {
+//    let status: SKResponseStatus
+//    let body: Data?
+//    let entityTag: String?
+//}
+
+// MARK: - Authentication Framework Extensions
 
 extension SPTSession {
     

@@ -20,12 +20,15 @@
 
 import Foundation
 
+/// A Spotify playlist.
+///
+/// - SeeAlso: The Web API [Simplified](https://developer.spotify.com/web-api/user-guide/#playlist-object-simplified) and [Full](https://developer.spotify.com/web-api/user-guide/#playlist-object-full) Playlist objects.
 public struct SKPlaylist: JSONDecodable {
     
     /// An enum representing the expected `type` value for a playlist object.
     private enum ResourceType: String, Codable { case playlist }
 
-    // MARK: - Properties (Simplified)
+    // MARK: - Simplified Playlist Properties
     
     /// `true` if the owner allows other users to modify the playlist.
     public let isCollaborative: Bool
@@ -67,7 +70,7 @@ public struct SKPlaylist: JSONDecodable {
     /// The resource object type: `"playlist"`.
     private let type: ResourceType
     
-    // MARK: - Properties (Full)
+    // MARK: - Full Playlist Properties
     
     /// A collection containing information about the tracks of the playlist.
     public let tracks: Page<SKPlaylistTrack>?
@@ -157,7 +160,11 @@ extension SKPlaylist: Expandable {
 
 /// A structure containing a paginated collection of featured playlists, accompanied by a localized message from Spotify.
 public struct SKFeaturedPlaylists: JSONDecodable {
+    
+    /// An accompanying localized message from Spotify.
     public let localizedMessage: String
+    
+    /// A list of featured playlists.
     public let playlists: Page<SKPlaylist>
     
     private enum CodingKeys: String, CodingKey {

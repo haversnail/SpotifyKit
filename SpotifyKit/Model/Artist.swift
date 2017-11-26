@@ -20,14 +20,17 @@
 
 import Foundation
 
+/// A Spotify artist.
+///
+/// - SeeAlso: The Web API [Simplified](https://developer.spotify.com/web-api/user-guide/#artist-object-simplified) and [Full](https://developer.spotify.com/web-api/user-guide/#artist-object-full) Artist objects.
 public struct SKArtist: JSONDecodable {
     
-    // MARK: - Embedded Types
+    // MARK: - Supporting Types
     
     /// An enum representing the expected `type` value for an artist object.
     private enum ResourceType: String, Codable { case artist }
     
-    // MARK: - Properties (Simplified)
+    // MARK: - Simplified Artist Properties
     
     /// Known external URLs for this artist. See ["external URL object"](https://developer.spotify.com/web-api/object-model/#external-url-object) for more details.
     public let externalURLs: [String: URL]
@@ -47,7 +50,7 @@ public struct SKArtist: JSONDecodable {
     /// The resource object type: `"artist"`.
     private let type: ResourceType
     
-    // MARK: - Properties (Full)
+    // MARK: - Full Artist Properties
     
     /// Information about the followers of the artist.
     public let followers: SKFollowers?

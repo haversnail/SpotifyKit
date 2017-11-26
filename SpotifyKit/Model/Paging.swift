@@ -20,8 +20,10 @@
 
 import Foundation
 
+// MARK: Paging Parameters
+
 /// A structure representing the parameters for paginating the elements of a larger collection.
-public struct Pagination { // Remove Pagination type and just include limit/offset as fn parameters. (...use another fn declaration for "pageNumber?"...)
+public struct Pagination {
     
     /// The number of items to be contained in the page.
     public var limit: Int
@@ -52,7 +54,7 @@ public struct Pagination { // Remove Pagination type and just include limit/offs
     }
 }
 
-// MARK: - Paging Collection Protocols
+// MARK: - Paging Protocols
 
 /// A type that can be returned in a cursor-based paging collection.
 ///
@@ -196,6 +198,8 @@ extension PagingCollection where Self: JSONDecodable {
 // MARK: - Collection Types
 
 /// A generic collection that provides offset-based paginated results from a [Spotify Web API](https://developer.spotify.com/web-api/) request.
+///
+/// - SeeAlso: The Web API [Paging](https://developer.spotify.com/web-api/object-model/#paging-object) object.
 public struct Page<Element: Decodable>: OffsetPagingCollection, JSONDecodable {
     
     /// The array of items.
@@ -250,7 +254,9 @@ public struct Page<Element: Decodable>: OffsetPagingCollection, JSONDecodable {
 }
 
 /// A generic collection that provides cursor-based paginated results from a [Spotify Web API](https://developer.spotify.com/web-api/) request.
-public struct CursorPage<Element: CursorPageable & Decodable>: CursorPagingCollection, JSONDecodable { // Un/OrderedPage // SortedPage
+///
+/// - SeeAlso: The Web API [Cursor-Based Paging](https://developer.spotify.com/web-api/object-model/#cursor-based-paging-object) object.
+public struct CursorPage<Element: CursorPageable & Decodable>: CursorPagingCollection, JSONDecodable {
     
     /// The array of items.
     private let items: [Element]
@@ -290,7 +296,6 @@ public struct CursorPage<Element: CursorPageable & Decodable>: CursorPagingColle
     // MARK: Cursor Paging Collection Conformance
     
 //    // Nesting struct with an associated type that depends on parent generic struct causes runtime error in Swift 4.0.2 and earlier ("cyclic metadata dependency detected"). See SR-5086 and similar issues. Resolved using Swift 4.1 snapshot toolchain (2017-11-06).
-//    // FIXME: Uncomment once Swift 4.1 is implemented.
 //    /// A structure containing a set of cursors used to identify items in a cursor-based paging collection.
 //    ///
 //    /// Cursor-based paging collections depend on a set of "cursors" to identify the first and last items in a given page, providing reference points from which to page through a larger list of results, typically sorted in chronological order.
@@ -325,7 +330,7 @@ fileprivate enum CursorKeys: String, CodingKey {
 /// A structure containing a set of cursors used to identify items in a cursor-based paging collection.
 ///
 /// Cursor-based paging collections depend on a set of "cursors" to identify the first and last items in a given page, providing reference points from which to page through a larger list of results, typically sorted in chronological order.
-public struct Cursors<CursorType: Decodable>: CursorProtocol, Decodable { // FIXME: Remove once Swift 4.1 is implemented.
+public struct Cursors<CursorType: Decodable>: CursorProtocol, Decodable { // FIXME: Move inside 'Page' once Swift 4.1 is implemented.
     
     //public typealias CursorType = CursorPage.Element.CursorType
     private typealias CodingKeys = CursorKeys // moved to fileprivate top-level scope for custom date decoding fix.

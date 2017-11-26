@@ -20,6 +20,9 @@
 
 import Foundation
 
+/// A structure representing an image used by a Spotify item, such as a playlist's cover image.
+///
+/// - SeeAlso: The Web API [Image](https://developer.spotify.com/web-api/user-guide/#image-object) object.
 public struct SKImage: JSONDecodable {
     
     /// The source URL of the image.

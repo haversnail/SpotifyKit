@@ -20,7 +20,7 @@
 
 import Foundation
 
-/// A representation of a device that supports a Spotify player.
+/// A structure representing a device that supports a Spotify player.
 public struct SKDevice: JSONDecodable {
     
     /// The possible devices that can support a Spotify player.

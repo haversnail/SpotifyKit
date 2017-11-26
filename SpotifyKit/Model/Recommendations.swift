@@ -22,9 +22,12 @@ import Foundation
 
 // MARK: Recommendations Type
 
+/// A structure representing a list of recommended tracks generated from a list of Spotify seed items.
+///
+/// - SeeAlso: The Web API [Recommendations](https://developer.spotify.com/web-api/user-guide/#recommendations-object) object.
 public struct SKRecommendations: JSONDecodable {
     
-    /// An array of recommendation seeds.
+    /// The seeds used to generate the list of recommended tracks.
     public let seeds: [SKSeed]
     
     /// An array of simplified tracks, ordered according to the parameters supplied.
@@ -33,6 +36,9 @@ public struct SKRecommendations: JSONDecodable {
 
 // MARK: - Recommendations Seed Type
 
+/// A structure representing a Spotify media item used to generate a list of recommended tracks.
+///
+/// - SeeAlso: The Web API [Recommendations Seed](https://developer.spotify.com/web-api/user-guide/#recommendations-seed-object) object.
 public struct SKSeed: JSONDecodable {
     
     public enum SeedType: String, Codable {

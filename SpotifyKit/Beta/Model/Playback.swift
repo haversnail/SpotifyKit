@@ -34,6 +34,8 @@ public enum SKRepeatMode: String, Codable {
     /// The current playback context is repeated indefinitely.
     case all = "context"
     
+    // MARK: Converting Between SDK Symbols
+    
     /// Creates an `SKRepeatMode` equal to that of the given `SPTRepeatMode` value.
     ///
     /// - Parameter value: The `SPTRepeatMode` value.
@@ -76,7 +78,7 @@ extension SPTRepeatMode {
 // MARK: - Playback Context
 
 /// A structure containing values identifying the context in which a particular track is played, such as an album, artist, or playlist.
-public struct SKPlaybackContext: Decodable { // SKPlaybackSource
+public struct SKPlaybackContext: Decodable {
     
     /// The possible contexts in which a track can be played.
     public enum ContextType: String, Codable {
@@ -119,7 +121,7 @@ public struct SKPlaybackContext: Decodable { // SKPlaybackSource
 public struct SKPlaybackState: JSONDecodable {
     
     /// The device that is currently active.
-    public let device: SKDevice? // - Note: When retrieving the currently playing track, this property will be `nil`. // Just don't support that endpoint. It's redundant anyways.
+    public let device: SKDevice? // - Note: When retrieving the currently playing track, this property will be `nil`.
     
     /// The current repeat mode. See `SKRepeatMode` for possible values.
     public let repeatMode: SKRepeatMode? // - Note: When retrieving the currently playing track, this property will be `nil`.
@@ -177,49 +179,23 @@ public struct SKPlaybackState: JSONDecodable {
     }
 }
 
-//public protocol SKValueConvertible {
-//    associatedtype ValueType
-//    init?(from value: ValueType) // init?(converting:)
-//}
-
-extension SPTPlaybackState/*: SKValueConvertible */{
-    
-    public convenience init?(from value: SKPlaybackState) {
-        
-        guard
-            let device = value.device,
-            let repeatMode = value.repeatMode,
-            let isShuffling = value.isShuffling,
-            let progress = value.progress else {
-                return nil
-        }
-        
-        self.init(isPlaying: value.isPlaying,
-                  isRepeating: repeatMode == .one || repeatMode == .all,
-                  isShuffling: isShuffling,
-                  isActiveDevice: UIDevice.current.name == device.name,
-                  position: progress)
-    }
-}
-
-//public protocol SPTConvertible { // SDKConvertible
-//    associatedtype ReferenceType
-//    func makeSPTInstance() -> ReferenceType
-//    //var sptInstance: ReferenceType { get }
-//}
-//
-//extension SKPlaybackState: SPTConvertible {
-//
-//    public func makeSPTInstance() -> SPTPlaybackState? {
-//
-//        guard let device = device, let repeatMode = repeatMode, let isShuffling = isShuffling, let progress = progress else {
-//            return nil
+//extension SPTPlaybackState {
+//    
+//    public convenience init?(from value: SKPlaybackState) {
+//        
+//        guard
+//            let device = value.device,
+//            let repeatMode = value.repeatMode,
+//            let isShuffling = value.isShuffling,
+//            let progress = value.progress else {
+//                return nil
 //        }
-//
-//        return SPTPlaybackState(isPlaying: isPlaying,
-//                                isRepeating: repeatMode == .all || repeatMode == .one,
-//                                isShuffling: isShuffling,
-//                                isActiveDevice: device.type == .mobile, // No good... find a better way.
-//                                position: TimeInterval(progress))!
+//        
+//        self.init(isPlaying: value.isPlaying,
+//                  isRepeating: repeatMode == .one || repeatMode == .all,
+//                  isShuffling: isShuffling,
+//                  isActiveDevice: UIDevice.current.name == device.name,
+//                  position: progress)
 //    }
 //}
+

@@ -22,40 +22,66 @@ import Foundation
 
 // MARK: Supporting Types
 
-/// - SeeAlso: https://spotify.github.io/ios-sdk/Constants/SPTAlbumType.html
+/// The types of albums available in the Spotify catalog.
+///
+/// - SeeAlso: The Spotify iOS SDK [type](https://spotify.github.io/ios-sdk/Constants/SPTAlbumType.html).
 public enum SKAlbumType: String, Codable {
+    
+    /// A standard album.
     case album
+    
+    /// A single-track album.
     case single
+    
+    /// An album on which the artist appears, but didn't author.
     case appearance = "appears_on"
+    
+    /// A compilation album.
     case compilation
 }
 
 extension SKAlbumType: URLEncodable {}
 
+/// A struct representing the copyright on a Spotify media item, such as an album.
+///
+/// - SeeAlso: The Web API [Copyright](https://developer.spotify.com/web-api/object-model/#copyright-object) object.
 public struct SKCopyright: Decodable {
     
-    /// The types of copyrights that are provided by an `SKCopyright` instance.
+    /// The types of copyrights available.
     public enum CopyrightType: String, Codable {
+        
         /// The copyright.
         case copyright = "C"
+        
         /// The sound recording (performance) copyright.
         case performance = "P"
     }
     
     /// The copyright text for this album.
     public let text: String
+    
     /// The type of copyright. See `SKCopyright.CopyrightType` for possible values.
     public let type: CopyrightType
 }
 
-public enum DatePrecision: String, Codable {
+/// An enumeration representing the different levels of precision for a given date, such as an album's release date.
+public enum SKDatePrecision: String, Codable {
+    
+    /// The given date is used to represent a specific year.
     case year
+    
+    /// The given date is used to represent a specific month and year.
     case month
+    
+    /// The given date is used to represent a specific day, month, and year.
     case day
 }
 
 // MARK: - Album Protocol
 
+/// A type representing a Spotify album.
+///
+/// The `Album` protocol serves as the base protocol to which all Spotify album types conform. Its requirements include properties for both "simplified" and "full" versions of a Spotify album. See the Spotify Web API [Object Model](https://developer.spotify.com/web-api/object-model/#album-object-full) for more details.
 public protocol Album {
     
     /// The type of album. See `SKAlbumType` for possible values.
@@ -107,7 +133,7 @@ public protocol Album {
     var releaseDate: Date? { get }
     
     /// The precision with which `releaseDate` value is known. See `DatePrecision` for possible values.
-    var releaseDatePrecision: DatePrecision? { get }
+    var releaseDatePrecision: SKDatePrecision? { get }
     
     /// The tracks of the album.
     var tracks: Page<SKTrack>? { get }
@@ -115,12 +141,15 @@ public protocol Album {
 
 // MARK: - Album Type
 
+/// A Spotify album.
+///
+/// - SeeAlso: The Web API [Simplified](https://developer.spotify.com/web-api/user-guide/#album-object-simplified) and [Full](https://developer.spotify.com/web-api/user-guide/#album-object-full) Album objects.
 public struct SKAlbum: Album, JSONDecodable {
     
     /// An enum representing the expected `type` value for an album object.
     private enum ResourceType: String, Codable { case album }
     
-    // MARK: Properties (Simplified)
+    // MARK: Simplified Album Properties
     
     /// The resource object type: `"album"`.
     private let type: ResourceType
@@ -135,7 +164,7 @@ public struct SKAlbum: Album, JSONDecodable {
     public let name: String
     public let uri: String
     
-    // MARK: Properties (Full)
+    // MARK: Full Album Properties
 
     public let copyrights: [SKCopyright]?
     public let externalIDs: [String: String]?
@@ -143,7 +172,7 @@ public struct SKAlbum: Album, JSONDecodable {
     public let label: String?
     public let popularity: Int?
     public let releaseDate: Date?
-    public let releaseDatePrecision: DatePrecision?
+    public let releaseDatePrecision: SKDatePrecision?
     public let tracks: Page<SKTrack>?
 }
 
@@ -195,7 +224,7 @@ extension SKAlbum: Decodable {
         genres = try values.decodeIfPresent([String].self, forKey: .genres)
         label = try values.decodeIfPresent(String.self, forKey: .label)
         popularity = try values.decodeIfPresent(Int.self, forKey: .popularity)
-        releaseDatePrecision = try values.decodeIfPresent(DatePrecision.self, forKey: .releaseDatePrecision)
+        releaseDatePrecision = try values.decodeIfPresent(SKDatePrecision.self, forKey: .releaseDatePrecision)
         tracks = try values.decodeIfPresent(Page<SKTrack>.self, forKey: .tracks)
         
         // Release Date
@@ -233,6 +262,9 @@ extension SKAlbum: Expandable {
 
 // MARK: - Saved Album Type
 
+/// A Spotify album that has been saved to the current authenticated user's music library.
+///
+/// - SeeAlso: The Web API [Saved Album](https://developer.spotify.com/web-api/object-model/#saved-album-object) object.
 public struct SKSavedAlbum: Album, JSONDecodable {
     
     /// The date and time the album was saved.
@@ -243,23 +275,23 @@ public struct SKSavedAlbum: Album, JSONDecodable {
     
     // MARK: Album Properties
     
-    public var albumType: SKAlbumType               { return album.albumType }
-    public var artists: [SKArtist]?                 { return album.artists }
-    public var availableMarkets: [String]?          { return album.availableMarkets }
-    public var externalURLs: [String : URL]         { return album.externalURLs }
-    public var id: String                           { return album.id }
-    public var images: [SKImage]                    { return album.images }
-    public var name: String                         { return album.name }
-    public var uri: String                          { return album.uri }
-    public var url: URL                             { return album.url }
-    public var copyrights: [SKCopyright]?           { return album.copyrights }
-    public var externalIDs: [String : String]?      { return album.externalIDs }
-    public var genres: [String]?                    { return album.genres }
-    public var label: String?                       { return album.label }
-    public var popularity: Int?                     { return album.popularity }
-    public var releaseDate: Date?                   { return album.releaseDate }
-    public var releaseDatePrecision: DatePrecision? { return album.releaseDatePrecision }
-    public var tracks: Page<SKTrack>?               { return album.tracks }
+    public var albumType: SKAlbumType                 { return album.albumType }
+    public var artists: [SKArtist]?                   { return album.artists }
+    public var availableMarkets: [String]?            { return album.availableMarkets }
+    public var externalURLs: [String : URL]           { return album.externalURLs }
+    public var id: String                             { return album.id }
+    public var images: [SKImage]                      { return album.images }
+    public var name: String                           { return album.name }
+    public var uri: String                            { return album.uri }
+    public var url: URL                               { return album.url }
+    public var copyrights: [SKCopyright]?             { return album.copyrights }
+    public var externalIDs: [String : String]?        { return album.externalIDs }
+    public var genres: [String]?                      { return album.genres }
+    public var label: String?                         { return album.label }
+    public var popularity: Int?                       { return album.popularity }
+    public var releaseDate: Date?                     { return album.releaseDate }
+    public var releaseDatePrecision: SKDatePrecision? { return album.releaseDatePrecision }
+    public var tracks: Page<SKTrack>?                 { return album.tracks }
     
     // MARK: Keys
     

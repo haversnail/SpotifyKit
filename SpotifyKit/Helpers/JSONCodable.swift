@@ -60,6 +60,11 @@ public protocol JSONEncodable: Encodable {
 }
 
 extension JSONEncodable {
+    
+    /// Encodes the given type to a JSON representation suitable for the [Spotify Web API](https://developer.spotify.com/web-api/).
+    ///
+    /// - Returns: A `Data` value containing the payload.
+    /// - Throws: Any errors encountered during encoding. See [EncodingError](apple-reference-documentation://hsJCtRo9pa) for more details.
     public func data() throws -> Data {
         let encoder = JSONEncoder()
         
@@ -76,7 +81,7 @@ extension JSONEncodable {
 
 // MARK: - Array Conformance
 
-extension Array: JSONDecodable/* where Element: Decodable */{ // FIXME: Uncomment when conditional conformance is available.
+extension Array: JSONDecodable/* where Element: Decodable */{ // FIXME: Refactor when conditional conformance is available.
     
     public init(from jsonData: Data) throws {
         
@@ -107,13 +112,13 @@ extension Array: JSONDecodable/* where Element: Decodable */{ // FIXME: Uncommen
     }
 }
 
-//extension Array: JSONEncodable/* where Element: Encodable */{ // FIXME: Uncomment when conditional conformance is available.
+//extension Array: JSONEncodable/* where Element: Encodable */{ // FIXME: Refactor when conditional conformance is available.
 //    // TODO: Design JSONEncodable.
 //}
 
 // MARK: - Dictionary Conformance
 
-extension Dictionary: JSONDecodable/* where Key: Decodable, Value: Decodable */{ // FIXME: Uncomment when conditional conformance is available.
+extension Dictionary: JSONDecodable/* where Key: Decodable, Value: Decodable */{ // FIXME: Refactor when conditional conformance is available.
     
     public init(from jsonData: Data) throws {
         
@@ -132,13 +137,13 @@ extension Dictionary: JSONDecodable/* where Key: Decodable, Value: Decodable */{
     }
 }
 
-//extension Dictionary: JSONEncodable/* where Key: Encodable, Value: Encodable */{ // FIXME: Uncomment when conditional conformance is available.
+//extension Dictionary: JSONEncodable/* where Key: Encodable, Value: Encodable */{ // FIXME: Refactor when conditional conformance is available.
 //    // TODO: Design JSONEncodable.
 //}
 
 // MARK: - Optional Conformance
 
-extension Optional: JSONDecodable/* where Wrapped: Decodable */{ // FIXME: Uncomment when conditional conformance is available.
+extension Optional: JSONDecodable/* where Wrapped: Decodable */{ // FIXME: Refactor when conditional conformance is available.
     
     public init(from jsonData: Data) throws {
         
@@ -153,7 +158,7 @@ extension Optional: JSONDecodable/* where Wrapped: Decodable */{ // FIXME: Uncom
     }
 }
 
-//extension Optional: JSONEncodable/* where Wrapped: Encodable */{ // FIXME: Uncomment when conditional conformance is available.
+//extension Optional: JSONEncodable/* where Wrapped: Encodable */{ // FIXME: Refactor when conditional conformance is available.
 //    // TODO: Design JSONEncodable.
 //}
 
@@ -171,7 +176,9 @@ extension DecodingError {
     }
 }
 
-// MARK: - Raw Representable Decoding + Case Tolerance
+// MARK: - Custom Raw Representable Decoding
+//
+// - Abstract: Decoding with String Case Tolerance
 //
 // In some instances, certain objects returned by the Web API contain strings
 // whose formatting differs from their expected or documented values. For
@@ -184,6 +191,9 @@ extension DecodingError {
 // a raw representable type.
 //
 extension RawRepresentable where RawValue == String, Self: Decodable {
+    
+    // MARK: Custom Decoding
+    
     public init(from decoder: Decoder) throws {
         let decoded = try decoder.singleValueContainer().decode(RawValue.self)
 

@@ -20,9 +20,14 @@
 
 import Foundation
 
+/// A structure representing a Spotify item's followers, such as an artist or playlist.
+///
+/// - SeeAlso: The Web API [Followers](https://developer.spotify.com/web-api/user-guide/#followers-object) object.
 public struct SKFollowers: JSONDecodable {
     
-    /// A link to the Web API endpoint providing full details of the followers; `nil` if not available. Please note that this will always be set to `nil`, as the Web API does not support it at the moment.
+    /// A link to the Web API endpoint providing full details of the followers; `nil` if not available.
+    ///
+    /// - Note: This value will always be `nil`, as the Web API does not support it at the moment.
     public let url: URL?
     
     /// The total number of followers.

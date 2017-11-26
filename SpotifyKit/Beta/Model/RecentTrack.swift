@@ -26,7 +26,9 @@ import Foundation
 public struct SKRecentTrack: Track, Decodable {
     
     /// The date and time the track was last played, with millisecond precision.
-    public let datePlayed: Date // playbackDate // dateLastPlayed
+    public let datePlayed: Date
+    // public let playbackDate: Date
+    // public let dateLastPlayed: Date
     
     /// The context from which the track was played, such as an album or playlist.
     public let context: SKPlaybackContext
