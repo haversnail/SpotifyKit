@@ -112,6 +112,8 @@
 		119E0FD51FB09CC8004DB2FF /* RecentTrack.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecentTrack.swift; sourceTree = "<group>"; };
 		11BAFABB1FAEF7DE00B653CA /* .jazzy.yaml */ = {isa = PBXFileReference; explicitFileType = text.script; path = .jazzy.yaml; sourceTree = "<group>"; };
 		11BAFABE1FAF397000B653CA /* Player.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Player.swift; sourceTree = "<group>"; };
+		11C935CF1FCB10E00079E346 /* CHANGELOG.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = CHANGELOG.md; sourceTree = "<group>"; };
+		11C935D11FCB112D0079E346 /* CONTRIBUTING.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = CONTRIBUTING.md; sourceTree = "<group>"; };
 		11E001F11F491D800045A502 /* Device.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Device.swift; sourceTree = "<group>"; };
 		11E21DBE1F3EE7FD00736FF5 /* URL+RemoveQuery.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "URL+RemoveQuery.swift"; sourceTree = "<group>"; };
 		11EC89F71F2C511F0066A5F0 /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
@@ -182,12 +184,12 @@
 		113D082E1F208BEB00BECB27 = {
 			isa = PBXGroup;
 			children = (
-				1190C5DB1F2237B800F2C8DE /* README.md */,
 				113D083A1F208BEC00BECB27 /* SpotifyKit */,
 				113D08451F208BEC00BECB27 /* SpotifyKitTests */,
 				113D08391F208BEC00BECB27 /* Products */,
 				119A29491F20985C009D4A88 /* Frameworks */,
 				113D08521F208BFF00BECB27 /* Configuration */,
+				11C935CE1FCB10B40079E346 /* Documentation */,
 			);
 			sourceTree = "<group>";
 		};
@@ -306,6 +308,16 @@
 				119E0FD51FB09CC8004DB2FF /* RecentTrack.swift */,
 			);
 			path = Model;
+			sourceTree = "<group>";
+		};
+		11C935CE1FCB10B40079E346 /* Documentation */ = {
+			isa = PBXGroup;
+			children = (
+				1190C5DB1F2237B800F2C8DE /* README.md */,
+				11C935CF1FCB10E00079E346 /* CHANGELOG.md */,
+				11C935D11FCB112D0079E346 /* CONTRIBUTING.md */,
+			);
+			name = Documentation;
 			sourceTree = "<group>";
 		};
 		11EE38FB1FB08402002349B7 /* Extensions */ = {

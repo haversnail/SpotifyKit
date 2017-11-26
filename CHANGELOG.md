@@ -49,6 +49,8 @@ This is the first public release of the SpotifyKit framework. As such, the follo
     - `SKUser`
     - `SKCurrentUser`
 
+- Does not include request methods for any [Web API Connect](https://developer.spotify.com/web-api/working-with-connect/) endpoints that control playback; this is already handled by the `SpotifyAudioPlayback` framework.
+
 [Unreleased]: https://github.com/haversnail/spotifykit/compare/v1.0.0...HEAD
 [1.0.2]: https://github.com/haversnail/spotifykit/compare/v1.0.1...v1.0.2
 [1.0.1]: https://github.com/haversnail/spotifykit/compare/v1.0.0...v1.0.1
