@@ -32,13 +32,13 @@ class RequestTests: XCTestCase {
         // Put setup code here. This method is called before the invocation of each test method in the class.
         
         // FIXME: 1. Provide your username.
-        let username = "francesetoth"
+        let username = "<#Your Username#>"
         
         // FIXME: 2. Request an access token.
         /// - Note: Be sure to request all scopes when retrieving a new token, as some tests will perform API requests that require access to private user data.
         ///
         /// You can request a token through the Web API Console [here](https://developer.spotify.com/web-api/console/get-current-user/token?scope=user-read-private&scope=user-read-birthdate&scope=user-read-email&scope=playlist-read-private&scope=playlist-read-collaborative&scope=playlist-modify-public&scope=playlist-modify-private&scope=user-library-read&scope=user-library-modify&scope=user-follow-read&scope=user-follow-modify&scope=user-top-read&scope=user-read-playback-state&scope=user-read-recently-played&scope=user-read-currently-playing&scope=user-modify-playback-state&scope=ugc-image-upload).
-        let accessToken = "BQD3bNcaYRtPT-g3eE8ndd7n-an4A0iVoMqGLtn1SeqEy-79XKzrM414MAnIrmF5X9Ae3qnNhBKuSTBa39Lmbm4uedBtE1tDxxKwKS_nl2bvBVRoL2IwG2y8QrLcJJ7x1pqwtXpaTRj0gG2DtlgKyhSbB701X8ixKsRoe7KYDyo_GGXBrahqieTfaVIF_u8PT8hmv2w9QXLXjOfmlNYUlERS_8jZwjsF1fxs_43s8SW84-3dnNaK683liJsUbA1WAsH5GqSltxxRJdecDozLE8YMAiD0jYiSjJ3hJ8zQEooWK5vLhg6Y-4XLeRUaC5w7DtmGyvysN8Z8"
+        let accessToken = "<#Your Access Token here#>"
         
         SPTAuth.defaultInstance().session = SPTSession(userName: username,
                                                        accessToken: accessToken,
@@ -343,6 +343,36 @@ class RequestTests: XCTestCase {
         }
     }
     
+    func testGetTracksForAlbum() {
+        
+        // Arrange:
+        let album = try! SKAlbum(from: albumData)
+        let locale = catalog.locale!
+        let page = Pagination(limit: 3)
+        let request = album.makeTracksRequest(locale: locale, page: page)
+        let promise = makeRequestExpectation()
+        defer { wait(for: promise) }
+        
+        // Assert request:
+        XCTAssertEqual(request.url.path, "/v1/albums/\(album.id)/tracks")
+        SKTAssertQuery(in: request, contains: "market=US", "limit=3")
+        
+        // Act:
+        album.getTracks(for: locale, page: page) { (tracks, error) in
+            defer { promise.fulfill() }
+            
+            // Assert results:
+            if let error = error {
+                XCTFail(error.localizedDescription); return
+            }
+            guard let tracks = tracks else {
+                XCTFail("'tracks' is nil."); return
+            }
+            
+            XCTAssertEqual(tracks.count, 3)
+        }
+    }
+    
     // MARK: - Artist Requests
     
     func testGetArtist() {
@@ -429,7 +459,7 @@ class RequestTests: XCTestCase {
                 XCTFail("'albums' is nil."); return
             }
 
-            XCTAssertEqual(albums.limit, 3)
+            XCTAssertEqual(albums.count, 3)
             XCTAssertEqual(albums.offset, 3)
         }
     }

@@ -507,6 +507,42 @@ public struct SKCatalog {
     }
 }
 
+// MARK: - Album Requests
+
+extension Album {
+    
+    // MARK: Get an Album's Tracks
+    
+    /// Creates and returns the request used to get the current album's tracks.
+    ///
+    /// - Parameters:
+    ///   - locale: The locale-specific storefront/market from which to request.
+    ///   - page: The parameters for paginating the results, specifying the index and number of items to return. If no parameters are supplied, the request will return the default number of items beginning with first item.
+    /// - Returns: An `SKRequest` instance with which to perform the API request.
+    public func makeTracksRequest(locale: Locale?, page: Pagination?) -> SKRequest {
+        
+        var parameters = [String: Any]()
+        parameters[Constants.QueryParameters.market] = locale?.regionCode
+        parameters[Constants.QueryParameters.limit] = page?.limit
+        parameters[Constants.QueryParameters.offset] = page?.offset
+        return SKRequest(method: .GET, endpoint: Constants.Endpoints.tracksForAlbum(id: id), parameters: parameters)!
+    }
+    
+    /// Gets Spotify catalog information about the current album's tracks.
+    ///
+    /// - Note: This method uses the `SPTAuth` default instance session to authenticate the underlying request. If this session does not contain a valid access token, the request will result in an error.
+    ///
+    /// - Parameters:
+    ///   - locale: The locale-specific storefront/market from which to request. The default value is the locale for the shared `SKCatalog` instance, which by default represents the user's region settings at the time the method is called.
+    ///   - page: The parameters for paginating the results, specifying the index and number of items to return. If no parameters are supplied, the request will return the default number of items beginning with first item. The default value is `nil`.
+    ///   - handler: The callback handler for the request. The parameters for this handler are:
+    ///       - `tracks`: A paginated collection of simplified tracks, if available.
+    ///       - `error`: An error identifying if and why the request failed, or `nil` if the request was successful.
+    public func getTracks(for locale: Locale? = SKCatalog.local.locale, page: Pagination? = nil, completion handler: @escaping (Page<SKTrack>?, Error?) -> Void) {
+        makeTracksRequest(locale: locale, page: page).perform(completion: handler)
+    }
+}
+
 // MARK: - Artist Requests
 
 extension SKArtist {
@@ -645,7 +681,7 @@ extension SKCategory {
 
 // MARK: - Track Requests
 
-extension SKTrack {
+extension Track {
     
     // MARK: Get Audio Features
     
