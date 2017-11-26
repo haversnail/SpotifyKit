@@ -9,3 +9,6 @@ Carthage/
 
 # CocoaPods
 Pods/
+
+# Jazzy
+build/

@@ -1,0 +1,730 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>API Requests &amp; Responses  Reference</title>
+    <link rel="stylesheet" type="text/css" href="css/jazzy.css" />
+    <link rel="stylesheet" type="text/css" href="css/highlight.css" />
+    <meta charset='utf-8'>
+    <script src="js/jquery.min.js" defer></script>
+    <script src="js/jazzy.js" defer></script>
+    
+  </head>
+  <body>
+    <a title="API Requests &amp; Responses  Reference"></a>
+    <header>
+      <div class="content-wrapper">
+        <p><a href="index.html">SpotifyKit Docs</a> (83% documented)</p>
+        <p class="header-right"><a href="https://github.com/haversnail/spotifykit"><img src="img/gh.png"/>View on GitHub</a></p>
+      </div>
+    </header>
+    <div class="content-wrapper">
+      <p id="breadcrumbs">
+        <a href="index.html">SpotifyKit Reference</a>
+        <img id="carat" src="img/carat.png" />
+        API Requests &amp; Responses  Reference
+      </p>
+    </div>
+    <div class="content-wrapper">
+      <nav class="sidebar">
+        <ul class="nav-groups">
+          <li class="nav-group-name">
+            <a href="API Requests &amp; Responses.html">API Requests &amp; Responses</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="Classes/SKRequest.html">SKRequest</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Classes/SKRequest/ContentType.html">– ContentType</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="API Requests &amp; Responses.html#/s:10SpotifyKit16SKRequestHandlera">SKRequestHandler</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="API Requests &amp; Responses.html#/s:10SpotifyKit18SKDecodableHandlera">SKDecodableHandler</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="API Requests &amp; Responses.html#/s:10SpotifyKit14SKErrorHandlera">SKErrorHandler</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Structs/SKError.html">SKError</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Structs/SKAuthenticationError.html">SKAuthenticationError</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Enums/HTTPRequestMethod.html">HTTPRequestMethod</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Enums/HTTPStatusCode.html">HTTPStatusCode</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a href="Encoding &amp; Decoding.html">Encoding &amp; Decoding</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="Protocols/JSONEncodable.html">JSONEncodable</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Protocols/JSONDecodable.html">JSONDecodable</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Extensions/Array.html">Array</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Extensions/Dictionary.html">Dictionary</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Extensions/Optional.html">Optional</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Extensions/RawRepresentable.html">RawRepresentable</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a href="Pagination.html">Pagination</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="Protocols/PagingCollection.html">PagingCollection</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Protocols/OffsetPagingCollection.html">OffsetPagingCollection</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Protocols/CursorPagingCollection.html">CursorPagingCollection</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Pagination.html#/s:10SpotifyKit14CursorPageableP">CursorPageable</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Structs/Page.html">Page</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Structs/CursorPage.html">CursorPage</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Protocols/CursorProtocol.html">CursorProtocol</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Structs/Cursors.html">Cursors</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Structs/Pagination.html">Pagination</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a href="Albums.html">Albums</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="Protocols/Album.html">Album</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Structs/SKAlbum.html">SKAlbum</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Structs/SKSavedAlbum.html">SKSavedAlbum</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a href="Artists.html">Artists</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="Structs/SKArtist.html">SKArtist</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a href="Playlists.html">Playlists</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="Structs/SKPlaylist.html">SKPlaylist</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a href="Tracks.html">Tracks</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="Protocols/Track.html">Track</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Structs/SKTrack.html">SKTrack</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Structs/SKSavedTrack.html">SKSavedTrack</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Structs/SKPlaylistTrack.html">SKPlaylistTrack</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Structs/SKRecentTrack.html">SKRecentTrack</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Structs/SKTrackLink.html">SKTrackLink</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Structs/SKAudioFeatures.html">SKAudioFeatures</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Structs/SKAudioFeatures/Pitch.html">– Pitch</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Structs/SKAudioFeatures/Mode.html">– Mode</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a href="Catalog.html">Catalog</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="Structs/SKCatalog.html">SKCatalog</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Structs/SKFeaturedPlaylists.html">SKFeaturedPlaylists</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Structs/SKRecommendations.html">SKRecommendations</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Structs/SKSeed.html">SKSeed</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Structs/SKSeed/SeedType.html">– SeedType</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Enums/SKTrackAttribute.html">SKTrackAttribute</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a href="Search.html">Search</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="Structs/SKSearchResults.html">SKSearchResults</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Enums/SKSearchResultType.html">SKSearchResultType</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Enums/SKSearchFieldFilter.html">SKSearchFieldFilter</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Enums/SKSearchTag.html">SKSearchTag</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Extensions/Set.html">Set</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a href="Profiles &amp; User Actions.html">Profiles &amp; User Actions</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="Protocols/User.html">User</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Structs/SKUser.html">SKUser</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Structs/SKCurrentUser.html">SKCurrentUser</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Structs/SKCurrentUser/ProductType.html">– ProductType</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Protocols/Followable.html">Followable</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Protocols/Savable.html">Savable</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a href="Player (βeta).html">Player (βeta)</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="Structs/SKDevice.html">SKDevice</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Structs/SKDevice/DeviceType.html">– DeviceType</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Structs/SKPlaybackContext.html">SKPlaybackContext</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Structs/SKPlaybackContext/ContextType.html">– ContextType</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Structs/SKPlaybackState.html">SKPlaybackState</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Structs/SKPlayer.html">SKPlayer</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a href="iOS SDK Extensions.html">iOS SDK Extensions</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="Extensions/SPTSession.html">SPTSession</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Extensions/SPTAudioStreamingController.html">SPTAudioStreamingController</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Protocols/Playable.html">Playable</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Protocols/Queueable.html">Queueable</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a href="Other Enums.html">Other Enumerations</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="Enums/DatePrecision.html">DatePrecision</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Enums/SKAlbumType.html">SKAlbumType</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Enums/SKContentRating.html">SKContentRating</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Enums/SKRepeatMode.html">SKRepeatMode</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Enums/SKTimeRange.html">SKTimeRange</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a href="Other Extensions.html">Other Extensions</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="Extensions/Collection.html">Collection</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Extensions/SPTPlaybackState.html">SPTPlaybackState</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Extensions/SPTRepeatMode.html">SPTRepeatMode</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a href="Other Protocols.html">Other Protocols</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="Protocols/Expandable.html">Expandable</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a href="Other Structs.html">Other Structures</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="Structs/SKCategory.html">SKCategory</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Structs/SKCopyright.html">SKCopyright</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Structs/SKCopyright/CopyrightType.html">– CopyrightType</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Structs/SKFollowers.html">SKFollowers</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Structs/SKImage.html">SKImage</a>
+              </li>
+            </ul>
+          </li>
+        </ul>
+      </nav>
+      <article class="main-content">
+        <section>
+          <section class="section">
+            <h1>API Requests &amp; Responses</h1>
+            
+          </section>
+          <section class="section task-group-section">
+            <div class="task-group">
+              <div class="task-name-container">
+                <a name="/Request%20Class"></a>
+                <a name="//apple_ref/swift/Section/Request Class" class="dashAnchor"></a>
+                <a href="#/Request%20Class">
+                  <h3 class="section-name">Request Class</h3>
+                </a>
+              </div>
+              <ul>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:10SpotifyKit9SKRequestC"></a>
+                    <a name="//apple_ref/swift/Class/SKRequest" class="dashAnchor"></a>
+                    <a class="token" href="#/s:10SpotifyKit9SKRequestC">SKRequest</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>The <code>SKRequest</code> object encapsulates the properties of an HTTP request, providing a convenient template for you to make requests to the <a href="https://developer.spotify.com/web-api/">Spotify Web API</a>.</p>
+
+<p>This class is inspired by the Social Framework&rsquo;s <a href="apple-reference-documentation://hsp4_7YsJD">SLRequest</a> class, and aims to mimic its structure and functionality in order to provide a comparable service for interacting with the Spotify Web API.</p>
+
+                        <a href="Classes/SKRequest.html" class="slightly-smaller">See more</a>
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight"><code><span class="kd">public</span> <span class="kd">class</span> <span class="kt">SKRequest</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+              </ul>
+            </div>
+            <div class="task-group">
+              <div class="task-name-container">
+                <a name="/SKRequestHandler"></a>
+                <a name="//apple_ref/swift/Section/SKRequestHandler" class="dashAnchor"></a>
+                <a href="#/SKRequestHandler">
+                  <h3 class="section-name">SKRequestHandler</h3>
+                </a>
+              </div>
+              <ul>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:10SpotifyKit16SKRequestHandlera"></a>
+                    <a name="//apple_ref/swift/Alias/SKRequestHandler" class="dashAnchor"></a>
+                    <a class="token" href="#/s:10SpotifyKit16SKRequestHandlera">SKRequestHandler</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>The callback handler for a request.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight"><code><span class="kd">public</span> <span class="kd">typealias</span> <span class="kt">SKRequestHandler</span> <span class="o">=</span> <span class="p">(</span><span class="n">_</span> <span class="nv">data</span><span class="p">:</span> <span class="kt">Data</span><span class="p">?,</span> <span class="n">_</span> <span class="nv">status</span><span class="p">:</span> <span class="kt"><a href="Enums/HTTPStatusCode.html">HTTPStatusCode</a></span><span class="p">?,</span> <span class="n">_</span> <span class="nv">error</span><span class="p">:</span> <span class="kt">Error</span><span class="p">?)</span> <span class="o">-&gt;</span> <span class="kt">Void</span> <span class="c1">// or `SKRequest.ResponseHandler`?</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>data</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The data (typically an encoded JSON object) returned by the request, if any. If the data returned represents an API-specific error object, that object will be provided via the <code>error</code> parameter instead.</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>status</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The API-specific HTTP status code associated with the request reponse. If the underlying URL request could not be completed successfully, or the URL response contained an unexpected status code, this parameter will be <code>nil</code>.</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>error</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>An error identifying if and why the request failed, or <code>nil</code> if the request was successful.</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:10SpotifyKit18SKDecodableHandlera"></a>
+                    <a name="//apple_ref/swift/Alias/SKDecodableHandler" class="dashAnchor"></a>
+                    <a class="token" href="#/s:10SpotifyKit18SKDecodableHandlera">SKDecodableHandler</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>The callback handler for a request.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight"><code><span class="kd">public</span> <span class="kd">typealias</span> <span class="kt">SKDecodableHandler</span><span class="o">&lt;</span><span class="kt">T</span><span class="p">:</span> <span class="kt"><a href="Protocols/JSONDecodable.html">JSONDecodable</a></span><span class="o">&gt;</span> <span class="o">=</span> <span class="p">(</span><span class="n">_</span> <span class="nv">type</span><span class="p">:</span> <span class="kt">T</span><span class="p">?,</span> <span class="n">_</span> <span class="nv">error</span><span class="p">:</span> <span class="kt">Error</span><span class="p">?)</span> <span class="o">-&gt;</span> <span class="kt">Void</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>type</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The type decoded from the JSON data returned by the request. If the type could not be decoded from the data received, the <code>error</code> parameter will provide details.</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>error</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>An error identifying if and why the request or decoding failed, or <code>nil</code> if the request was successful.</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:10SpotifyKit14SKErrorHandlera"></a>
+                    <a name="//apple_ref/swift/Alias/SKErrorHandler" class="dashAnchor"></a>
+                    <a class="token" href="#/s:10SpotifyKit14SKErrorHandlera">SKErrorHandler</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>The callback handler for a request.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight"><code><span class="kd">public</span> <span class="kd">typealias</span> <span class="kt">SKErrorHandler</span> <span class="o">=</span> <span class="p">(</span><span class="n">_</span> <span class="nv">error</span><span class="p">:</span> <span class="kt">Error</span><span class="p">?)</span> <span class="o">-&gt;</span> <span class="kt">Void</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>error</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>An error identifying if and why the request or decoding failed, or <code>nil</code> if the request was successful.</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+              </ul>
+            </div>
+            <div class="task-group">
+              <div class="task-name-container">
+                <a name="/Error%20Type"></a>
+                <a name="//apple_ref/swift/Section/Error Type" class="dashAnchor"></a>
+                <a href="#/Error%20Type">
+                  <h3 class="section-name">Error Type</h3>
+                </a>
+              </div>
+              <ul>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:10SpotifyKit7SKErrorV"></a>
+                    <a name="//apple_ref/swift/Struct/SKError" class="dashAnchor"></a>
+                    <a class="token" href="#/s:10SpotifyKit7SKErrorV">SKError</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Undocumented</p>
+
+                        <a href="Structs/SKError.html" class="slightly-smaller">See more</a>
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight"><code><span class="kd">public</span> <span class="kd">struct</span> <span class="kt">SKError</span><span class="p">:</span> <span class="kt">Error</span><span class="p">,</span> <span class="kt"><a href="Protocols/JSONDecodable.html">JSONDecodable</a></span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+              </ul>
+            </div>
+            <div class="task-group">
+              <div class="task-name-container">
+                <a name="/Authentication%20Error%20Type"></a>
+                <a name="//apple_ref/swift/Section/Authentication Error Type" class="dashAnchor"></a>
+                <a href="#/Authentication%20Error%20Type">
+                  <h3 class="section-name">Authentication Error Type</h3>
+                </a>
+              </div>
+              <ul>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:10SpotifyKit21SKAuthenticationErrorV"></a>
+                    <a name="//apple_ref/swift/Struct/SKAuthenticationError" class="dashAnchor"></a>
+                    <a class="token" href="#/s:10SpotifyKit21SKAuthenticationErrorV">SKAuthenticationError</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Undocumented</p>
+
+                        <a href="Structs/SKAuthenticationError.html" class="slightly-smaller">See more</a>
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight"><code><span class="kd">public</span> <span class="kd">struct</span> <span class="kt">SKAuthenticationError</span><span class="p">:</span> <span class="kt">Error</span><span class="p">,</span> <span class="kt"><a href="Protocols/JSONDecodable.html">JSONDecodable</a></span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+              </ul>
+            </div>
+            <div class="task-group">
+              <ul>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:10SpotifyKit17HTTPRequestMethodO"></a>
+                    <a name="//apple_ref/swift/Enum/HTTPRequestMethod" class="dashAnchor"></a>
+                    <a class="token" href="#/s:10SpotifyKit17HTTPRequestMethodO">HTTPRequestMethod</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>The HTTP <a href="http://en.wikipedia.org/wiki/Representational_state_transfer">REST</a> verbs used by the Spotify Web API. See the API <a href="https://developer.spotify.com/web-ai/user-guide/#requests">requests guide</a> for more details.</p>
+
+                        <a href="Enums/HTTPRequestMethod.html" class="slightly-smaller">See more</a>
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight"><code><span class="kd">public</span> <span class="kd">enum</span> <span class="kt">HTTPRequestMethod</span><span class="p">:</span> <span class="kt">String</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:10SpotifyKit14HTTPStatusCodeO"></a>
+                    <a name="//apple_ref/swift/Enum/HTTPStatusCode" class="dashAnchor"></a>
+                    <a class="token" href="#/s:10SpotifyKit14HTTPStatusCodeO">HTTPStatusCode</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>The <a href="https://developer.spotify.com/web-api/user-guide/#response-status-codes">Response Status Codes</a> used by the Spotify Web API, as defined in the <a href="https://www.ietf.org/rfc/rfc2616.txt">RFC 2616</a> and <a href="https://www.ietf.org/rfc/rfc6585.txt">RFC 6585</a>.</p>
+
+                        <a href="Enums/HTTPStatusCode.html" class="slightly-smaller">See more</a>
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight"><code><span class="kd">public</span> <span class="kd">enum</span> <span class="kt">HTTPStatusCode</span><span class="p">:</span> <span class="kt">Int</span><span class="p">,</span> <span class="kt">Codable</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+              </ul>
+            </div>
+          </section>
+        </section>
+        <section id="footer">
+          <p>&copy; 2017 <a class="link" href="https://github.com/haversnail" target="_blank" rel="external">Alex Havermale</a>. All rights reserved. (Last updated: 2017-11-25)</p>
+          <p>Generated by <a class="link" href="https://github.com/realm/jazzy" target="_blank" rel="external">jazzy ♪♫ v0.9.0</a>, a <a class="link" href="http://realm.io" target="_blank" rel="external">Realm</a> project.</p>
+        </section>
+      </article>
+    </div>
+  </body>
+</div>
+</html>

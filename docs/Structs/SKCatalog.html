@@ -1,0 +1,2415 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>SKCatalog Structure Reference</title>
+    <link rel="stylesheet" type="text/css" href="../css/jazzy.css" />
+    <link rel="stylesheet" type="text/css" href="../css/highlight.css" />
+    <meta charset="utf-8">
+    <script src="../js/jquery.min.js" defer></script>
+    <script src="../js/jazzy.js" defer></script>
+    
+    <script src="../js/lunr.min.js" defer></script>
+    <script src="../js/typeahead.jquery.js" defer></script>
+    <script src="../js/jazzy.search.js" defer></script>
+  </head>
+  <body>
+
+    <a name="//apple_ref/swift/Struct/SKCatalog" class="dashAnchor"></a>
+
+    <a title="SKCatalog Structure Reference"></a>
+
+    <header class="header">
+      <p class="header-col header-col--primary">
+        <a class="header-link" href="../index.html">
+          SpotifyKit Docs
+        </a>
+         (92% documented)
+      </p>
+    
+      <p class="header-col--secondary">
+        <form role="search" action="../search.json">
+          <input type="text" placeholder="Search documentation" data-typeahead>
+        </form>
+      </p>
+    
+        <p class="header-col header-col--secondary">
+          <a class="header-link" href="https://github.com/haversnail/spotifykit">
+            <img class="header-icon" src="../img/gh.png"/>
+            View on GitHub
+          </a>
+        </p>
+    
+    </header>
+
+    <p class="breadcrumbs">
+      <a class="breadcrumb" href="../index.html">SpotifyKit Reference</a>
+      <img class="carat" src="../img/carat.png" />
+      SKCatalog Structure Reference
+    </p>
+
+    <div class="content-wrapper">
+      <nav class="navigation">
+        <ul class="nav-groups">
+          <li class="nav-group-name">
+            <a class="nav-group-name-link" href="../Handling API Requests.html">Handling API Requests</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Classes/SKRequest.html">SKRequest</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Classes/SKRequest/HTTPMethod.html">– HTTPMethod</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Classes/SKRequest/ContentType.html">– ContentType</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Handling API Requests.html#/s:10SpotifyKit16SKRequestHandlera">SKRequestHandler</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Handling API Requests.html#/s:10SpotifyKit18SKDecodableHandlera">SKDecodableHandler</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Handling API Requests.html#/s:10SpotifyKit14SKErrorHandlera">SKErrorHandler</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Structs/SKResponseStatus.html">SKResponseStatus</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Structs/SKError.html">SKError</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Structs/SKAuthenticationError.html">SKAuthenticationError</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a class="nav-group-name-link" href="../Encoding &amp; Decoding.html">Encoding &amp; Decoding</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Protocols/JSONEncodable.html">JSONEncodable</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Protocols/JSONDecodable.html">JSONDecodable</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Extensions/Array.html">Array</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Extensions/Dictionary.html">Dictionary</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Extensions/Optional.html">Optional</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Extensions/RawRepresentable.html">RawRepresentable</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a class="nav-group-name-link" href="../Pagination.html">Pagination</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Protocols/PagingCollection.html">PagingCollection</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Protocols/OffsetPagingCollection.html">OffsetPagingCollection</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Protocols/CursorPagingCollection.html">CursorPagingCollection</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Pagination.html#/s:10SpotifyKit14CursorPageableP">CursorPageable</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Structs/Page.html">Page</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Structs/CursorPage.html">CursorPage</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Protocols/CursorProtocol.html">CursorProtocol</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Structs/Cursors.html">Cursors</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Structs/Pagination.html">Pagination</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a class="nav-group-name-link" href="../Albums.html">Albums</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Protocols/Album.html">Album</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Structs/SKAlbum.html">SKAlbum</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Structs/SKSavedAlbum.html">SKSavedAlbum</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Enums/SKAlbumType.html">SKAlbumType</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a class="nav-group-name-link" href="../Artists.html">Artists</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Structs/SKArtist.html">SKArtist</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a class="nav-group-name-link" href="../Playlists.html">Playlists</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Structs/SKPlaylist.html">SKPlaylist</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a class="nav-group-name-link" href="../Tracks.html">Tracks</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Protocols/Track.html">Track</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Structs/SKTrack.html">SKTrack</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Structs/SKSavedTrack.html">SKSavedTrack</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Structs/SKPlaylistTrack.html">SKPlaylistTrack</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Structs/SKRecentTrack.html">SKRecentTrack</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Structs/SKTrackLinks.html">SKTrackLinks</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Structs/SKAudioFeatures.html">SKAudioFeatures</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Structs/SKAudioFeatures/Pitch.html">– Pitch</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Structs/SKAudioFeatures/Mode.html">– Mode</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a class="nav-group-name-link" href="../Catalog.html">Catalog</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Structs/SKCatalog.html">SKCatalog</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Structs/SKCategory.html">SKCategory</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Structs/SKFeaturedPlaylists.html">SKFeaturedPlaylists</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Structs/SKRecommendations.html">SKRecommendations</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Structs/SKSeed.html">SKSeed</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Structs/SKSeed/SeedType.html">– SeedType</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Enums/SKTrackAttribute.html">SKTrackAttribute</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a class="nav-group-name-link" href="../Search.html">Search</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Structs/SKSearchResults.html">SKSearchResults</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Enums/SKSearchResultType.html">SKSearchResultType</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Enums/SKSearchFieldFilter.html">SKSearchFieldFilter</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Enums/SKSearchTag.html">SKSearchTag</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Extensions/Set.html">Set</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a class="nav-group-name-link" href="../Profiles &amp; User Actions.html">Profiles &amp; User Actions</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Protocols/User.html">User</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Structs/SKUser.html">SKUser</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Structs/SKCurrentUser.html">SKCurrentUser</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Structs/SKCurrentUser/ProductType.html">– ProductType</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Protocols/Followable.html">Followable</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Protocols/Savable.html">Savable</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a class="nav-group-name-link" href="../Player (βeta).html">Player (βeta)</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Structs/SKPlayer.html">SKPlayer</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Structs/SKDevice.html">SKDevice</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Structs/SKDevice/DeviceType.html">– DeviceType</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Structs/SKPlaybackContext.html">SKPlaybackContext</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Structs/SKPlaybackContext/ContextType.html">– ContextType</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Structs/SKPlaybackState.html">SKPlaybackState</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Enums/SKRepeatMode.html">SKRepeatMode</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a class="nav-group-name-link" href="../iOS SDK Extensions.html">iOS SDK Extensions</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Extensions/SPTSession.html">SPTSession</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Extensions/SPTRepeatMode.html">SPTRepeatMode</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Extensions/SPTAudioStreamingController.html">SPTAudioStreamingController</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Protocols/Playable.html">Playable</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Protocols/Queueable.html">Queueable</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a class="nav-group-name-link" href="../Other Requests.html">Other Requests</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Extensions/Collection.html">Collection</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Protocols/Expandable.html">Expandable</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a class="nav-group-name-link" href="../Other Enums.html">Other Enumerations</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Enums/SKContentRating.html">SKContentRating</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Enums/SKDatePrecision.html">SKDatePrecision</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Enums/SKTimeRange.html">SKTimeRange</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a class="nav-group-name-link" href="../Other Structs.html">Other Structures</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Structs/SKCopyright.html">SKCopyright</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Structs/SKCopyright/CopyrightType.html">– CopyrightType</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Structs/SKFollowers.html">SKFollowers</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Structs/SKImage.html">SKImage</a>
+              </li>
+            </ul>
+          </li>
+        </ul>
+      </nav>
+      <article class="main-content">
+
+        <section class="section">
+          <div class="section-content">
+            <h1>SKCatalog</h1>
+              <div class="declaration">
+                <div class="language">
+                  <pre class="highlight"><code><span class="kd">public</span> <span class="kd">struct</span> <span class="kt">SKCatalog</span></code></pre>
+
+                </div>
+              </div>
+            <p>A structure used to make requests to the Spotify catalog for top-level items such as albums, artists, tracks, playlists, and others.</p>
+<div class="aside aside-note">
+    <p class="aside-title">Note</p>
+    All request-performing methods (e.g., <code>getAlbum</code> or <code>search</code>) use the <code>SPTAuth</code> default instance session to authenticate the underlying request. If this session does not contain a valid access token, the request will result in an error. If you want to customize the request by injecting your own custom URL/API session or by decoding the response yourself, you can do so using any of the accompanying factory methods (e.g., <code>makeAlbumRequest</code> or <code>makeSearchRequest</code>) to create and return the <code><a href="../Classes/SKRequest.html">SKRequest</a></code> instance itself.
+
+</div>
+
+          </div>
+        </section>
+
+        <section class="section">
+          <div class="section-content">
+            <div class="task-group">
+              <ul class="item-container">
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:10SpotifyKit9SKCatalogV5localACvZ"></a>
+                    <a name="//apple_ref/swift/Variable/local" class="dashAnchor"></a>
+                    <a class="token" href="#/s:10SpotifyKit9SKCatalogV5localACvZ">local</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>The local catalog instance, which represents the user&rsquo;s region settings at the time the property is read.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight"><code><span class="kd">public</span> <span class="kd">static</span> <span class="k">var</span> <span class="nv">local</span><span class="p">:</span> <span class="kt">SKCatalog</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:10SpotifyKit9SKCatalogV6locale10Foundation6LocaleVSgv"></a>
+                    <a name="//apple_ref/swift/Property/locale" class="dashAnchor"></a>
+                    <a class="token" href="#/s:10SpotifyKit9SKCatalogV6locale10Foundation6LocaleVSgv">locale</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>The locale representing the specific storefront/market from which to request catalog content.</p>
+
+<p>All requests that include a <code>market</code>, <code>country</code>, or <code>locale</code> parameter will refer to the region and language codes provided by this property. If set to <code>nil</code>, many requests will return results for all available markets.</p>
+<div class="aside aside-important">
+    <p class="aside-title">Important</p>
+    Some requests are required to specify a locale or country code, and will result in an error if no locale is set before performing the request. This requirement will be annotated by all applicable requests.
+
+</div>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight"><code><span class="kd">public</span> <span class="k">var</span> <span class="nv">locale</span><span class="p">:</span> <span class="kt">Locale</span><span class="p">?</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:10SpotifyKit9SKCatalogVAC10Foundation6LocaleVSg6locale_tcfc"></a>
+                    <a name="//apple_ref/swift/Method/init(locale:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:10SpotifyKit9SKCatalogVAC10Foundation6LocaleVSg6locale_tcfc">init(locale:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Creates a new, reusable catalog instance with the specified storefront.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight"><code><span class="kd">public</span> <span class="nf">init</span><span class="p">(</span><span class="nv">locale</span><span class="p">:</span> <span class="kt">Locale</span><span class="p">?</span><span class="cm">/* = Locale.current*/</span><span class="p">)</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>locale</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The storefront/market from which to request catalog content.</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+              </ul>
+            </div>
+            <div class="task-group">
+              <div class="task-name-container">
+                <a name="/Get%20an%20Album"></a>
+                <a name="//apple_ref/swift/Section/Get an Album" class="dashAnchor"></a>
+                <a href="#/Get%20an%20Album">
+                  <h3 class="section-name">Get an Album</h3>
+                </a>
+              </div>
+              <ul class="item-container">
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:10SpotifyKit9SKCatalogV16makeAlbumRequestAA9SKRequestCSS2id_tF"></a>
+                    <a name="//apple_ref/swift/Method/makeAlbumRequest(id:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:10SpotifyKit9SKCatalogV16makeAlbumRequestAA9SKRequestCSS2id_tF">makeAlbumRequest(id:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Creates and returns the request used to get an album.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">makeAlbumRequest</span><span class="p">(</span><span class="nv">id</span><span class="p">:</span> <span class="kt">String</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt"><a href="../Classes/SKRequest.html">SKRequest</a></span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>id</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The <a href="https://developer.spotify.com/web-api/user-guide/#spotify-uris-and-ids">Spotify ID</a> for the album.</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                      <div>
+                        <h4>Return Value</h4>
+                        <p>An <code><a href="../Classes/SKRequest.html">SKRequest</a></code> instance with which to perform the API request.</p>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:10SpotifyKit9SKCatalogV8getAlbumySS6withID_yAA7SKAlbumVSg_s5Error_pSgtc10completiontF"></a>
+                    <a name="//apple_ref/swift/Method/getAlbum(withID:completion:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:10SpotifyKit9SKCatalogV8getAlbumySS6withID_yAA7SKAlbumVSg_s5Error_pSgtc10completiontF">getAlbum(withID:completion:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Gets Spotify catalog information for a single album.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">getAlbum</span><span class="p">(</span><span class="n">withID</span> <span class="nv">id</span><span class="p">:</span> <span class="kt">String</span><span class="p">,</span> <span class="n">completion</span> <span class="nv">handler</span><span class="p">:</span> <span class="kd">@escaping</span> <span class="p">(</span><span class="kt"><a href="../Structs/SKAlbum.html">SKAlbum</a></span><span class="p">?,</span> <span class="kt">Error</span><span class="p">?)</span> <span class="o">-&gt;</span> <span class="kt">Void</span><span class="p">)</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>id</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The <a href="https://developer.spotify.com/web-api/user-guide/#spotify-uris-and-ids">Spotify ID</a> for the album.</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>handler</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The callback handler for the request. The parameters for this handler are:
+
+<ul>
+<li><code>album</code>: The requested full album, if available.</li>
+<li><code>error</code>: An error identifying if and why the request failed, or <code>nil</code> if the request was successful.</li>
+</ul></p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+              </ul>
+            </div>
+            <div class="task-group">
+              <div class="task-name-container">
+                <a name="/Get%20Several%20Albums"></a>
+                <a name="//apple_ref/swift/Section/Get Several Albums" class="dashAnchor"></a>
+                <a href="#/Get%20Several%20Albums">
+                  <h3 class="section-name">Get Several Albums</h3>
+                </a>
+              </div>
+              <ul class="item-container">
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:10SpotifyKit9SKCatalogV17makeAlbumsRequestAA9SKRequestCSaySSG3ids_tF"></a>
+                    <a name="//apple_ref/swift/Method/makeAlbumsRequest(ids:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:10SpotifyKit9SKCatalogV17makeAlbumsRequestAA9SKRequestCSaySSG3ids_tF">makeAlbumsRequest(ids:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Creates and returns the request used to get several albums.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">makeAlbumsRequest</span><span class="p">(</span><span class="nv">ids</span><span class="p">:</span> <span class="p">[</span><span class="kt">String</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="kt"><a href="../Classes/SKRequest.html">SKRequest</a></span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>ids</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>A list of the <a href="https://developer.spotify.com/web-api/user-guide/#spotify-uris-and-ids">Spotify IDs</a> for the albums. Maximum: 20 IDs.</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                      <div>
+                        <h4>Return Value</h4>
+                        <p>An <code><a href="../Classes/SKRequest.html">SKRequest</a></code> instance with which to perform the API request.</p>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:10SpotifyKit9SKCatalogV9getAlbumsySaySSG7withIDs_ySayAA7SKAlbumVSgGSg_s5Error_pSgtc10completiontF"></a>
+                    <a name="//apple_ref/swift/Method/getAlbums(withIDs:completion:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:10SpotifyKit9SKCatalogV9getAlbumsySaySSG7withIDs_ySayAA7SKAlbumVSgGSg_s5Error_pSgtc10completiontF">getAlbums(withIDs:completion:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Gets Spotify catalog information for multiple albums identified by their Spotify IDs.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">getAlbums</span><span class="p">(</span><span class="n">withIDs</span> <span class="nv">ids</span><span class="p">:</span> <span class="p">[</span><span class="kt">String</span><span class="p">],</span> <span class="n">completion</span> <span class="nv">handler</span><span class="p">:</span> <span class="kd">@escaping</span> <span class="p">([</span><span class="kt"><a href="../Structs/SKAlbum.html">SKAlbum</a></span><span class="p">?]?,</span> <span class="kt">Error</span><span class="p">?)</span> <span class="o">-&gt;</span> <span class="kt">Void</span><span class="p">)</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>ids</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>A list of the <a href="https://developer.spotify.com/web-api/user-guide/#spotify-uris-and-ids">Spotify IDs</a> for the albums. Maximum: 20 IDs.</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>handler</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The callback handler for the request. The parameters for this handler are:
+
+<ul>
+<li><code>albums</code>: The requested list of full albums. If a particular album cannot be found for a given ID, the resulting array will contain <code>nil</code> at the corresponding index.</li>
+<li><code>error</code>: An error identifying if and why the request failed, or <code>nil</code> if the request was successful.</li>
+</ul></p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+              </ul>
+            </div>
+            <div class="task-group">
+              <div class="task-name-container">
+                <a name="/Get%20an%20Artist"></a>
+                <a name="//apple_ref/swift/Section/Get an Artist" class="dashAnchor"></a>
+                <a href="#/Get%20an%20Artist">
+                  <h3 class="section-name">Get an Artist</h3>
+                </a>
+              </div>
+              <ul class="item-container">
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:10SpotifyKit9SKCatalogV17makeArtistRequestAA9SKRequestCSS2id_tF"></a>
+                    <a name="//apple_ref/swift/Method/makeArtistRequest(id:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:10SpotifyKit9SKCatalogV17makeArtistRequestAA9SKRequestCSS2id_tF">makeArtistRequest(id:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Creates and returns the request used to get an artist.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">makeArtistRequest</span><span class="p">(</span><span class="nv">id</span><span class="p">:</span> <span class="kt">String</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt"><a href="../Classes/SKRequest.html">SKRequest</a></span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>id</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The <a href="https://developer.spotify.com/web-api/user-guide/#spotify-uris-and-ids">Spotify ID</a> for the artist.</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                      <div>
+                        <h4>Return Value</h4>
+                        <p>An <code><a href="../Classes/SKRequest.html">SKRequest</a></code> instance with which to perform the API request.</p>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:10SpotifyKit9SKCatalogV9getArtistySS6withID_yAA8SKArtistVSg_s5Error_pSgtc10completiontF"></a>
+                    <a name="//apple_ref/swift/Method/getArtist(withID:completion:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:10SpotifyKit9SKCatalogV9getArtistySS6withID_yAA8SKArtistVSg_s5Error_pSgtc10completiontF">getArtist(withID:completion:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Gets Spotify catalog information for a single artist identified by their unique Spotify ID.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">getArtist</span><span class="p">(</span><span class="n">withID</span> <span class="nv">id</span><span class="p">:</span> <span class="kt">String</span><span class="p">,</span> <span class="n">completion</span> <span class="nv">handler</span><span class="p">:</span> <span class="kd">@escaping</span> <span class="p">(</span><span class="kt"><a href="../Structs/SKArtist.html">SKArtist</a></span><span class="p">?,</span> <span class="kt">Error</span><span class="p">?)</span> <span class="o">-&gt;</span> <span class="kt">Void</span><span class="p">)</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>id</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The <a href="https://developer.spotify.com/web-api/user-guide/#spotify-uris-and-ids">Spotify ID</a> for the artist.</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>handler</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The callback handler for the request. The parameters for this handler are:
+
+<ul>
+<li><code>artist</code>: The requested full artist, if available.</li>
+<li><code>error</code>: An error identifying if and why the request failed, or <code>nil</code> if the request was successful.</li>
+</ul></p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+              </ul>
+            </div>
+            <div class="task-group">
+              <div class="task-name-container">
+                <a name="/Get%20Several%20Artists"></a>
+                <a name="//apple_ref/swift/Section/Get Several Artists" class="dashAnchor"></a>
+                <a href="#/Get%20Several%20Artists">
+                  <h3 class="section-name">Get Several Artists</h3>
+                </a>
+              </div>
+              <ul class="item-container">
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:10SpotifyKit9SKCatalogV18makeArtistsRequestAA9SKRequestCSaySSG3ids_tF"></a>
+                    <a name="//apple_ref/swift/Method/makeArtistsRequest(ids:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:10SpotifyKit9SKCatalogV18makeArtistsRequestAA9SKRequestCSaySSG3ids_tF">makeArtistsRequest(ids:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Creates and returns the request used to get several artists.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">makeArtistsRequest</span><span class="p">(</span><span class="nv">ids</span><span class="p">:</span> <span class="p">[</span><span class="kt">String</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="kt"><a href="../Classes/SKRequest.html">SKRequest</a></span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>ids</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>A list of the <a href="https://developer.spotify.com/web-api/user-guide/#spotify-uris-and-ids">Spotify IDs</a> for the artists. Maximum: 50 IDs.</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                      <div>
+                        <h4>Return Value</h4>
+                        <p>An <code><a href="../Classes/SKRequest.html">SKRequest</a></code> instance with which to perform the API request.</p>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:10SpotifyKit9SKCatalogV10getArtistsySaySSG7withIDs_ySayAA8SKArtistVSgGSg_s5Error_pSgtc10completiontF"></a>
+                    <a name="//apple_ref/swift/Method/getArtists(withIDs:completion:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:10SpotifyKit9SKCatalogV10getArtistsySaySSG7withIDs_ySayAA8SKArtistVSgGSg_s5Error_pSgtc10completiontF">getArtists(withIDs:completion:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Gets Spotify catalog information for several artists based on their Spotify IDs.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">getArtists</span><span class="p">(</span><span class="n">withIDs</span> <span class="nv">ids</span><span class="p">:</span> <span class="p">[</span><span class="kt">String</span><span class="p">],</span> <span class="n">completion</span> <span class="nv">handler</span><span class="p">:</span> <span class="kd">@escaping</span> <span class="p">([</span><span class="kt"><a href="../Structs/SKArtist.html">SKArtist</a></span><span class="p">?]?,</span> <span class="kt">Error</span><span class="p">?)</span> <span class="o">-&gt;</span> <span class="kt">Void</span><span class="p">)</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>ids</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>A list of the <a href="https://developer.spotify.com/web-api/user-guide/#spotify-uris-and-ids">Spotify IDs</a> for the artists. Maximum: 50 IDs.</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>handler</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The callback handler for the request. The parameters for this handler are:
+
+<ul>
+<li><code>albums</code>: The requested list of full artists. If a particular artist cannot be found for a given ID, the resulting array will contain <code>nil</code> at the corresponding index.</li>
+<li><code>error</code>: An error identifying if and why the request failed, or <code>nil</code> if the request was successful.</li>
+</ul></p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+              </ul>
+            </div>
+            <div class="task-group">
+              <div class="task-name-container">
+                <a name="/Get%20a%20Track"></a>
+                <a name="//apple_ref/swift/Section/Get a Track" class="dashAnchor"></a>
+                <a href="#/Get%20a%20Track">
+                  <h3 class="section-name">Get a Track</h3>
+                </a>
+              </div>
+              <ul class="item-container">
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:10SpotifyKit9SKCatalogV16makeTrackRequestAA9SKRequestCSS2id_tF"></a>
+                    <a name="//apple_ref/swift/Method/makeTrackRequest(id:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:10SpotifyKit9SKCatalogV16makeTrackRequestAA9SKRequestCSS2id_tF">makeTrackRequest(id:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Creates and returns the request used to get a track.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">makeTrackRequest</span><span class="p">(</span><span class="nv">id</span><span class="p">:</span> <span class="kt">String</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt"><a href="../Classes/SKRequest.html">SKRequest</a></span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>id</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The <a href="https://developer.spotify.com/web-api/user-guide/#spotify-uris-and-ids">Spotify ID</a> for the track.</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                      <div>
+                        <h4>Return Value</h4>
+                        <p>An <code><a href="../Classes/SKRequest.html">SKRequest</a></code> instance with which to perform the API request.</p>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:10SpotifyKit9SKCatalogV8getTrackySS6withID_yAA7SKTrackVSg_s5Error_pSgtc10completiontF"></a>
+                    <a name="//apple_ref/swift/Method/getTrack(withID:completion:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:10SpotifyKit9SKCatalogV8getTrackySS6withID_yAA7SKTrackVSg_s5Error_pSgtc10completiontF">getTrack(withID:completion:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Gets Spotify catalog information for a single track identified by its unique Spotify ID.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">getTrack</span><span class="p">(</span><span class="n">withID</span> <span class="nv">id</span><span class="p">:</span> <span class="kt">String</span><span class="p">,</span> <span class="n">completion</span> <span class="nv">handler</span><span class="p">:</span> <span class="kd">@escaping</span> <span class="p">(</span><span class="kt"><a href="../Structs/SKTrack.html">SKTrack</a></span><span class="p">?,</span> <span class="kt">Error</span><span class="p">?)</span> <span class="o">-&gt;</span> <span class="kt">Void</span><span class="p">)</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>id</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The <a href="https://developer.spotify.com/web-api/user-guide/#spotify-uris-and-ids">Spotify ID</a> for the track.</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>handler</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The callback handler for the request. The parameters for this handler are:
+
+<ul>
+<li><code>track</code>: The requested full track, if available.</li>
+<li><code>error</code>: An error identifying if and why the request failed, or <code>nil</code> if the request was successful.</li>
+</ul></p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+              </ul>
+            </div>
+            <div class="task-group">
+              <div class="task-name-container">
+                <a name="/Get%20Several%20Tracks"></a>
+                <a name="//apple_ref/swift/Section/Get Several Tracks" class="dashAnchor"></a>
+                <a href="#/Get%20Several%20Tracks">
+                  <h3 class="section-name">Get Several Tracks</h3>
+                </a>
+              </div>
+              <ul class="item-container">
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:10SpotifyKit9SKCatalogV17makeTracksRequestAA9SKRequestCSaySSG3ids_tF"></a>
+                    <a name="//apple_ref/swift/Method/makeTracksRequest(ids:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:10SpotifyKit9SKCatalogV17makeTracksRequestAA9SKRequestCSaySSG3ids_tF">makeTracksRequest(ids:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Creates and returns the request used to get several tracks.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">makeTracksRequest</span><span class="p">(</span><span class="nv">ids</span><span class="p">:</span> <span class="p">[</span><span class="kt">String</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="kt"><a href="../Classes/SKRequest.html">SKRequest</a></span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>ids</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>A list of the <a href="https://developer.spotify.com/web-api/user-guide/#spotify-uris-and-ids">Spotify IDs</a> for the tracks. Maximum: 50 IDs.</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                      <div>
+                        <h4>Return Value</h4>
+                        <p>An <code><a href="../Classes/SKRequest.html">SKRequest</a></code> instance with which to perform the API request.</p>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:10SpotifyKit9SKCatalogV9getTracksySaySSG7withIDs_ySayAA7SKTrackVSgGSg_s5Error_pSgtc10completiontF"></a>
+                    <a name="//apple_ref/swift/Method/getTracks(withIDs:completion:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:10SpotifyKit9SKCatalogV9getTracksySaySSG7withIDs_ySayAA7SKTrackVSgGSg_s5Error_pSgtc10completiontF">getTracks(withIDs:completion:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Gets Spotify catalog information for multiple tracks based on their Spotify IDs.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">getTracks</span><span class="p">(</span><span class="n">withIDs</span> <span class="nv">ids</span><span class="p">:</span> <span class="p">[</span><span class="kt">String</span><span class="p">],</span> <span class="n">completion</span> <span class="nv">handler</span><span class="p">:</span> <span class="kd">@escaping</span> <span class="p">([</span><span class="kt"><a href="../Structs/SKTrack.html">SKTrack</a></span><span class="p">?]?,</span> <span class="kt">Error</span><span class="p">?)</span> <span class="o">-&gt;</span> <span class="kt">Void</span><span class="p">)</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>ids</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>A list of the <a href="https://developer.spotify.com/web-api/user-guide/#spotify-uris-and-ids">Spotify IDs</a> for the tracks. Maximum: 50 IDs.</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>handler</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The callback handler for the request. The parameters for this handler are:
+
+<ul>
+<li><code>tracks</code>: The requested list of full tracks. If a particular track cannot be found for a given ID, the resulting array will contain <code>nil</code> at the corresponding index.</li>
+<li><code>error</code>: An error identifying if and why the request failed, or <code>nil</code> if the request was successful.</li>
+</ul></p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+              </ul>
+            </div>
+            <div class="task-group">
+              <div class="task-name-container">
+                <a name="/Get%20Featured%20Playlists"></a>
+                <a name="//apple_ref/swift/Section/Get Featured Playlists" class="dashAnchor"></a>
+                <a href="#/Get%20Featured%20Playlists">
+                  <h3 class="section-name">Get Featured Playlists</h3>
+                </a>
+              </div>
+              <ul class="item-container">
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:10SpotifyKit9SKCatalogV28makeFeaturedPlaylistsRequestAA9SKRequestC10Foundation4DateVSg4date_AA10PaginationVSg4pagetF"></a>
+                    <a name="//apple_ref/swift/Method/makeFeaturedPlaylistsRequest(date:page:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:10SpotifyKit9SKCatalogV28makeFeaturedPlaylistsRequestAA9SKRequestC10Foundation4DateVSg4date_AA10PaginationVSg4pagetF">makeFeaturedPlaylistsRequest(date:page:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Creates and returns the request used to get a list of Spotify featured playlists.</p>
+<div class="aside aside-note">
+    <p class="aside-title">Note</p>
+    <p>If a catalog locale has not been specified (i.e., <code><a href="../Structs/SKCatalog.html#/s:10SpotifyKit9SKCatalogV6locale10Foundation6LocaleVSgv">locale</a></code> is set to <code>nil</code>), or if the specified language is not available, all strings will be returned in the Spotify default language (American English).</p>
+
+</div>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">makeFeaturedPlaylistsRequest</span><span class="p">(</span><span class="nv">date</span><span class="p">:</span> <span class="kt">Date</span><span class="p">?,</span> <span class="nv">page</span><span class="p">:</span> <span class="kt"><a href="../Structs/Pagination.html">Pagination</a></span><span class="p">?)</span> <span class="o">-&gt;</span> <span class="kt"><a href="../Classes/SKRequest.html">SKRequest</a></span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>date</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>A timestamp used to tailor results to a specific date and time of day. For example, if retrieving featured playlists for 3:00 PM, 23 October 2014, the catalog would return a list of playlists relevant to that time and day of the week, accompanied by a specific localized message (e.g., <em><q>Get ready to rock your Thursday! #Rocktober</q></em>). If <code>nil</code> is provided, the response defaults to the current UTC time.</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>page</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The parameters for paginating the results, specifying the index and number of items to return. If no parameters are supplied, the request will return the default number of items beginning with first item.</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                      <div>
+                        <h4>Return Value</h4>
+                        <p>An <code><a href="../Classes/SKRequest.html">SKRequest</a></code> instance with which to perform the API request.</p>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:10SpotifyKit9SKCatalogV20getFeaturedPlaylistsy10Foundation4DateVSg3for_AA10PaginationVSg4pageyAA010SKFeaturedF0VSg_s5Error_pSgtc10completiontF"></a>
+                    <a name="//apple_ref/swift/Method/getFeaturedPlaylists(for:page:completion:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:10SpotifyKit9SKCatalogV20getFeaturedPlaylistsy10Foundation4DateVSg3for_AA10PaginationVSg4pageyAA010SKFeaturedF0VSg_s5Error_pSgtc10completiontF">getFeaturedPlaylists(for:page:completion:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Gets a list of Spotify featured playlists (for example, those shown on a Spotify player&rsquo;s <q>Browse</q> tab).</p>
+<div class="aside aside-note">
+    <p class="aside-title">Note</p>
+    <p>If a catalog locale has not been specified (i.e., <code><a href="../Structs/SKCatalog.html#/s:10SpotifyKit9SKCatalogV6locale10Foundation6LocaleVSgv">locale</a></code> is set to <code>nil</code>), or if the specified language is not available, all strings will be returned in the Spotify default language (American English).</p>
+
+</div>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">getFeaturedPlaylists</span><span class="p">(</span><span class="k">for</span> <span class="nv">date</span><span class="p">:</span> <span class="kt">Date</span><span class="p">?</span> <span class="o">=</span> <span class="kt">Date</span><span class="p">(),</span> <span class="nv">page</span><span class="p">:</span> <span class="kt"><a href="../Structs/Pagination.html">Pagination</a></span><span class="p">?</span> <span class="o">=</span> <span class="kc">nil</span><span class="p">,</span> <span class="n">completion</span> <span class="nv">handler</span><span class="p">:</span> <span class="kd">@escaping</span> <span class="p">(</span><span class="kt"><a href="../Structs/SKFeaturedPlaylists.html">SKFeaturedPlaylists</a></span><span class="p">?,</span> <span class="kt">Error</span><span class="p">?)</span> <span class="o">-&gt;</span> <span class="kt">Void</span><span class="p">)</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>date</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>A timestamp used to tailor results to a specific date and time of day. For example, if retrieving featured playlists for 3:00 PM, 23 October 2014, the catalog would return a list of playlists relevant to that time and day of the week, accompanied by a specific localized message (e.g., <em><q>Get ready to rock your Thursday! #Rocktober</q></em>). If <code>nil</code> is provided, the response defaults to the current UTC time. The default value is the current date and time, relative to the user&rsquo;s current time zone.</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>page</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The parameters for paginating the results, specifying the index and number of items to return. If no parameters are supplied, the request will return the default number of items beginning with first item. The default value is <code>nil</code>.</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>handler</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The callback handler for the request. The parameters for this handler are:
+
+<ul>
+<li><code>featuredPlaylists</code>: An <code><a href="../Structs/SKFeaturedPlaylists.html">SKFeaturedPlaylists</a></code> instance, which contains a paginated collection of playlists accompanied by a localized message string.</li>
+<li><code>error</code>: An error identifying if and why the request failed, or <code>nil</code> if the request was successful.</li>
+</ul></p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+              </ul>
+            </div>
+            <div class="task-group">
+              <div class="task-name-container">
+                <a name="/Get%20New%20Releases"></a>
+                <a name="//apple_ref/swift/Section/Get New Releases" class="dashAnchor"></a>
+                <a href="#/Get%20New%20Releases">
+                  <h3 class="section-name">Get New Releases</h3>
+                </a>
+              </div>
+              <ul class="item-container">
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:10SpotifyKit9SKCatalogV22makeNewReleasesRequestAA9SKRequestCAA10PaginationVSg4page_tF"></a>
+                    <a name="//apple_ref/swift/Method/makeNewReleasesRequest(page:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:10SpotifyKit9SKCatalogV22makeNewReleasesRequestAA9SKRequestCAA10PaginationVSg4page_tF">makeNewReleasesRequest(page:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Creates and returns the request used to get a list of new album releases.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">makeNewReleasesRequest</span><span class="p">(</span><span class="nv">page</span><span class="p">:</span> <span class="kt"><a href="../Structs/Pagination.html">Pagination</a></span><span class="p">?)</span> <span class="o">-&gt;</span> <span class="kt"><a href="../Classes/SKRequest.html">SKRequest</a></span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>page</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The parameters for paginating the results, specifying the index and number of items to return. If no parameters are supplied, the request will return the default number of items beginning with first item.</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                      <div>
+                        <h4>Return Value</h4>
+                        <p>An <code><a href="../Classes/SKRequest.html">SKRequest</a></code> instance with which to perform the API request.</p>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:10SpotifyKit9SKCatalogV14getNewReleasesyAA10PaginationVSg4page_yAA4PageVyAA7SKAlbumVGSg_s5Error_pSgtc10completiontF"></a>
+                    <a name="//apple_ref/swift/Method/getNewReleases(page:completion:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:10SpotifyKit9SKCatalogV14getNewReleasesyAA10PaginationVSg4page_yAA4PageVyAA7SKAlbumVGSg_s5Error_pSgtc10completiontF">getNewReleases(page:completion:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Gets a list of new album releases featured by Spotify (for example, those shown on a Spotify player&rsquo;s <q>Browse</q> tab).</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">getNewReleases</span><span class="p">(</span><span class="nv">page</span><span class="p">:</span> <span class="kt"><a href="../Structs/Pagination.html">Pagination</a></span><span class="p">?</span> <span class="o">=</span> <span class="kc">nil</span><span class="p">,</span> <span class="n">completion</span> <span class="nv">handler</span><span class="p">:</span> <span class="kd">@escaping</span> <span class="p">(</span><span class="kt"><a href="../Structs/Page.html">Page</a></span><span class="o">&lt;</span><span class="kt"><a href="../Structs/SKAlbum.html">SKAlbum</a></span><span class="o">&gt;</span><span class="p">?,</span> <span class="kt">Error</span><span class="p">?)</span> <span class="o">-&gt;</span> <span class="kt">Void</span><span class="p">)</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>page</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The parameters for paginating the results, specifying the index and number of items to return. If no parameters are supplied, the request will return the default number of items beginning with first item. The default value is <code>nil</code>.</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>handler</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The callback handler for the request. The parameters for this handler are:
+
+<ul>
+<li><code>albums</code>: A paginated collection of newly released albums.</li>
+<li><code>error</code>: An error identifying if and why the request failed, or <code>nil</code> if the request was successful.</li>
+</ul></p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+              </ul>
+            </div>
+            <div class="task-group">
+              <div class="task-name-container">
+                <a name="/Get%20a%20List%20of%20Categories"></a>
+                <a name="//apple_ref/swift/Section/Get a List of Categories" class="dashAnchor"></a>
+                <a href="#/Get%20a%20List%20of%20Categories">
+                  <h3 class="section-name">Get a List of Categories</h3>
+                </a>
+              </div>
+              <ul class="item-container">
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:10SpotifyKit9SKCatalogV21makeCategoriesRequestAA9SKRequestCAA10PaginationVSg4page_tF"></a>
+                    <a name="//apple_ref/swift/Method/makeCategoriesRequest(page:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:10SpotifyKit9SKCatalogV21makeCategoriesRequestAA9SKRequestCAA10PaginationVSg4page_tF">makeCategoriesRequest(page:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Creates and returns the request used to get a list of categories.</p>
+<div class="aside aside-note">
+    <p class="aside-title">Note</p>
+    <p>If a catalog locale has not been specified (i.e., <code><a href="../Structs/SKCatalog.html#/s:10SpotifyKit9SKCatalogV6locale10Foundation6LocaleVSgv">locale</a></code> is set to <code>nil</code>), or if the specified language is not available, all strings will be returned in the Spotify default language (American English).</p>
+
+</div>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">makeCategoriesRequest</span><span class="p">(</span><span class="nv">page</span><span class="p">:</span> <span class="kt"><a href="../Structs/Pagination.html">Pagination</a></span><span class="p">?)</span> <span class="o">-&gt;</span> <span class="kt"><a href="../Classes/SKRequest.html">SKRequest</a></span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>page</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The parameters for paginating the results, specifying the index and number of items to return. If no parameters are supplied, the request will return the default number of items beginning with first item.</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                      <div>
+                        <h4>Return Value</h4>
+                        <p>An <code><a href="../Classes/SKRequest.html">SKRequest</a></code> instance with which to perform the API request.</p>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:10SpotifyKit9SKCatalogV13getCategoriesyAA10PaginationVSg4page_yAA4PageVyAA10SKCategoryVGSg_s5Error_pSgtc10completiontF"></a>
+                    <a name="//apple_ref/swift/Method/getCategories(page:completion:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:10SpotifyKit9SKCatalogV13getCategoriesyAA10PaginationVSg4page_yAA4PageVyAA10SKCategoryVGSg_s5Error_pSgtc10completiontF">getCategories(page:completion:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Gets a list of categories used to tag items in Spotify (for example, those shown on a Spotify player&rsquo;s <q>Browse</q> tab).</p>
+<div class="aside aside-note">
+    <p class="aside-title">Note</p>
+    <p>If a catalog locale has not been specified (i.e., <code><a href="../Structs/SKCatalog.html#/s:10SpotifyKit9SKCatalogV6locale10Foundation6LocaleVSgv">locale</a></code> is set to <code>nil</code>), or if the specified language is not available, all strings will be returned in the Spotify default language (American English).</p>
+
+</div>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">getCategories</span><span class="p">(</span><span class="nv">page</span><span class="p">:</span> <span class="kt"><a href="../Structs/Pagination.html">Pagination</a></span><span class="p">?</span> <span class="o">=</span> <span class="kc">nil</span><span class="p">,</span> <span class="n">completion</span> <span class="nv">handler</span><span class="p">:</span> <span class="kd">@escaping</span> <span class="p">(</span><span class="kt"><a href="../Structs/Page.html">Page</a></span><span class="o">&lt;</span><span class="kt"><a href="../Structs/SKCategory.html">SKCategory</a></span><span class="o">&gt;</span><span class="p">?,</span> <span class="kt">Error</span><span class="p">?)</span> <span class="o">-&gt;</span> <span class="kt">Void</span><span class="p">)</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>page</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The parameters for paginating the results, specifying the index and number of items to return. If no parameters are supplied, the request will return the default number of items beginning with first item. The default value is <code>nil</code>.</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>handler</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The callback handler for the request. The parameters for this handler are:
+
+<ul>
+<li><code>categories</code>: A paginated collection of available Spotify categories.</li>
+<li><code>error</code>: An error identifying if and why the request failed, or <code>nil</code> if the request was successful.</li>
+</ul></p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+              </ul>
+            </div>
+            <div class="task-group">
+              <div class="task-name-container">
+                <a name="/Get%20a%20Category"></a>
+                <a name="//apple_ref/swift/Section/Get a Category" class="dashAnchor"></a>
+                <a href="#/Get%20a%20Category">
+                  <h3 class="section-name">Get a Category</h3>
+                </a>
+              </div>
+              <ul class="item-container">
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:10SpotifyKit9SKCatalogV19makeCategoryRequestAA9SKRequestCSS2id_tF"></a>
+                    <a name="//apple_ref/swift/Method/makeCategoryRequest(id:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:10SpotifyKit9SKCatalogV19makeCategoryRequestAA9SKRequestCSS2id_tF">makeCategoryRequest(id:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Creates and returns the request used to get a single category.</p>
+<div class="aside aside-note">
+    <p class="aside-title">Note</p>
+    <p>If a catalog locale has not been specified (i.e., <code><a href="../Structs/SKCatalog.html#/s:10SpotifyKit9SKCatalogV6locale10Foundation6LocaleVSgv">locale</a></code> is set to <code>nil</code>), or if the specified language is not available, all strings will be returned in the Spotify default language (American English).</p>
+
+</div>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">makeCategoryRequest</span><span class="p">(</span><span class="nv">id</span><span class="p">:</span> <span class="kt">String</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt"><a href="../Classes/SKRequest.html">SKRequest</a></span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>id</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The <a href="https://developer.spotify.com/web-api/user-guide/#spotify-uris-and-ids">Spotify category ID</a> for the category.</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                      <div>
+                        <h4>Return Value</h4>
+                        <p>An <code><a href="../Classes/SKRequest.html">SKRequest</a></code> instance with which to perform the API request.</p>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:10SpotifyKit9SKCatalogV11getCategoryySS6withID_yAA10SKCategoryVSg_s5Error_pSgtc10completiontF"></a>
+                    <a name="//apple_ref/swift/Method/getCategory(withID:completion:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:10SpotifyKit9SKCatalogV11getCategoryySS6withID_yAA10SKCategoryVSg_s5Error_pSgtc10completiontF">getCategory(withID:completion:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Gets a single category used to tag items in Spotify (for example, those shown on a Spotify player&rsquo;s <q>Browse</q> tab).</p>
+<div class="aside aside-note">
+    <p class="aside-title">Note</p>
+    <p>If a catalog locale has not been specified (i.e., <code><a href="../Structs/SKCatalog.html#/s:10SpotifyKit9SKCatalogV6locale10Foundation6LocaleVSgv">locale</a></code> is set to <code>nil</code>), or if the specified language is not available, all strings will be returned in the Spotify default language (American English).</p>
+
+</div>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">getCategory</span><span class="p">(</span><span class="n">withID</span> <span class="nv">id</span><span class="p">:</span> <span class="kt">String</span><span class="p">,</span> <span class="n">completion</span> <span class="nv">handler</span><span class="p">:</span> <span class="kd">@escaping</span> <span class="p">(</span><span class="kt"><a href="../Structs/SKCategory.html">SKCategory</a></span><span class="p">?,</span> <span class="kt">Error</span><span class="p">?)</span> <span class="o">-&gt;</span> <span class="kt">Void</span><span class="p">)</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>id</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>id: The <a href="https://developer.spotify.com/web-api/user-guide/#spotify-uris-and-ids">Spotify category ID</a> for the category.</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>handler</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The callback handler for the request. The parameters for this handler are:
+
+<ul>
+<li><code>category</code>: The requested category, if available.</li>
+<li><code>error</code>: An error identifying if and why the request failed, or <code>nil</code> if the request was successful.</li>
+</ul></p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+              </ul>
+            </div>
+            <div class="task-group">
+              <div class="task-name-container">
+                <a name="/Get%20Available%20Genre%20Seeds"></a>
+                <a name="//apple_ref/swift/Section/Get Available Genre Seeds" class="dashAnchor"></a>
+                <a href="#/Get%20Available%20Genre%20Seeds">
+                  <h3 class="section-name">Get Available Genre Seeds</h3>
+                </a>
+              </div>
+              <ul class="item-container">
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:10SpotifyKit9SKCatalogV26makeAvailableGenresRequestAA9SKRequestCyF"></a>
+                    <a name="//apple_ref/swift/Method/makeAvailableGenresRequest()" class="dashAnchor"></a>
+                    <a class="token" href="#/s:10SpotifyKit9SKCatalogV26makeAvailableGenresRequestAA9SKRequestCyF">makeAvailableGenresRequest()</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Creates and returns the request used to get available genre seeds for recommendations.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">makeAvailableGenresRequest</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="kt"><a href="../Classes/SKRequest.html">SKRequest</a></span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Return Value</h4>
+                        <p>An <code><a href="../Classes/SKRequest.html">SKRequest</a></code> instance with which to perform the API request.</p>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:10SpotifyKit9SKCatalogV18getAvailableGenresyySaySSGSg_s5Error_pSgtc10completion_tF"></a>
+                    <a name="//apple_ref/swift/Method/getAvailableGenres(completion:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:10SpotifyKit9SKCatalogV18getAvailableGenresyySaySSGSg_s5Error_pSgtc10completion_tF">getAvailableGenres(completion:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Gets a list of available genre seeds used for recommendations.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">getAvailableGenres</span><span class="p">(</span><span class="n">completion</span> <span class="nv">handler</span><span class="p">:</span> <span class="kd">@escaping</span> <span class="p">([</span><span class="kt">String</span><span class="p">]?,</span> <span class="kt">Error</span><span class="p">?)</span> <span class="o">-&gt;</span> <span class="kt">Void</span><span class="p">)</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>handler</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The callback handler for the request. The parameters for this handler are:
+
+<ul>
+<li><code>genres</code>: The list of available genres.</li>
+<li><code>error</code>: An error identifying if and why the request failed, or <code>nil</code> if the request was successful.</li>
+</ul></p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+              </ul>
+            </div>
+            <div class="task-group">
+              <div class="task-name-container">
+                <a name="/Get%20Recommendations"></a>
+                <a name="//apple_ref/swift/Section/Get Recommendations" class="dashAnchor"></a>
+                <a href="#/Get%20Recommendations">
+                  <h3 class="section-name">Get Recommendations</h3>
+                </a>
+              </div>
+              <ul class="item-container">
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:10SpotifyKit9SKCatalogV26makeRecommendationsRequestAA9SKRequestCx6genres_q_7artistsq0_6trackss3SetVyAA16SKTrackAttributeOG10attributesSiSg5limitts10CollectionRzsARR_sARR0_s14StringProtocol7ElementRpzAA8SKArtistVATRt_AA5TrackATRp0_r1_lF"></a>
+                    <a name="//apple_ref/swift/Method/makeRecommendationsRequest(genres:artists:tracks:attributes:limit:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:10SpotifyKit9SKCatalogV26makeRecommendationsRequestAA9SKRequestCx6genres_q_7artistsq0_6trackss3SetVyAA16SKTrackAttributeOG10attributesSiSg5limitts10CollectionRzsARR_sARR0_s14StringProtocol7ElementRpzAA8SKArtistVATRt_AA5TrackATRp0_r1_lF">makeRecommendationsRequest(genres:artists:tracks:attributes:limit:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Creates and returns the request used to get recommendations based on seed genres, artists, and tracks.</p>
+
+<p>Recommendations are generated based on the available information for a given seed entity and matched against similar artists and tracks. If there is sufficient information about the provided seeds, a list of tracks will be returned together with pool size details.</p>
+<div class="aside aside-note">
+    <p class="aside-title">Note</p>
+    For each request, you may provide up to five seed items comprised of any combination of genres, artists, and tracks. If more than five seed items are provided, the request will result in an error.
+
+</div>
+
+<p>In cases where seed artists and tracks are very new or obscure, the request may not have enough data to generate a list of tracks.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight"><code><span class="kd">public</span> <span class="kd">func</span> <span class="n">makeRecommendationsRequest</span><span class="o">&lt;</span><span class="kt">T</span><span class="p">:</span> <span class="kt">Collection</span><span class="p">,</span> <span class="kt">U</span><span class="p">:</span> <span class="kt">Collection</span><span class="p">,</span> <span class="kt">V</span><span class="p">:</span> <span class="kt">Collection</span><span class="o">&gt;</span><span class="p">(</span><span class="nv">genres</span><span class="p">:</span> <span class="kt">T</span><span class="p">,</span> <span class="nv">artists</span><span class="p">:</span> <span class="kt">U</span><span class="p">,</span> <span class="nv">tracks</span><span class="p">:</span> <span class="kt">V</span><span class="p">,</span> <span class="nv">attributes</span><span class="p">:</span> <span class="kt">Set</span><span class="o">&lt;</span><span class="kt"><a href="../Enums/SKTrackAttribute.html">SKTrackAttribute</a></span><span class="o">&gt;</span><span class="p">,</span> <span class="nv">limit</span><span class="p">:</span> <span class="kt">Int</span><span class="p">?)</span> <span class="o">-&gt;</span> <span class="kt"><a href="../Classes/SKRequest.html">SKRequest</a></span> <span class="k">where</span> <span class="kt">T</span><span class="o">.</span><span class="kt">Element</span><span class="p">:</span> <span class="kt">StringProtocol</span><span class="p">,</span> <span class="kt">U</span><span class="o">.</span><span class="kt">Element</span> <span class="o">==</span> <span class="kt"><a href="../Structs/SKArtist.html">SKArtist</a></span><span class="p">,</span> <span class="kt">V</span><span class="o">.</span><span class="kt">Element</span><span class="p">:</span> <span class="kt"><a href="../Protocols/Track.html">Track</a></span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>genres</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>A list of seed genres. For possible values, use the <code>getAvailableGenres</code> method to retrieve a list of genres available as seeds for this request.</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>artists</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>A list of seed artists.</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>tracks</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>A list of seed tracks.</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>attributes</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>A list of tunable track attributes by which to filter results. Each attribute allows you to specify a minimum value, maximum value, and target value.</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>limit</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The target size of the results.</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                      <div>
+                        <h4>Return Value</h4>
+                        <p>An <code><a href="../Classes/SKRequest.html">SKRequest</a></code> instance with which to perform the API request.</p>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:10SpotifyKit9SKCatalogV25getRecommendationsBasedOnyx6genres_q_7artistsq0_6trackss3SetVyAA16SKTrackAttributeOG10filteredBySiSg5limityAA17SKRecommendationsVSg_s5Error_pSgtc10completionts10CollectionRzsAVR_sAVR0_s14StringProtocol7ElementRpzAA8SKArtistVAXRt_AA5TrackAXRp0_r1_lF"></a>
+                    <a name="//apple_ref/swift/Method/getRecommendationsBasedOn(genres:artists:tracks:filteredBy:limit:completion:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:10SpotifyKit9SKCatalogV25getRecommendationsBasedOnyx6genres_q_7artistsq0_6trackss3SetVyAA16SKTrackAttributeOG10filteredBySiSg5limityAA17SKRecommendationsVSg_s5Error_pSgtc10completionts10CollectionRzsAVR_sAVR0_s14StringProtocol7ElementRpzAA8SKArtistVAXRt_AA5TrackAXRp0_r1_lF">getRecommendationsBasedOn(genres:artists:tracks:filteredBy:limit:completion:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Gets recommendations based on seed genres, artists, and tracks.</p>
+
+<p>Recommendations are generated based on the available information for a given seed entity and matched against similar artists and tracks. If there is sufficient information about the provided seeds, a list of tracks will be returned together with pool size details.</p>
+<div class="aside aside-note">
+    <p class="aside-title">Note</p>
+    For each request, you may provide up to five seed items comprised of any combination of genres, artists, and tracks. If more than five seed items are provided, the request will result in an error.
+
+</div>
+
+<p>In cases where seed artists and tracks are very new or obscure, the request may not have enough data to generate a list of tracks.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight"><code><span class="kd">public</span> <span class="kd">func</span> <span class="n">getRecommendationsBasedOn</span><span class="o">&lt;</span><span class="kt">T</span><span class="p">:</span> <span class="kt">Collection</span><span class="p">,</span> <span class="kt">U</span><span class="p">:</span> <span class="kt">Collection</span><span class="p">,</span> <span class="kt">V</span><span class="p">:</span> <span class="kt">Collection</span><span class="o">&gt;</span><span class="p">(</span><span class="nv">genres</span><span class="p">:</span> <span class="kt">T</span><span class="p">,</span> <span class="nv">artists</span><span class="p">:</span> <span class="kt">U</span><span class="p">,</span> <span class="nv">tracks</span><span class="p">:</span> <span class="kt">V</span><span class="p">,</span> <span class="n">filteredBy</span> <span class="nv">attributes</span><span class="p">:</span> <span class="kt">Set</span><span class="o">&lt;</span><span class="kt"><a href="../Enums/SKTrackAttribute.html">SKTrackAttribute</a></span><span class="o">&gt;</span> <span class="o">=</span> <span class="p">[],</span> <span class="nv">limit</span><span class="p">:</span> <span class="kt">Int</span><span class="p">?</span> <span class="o">=</span> <span class="kc">nil</span><span class="p">,</span> <span class="n">completion</span> <span class="nv">handler</span><span class="p">:</span> <span class="kd">@escaping</span> <span class="p">(</span><span class="kt"><a href="../Structs/SKRecommendations.html">SKRecommendations</a></span><span class="p">?,</span> <span class="kt">Error</span><span class="p">?)</span> <span class="o">-&gt;</span> <span class="kt">Void</span><span class="p">)</span> <span class="k">where</span> <span class="kt">T</span><span class="o">.</span><span class="kt">Element</span><span class="p">:</span> <span class="kt">StringProtocol</span><span class="p">,</span> <span class="kt">U</span><span class="o">.</span><span class="kt">Element</span> <span class="o">==</span> <span class="kt"><a href="../Structs/SKArtist.html">SKArtist</a></span><span class="p">,</span> <span class="kt">V</span><span class="o">.</span><span class="kt">Element</span><span class="p">:</span> <span class="kt"><a href="../Protocols/Track.html">Track</a></span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>genres</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>A list of seed genres. For possible values, use the <code>getAvailableGenres</code> method to retrieve a list of genres available as seeds for this request.</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>artists</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>A list of seed artists.</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>tracks</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>A list of seed tracks.</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>attributes</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>A list of tunable track attributes by which to filter results. Each attribute allows you to specify a minimum value, maximum value, and target value.</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>limit</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The target size of the results.</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>handler</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The callback handler for the request. The parameters for this handler are:
+
+<ul>
+<li><code>recommendations</code>: An <code><a href="../Structs/SKRecommendations.html">SKRecommendations</a></code> instance, which contains an array of tracks accompanied by the seeds from which the tracks are returned.</li>
+<li><code>error</code>: An error identifying if and why the request failed, or <code>nil</code> if the request was successful.</li>
+</ul></p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+              </ul>
+            </div>
+            <div class="task-group">
+              <div class="task-name-container">
+                <a name="/Search"></a>
+                <a name="//apple_ref/swift/Section/Search" class="dashAnchor"></a>
+                <a href="#/Search">
+                  <h3 class="section-name">Search</h3>
+                </a>
+              </div>
+              <ul class="item-container">
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:10SpotifyKit9SKCatalogV17makeSearchRequestAA9SKRequestCs3SetVyAA18SKSearchResultTypeOG5types_SS8keywordsSSSg9alternateAN8unwantedSb7inOrderAHyAA0I11FieldFilterOG7filtersAA10PaginationVSg4pagetF"></a>
+                    <a name="//apple_ref/swift/Method/makeSearchRequest(types:keywords:alternate:unwanted:inOrder:filters:page:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:10SpotifyKit9SKCatalogV17makeSearchRequestAA9SKRequestCs3SetVyAA18SKSearchResultTypeOG5types_SS8keywordsSSSg9alternateAN8unwantedSb7inOrderAHyAA0I11FieldFilterOG7filtersAA10PaginationVSg4pagetF">makeSearchRequest(types:keywords:alternate:unwanted:inOrder:filters:page:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Creates and returns the request used to search the Spotify catalog.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">makeSearchRequest</span><span class="p">(</span><span class="nv">types</span><span class="p">:</span> <span class="kt">Set</span><span class="o">&lt;</span><span class="kt"><a href="../Enums/SKSearchResultType.html">SKSearchResultType</a></span><span class="o">&gt;</span><span class="p">,</span>
+                              <span class="nv">keywords</span><span class="p">:</span> <span class="kt">String</span><span class="p">,</span>
+                              <span class="nv">alternate</span><span class="p">:</span> <span class="kt">String</span><span class="p">?,</span>
+                              <span class="nv">unwanted</span><span class="p">:</span> <span class="kt">String</span><span class="p">?,</span>
+                              <span class="nv">inOrder</span><span class="p">:</span> <span class="kt">Bool</span><span class="p">,</span>
+                              <span class="nv">filters</span><span class="p">:</span> <span class="kt">Set</span><span class="o">&lt;</span><span class="kt"><a href="../Enums/SKSearchFieldFilter.html">SKSearchFieldFilter</a></span><span class="o">&gt;</span><span class="p">,</span>
+                              <span class="nv">page</span><span class="p">:</span> <span class="kt"><a href="../Structs/Pagination.html">Pagination</a></span><span class="p">?)</span> <span class="o">-&gt;</span> <span class="kt"><a href="../Classes/SKRequest.html">SKRequest</a></span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>types</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>An array identifying the types of items requested by the search. Possible values are <code>.album</code>, <code>.artist</code>, <code>.track</code>, and <code>.playlist</code>. The static constant <code>.all</code> can also be used to represent an array containing all search result types.</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>keywords</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The search term against which to match results. <strong>Note</strong>: Keyword matching is <em>not</em> case-sensitive.</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>alternate</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>An alternate search term used to broaden the search. If no alternate keywords are needed, set this parameter to <code>nil</code>.</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>unwanted</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>Unwanted keywords to exclude from the search. If no unwanted keywords are needed, set this parameter to <code>nil</code>.</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>inOrder</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>When <code>false</code>, keywords will be matched in any order; when <code>true</code>, the search will maintain exact keyword order.</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>filters</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>A list of field filters by which to narrow the search. For available filters, see <code><a href="../Enums/SKSearchFieldFilter.html">SKSearchFieldFilter</a></code>. If no filters are needed, set this parameter to an empty array.</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>page</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The parameters for paginating the results, specifying the index and number of items to return. If no parameters are supplied, the request will return the default number of items beginning with first item.</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                      <div>
+                        <h4>Return Value</h4>
+                        <p>An <code><a href="../Classes/SKRequest.html">SKRequest</a></code> instance with which to perform the API request.</p>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:10SpotifyKit9SKCatalogV6searchys3SetVyAA18SKSearchResultTypeOG3for_SS8matchingSSSg2orAL9excludingSb7inOrderAFyAA0F11FieldFilterOG10filteredByAA10PaginationVSg4pageyAA0F7ResultsVSg_s5Error_pSgtc10completiontF"></a>
+                    <a name="//apple_ref/swift/Method/search(for:matching:or:excluding:inOrder:filteredBy:page:completion:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:10SpotifyKit9SKCatalogV6searchys3SetVyAA18SKSearchResultTypeOG3for_SS8matchingSSSg2orAL9excludingSb7inOrderAFyAA0F11FieldFilterOG10filteredByAA10PaginationVSg4pageyAA0F7ResultsVSg_s5Error_pSgtc10completiontF">search(for:matching:or:excluding:inOrder:filteredBy:page:completion:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Gets Spotify catalog information about artists, albums, tracks or playlists that match a keyword string.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">search</span><span class="p">(</span><span class="k">for</span> <span class="nv">types</span><span class="p">:</span> <span class="kt">Set</span><span class="o">&lt;</span><span class="kt"><a href="../Enums/SKSearchResultType.html">SKSearchResultType</a></span><span class="o">&gt;</span><span class="p">,</span>
+                   <span class="n">matching</span> <span class="nv">keywords</span><span class="p">:</span> <span class="kt">String</span><span class="p">,</span>
+                   <span class="n">or</span> <span class="nv">alternate</span><span class="p">:</span> <span class="kt">String</span><span class="p">?</span> <span class="o">=</span> <span class="kc">nil</span><span class="p">,</span>
+                   <span class="n">excluding</span> <span class="nv">unwanted</span><span class="p">:</span> <span class="kt">String</span><span class="p">?</span> <span class="o">=</span> <span class="kc">nil</span><span class="p">,</span>
+                   <span class="nv">inOrder</span><span class="p">:</span> <span class="kt">Bool</span> <span class="o">=</span> <span class="kc">false</span><span class="p">,</span>
+                   <span class="n">filteredBy</span> <span class="nv">filters</span><span class="p">:</span> <span class="kt">Set</span><span class="o">&lt;</span><span class="kt"><a href="../Enums/SKSearchFieldFilter.html">SKSearchFieldFilter</a></span><span class="o">&gt;</span> <span class="o">=</span> <span class="p">[],</span>
+                   <span class="nv">page</span><span class="p">:</span> <span class="kt"><a href="../Structs/Pagination.html">Pagination</a></span><span class="p">?</span> <span class="o">=</span> <span class="kc">nil</span><span class="p">,</span>
+                   <span class="n">completion</span> <span class="nv">handler</span><span class="p">:</span> <span class="kd">@escaping</span> <span class="p">(</span><span class="kt"><a href="../Structs/SKSearchResults.html">SKSearchResults</a></span><span class="p">?,</span> <span class="kt">Error</span><span class="p">?)</span> <span class="o">-&gt;</span> <span class="kt">Void</span><span class="p">)</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>types</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>An array identifying the types of items requested by the search. Possible values are <code>.album</code>, <code>.artist</code>, <code>.track</code>, and <code>.playlist</code>. The static constant <code>.all</code> can also be used to represent an array containing all search result types.</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>keywords</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The search term against which to match results. <strong>Note</strong>: Keyword matching is <em>not</em> case-sensitive.</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>alternate</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>An alternate search term used to broaden the search. The default value is an empty string.</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>unwanted</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>Unwanted keywords to exclude from the search. The default value is an empty string.</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>inOrder</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>When <code>false</code>, keywords will be matched in any order; when <code>true</code>, the search will maintain exact keyword order. The default value is <code>false</code>.</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>filters</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>A list of field filters by which to narrow the search. For available filters, see <code><a href="../Enums/SKSearchFieldFilter.html">SKSearchFieldFilter</a></code>. The default value is an empty array.</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>page</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The parameters for paginating the results, specifying the index and number of items to return. If no parameters are supplied, the request will return the default number of items beginning with first item. The default value is <code>nil</code>.</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>handler</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The callback handler for this request. The parameters for this handler are:
+
+<ul>
+<li><code>results</code>: An <code><a href="../Structs/SKSearchResults.html">SKSearchResults</a></code> instance containing paged results for any albums, artists, tracks, or playlists returned by the search.</li>
+<li><code>error</code>: An error identifying if and why the request failed, or <code>nil</code> if the request was successful.</li>
+</ul></p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </section>
+
+      </article>
+    </div>
+    <section class="footer">
+      <p>Copyright 2017 Alex Havermale. Licensed under the <a class="link" href="http://www.apache.org/licenses/LICENSE-2.0" target="_blank" rel="external">Apache License, Version 2.0</a>.</p>
+      <p>Generated by <a class="link" href="https://github.com/realm/jazzy" target="_blank" rel="external">jazzy ♪♫ v0.9.0</a>, a <a class="link" href="http://realm.io" target="_blank" rel="external">Realm</a> project.</p>
+    </section>
+  </body>
+</div>
+</html>
