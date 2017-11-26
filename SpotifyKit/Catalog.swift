@@ -352,11 +352,7 @@ public struct SKCatalog {
     ///     **Note**: For seeds with unusually small pools or when highly restrictive filtering is applied, it may be impossible to generate the requested number of recommended tracks. In such cases, debugging information will be made available in the response.
     ///
     /// - Returns: An `SKRequest` instance with which to perform the API request.
-    public func makeRecommendationsRequest(genres: [String],
-                                           artists: [SKArtist],
-                                           tracks: [SKTrack], // TODO: Change to protocol constraints.
-                                           attributes: Set<SKTrackAttribute>,
-                                           limit: Int?) -> SKRequest {
+    public func makeRecommendationsRequest<T: Collection, U: Collection, V: Collection>(genres: T, artists: U, tracks: V, attributes: Set<SKTrackAttribute>, limit: Int?) -> SKRequest where T.Element: StringProtocol, U.Element == SKArtist, V.Element: Track {
         
         var parameters = [String: Any]()
         parameters[Constants.QueryParameters.market] = locale?.regionCode
@@ -393,14 +389,9 @@ public struct SKCatalog {
     ///     **Note**: For seeds with unusually small pools or when highly restrictive filtering is applied, it may be impossible to generate the requested number of recommended tracks. In such cases, debugging information will be made available in the response.
     ///
     ///   - handler: The callback handler for the request. The parameters for this handler are:
-    ///     - `recommendations`: An `SKRecommendations` instance, which contains an array of tracks accompanied by the seeds from which the tracks are returned.
-    ///     - `error`: An error identifying if and why the request failed, or `nil` if the request was successful.
-    public func getRecommendationsBasedOn(genres: [String],
-                                          artists: [SKArtist],
-                                          tracks: [SKTrack],
-                                          filteredBy attributes: Set<SKTrackAttribute> = [],
-                                          limit: Int? = nil,
-                                          completion handler: @escaping (SKRecommendations?, Error?) -> Void) {
+    ///       - `recommendations`: An `SKRecommendations` instance, which contains an array of tracks accompanied by the seeds from which the tracks are returned.
+    ///       - `error`: An error identifying if and why the request failed, or `nil` if the request was successful.
+    public func getRecommendationsBasedOn<T: Collection, U: Collection, V: Collection>(genres: T, artists: U, tracks: V, filteredBy attributes: Set<SKTrackAttribute> = [], limit: Int? = nil, completion handler: @escaping (SKRecommendations?, Error?) -> Void) where T.Element: StringProtocol, U.Element == SKArtist, V.Element: Track {
         
         makeRecommendationsRequest(genres: genres, artists: artists, tracks: tracks, attributes: attributes, limit: limit).perform(completion: handler)
     }
