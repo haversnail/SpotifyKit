@@ -31,7 +31,10 @@ public enum SKContentRating: Int {
     case unknown
 }
 
-public struct SKTrackLink: Decodable {
+/// A structure representing the links to a relinked Spotify track. See the API [Track Relinking](https://developer.spotify.com/web-api/track-relinking-guide/) guide for more details.
+///
+/// - SeeAlso: The Web API [Track Link](https://developer.spotify.com/web-api/object-model/#track-link) object.
+public struct SKTrackLinks: Decodable {
     
     /// The resource object type: `"track"`.
     private let type: ResourceType
@@ -96,7 +99,7 @@ public protocol Track {
     var previewURL: URL? { get }
     
     /// A value that is available when [Track Relinking](https://developer.spotify.com/web-api/track-relinking-guide/) is applied and is only available if the track linking, in fact, exists (meaning that the requested track has been replaced with a different track). The resource identifiers and locators in the `TrackLink` instance contain information about the originally requested track.
-    var trackLink: SKTrackLink? { get }
+    var trackLinks: SKTrackLinks? { get }
     
     /// The number of the track. If an album has several discs, the track number is the number on the specified disc.
     var trackNumber: Int { get }
@@ -156,7 +159,7 @@ public struct SKTrack: Track, JSONDecodable {
     public let isPlayable: Bool?
     public let name: String
     public let previewURL: URL?
-    public let trackLink: SKTrackLink?
+    public let trackLinks: SKTrackLinks?
     public let trackNumber: Int
     public let uri: String
     public let url: URL
@@ -181,7 +184,7 @@ public struct SKTrack: Track, JSONDecodable {
         case url = "href"
         case id
         case isPlayable = "is_playable"
-        case trackLink = "linked_from"
+        case trackLinks = "linked_from"
         case name
         case popularity
         case previewURL = "preview_url"
@@ -233,7 +236,7 @@ public struct SKPlaylistTrack: Track, JSONDecodable {
     public var id: String                       { return track.id }
     public var uri: String                      { return track.uri }
     public var url: URL                         { return track.url }
-    public var trackLink: SKTrackLink?          { return track.trackLink }
+    public var trackLinks: SKTrackLinks?          { return track.trackLinks }
     public var name: String                     { return track.name }
     public var previewURL: URL?                 { return track.previewURL }
     public var trackNumber: Int                 { return track.trackNumber }
@@ -273,7 +276,7 @@ public struct SKSavedTrack: Track, JSONDecodable {
     public var id: String                       { return track.id }
     public var uri: String                      { return track.uri }
     public var url: URL                         { return track.url }
-    public var trackLink: SKTrackLink?          { return track.trackLink }
+    public var trackLinks: SKTrackLinks?          { return track.trackLinks }
     public var name: String                     { return track.name }
     public var previewURL: URL?                 { return track.previewURL }
     public var trackNumber: Int                 { return track.trackNumber }

@@ -46,7 +46,7 @@ public struct SKRecentTrack: Track, Decodable {
     public var id: String                       { return track.id }
     public var uri: String                      { return track.uri }
     public var url: URL                         { return track.url }
-    public var trackLink: SKTrackLink?          { return track.trackLink }
+    public var trackLinks: SKTrackLinks?          { return track.trackLinks }
     public var name: String                     { return track.name }
     public var previewURL: URL?                 { return track.previewURL }
     public var trackNumber: Int                 { return track.trackNumber }
