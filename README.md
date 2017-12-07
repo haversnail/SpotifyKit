@@ -1,5 +1,5 @@
 ![Logo](Logo/SpotifyKit.png)
-# ⸺ SpotifyKit ⸺
+# SpotifyKit
 An intuitive and comprehensive Swift wrapper for the [Spotify Web API][Web API].
 
 [![Swift](https://img.shields.io/badge/Swift-4.0-orange.svg "Swift version")][Swift]
