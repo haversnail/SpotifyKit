@@ -1,6 +1,6 @@
 ![Logo](Logo/SpotifyKit.png)
 # SpotifyKit
-An intuitive and comprehensive Swift wrapper for the [Spotify Web API][Web API].
+An intuitive and complete Swift wrapper for the [Spotify Web API][Web API].
 
 [![Swift](https://img.shields.io/badge/Swift-4.0-orange.svg "Swift version")][Swift]
 [![Carthage](https://img.shields.io/badge/Carthage-compatible-4BC51D.svg "Carthage compatible")][Carthage]
@@ -131,7 +131,7 @@ This creates module maps for the newly checked-out frameworks, which should elim
 
 ## Credits
 
-✌️ **SpotifyKit** was created by [Alex Havermale](https://github.com/haversnail).
+✌️ **SpotifyKit** was created by [Alex Havermale](mailto:alex.havermale@icloud.com).
 
 ## License
 

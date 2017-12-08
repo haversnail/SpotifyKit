@@ -1,6 +1,6 @@
 ![Logo](https://github.com/haversnail/SpotifyKit/raw/master/Logo/SpotifyKit.png)
 # SpotifyKit
-An intuitive and comprehensive Swift wrapper for the [Spotify Web API][Web API].
+An intuitive and complete Swift wrapper for the [Spotify Web API][Web API].
 
 [![Swift](https://img.shields.io/badge/Swift-4.0-orange.svg "Swift version")][Swift]
 [![Carthage](https://img.shields.io/badge/Carthage-compatible-4BC51D.svg "Carthage compatible")][Carthage]
