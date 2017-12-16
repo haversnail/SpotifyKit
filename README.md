@@ -94,7 +94,7 @@ This creates module maps for the newly checked-out frameworks, which should elim
 ## Roadmap
 
 #### Current stable release:
-![release](https://img.shields.io/badge/release-v1.0.0-blue.svg "Current stable release")
+![release](https://img.shields.io/github/release/haversnail/SpotifyKit.svg "Current stable release")
 
 #### Pending future release:
 
