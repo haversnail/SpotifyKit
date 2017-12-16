@@ -1,10 +1,10 @@
 language: objective-c # swift
 osx_image: xcode9.2
 
-# Xcode Configuration
-xcode_workspace: SpotifyKit.xcworkspace
-# xcode_project: SpotifyKit.xcodeproj
-xcode_scheme: SpotifyKit
+# xctool Configuration
+# xcode_workspace: SpotifyKit.xcworkspace
+# # xcode_project: SpotifyKit.xcodeproj
+# xcode_scheme: SpotifyKit
 
 # Build Lifecycle
 before_install:
@@ -14,7 +14,8 @@ before_install:
 # install:
 before_script:
     - carthage bootstrap --no-build # checks out the Spotify iOS SDK
-# script:
+script:
+    - xcodebuild clean build -workspace SpotifyKit.xcworkspace -scheme SpotifyKit -sdk iphonesimulator ONLY_ACTIVE_ARCH=NO
 # before_cache:  # OPTIONAL (for cleaning up cache)
 # after_success: # OR after_failure:
 # before_deploy: # OPTIONAL
