@@ -7,6 +7,7 @@ An intuitive and complete Swift wrapper for the [Spotify Web API][Web API].
 [![iOS SDK](https://img.shields.io/badge/iOS%20SDK-beta--25-blue.svg "Spotify iOS SDK release")][iOS SDK]
 ![Platforms](https://img.shields.io/badge/platform-iOS-lightgrey.svg "Platforms")
 [![Docs](docs/badge.svg "Documentation coverage")][Docs]
+[![Build](https://travis-ci.org/haversnail/SpotifyKit.svg?branch=master "latest build on master branch")][Travis CI]
 
 ## Getting Started
 
@@ -144,5 +145,6 @@ This creates module maps for the newly checked-out frameworks, which should elim
 [Carthage]: https://github.com/Carthage/Carthage
 [CocoaPods]: https://cocoapods.org/
 [Guidelines]: https://swift.org/documentation/api-design-guidelines/
+[Travis CI]: https://travis-ci.org/haversnail/SpotifyKit
 
 [SDK-issue-811]: https://github.com/spotify/ios-sdk/issues/811

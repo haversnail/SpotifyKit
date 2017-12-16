@@ -1,6 +1,6 @@
 module: SpotifyKit
 module_version: 1.0.0
-swift_version: 4.0.2
+swift_version: 4.0.3
 min_acl: public
 author: Alex Havermale
 author_url: https://github.com/haversnail
