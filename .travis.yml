@@ -15,7 +15,7 @@ before_install:
 before_script:
     - carthage bootstrap --no-build # checks out the Spotify iOS SDK
 script:
-    - xcodebuild clean build -workspace SpotifyKit.xcworkspace -scheme SpotifyKit -sdk iphonesimulator ONLY_ACTIVE_ARCH=NO
+    - xcodebuild clean build -workspace SpotifyKit.xcworkspace -scheme SpotifyKit -configuration Release -sdk iphoneos ONLY_ACTIVE_ARCH=NO # -quiet
 # before_cache:  # OPTIONAL (for cleaning up cache)
 # after_success: # OR after_failure:
 # before_deploy: # OPTIONAL

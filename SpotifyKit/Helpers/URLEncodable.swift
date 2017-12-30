@@ -79,7 +79,7 @@ extension URLEncodable where Self: LosslessStringConvertible { // Bool/Double/Fl
 extension Bool: URLEncodable {}
 //extension Double: URLEncodable {}
 extension Float: URLEncodable {}
-extension Float80: URLEncodable {}
+//extension Float80: URLEncodable {}
 extension Substring: URLEncodable {}
 
 extension URLEncodable where Self: FixedWidthInteger { // DoubleWidth/Int/Int*/UInt/UInt*
