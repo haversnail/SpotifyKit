@@ -4,8 +4,18 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
-## Unreleased
+## [Unreleased]
 - *Any untagged changes will be listed here.*
+
+## [1.0.1] - 2017-12-30
+### Added
+- Incorporated [Travis CI](https://travis-ci.org/haversnail/SpotifyKit) into the project.
+
+### Changed
+- Updated the README content.
+
+### Fixed
+- A `URLEncodable` bug that kept the project from compiling.
 
 ## 1.0.0 - 2017-10-26
 This is the first public release of the SpotifyKit framework. As such, the following changes outline all the notable differences and design deviations between SpotifyKit and the [Spotify Web API][Web API]. All changes have been carefully considered and are intended to better standardize SpotifyKit and conform its model and methods to match [Swift design convention][Guidelines].
@@ -51,8 +61,7 @@ This is the first public release of the SpotifyKit framework. As such, the follo
 
 - Does not include request methods for any [Web API Connect](https://developer.spotify.com/web-api/working-with-connect/) endpoints that control playback; this is already handled by the `SpotifyAudioPlayback` framework.
 
-[Unreleased]: https://github.com/haversnail/SpotifyKit/compare/v1.0.0...HEAD
-[1.0.2]: https://github.com/haversnail/SpotifyKit/compare/v1.0.1...v1.0.2
+[Unreleased]: https://github.com/haversnail/SpotifyKit/compare/v1.0.1...HEAD
 [1.0.1]: https://github.com/haversnail/SpotifyKit/compare/v1.0.0...v1.0.1
 
 [Docs]: https://haversnail.github.io/SpotifyKit/

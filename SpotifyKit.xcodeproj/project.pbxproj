@@ -110,6 +110,7 @@
 		119DC3D51F239B93003DB3BD /* Track.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Track.swift; sourceTree = "<group>"; };
 		119DC3D91F239DDB003DB3BD /* ModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModelTests.swift; sourceTree = "<group>"; };
 		119E0FD51FB09CC8004DB2FF /* RecentTrack.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecentTrack.swift; sourceTree = "<group>"; };
+		11B6EDAE1FF71C8D005BFDE8 /* .travis.yml */ = {isa = PBXFileReference; explicitFileType = text.script; path = .travis.yml; sourceTree = "<group>"; };
 		11BAFABB1FAEF7DE00B653CA /* .jazzy.yaml */ = {isa = PBXFileReference; explicitFileType = text.script; path = .jazzy.yaml; sourceTree = "<group>"; };
 		11BAFABE1FAF397000B653CA /* Player.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Player.swift; sourceTree = "<group>"; };
 		11C935CF1FCB10E00079E346 /* CHANGELOG.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = CHANGELOG.md; sourceTree = "<group>"; };
@@ -235,6 +236,7 @@
 			children = (
 				11FB6D8F1F20D33500ADAA90 /* modulemaps.sh */,
 				11BAFABB1FAEF7DE00B653CA /* .jazzy.yaml */,
+				11B6EDAE1FF71C8D005BFDE8 /* .travis.yml */,
 				113D08531F208C4700BECB27 /* .gitignore */,
 				113D08541F208C4700BECB27 /* Cartfile */,
 			);

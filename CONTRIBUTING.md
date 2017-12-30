@@ -12,6 +12,6 @@ If you encounter any challenges, please open an issue after making sure there is
 
 For questions about how SpotifyKit compares the [Spotify Web API](https://developer.spotify.com/web-api/) or the rationale behind some of the design changes, please take a look at **v1.0.0** in the [change log](CHANGELOG.md).
 
-All code contributions should include *clear* and *concise __documentation__* and should strive to adhere to the Swift [**API Design Guidelines**](https://swift.org/documentation/api-design-guidelines/) as best as possible.
+All code contributions should include __*clear* and *concise documentation*__ and should strive to adhere to the Swift [**API Design Guidelines**](https://swift.org/documentation/api-design-guidelines/) as best as possible.
 
 Thanks for contributing!
