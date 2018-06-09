@@ -1,11 +1,11 @@
 module: SpotifyKit
 module_version: 1.0.1
-swift_version: 4.0.3
+swift_version: 4.1
 min_acl: public
 author: Alex Havermale
 author_url: https://github.com/haversnail
 github_url: https://github.com/haversnail/SpotifyKit
-copyright: "Copyright 2017 Alex Havermale. Licensed under the [Apache License, Version 2.0](http://www.apache.org/licenses/LICENSE-2.0)."
+copyright: "Copyright 2018 Alex Havermale. Licensed under the [Apache License, Version 2.0](http://www.apache.org/licenses/LICENSE-2.0)."
 
 theme: fullwidth # apple
 readme: docs/README.md

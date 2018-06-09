@@ -118,7 +118,7 @@
                 <a class="nav-group-task-link" href="../Protocols/CursorPagingCollection.html">CursorPagingCollection</a>
               </li>
               <li class="nav-group-task">
-                <a class="nav-group-task-link" href="../Pagination.html#/s:10SpotifyKit14CursorPageableP">CursorPageable</a>
+                <a class="nav-group-task-link" href="../Protocols/CursorPageable.html">CursorPageable</a>
               </li>
               <li class="nav-group-task">
                 <a class="nav-group-task-link" href="../Structs/Page.html">Page</a>
@@ -359,6 +359,14 @@
               </li>
             </ul>
           </li>
+          <li class="nav-group-name">
+            <a class="nav-group-name-link" href="../Other Typealiases.html">Other Type Aliases</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Other Typealiases.html#/s:10SpotifyKit11JSONCodablea">JSONCodable</a>
+              </li>
+            </ul>
+          </li>
         </ul>
       </nav>
       <article class="main-content">
@@ -368,13 +376,13 @@
             <h1>CursorProtocol</h1>
               <div class="declaration">
                 <div class="language">
-                  <pre class="highlight"><code><span class="kd">public</span> <span class="kd">protocol</span> <span class="kt">CursorProtocol</span></code></pre>
+                  <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">protocol</span> <span class="kt">CursorProtocol</span></code></pre>
 
                 </div>
               </div>
             <p>A type that contains a set of cursors used to identify items and traverse adjacent pages in a cursor-based paging collection.</p>
 
-<p>The <code>CursorProtocol</code> protocol is tightly linked with the <code><a href="../Pagination.html#/s:10SpotifyKit14CursorPageableP">CursorPageable</a></code> and <code><a href="../Protocols/CursorPagingCollection.html">CursorPagingCollection</a></code> protocols. Cursor-based paging collections depend on a set of <q>cursors</q> to identify the first and last items in a given page, providing reference points from which to page through a larger list of results, typically sorted in chronological order. The type of cursor used to identify the items depends on the type of items returned in the page. Therefore, types that conform to this protocol must provide an associated cursor type that can be used to uniquely identify themselves within a paging collection.</p>
+<p>The <code>CursorProtocol</code> protocol is tightly linked with the <code><a href="../Protocols/CursorPageable.html">CursorPageable</a></code> and <code><a href="../Protocols/CursorPagingCollection.html">CursorPagingCollection</a></code> protocols. Cursor-based paging collections depend on a set of <q>cursors</q> to identify the first and last items in a given page, providing reference points from which to page through a larger list of results, typically sorted in chronological order. The type of cursor used to identify the items depends on the type of items returned in the page. Therefore, types that conform to this protocol must provide an associated cursor type that can be used to uniquely identify themselves within a paging collection.</p>
 
           </div>
         </section>
@@ -403,7 +411,7 @@
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight"><code><span class="k">associatedtype</span> <span class="kt">CursorType</span></code></pre>
+                          <pre class="highlight swift"><code><span class="kd">associatedtype</span> <span class="kt">CursorType</span></code></pre>
 
                         </div>
                       </div>
@@ -413,9 +421,9 @@
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:10SpotifyKit14CursorProtocolP6latest0C4TypeQzSgv"></a>
+                    <a name="/s:10SpotifyKit14CursorProtocolP6latest0C4TypeQzSgvp"></a>
                     <a name="//apple_ref/swift/Property/latest" class="dashAnchor"></a>
-                    <a class="token" href="#/s:10SpotifyKit14CursorProtocolP6latest0C4TypeQzSgv">latest</a>
+                    <a class="token" href="#/s:10SpotifyKit14CursorProtocolP6latest0C4TypeQzSgvp">latest</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -432,7 +440,7 @@
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight"><code><span class="k">var</span> <span class="nv">latest</span><span class="p">:</span> <span class="kt"><a href="../Protocols/CursorProtocol.html#/s:10SpotifyKit14CursorProtocolP0C4Type">CursorType</a></span><span class="p">?</span></code></pre>
+                          <pre class="highlight swift"><code><span class="k">var</span> <span class="nv">latest</span><span class="p">:</span> <span class="kt"><a href="../Protocols/CursorProtocol.html#/s:10SpotifyKit14CursorProtocolP0C4Type">CursorType</a></span><span class="p">?</span> <span class="p">{</span> <span class="k">get</span> <span class="p">}</span></code></pre>
 
                         </div>
                       </div>
@@ -442,9 +450,9 @@
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:10SpotifyKit14CursorProtocolP8earliest0C4TypeQzSgv"></a>
+                    <a name="/s:10SpotifyKit14CursorProtocolP8earliest0C4TypeQzSgvp"></a>
                     <a name="//apple_ref/swift/Property/earliest" class="dashAnchor"></a>
-                    <a class="token" href="#/s:10SpotifyKit14CursorProtocolP8earliest0C4TypeQzSgv">earliest</a>
+                    <a class="token" href="#/s:10SpotifyKit14CursorProtocolP8earliest0C4TypeQzSgvp">earliest</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -461,7 +469,7 @@
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight"><code><span class="k">var</span> <span class="nv">earliest</span><span class="p">:</span> <span class="kt"><a href="../Protocols/CursorProtocol.html#/s:10SpotifyKit14CursorProtocolP0C4Type">CursorType</a></span><span class="p">?</span></code></pre>
+                          <pre class="highlight swift"><code><span class="k">var</span> <span class="nv">earliest</span><span class="p">:</span> <span class="kt"><a href="../Protocols/CursorProtocol.html#/s:10SpotifyKit14CursorProtocolP0C4Type">CursorType</a></span><span class="p">?</span> <span class="p">{</span> <span class="k">get</span> <span class="p">}</span></code></pre>
 
                         </div>
                       </div>
@@ -476,8 +484,8 @@
       </article>
     </div>
     <section class="footer">
-      <p>Copyright 2017 Alex Havermale. Licensed under the <a class="link" href="http://www.apache.org/licenses/LICENSE-2.0" target="_blank" rel="external">Apache License, Version 2.0</a>.</p>
-      <p>Generated by <a class="link" href="https://github.com/realm/jazzy" target="_blank" rel="external">jazzy ♪♫ v0.9.0</a>, a <a class="link" href="http://realm.io" target="_blank" rel="external">Realm</a> project.</p>
+      <p>Copyright 2018 Alex Havermale. Licensed under the <a class="link" href="http://www.apache.org/licenses/LICENSE-2.0" target="_blank" rel="external">Apache License, Version 2.0</a>.</p>
+      <p>Generated by <a class="link" href="https://github.com/realm/jazzy" target="_blank" rel="external">jazzy ♪♫ v0.9.3</a>, a <a class="link" href="https://realm.io" target="_blank" rel="external">Realm</a> project.</p>
     </section>
   </body>
 </div>

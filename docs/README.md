@@ -1,18 +1,15 @@
 ![Logo](https://github.com/haversnail/SpotifyKit/raw/master/Logo/SpotifyKit.png)
-# SpotifyKit
-An intuitive and complete Swift wrapper for the [Spotify Web API][Web API].
+<p align="center">An intuitive and complete Swift wrapper for the <a href="https://developer.spotify.com/documentation/web-api/">Spotify Web API</a>.</p>
 
-[![Swift](https://img.shields.io/badge/Swift-4.0-orange.svg "Swift version")][Swift]
-[![Carthage](https://img.shields.io/badge/Carthage-compatible-4BC51D.svg "Carthage compatible")][Carthage]
-[![iOS SDK](https://img.shields.io/badge/iOS%20SDK-beta--25-blue.svg "Spotify iOS SDK release")][iOS SDK]
-![Platforms](https://img.shields.io/badge/platform-iOS-lightgrey.svg "Platforms")
-![Docs](badge.svg "Documentation coverage")
-[![Build](https://travis-ci.org/haversnail/SpotifyKit.svg?branch=master "latest build on master branch")][Travis CI]
+<p align="center">
+    <a href="https://swift.org"><img src="https://img.shields.io/badge/Swift-4.0-orange.svg" alt="Swift version" /></a>
+    <a href="https://github.com/Carthage/Carthage"><img src="https://img.shields.io/badge/Carthage-compatible-4BC51D.svg" alt="Carthage compatible" /></a>
+    <a href="https://github.com/spotify/ios-sdk"><img src="https://img.shields.io/badge/iOS%20SDK-beta--25-blue.svg" alt="Spotify iOS SDK release" /></a>
+    <img src="https://img.shields.io/badge/platform-iOS-lightgrey.svg" alt="Platforms" />
+    <img src="badge.svg" alt="Documentation coverage" />
+    <a href="https://travis-ci.org/haversnail/SpotifyKit"><img src="https://travis-ci.org/haversnail/SpotifyKit.svg?branch=master" alt="latest build on master branch" /></a>
+</p>
 
-##### [Source](https://github.com/haversnail/SpotifyKit) | [Contributing](https://github.com/haversnail/SpotifyKit/blob/master/CONTRIBUTING.md) | [License](https://github.com/haversnail/SpotifyKit/blob/master/LICENSE.txt)
-
-[Web API]: https://developer.spotify.com/web-api/
-[iOS SDK]: https://github.com/spotify/ios-sdk
-[Swift]: https://swift.org
-[Carthage]: https://github.com/Carthage/Carthage
-[Travis CI]: https://travis-ci.org/haversnail/SpotifyKit
+<h5 align="center">
+    <a href="https://github.com/haversnail/SpotifyKit">Source</a> | <a href="https://github.com/haversnail/SpotifyKit/blob/master/CONTRIBUTING.md">Contributing</a> | <a href="https://github.com/haversnail/SpotifyKit/blob/master/LICENSE.txt">License</a>
+</h5>

@@ -5,7 +5,7 @@ body {
   margin: 0;
   background: #fff;
   color: #333;
-  font: 16px/1.7 "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font: 16px/1.7 -apple-system, system-ui, "Segoe UI", Helvetica, Arial, sans-serif;
   letter-spacing: .2px;
   -webkit-font-smoothing: antialiased;
   box-sizing: border-box; }
@@ -85,10 +85,10 @@ pre {
   overflow: auto;
   background: #f7f7f7;
   font-size: .85em;
-  font-family: Consolas, "Liberation Mono", Menlo, Courier, monospace; }
+  font-family: SFMono-Regular, Consolas, "Liberation Mono", Menlo, Courier, monospace; }
 
 code {
-  font-family: Consolas, "Liberation Mono", Menlo, Courier, monospace; }
+  font-family: SFMono-Regular, Consolas, "Liberation Mono", Menlo, Courier, monospace; }
 
 p > code, li > code {
   background: #f7f7f7;
@@ -112,7 +112,7 @@ pre code {
   display: flex;
   padding: 8px;
   font-size: 0.875em;
-  background: #444;
+  background: #000;
   color: #999; }
 
 .header-col {
@@ -315,7 +315,7 @@ pre code {
 
 .footer {
   padding: 8px 16px;
-  background: #444;
+  background: #000;
   color: #ddd;
   font-size: 0.8em; }
   .footer p {
@@ -329,7 +329,7 @@ html.dash .height-container {
   display: block; }
 
 form[role=search] input {
-  font: 16px/1.7 "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font: 16px/1.7 -apple-system, system-ui, "Segoe UI", Helvetica, Arial, sans-serif;
   font-size: 14px;
   line-height: 24px;
   padding: 0 10px;
@@ -347,7 +347,7 @@ form[role=search] .tt-menu {
 form[role=search] .tt-highlight {
   font-weight: bold; }
 form[role=search] .tt-suggestion {
-  font: 16px/1.7 "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font: 16px/1.7 -apple-system, system-ui, "Segoe UI", Helvetica, Arial, sans-serif;
   padding: 0 8px; }
   form[role=search] .tt-suggestion span {
     display: table-cell;

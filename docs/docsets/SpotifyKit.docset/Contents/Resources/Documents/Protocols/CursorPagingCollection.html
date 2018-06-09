@@ -118,7 +118,7 @@
                 <a class="nav-group-task-link" href="../Protocols/CursorPagingCollection.html">CursorPagingCollection</a>
               </li>
               <li class="nav-group-task">
-                <a class="nav-group-task-link" href="../Pagination.html#/s:10SpotifyKit14CursorPageableP">CursorPageable</a>
+                <a class="nav-group-task-link" href="../Protocols/CursorPageable.html">CursorPageable</a>
               </li>
               <li class="nav-group-task">
                 <a class="nav-group-task-link" href="../Structs/Page.html">Page</a>
@@ -359,6 +359,14 @@
               </li>
             </ul>
           </li>
+          <li class="nav-group-name">
+            <a class="nav-group-name-link" href="../Other Typealiases.html">Other Type Aliases</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Other Typealiases.html#/s:10SpotifyKit11JSONCodablea">JSONCodable</a>
+              </li>
+            </ul>
+          </li>
         </ul>
       </nav>
       <article class="main-content">
@@ -368,13 +376,13 @@
             <h1>CursorPagingCollection</h1>
               <div class="declaration">
                 <div class="language">
-                  <pre class="highlight"><code><span class="kd">public</span> <span class="kd">protocol</span> <span class="kt">CursorPagingCollection</span><span class="p">:</span> <span class="kt"><a href="../Protocols/PagingCollection.html">PagingCollection</a></span> <span class="k">where</span> <span class="kt">Element</span><span class="p">:</span> <span class="kt"><a href="../Pagination.html#/s:10SpotifyKit14CursorPageableP">CursorPageable</a></span></code></pre>
+                  <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">protocol</span> <span class="kt">CursorPagingCollection</span> <span class="p">:</span> <span class="kt"><a href="../Protocols/PagingCollection.html">PagingCollection</a></span> <span class="k">where</span> <span class="k">Self</span><span class="o">.</span><span class="kt">Element</span> <span class="p">:</span> <span class="kt"><a href="../Protocols/CursorPageable.html">CursorPageable</a></span></code></pre>
 
                 </div>
               </div>
             <p>A collection that supports cursor-based pagination.</p>
 
-<p>The <code>CursorPagingCollection</code> protocol is tightly linked with the <code><a href="../Protocols/CursorProtocol.html">CursorProtocol</a></code> and <code><a href="../Pagination.html#/s:10SpotifyKit14CursorPageableP">CursorPageable</a></code> protocols. As opposed to offset-based paging collections, cursor-based paging collections depend on a set of <q>cursors</q> to identify the first and last items in a given page, providing reference points from which to page through a larger list of results, typically sorted in chronological order. The type of cursor used to identify the items depends on the type of items returned in the page. Therefore, types that conform to this protocol must also conform its elements to <code><a href="../Pagination.html#/s:10SpotifyKit14CursorPageableP">CursorPageable</a></code> and provide an associated type that conforms to the <code><a href="../Protocols/CursorProtocol.html">CursorProtocol</a></code>, where its cursor type matches that of the collection&rsquo;s <code>Element</code>.</p>
+<p>The <code>CursorPagingCollection</code> protocol is tightly linked with the <code><a href="../Protocols/CursorProtocol.html">CursorProtocol</a></code> and <code><a href="../Protocols/CursorPageable.html">CursorPageable</a></code> protocols. As opposed to offset-based paging collections, cursor-based paging collections depend on a set of <q>cursors</q> to identify the first and last items in a given page, providing reference points from which to page through a larger list of results, typically sorted in chronological order. The type of cursor used to identify the items depends on the type of items returned in the page. Therefore, types that conform to this protocol must also conform its elements to <code><a href="../Protocols/CursorPageable.html">CursorPageable</a></code> and provide an associated type that conforms to the <code><a href="../Protocols/CursorProtocol.html">CursorProtocol</a></code>, where its cursor type matches that of the collection&rsquo;s <code>Element</code>.</p>
 
           </div>
         </section>
@@ -405,7 +413,7 @@
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight"><code><span class="k">associatedtype</span> <span class="kt">Cursors</span><span class="p">:</span> <span class="kt"><a href="../Protocols/CursorProtocol.html">CursorProtocol</a></span> <span class="k">where</span> <span class="kt">Cursors</span><span class="o">.</span><span class="kt">CursorType</span> <span class="o">==</span> <span class="kt">Element</span><span class="o">.</span><span class="kt">CursorType</span></code></pre>
+                          <pre class="highlight swift"><code><span class="kd">associatedtype</span> <span class="kt">Cursors</span> <span class="p">:</span> <span class="kt"><a href="../Protocols/CursorProtocol.html">CursorProtocol</a></span> <span class="k">where</span> <span class="k">Self</span><span class="o">.</span><span class="kt">Cursors</span><span class="o">.</span><span class="kt">CursorType</span> <span class="o">==</span> <span class="k">Self</span><span class="o">.</span><span class="kt">Element</span><span class="o">.</span><span class="kt">CursorType</span></code></pre>
 
                         </div>
                       </div>
@@ -415,9 +423,9 @@
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:10SpotifyKit22CursorPagingCollectionP7cursors7CursorsQzv"></a>
+                    <a name="/s:10SpotifyKit22CursorPagingCollectionP7cursors7CursorsQzvp"></a>
                     <a name="//apple_ref/swift/Property/cursors" class="dashAnchor"></a>
-                    <a class="token" href="#/s:10SpotifyKit22CursorPagingCollectionP7cursors7CursorsQzv">cursors</a>
+                    <a class="token" href="#/s:10SpotifyKit22CursorPagingCollectionP7cursors7CursorsQzvp">cursors</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -432,7 +440,7 @@
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight"><code><span class="k">var</span> <span class="nv">cursors</span><span class="p">:</span> <span class="kt"><a href="../Protocols/CursorPagingCollection.html#/s:10SpotifyKit22CursorPagingCollectionP7Cursors">Cursors</a></span></code></pre>
+                          <pre class="highlight swift"><code><span class="k">var</span> <span class="nv">cursors</span><span class="p">:</span> <span class="kt"><a href="../Protocols/CursorPagingCollection.html#/s:10SpotifyKit22CursorPagingCollectionP7Cursors">Cursors</a></span> <span class="p">{</span> <span class="k">get</span> <span class="p">}</span></code></pre>
 
                         </div>
                       </div>
@@ -447,8 +455,8 @@
       </article>
     </div>
     <section class="footer">
-      <p>Copyright 2017 Alex Havermale. Licensed under the <a class="link" href="http://www.apache.org/licenses/LICENSE-2.0" target="_blank" rel="external">Apache License, Version 2.0</a>.</p>
-      <p>Generated by <a class="link" href="https://github.com/realm/jazzy" target="_blank" rel="external">jazzy ♪♫ v0.9.0</a>, a <a class="link" href="http://realm.io" target="_blank" rel="external">Realm</a> project.</p>
+      <p>Copyright 2018 Alex Havermale. Licensed under the <a class="link" href="http://www.apache.org/licenses/LICENSE-2.0" target="_blank" rel="external">Apache License, Version 2.0</a>.</p>
+      <p>Generated by <a class="link" href="https://github.com/realm/jazzy" target="_blank" rel="external">jazzy ♪♫ v0.9.3</a>, a <a class="link" href="https://realm.io" target="_blank" rel="external">Realm</a> project.</p>
     </section>
   </body>
 </div>
