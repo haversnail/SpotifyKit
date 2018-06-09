@@ -81,14 +81,11 @@ extension JSONEncodable {
 
 // MARK: - Array Conformance
 
-extension Array: JSONDecodable/* where Element: Decodable */{ // FIXME: Refactor when conditional conformance is available.
+extension Array: JSONDecodable where Element: Decodable {
     
     public init(from jsonData: Data) throws {
         
         self.init() // Initialize self here so we can get type(of: self).
-        guard Element.self is Decodable.Type else {
-            preconditionFailure("\(type(of: self)) does not conform to 'JSONDecodable' because \(Element.self) does not conform to 'Decodable'")
-        }
         
         let decoder = JSONDecoder()
         decoder.dateDecodingStrategy = .iso8601
@@ -112,53 +109,41 @@ extension Array: JSONDecodable/* where Element: Decodable */{ // FIXME: Refactor
     }
 }
 
-//extension Array: JSONEncodable/* where Element: Encodable */{ // FIXME: Refactor when conditional conformance is available.
+//extension Array: JSONEncodable where Element: Encodable {
 //    // TODO: Design JSONEncodable.
 //}
 
 // MARK: - Dictionary Conformance
 
-extension Dictionary: JSONDecodable/* where Key: Decodable, Value: Decodable */{ // FIXME: Refactor when conditional conformance is available.
+extension Dictionary: JSONDecodable where Key: Decodable, Value: Decodable {
     
     public init(from jsonData: Data) throws {
         
         self.init() // Initialize self here so we can get type(of: self).
-        guard Key.self is Decodable.Type else {
-            preconditionFailure("\(type(of: self)) does not conform to 'JSONDecodable' because \(Key.self) does not conform to 'Decodable'")
-        }
-        
-        guard Value.self is Decodable.Type else {
-            preconditionFailure("\(type(of: self)) does not conform to 'JSONDecodable' because \(Value.self) does not conform to 'Decodable'")
-        }
-        
         let decoder = JSONDecoder()
         decoder.dateDecodingStrategy = .iso8601
         self = try decoder.decode([Key: Value].self, from: jsonData)
     }
 }
 
-//extension Dictionary: JSONEncodable/* where Key: Encodable, Value: Encodable */{ // FIXME: Refactor when conditional conformance is available.
+//extension Dictionary: JSONEncodable where Key: Encodable, Value: Encodable {
 //    // TODO: Design JSONEncodable.
 //}
 
 // MARK: - Optional Conformance
 
-extension Optional: JSONDecodable/* where Wrapped: Decodable */{ // FIXME: Refactor when conditional conformance is available.
+extension Optional: JSONDecodable where Wrapped: Decodable {
     
     public init(from jsonData: Data) throws {
         
         self = .none // Initialize self here so we can get type(of: self).
-        guard Wrapped.self is Decodable.Type else {
-            preconditionFailure("\(type(of: self)) does not conform to 'JSONDecodable' because \(Wrapped.self) does not conform to 'Decodable'")
-        }
-        
         let decoder = JSONDecoder()
         decoder.dateDecodingStrategy = .iso8601
         self = try decoder.decode(Wrapped?.self, from: jsonData)
     }
 }
 
-//extension Optional: JSONEncodable/* where Wrapped: Encodable */{ // FIXME: Refactor when conditional conformance is available.
+//extension Optional: JSONEncodable where Wrapped: Encodable {
 //    // TODO: Design JSONEncodable.
 //}
 

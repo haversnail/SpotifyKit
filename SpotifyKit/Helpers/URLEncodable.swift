@@ -124,37 +124,23 @@ extension DateInterval: URLEncodable {
     }
 }
 
-extension Array: URLEncodable/* where Element: URLEncodable */{ // FIXME: Uncomment when conditional conformance is available.
+extension Array: URLEncodable where Element: URLEncodable {
     internal func string(using encoder: URLEncoder) -> String {
-
-        guard Element.self is URLEncodable.Type else {
-            preconditionFailure("\(type(of: self)) does not conform to `URLEncodable` because \(Element.self) does not conform to `URLEncodable`")
-        }
-
-        return self.flatMap { [unowned encoder] in ($0 as! URLEncodable).string(using: encoder) }.joined(separator: encoder.listSeparator)
+        return self.compactMap { [unowned encoder] in $0.string(using: encoder) }.joined(separator: encoder.listSeparator)
     }
 }
 
-extension Set: URLEncodable/* where Element: URLEncodable */{ // FIXME: Uncomment when conditional conformance is available.
+extension Set: URLEncodable where Element: URLEncodable {
     internal func string(using encoder: URLEncoder) -> String {
-
-        guard Element.self is URLEncodable.Type else {
-            preconditionFailure("\(type(of: self)) does not conform to `URLEncodable` because \(Element.self) does not conform to `URLEncodable`")
-        }
-
-        return self.flatMap { [unowned encoder] in ($0 as! URLEncodable).string(using: encoder) }.joined(separator: encoder.listSeparator)
+        return self.compactMap { [unowned encoder] in $0.string(using: encoder) }.joined(separator: encoder.listSeparator)
     }
 }
 
-extension ClosedRange: URLEncodable/* where Bound: URLEncodable */{ // FIXME: Uncomment when conditional conformance is available.
+extension ClosedRange: URLEncodable where Bound: URLEncodable {
     internal func string(using encoder: URLEncoder) -> String {
         
-        guard Bound.self is URLEncodable.Type else {
-            preconditionFailure("\(type(of: self)) does not conform to `URLEncodable` because \(Bound.self) does not conform to `URLEncodable`")
-        }
-        
-        let start = (lowerBound as! URLEncodable).string(using: encoder)
-        let end = (upperBound as! URLEncodable).string(using: encoder)
+        let start = lowerBound.string(using: encoder)
+        let end = upperBound.string(using: encoder)
         
         guard start != end else {   // If the decoded strings end up looking the same (e.g. rounded-up values),
             return start            // then just return the first value.
@@ -164,13 +150,7 @@ extension ClosedRange: URLEncodable/* where Bound: URLEncodable */{ // FIXME: Un
     }
 }
 
-//extension Collection where Element: URLEncodable, Self: URLEncodable {
-//    internal func string(using encoder: URLEncoder) -> String {
-//        return self.flatMap { [unowned encoder] in $0.string(using: encoder) }.joined(separator: encoder.listSeparator)
-//    }
-//}
-
-extension RawRepresentable where RawValue: URLEncodable, Self: URLEncodable { // Must apply `URLEncodable` to every RawRepresentable type until conditional conformance is available.
+extension RawRepresentable where RawValue: URLEncodable, Self: URLEncodable {
     internal func string(using encoder: URLEncoder) -> String {
         return self.rawValue.string(using: encoder)
     }
