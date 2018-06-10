@@ -1976,10 +1976,10 @@ class RequestTests: XCTestCase {
             }
             
             // Assert cursors:
-            XCTAssertEqual(tracks.cursors.latest, tracks.first?.datePlayed)
-            XCTAssertEqual(tracks.cursors.earliest, tracks.last?.datePlayed)
+            XCTAssertEqual(tracks.cursors.newest, tracks.first?.datePlayed)
+            XCTAssertEqual(tracks.cursors.oldest, tracks.last?.datePlayed)
             
-//            guard let cursorDate = tracks.cursors.latest, let actualDate = tracks.first?.datePlayed else { return }
+//            guard let cursorDate = tracks.cursors.newest, let actualDate = tracks.first?.datePlayed else { return }
 //            let formatter = DateFormatter()
 //            formatter.dateStyle = .full
 //            formatter.timeStyle = .full

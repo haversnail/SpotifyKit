@@ -22,6 +22,7 @@ import Foundation
 
 // MARK: JSON Encoding & Decoding
 
+/// A type that can be both decoded from and encoded to a JSON representation.
 public typealias JSONCodable = JSONDecodable & JSONEncodable
 
 /// A type that can decode itself from a JSON representation.

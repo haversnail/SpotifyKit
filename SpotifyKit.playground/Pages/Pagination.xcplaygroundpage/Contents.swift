@@ -62,11 +62,11 @@ SKCatalog.local.getNewReleases(page: secondPage) { (albums, error) in // Gets th
 SKPlayer.getRecentTracks(limit: 5) { (tracks, error) in
     
     // Since the request returns SKRecentTrack types sorted from most recent to least,
-    // the "earliest" cursor represents the playback date of the last track in the page:
-    if let tracks = tracks, let earliestTrackDate = tracks.cursors.earliest {
+    // the "oldest" cursor represents the playback date of the last track in the page:
+    if let tracks = tracks, let oldestTrackDate = tracks.cursors.oldest {
         
         // Now we can use that cursor to fetch the next page of tracks (in this case, going backward in time):
-        SKPlayer.getRecentTracks(before: earliestTrackDate, limit: 5) { (tracks, error) in
+        SKPlayer.getRecentTracks(before: oldestTrackDate, limit: 5) { (tracks, error) in
             // ...
         }
     }

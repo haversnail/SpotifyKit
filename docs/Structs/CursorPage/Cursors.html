@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <title>DeviceType Enumeration Reference</title>
+    <title>Cursors Structure Reference</title>
     <link rel="stylesheet" type="text/css" href="../../css/jazzy.css" />
     <link rel="stylesheet" type="text/css" href="../../css/highlight.css" />
     <meta charset="utf-8">
@@ -14,9 +14,9 @@
   </head>
   <body>
 
-    <a name="//apple_ref/swift/Enum/DeviceType" class="dashAnchor"></a>
+    <a name="//apple_ref/swift/Struct/Cursors" class="dashAnchor"></a>
 
-    <a title="DeviceType Enumeration Reference"></a>
+    <a title="Cursors Structure Reference"></a>
 
     <header class="header">
       <p class="header-col header-col--primary">
@@ -44,7 +44,7 @@
     <p class="breadcrumbs">
       <a class="breadcrumb" href="../../index.html">SpotifyKit Reference</a>
       <img class="carat" src="../../img/carat.png" />
-      DeviceType Enumeration Reference
+      Cursors Structure Reference
     </p>
 
     <div class="content-wrapper">
@@ -368,14 +368,16 @@
 
         <section class="section">
           <div class="section-content">
-            <h1>DeviceType</h1>
+            <h1>Cursors</h1>
               <div class="declaration">
                 <div class="language">
-                  <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">enum</span> <span class="kt">DeviceType</span> <span class="p">:</span> <span class="kt">String</span><span class="p">,</span> <span class="kt">Codable</span></code></pre>
+                  <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">struct</span> <span class="kt">Cursors</span> <span class="p">:</span> <span class="kt"><a href="../../Protocols/CursorProtocol.html">CursorProtocol</a></span><span class="p">,</span> <span class="kt">Decodable</span></code></pre>
 
                 </div>
               </div>
-            <p>The possible devices that can support a Spotify player.</p>
+            <p>A structure containing a set of cursors used to identify items in a cursor-based paging collection.</p>
+
+<p>Cursor-based paging collections depend on a set of <q>cursors</q> to identify the first and last items in a given page, providing reference points from which to page through a larger list of results, typically sorted in chronological order.</p>
 
           </div>
         </section>
@@ -387,144 +389,9 @@
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:10SpotifyKit8SKDeviceV10DeviceTypeO8computerA2EmF"></a>
-                    <a name="//apple_ref/swift/Element/computer" class="dashAnchor"></a>
-                    <a class="token" href="#/s:10SpotifyKit8SKDeviceV10DeviceTypeO8computerA2EmF">computer</a>
-                    </code>
-                  </div>
-                  <div class="height-container">
-                    <div class="pointer-container"></div>
-                    <section class="section">
-                      <div class="pointer"></div>
-                      <div class="abstract">
-                        <p>A device that supports a desktop Spotify player.</p>
-
-                      </div>
-                      <div class="declaration">
-                        <h4>Declaration</h4>
-                        <div class="language">
-                          <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="k">case</span> <span class="n">computer</span> <span class="o">=</span> <span class="s">"Computer"</span></code></pre>
-
-                        </div>
-                      </div>
-                    </section>
-                  </div>
-                </li>
-                <li class="item">
-                  <div>
-                    <code>
-                    <a name="/s:10SpotifyKit8SKDeviceV10DeviceTypeO6mobileA2EmF"></a>
-                    <a name="//apple_ref/swift/Element/mobile" class="dashAnchor"></a>
-                    <a class="token" href="#/s:10SpotifyKit8SKDeviceV10DeviceTypeO6mobileA2EmF">mobile</a>
-                    </code>
-                  </div>
-                  <div class="height-container">
-                    <div class="pointer-container"></div>
-                    <section class="section">
-                      <div class="pointer"></div>
-                      <div class="abstract">
-                        <p>A device that supports a mobile Spotify player, such as a smartphone or tablet.</p>
-
-                      </div>
-                      <div class="declaration">
-                        <h4>Declaration</h4>
-                        <div class="language">
-                          <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="k">case</span> <span class="n">mobile</span> <span class="o">=</span> <span class="s">"Smartphone"</span></code></pre>
-
-                        </div>
-                      </div>
-                    </section>
-                  </div>
-                </li>
-                <li class="item">
-                  <div>
-                    <code>
-                    <a name="/s:10SpotifyKit8SKDeviceV10DeviceTypeO7speakerA2EmF"></a>
-                    <a name="//apple_ref/swift/Element/speaker" class="dashAnchor"></a>
-                    <a class="token" href="#/s:10SpotifyKit8SKDeviceV10DeviceTypeO7speakerA2EmF">speaker</a>
-                    </code>
-                  </div>
-                  <div class="height-container">
-                    <div class="pointer-container"></div>
-                    <section class="section">
-                      <div class="pointer"></div>
-                      <div class="abstract">
-                        <p>A device that supports a speaker-based Spotify player, such as a portable Bluetooth speaker.</p>
-
-                      </div>
-                      <div class="declaration">
-                        <h4>Declaration</h4>
-                        <div class="language">
-                          <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="k">case</span> <span class="n">speaker</span> <span class="o">=</span> <span class="s">"Speaker"</span></code></pre>
-
-                        </div>
-                      </div>
-                    </section>
-                  </div>
-                </li>
-                <li class="item">
-                  <div>
-                    <code>
-                    <a name="/s:10SpotifyKit8SKDeviceV10DeviceTypeO2tvA2EmF"></a>
-                    <a name="//apple_ref/swift/Element/tv" class="dashAnchor"></a>
-                    <a class="token" href="#/s:10SpotifyKit8SKDeviceV10DeviceTypeO2tvA2EmF">tv</a>
-                    </code>
-                  </div>
-                  <div class="height-container">
-                    <div class="pointer-container"></div>
-                    <section class="section">
-                      <div class="pointer"></div>
-                      <div class="abstract">
-                        <p>A device that supports a TV-based Spotify player, such as a Chromecast-enabled Smart TV.</p>
-
-                      </div>
-                      <div class="declaration">
-                        <h4>Declaration</h4>
-                        <div class="language">
-                          <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="k">case</span> <span class="n">tv</span> <span class="o">=</span> <span class="s">"CastVideo"</span></code></pre>
-
-                        </div>
-                      </div>
-                    </section>
-                  </div>
-                </li>
-                <li class="item">
-                  <div>
-                    <code>
-                    <a name="/s:10SpotifyKit8SKDeviceV10DeviceTypeO7unknownA2EmF"></a>
-                    <a name="//apple_ref/swift/Element/unknown" class="dashAnchor"></a>
-                    <a class="token" href="#/s:10SpotifyKit8SKDeviceV10DeviceTypeO7unknownA2EmF">unknown</a>
-                    </code>
-                  </div>
-                  <div class="height-container">
-                    <div class="pointer-container"></div>
-                    <section class="section">
-                      <div class="pointer"></div>
-                      <div class="abstract">
-                        <p>An unknown device type.</p>
-
-                      </div>
-                      <div class="declaration">
-                        <h4>Declaration</h4>
-                        <div class="language">
-                          <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="k">case</span> <span class="n">unknown</span></code></pre>
-
-                        </div>
-                      </div>
-                    </section>
-                  </div>
-                </li>
-                <li class="item">
-                  <div>
-                    <code>
-                    <a name="/s:s16RawRepresentablePxSg0A5ValueQz03rawC0_tcfc"></a>
-                    <a name="//apple_ref/swift/Method/init(rawValue:)" class="dashAnchor"></a>
-                    <a class="token" href="#/s:s16RawRepresentablePxSg0A5ValueQz03rawC0_tcfc">init(rawValue:)</a>
+                    <a name="/s:10SpotifyKit14CursorProtocolP0C4Type"></a>
+                    <a name="//apple_ref/swift/Alias/CursorType" class="dashAnchor"></a>
+                    <a class="token" href="#/s:10SpotifyKit14CursorProtocolP0C4Type">CursorType</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -538,7 +405,59 @@
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="nf">init</span><span class="p">(</span><span class="nv">rawValue</span><span class="p">:</span> <span class="kt">String</span><span class="p">)</span></code></pre>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">typealias</span> <span class="kt">CursorType</span> <span class="o">=</span> <span class="kt">Element</span><span class="o">.</span><span class="kt">CursorType</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:10SpotifyKit14CursorProtocolP6newest0C4TypeQzSgvp"></a>
+                    <a name="//apple_ref/swift/Property/newest" class="dashAnchor"></a>
+                    <a class="token" href="#/s:10SpotifyKit14CursorProtocolP6newest0C4TypeQzSgvp">newest</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="k">var</span> <span class="nv">newest</span><span class="p">:</span> <span class="kt">Element</span><span class="o">.</span><span class="kt"><a href="../../Structs/CursorPage/Cursors.html#/s:10SpotifyKit14CursorProtocolP0C4Type">CursorType</a></span><span class="p">?</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:10SpotifyKit14CursorProtocolP6oldest0C4TypeQzSgvp"></a>
+                    <a name="//apple_ref/swift/Property/oldest" class="dashAnchor"></a>
+                    <a class="token" href="#/s:10SpotifyKit14CursorProtocolP6oldest0C4TypeQzSgvp">oldest</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="k">var</span> <span class="nv">oldest</span><span class="p">:</span> <span class="kt">Element</span><span class="o">.</span><span class="kt"><a href="../../Structs/CursorPage/Cursors.html#/s:10SpotifyKit14CursorProtocolP0C4Type">CursorType</a></span><span class="p">?</span></code></pre>
 
                         </div>
                       </div>

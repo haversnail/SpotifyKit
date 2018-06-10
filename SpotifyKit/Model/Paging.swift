@@ -78,12 +78,12 @@ public protocol CursorProtocol {
     /// The key identifying the most recent item in the page.
     ///
     /// For paginated results that are sorted in ascending chronological order (i.e., oldest to newest), this identifer can be used to retrieve the next page of items, or—when sorted in descending chronological order (i.e., newest to oldest)—the previous page of items.
-    var latest: CursorType? { get }
+    var newest: CursorType? { get } // latest
     
     /// The key identifying the least recent item in the page.
     ///
     /// For paginated results that are sorted in ascending chronological order (i.e., oldest to newest), this identifer can be used to retrieve the previous page of items, or—when sorted in descending chronological order (i.e., newest to oldest)—the next page of items.
-    var earliest: CursorType? { get }
+    var oldest: CursorType? { get } // earliest
 }
 
 /// A collection that provides paginated results from a [Spotify Web API](https://developer.spotify.com/web-api/) request.
@@ -158,7 +158,7 @@ extension PagingCollection where Self: JSONDecodable {
             let key = decoder.codingPath.last
             
             // If we encountered one of the cursor coding keys while attempting to decode a date,
-            if key?.stringValue == CursorKeys.latest.stringValue || key?.stringValue == CursorKeys.earliest.stringValue {
+            if key?.stringValue == CursorKeys.newest.stringValue || key?.stringValue == CursorKeys.oldest.stringValue {
                 // Then we know we're decoding a Unix Millisecond Timestamp date; decode and return:
                 guard let timestamp = TimeInterval(dateString) else {
                     throw DecodingError.dataCorruptedError(in: container, debugDescription: "cannot decode Unix Timestamp Date from invalid string value \(dateString).")
@@ -295,20 +295,19 @@ public struct CursorPage<Element: CursorPageable & Decodable>: CursorPagingColle
     
     // MARK: Cursor Paging Collection Conformance
     
-//    // Nesting struct with an associated type that depends on parent generic struct causes runtime error in Swift 4.0.2 and earlier ("cyclic metadata dependency detected"). See SR-5086 and similar issues. Resolved using Swift 4.1 snapshot toolchain (2017-11-06).
-//    /// A structure containing a set of cursors used to identify items in a cursor-based paging collection.
-//    ///
-//    /// Cursor-based paging collections depend on a set of "cursors" to identify the first and last items in a given page, providing reference points from which to page through a larger list of results, typically sorted in chronological order.
-//    public struct Cursors: CursorProtocol, Decodable {
-//
-//        //public typealias CursorType = Element.CursorType
-//        private typealias CodingKeys = CursorKeys // moved to fileprivate top-level scope for custom date decoding fix.
-//
-//        public var latest: Element.CursorType?
-//        public var earliest: Element.CursorType?
-//    }
+    /// A structure containing a set of cursors used to identify items in a cursor-based paging collection.
+    ///
+    /// Cursor-based paging collections depend on a set of "cursors" to identify the first and last items in a given page, providing reference points from which to page through a larger list of results, typically sorted in chronological order.
+    public struct Cursors: CursorProtocol, Decodable {
+
+        public typealias CursorType = Element.CursorType
+        private typealias CodingKeys = CursorKeys // moved CodingKeys enums to fileprivate top-level scope for use in custom JSON date decoding fix.
+
+        public var newest: CursorType?
+        public var oldest: CursorType?
+    }
     
-    public let cursors: Cursors<Element.CursorType> // FIXME: Change to non-generic type once Swift 4.1 is implemented.
+    public let cursors: Cursors
     
     private enum CodingKeys: String, CodingKey {
         case url = "href"
@@ -323,46 +322,6 @@ public struct CursorPage<Element: CursorPageable & Decodable>: CursorPagingColle
 }
 
 fileprivate enum CursorKeys: String, CodingKey {
-    case latest = "after" // newest // latest // mostRecent // next // last
-    case earliest = "before" // oldest // earliest // leastRecent // previous // first
+    case newest = "after" // newest // latest // mostRecent // next // last
+    case oldest = "before" // oldest // earliest // leastRecent // previous // first
 }
-
-/// A structure containing a set of cursors used to identify items in a cursor-based paging collection.
-///
-/// Cursor-based paging collections depend on a set of "cursors" to identify the first and last items in a given page, providing reference points from which to page through a larger list of results, typically sorted in chronological order.
-public struct Cursors<CursorType: Decodable>: CursorProtocol, Decodable { // FIXME: Move inside 'Page' once Swift 4.1 is implemented.
-    
-    //public typealias CursorType = CursorPage.Element.CursorType
-    private typealias CodingKeys = CursorKeys // moved to fileprivate top-level scope for custom date decoding fix.
-    
-    public var latest: CursorType?
-    public var earliest: CursorType?
-}
-
-//public struct AnyCursor<CursorType: Decodable>: CursorProtocol, Decodable {
-//
-//    private let _latest: CursorType?
-//    private let _earliest: CursorType?
-//
-//    public init<C: CursorProtocol>(_  base: C) where C.CursorType == CursorType {
-//        self._latest = base.latest
-//        self._earliest = base.earliest
-//    }
-//
-//    public var latest: CursorType? { return _latest }
-//    public var earliest: CursorType? { return _earliest }
-//
-//    private enum CodingKeys: String, CodingKey {
-//        case _latest = "after"
-//        case _earliest = "before"
-//    }
-//}
-
-//extension Page {
-//    public init(url: URL, limit: Int, offset: Int? = nil) {
-//        self.items = [] // var?
-//        self.limit = limit
-//        self.offset = offset
-//        self.url = url
-//    }
-//}
