@@ -24,20 +24,20 @@ This is the first public release of the SpotifyKit framework. As such, the follo
 - An `SKRequest` class for preparing and sending URL requests to the [Web API].
 - JSON Encoding and Decoding mechanisms for the API [Object Model].
 - An `SKCatalog` struct that functions as a request factory for locale-dependent endpoints.
-- An `SKPlayer` struct that functions as a request factory for the [Web API Connect](https://developer.spotify.com/web-api/working-with-connect/) endpoints.
-- An `SKSearchResults` struct for the [Search](https://developer.spotify.com/web-api/search-item/) endpoint response.
-- An `SKFeaturedPlaylists` struct for the "[Get Featured Playlists](https://developer.spotify.com/web-api/get-list-featured-playlists/)" endpoint response.
+- An `SKPlayer` struct that functions as a request factory for the [Web API Connect](https://developer.spotify.com/documentation/web-api/guides/using-connect-web-api/) endpoints.
+- An `SKSearchResults` struct for the [Search](https://developer.spotify.com/documentation/web-api/reference/search/search/) endpoint response.
+- An `SKFeaturedPlaylists` struct for the "[Get Featured Playlists](https://developer.spotify.com/documentation/web-api/reference/browse/get-list-featured-playlists/)" endpoint response.
 - Various enumeration types to support other endpoint requests.
 - Extensions to symbols in the `SpotifyAuthentication` and `SpotifyAudioPlayback` [iOS SDK] frameworks.
 
 ### Changed
 - **Object Model:**
-    - Renamed [Paging](https://developer.spotify.com/web-api/object-model/#paging-object) and [Cursor-Based Paging](https://developer.spotify.com/web-api/object-model/#cursor-based-paging-object) objects to `Page` and `CursorPage`, respectively. These types function as [`Collections`](https://developer.apple.com/documentation/swift/collection).
-    - Renamed [Private User](https://developer.spotify.com/web-api/object-model/#user-object-private) objects to `SKCurrentUser`. This type also functions as a request factory for endpoints that are restricted to the current authenticated user.
-    - Renamed [Play History](https://developer.spotify.com/web-api/object-model/#play-history-object) objects to `SKRecentTrack`.
-    - Renamed beta [Currently Playing](https://developer.spotify.com/web-api/get-information-about-the-users-current-playback/) objects to `SKPlaybackState`.
-    - Refactored [Cursor](https://developer.spotify.com/web-api/object-model/#cursor-object) objects as embedded structs with a generic cursor type that depends on the type of elements in the paging collection.
-    - Decodes objects without fixed key names or with a variable or number of keys (i.e., [External ID](https://developer.spotify.com/web-api/object-model/#external-id-object) objects, [External URL](https://developer.spotify.com/web-api/object-model/#external-url-object) objects, etc.) as `[String : String]` or `[String : URL]` dictionary objects.
+    - Renamed [Paging](https://developer.spotify.com/documentation/web-api/reference/object-model/#paging-object) and [Cursor-Based Paging](https://developer.spotify.com/documentation/web-api/reference/object-model/#cursor-based-paging-object) objects to `Page` and `CursorPage`, respectively. These types function as [`Collections`](https://developer.apple.com/documentation/swift/collection).
+    - Renamed [Private User](https://developer.spotify.com/documentation/web-api/reference/object-model/#user-object-private) objects to `SKCurrentUser`. This type also functions as a request factory for endpoints that are restricted to the current authenticated user.
+    - Renamed [Play History](https://developer.spotify.com/documentation/web-api/reference/object-model/#play-history-object) objects to `SKRecentTrack`.
+    - Renamed beta [Currently Playing](https://developer.spotify.com/documentation/web-api/reference/player/get-information-about-the-users-current-playback/) objects to `SKPlaybackState`.
+    - Refactored [Cursor](https://developer.spotify.com/documentation/web-api/reference/object-model/#cursor-object) objects as embedded structs with a generic cursor type that depends on the type of elements in the paging collection.
+    - Decodes objects without fixed key names or with a variable or number of keys (i.e., [External ID](https://developer.spotify.com/documentation/web-api/reference/object-model/#external-id-object) objects, [External URL](https://developer.spotify.com/documentation/web-api/reference/object-model/#external-url-object) objects, etc.) as `[String : String]` or `[String : URL]` dictionary objects.
     - Represents objects with both a "simplified" and "full" version as one type, with an optional set of properties for any simplified instances. See the `Expandable` protocol in the [documentation][Docs] for more details.
 
 - **Object Properties:**
@@ -59,13 +59,13 @@ This is the first public release of the SpotifyKit framework. As such, the follo
     - `SKUser`
     - `SKCurrentUser`
 
-- Does not include request methods for any [Web API Connect](https://developer.spotify.com/web-api/working-with-connect/) endpoints that control playback; this is already handled by the `SpotifyAudioPlayback` framework.
+- Does not include request methods for any [Web API Connect](https://developer.spotify.com/documentation/web-api/guides/using-connect-web-api/) endpoints that control playback; this is already handled by the `SpotifyAudioPlayback` framework.
 
 [Unreleased]: https://github.com/haversnail/SpotifyKit/compare/v1.0.1...HEAD
 [1.0.1]: https://github.com/haversnail/SpotifyKit/compare/v1.0.0...v1.0.1
 
 [Docs]: https://haversnail.github.io/SpotifyKit/
 [iOS SDK]: https://github.com/spotify/ios-sdk
-[Web API]: https://developer.spotify.com/web-api/
-[Object Model]: https://developer.spotify.com/web-api/object-model/
+[Web API]: https://developer.spotify.com/documentation/web-api/
+[Object Model]: https://developer.spotify.com/documentation/web-api/reference/object-model/
 [Guidelines]: https://swift.org/documentation/api-design-guidelines/

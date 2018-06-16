@@ -3,7 +3,7 @@
 //  SpotifyKit
 //
 //  Created by Alexander Havermale on 7/30/17.
-//  Copyright © 2017 Alex Havermale.
+//  Copyright © 2018 Alex Havermale.
 //
 //  Licensed under the Apache License, Version 2.0 (the "License");
 //  you may not use this file except in compliance with the License.
@@ -45,9 +45,9 @@ public typealias SKErrorHandler = (_ error: Error?) -> Void
 
 // MARK: - Request Class
 
-/// An abstract class that represents a request to the [Spotify Web API](https://developer.spotify.com/web-api/).
+/// An abstract class that represents a request to the [Spotify Web API](https://developer.spotify.com/documentation/web-api/).
 ///
-/// An `SKRequest` object encapsulates the properties of an HTTP request, providing a convenient template for you to create, prepare, and send requests to the Web API. See the API [Requests Guide](https://developer.spotify.com/web-api/user-guide/#requests) for more details.
+/// An `SKRequest` object encapsulates the properties of an HTTP request, providing a convenient template for you to create, prepare, and send requests to the Web API. See the API [Requests Guide](https://developer.spotify.com/documentation/web-api/#requests) for more details.
 public class SKRequest {
 // - Note: Inheriting from NSObject causes buildtime error: class conflicts with StoreKit's `SKRequest` class.
     
@@ -55,7 +55,7 @@ public class SKRequest {
     
     /// The HTTP verbs used by the Spotify Web API.
     ///
-    /// See the API [Requests Guide](https://developer.spotify.com/web-api/user-guide/#requests) for more details.
+    /// See the API [Requests Guide](https://developer.spotify.com/documentation/web-api/#requests) for more details.
     public enum HTTPMethod: String {
         
         /// Used for retrieving resources.
@@ -71,7 +71,7 @@ public class SKRequest {
         case DELETE
     }
     
-    /// The MIME content types available for sending multipart requests to the [Spotify Web API](https://developer.spotify.com/web-api/).
+    /// The MIME content types available for sending multipart requests to the [Spotify Web API](https://developer.spotify.com/documentation/web-api/).
     ///
     /// - Note: The only content types currently accepted by the Spotify Web API are `application/json` and `image/jpeg` for all PUT, POST, or DELETE requests. If/when more content types become part of the API, they will be made available here.
     public enum ContentType: String {
@@ -79,7 +79,7 @@ public class SKRequest {
         /// Represents UTF-8 encoded JSON data. This is the format for nearly all PUT, POST, and DELETE requests to the API.
         case json = "application/json"
         
-        /// Represents Base64 encoded JPEG image data. This is the format used when uploading images to the API (e.g., when uploading a [custom playlist cover image](https://developer.spotify.com/web-api/upload-a-custom-playlist-cover-image/)).
+        /// Represents Base64 encoded JPEG image data. This is the format used when uploading images to the API (e.g., when uploading a [custom playlist cover image](https://developer.spotify.com/documentation/web-api/reference/playlists/upload-custom-playlist-cover/)).
         case jpeg = "image/jpeg"
     }
     
@@ -122,7 +122,7 @@ public class SKRequest {
     
     /// An optional entity tag against to compare the request's response.
     ///
-    /// See [Conditional Requests](https://developer.spotify.com/web-api/user-guide/#conditional-requests) for more details.
+    /// See [Conditional Requests](https://developer.spotify.com/documentation/web-api/#conditional-requests) for more details.
     //public var entityTag: String? = nil
 
     /// The prepared URL used by the URL request, comprised of the initial URL and the query containing the URL-encodable elements in `parameters`.
@@ -370,7 +370,7 @@ public class SKRequest {
 
 /// The [Response Status Codes][Guide] used by the Spotify Web API, as defined in the [RFC 2616] and [RFC 6585].
 ///
-/// [Guide]: https://developer.spotify.com/web-api/user-guide/#response-status-codes
+/// [Guide]: https://developer.spotify.com/documentation/web-api/#response-status-codes
 /// [RFC 2616]: https://www.ietf.org/rfc/rfc2616.txt
 /// [RFC 6585]: https://www.ietf.org/rfc/rfc6585.txt
 public struct SKResponseStatus {
@@ -392,10 +392,10 @@ public struct SKResponseStatus {
     /// The request has succeeded but returns no message body.
     public static let noContent = SKResponseStatus(code: 204)
     
-    /// The response has not changed. See [Conditional requests](https://developer.spotify.com/web-api/user-guide/#conditional-requests) for more details.
+    /// The response has not changed. See [Conditional requests](https://developer.spotify.com/documentation/web-api/#conditional-requests) for more details.
     public static let notModified = SKResponseStatus(code: 304)
     
-    /// The request could not be understood by the server due to malformed syntax. The message body will contain more information. See [Error Details](https://developer.spotify.com/web-api/user-guide/#error-details) for more details.
+    /// The request could not be understood by the server due to malformed syntax. The message body will contain more information. See [Response Schema](https://developer.spotify.com/documentation/web-api/#response-schema) for more details.
     public static let badRequest = SKResponseStatus(code: 400)
     
     /// The request requires user authentication or, if the request included authorization credentials, authorization has been refused for those credentials.
@@ -407,7 +407,7 @@ public struct SKResponseStatus {
     /// The requested resource could not be found. This error can be due to a temporary or permanent condition.
     public static let notFound = SKResponseStatus(code: 404)
     
-    /// [Rate limiting](https://developer.spotify.com/web-api/user-guide/#rate-limiting) has been applied.
+    /// [Rate limiting](https://developer.spotify.com/documentation/web-api/#rate-limiting) has been applied.
     public static let tooManyRequests = SKResponseStatus(code: 429)
     
     /// An internal server error has occurred. Although unlikely, if you receive this error, please report it [here](https://github.com/spotify/web-api/issues).
@@ -482,7 +482,7 @@ extension SPTSession {
     
     // MARK: Request Factory Methods
     
-    /// Creates a [Spotify Web API](https://developer.spotify.com/web-api/) request using the current session for authorization.
+    /// Creates a [Spotify Web API](https://developer.spotify.com/documentation/web-api/) request using the current session for authorization.
     ///
     /// - Parameters:
     ///   - method: The HTTP verb to use for this request: `GET`, `PUT`, `POST`, or `DELETE`.
@@ -496,7 +496,7 @@ extension SPTSession {
         return request
     }
     
-    /// Creates a [Spotify Web API](https://developer.spotify.com/web-api/) request using the current session for authorization.
+    /// Creates a [Spotify Web API](https://developer.spotify.com/documentation/web-api/) request using the current session for authorization.
     ///
     /// - Parameters:
     ///   - method: The HTTP verb to use for this request: `GET`, `PUT`, `POST`, or `DELETE`.

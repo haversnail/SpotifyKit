@@ -3,7 +3,7 @@
 //  SpotifyKit
 //
 //  Created by Alexander Havermale on 7/22/17.
-//  Copyright © 2017 Alex Havermale.
+//  Copyright © 2018 Alex Havermale.
 //
 //  Licensed under the Apache License, Version 2.0 (the "License");
 //  you may not use this file except in compliance with the License.
@@ -38,21 +38,21 @@ public enum SKContentRating: Int {
     case unknown
 }
 
-/// A structure representing the links to a relinked Spotify track. See the API [Track Relinking](https://developer.spotify.com/web-api/track-relinking-guide/) guide for more details.
+/// A structure representing the links to a relinked Spotify track. See the API [Track Relinking](https://developer.spotify.com/documentation/general/guides/track-relinking-guide/) guide for more details.
 ///
-/// - SeeAlso: The Web API [Track Link](https://developer.spotify.com/web-api/object-model/#track-link) object.
+/// - SeeAlso: The Web API [Track Link](https://developer.spotify.com/documentation/web-api/reference/object-model/#track-link) object.
 public struct SKTrackLinks: Decodable {
     
     /// The resource object type: `"track"`.
     private let type: ResourceType
 
-    /// Known external URLs for this track. See ["external URL object"](https://developer.spotify.com/web-api/object-model/#external-url-object) for more details.
+    /// Known external URLs for this track. See ["external URL object"](https://developer.spotify.com/documentation/web-api/reference/object-model/#external-url-object) for more details.
     public let externalURLs: [String: URL]
     
-    /// The [Spotify ID](https://developer.spotify.com/web-api/user-guide/#spotify-uris-and-ids) for the track.
+    /// The [Spotify ID](https://developer.spotify.com/documentation/web-api/#spotify-uris-and-ids) for the track.
     public let id: String
     
-    /// The [Spotify URI](https://developer.spotify.com/web-api/user-guide/#spotify-uris-and-ids) for the track.
+    /// The [Spotify URI](https://developer.spotify.com/documentation/web-api/#spotify-uris-and-ids) for the track.
     public let uri: String
     
     /// A link to the Web API endpoint providing full details of the track.
@@ -73,7 +73,7 @@ public struct SKTrackLinks: Decodable {
 
 /// A type representing a Spotify track.
 ///
-/// The `Track` protocol serves as the base protocol to which all Spotify track types conform. Its requirements include properties for both "simplified" and "full" versions of a Spotify track. See the Spotify Web API [Object Model](https://developer.spotify.com/web-api/object-model/#track-object-full) for more details.
+/// The `Track` protocol serves as the base protocol to which all Spotify track types conform. Its requirements include properties for both "simplified" and "full" versions of a Spotify track. See the Spotify Web API [Object Model](https://developer.spotify.com/documentation/web-api/reference/object-model/#track-object-full) for more details.
 public protocol Track {
     
     /// The artists who performed the track. Each artist includes a link in `url` to more detailed information about the artist.
@@ -96,10 +96,10 @@ public protocol Track {
     /// Known external URLs for this track.
     var externalURLs: [String: URL] { get }
     
-    /// The [Spotify ID](https://developer.spotify.com/web-api/user-guide/#spotify-uris-and-ids) for the track.
+    /// The [Spotify ID](https://developer.spotify.com/documentation/web-api/#spotify-uris-and-ids) for the track.
     var id: String { get }
     
-    /// A Boolean value that is available when [Track Relinking](https://developer.spotify.com/web-api/track-relinking-guide/) is applied. If `true`, the track is playable in the given market. Otherwise `false`.
+    /// A Boolean value that is available when [Track Relinking](https://developer.spotify.com/documentation/general/guides/track-relinking-guide/) is applied. If `true`, the track is playable in the given market. Otherwise `false`.
     var isPlayable: Bool? { get }
     
     /// The name of the track.
@@ -108,13 +108,13 @@ public protocol Track {
     /// A URL to a 30-second preview (MP3 format) of the track. `nil` if not available.
     var previewURL: URL? { get }
     
-    /// A value that is available when [Track Relinking](https://developer.spotify.com/web-api/track-relinking-guide/) is applied and is only available if the track linking, in fact, exists (meaning that the requested track has been replaced with a different track). The resource identifiers and locators in the `TrackLink` instance contain information about the originally requested track.
+    /// A value that is available when [Track Relinking](https://developer.spotify.com/documentation/general/guides/track-relinking-guide/) is applied and is only available if the track linking, in fact, exists (meaning that the requested track has been replaced with a different track). The resource identifiers and locators in the `TrackLink` instance contain information about the originally requested track.
     var trackLinks: SKTrackLinks? { get }
     
     /// The number of the track. If an album has several discs, the track number is the number on the specified disc.
     var trackNumber: Int { get }
     
-    /// The [Spotify URI](https://developer.spotify.com/web-api/user-guide/#spotify-uris-and-ids) for the track.
+    /// The [Spotify URI](https://developer.spotify.com/documentation/web-api/#spotify-uris-and-ids) for the track.
     var uri: String { get }
     
     /// A link to the Web API endpoint providing full details of the track.
@@ -138,7 +138,7 @@ public protocol Track {
 
 /// A Spotify track.
 ///
-/// - SeeAlso: The Web API [Simplified](https://developer.spotify.com/web-api/user-guide/#track-object-simplified) and [Full](https://developer.spotify.com/web-api/user-guide/#track-object-full) Track objects.
+/// - SeeAlso: The Web API [Simplified](https://developer.spotify.com/documentation/web-api/reference/object-model/#track-object-simplified) and [Full](https://developer.spotify.com/documentation/web-api/reference/object-model/#track-object-full) Track objects.
 public struct SKTrack: Track, JSONDecodable {
     
     // MARK: Simplified Track Properties
@@ -152,7 +152,7 @@ public struct SKTrack: Track, JSONDecodable {
     
     public var duration: TimeInterval { return TimeInterval(_duration) / 1000 }
     
-    /// From the [Web API](https://developer.spotify.com/web-api/object-model/#track-object-simplified) docs: "Whether or not the track has explicit lyrics (`true` = yes it does; `false` = no it does not OR unknown)."
+    /// From the [Web API](https://developer.spotify.com/documentation/web-api/reference/object-model/#track-object-simplified) docs: "Whether or not the track has explicit lyrics (`true` = yes it does; `false` = no it does not OR unknown)."
     /// - Note: Because this property's respective JSON value could be `NULL` or "unknown," an optionally-wrapped Boolean type for this attribute seems confusing. Instead, this property is maintained at the `private` scope and is used to provide a more expressive, type-safe "Content Rating" property. See `SKTrack.ContentRating` for possible values.
     private let _isExplicit: Bool?
     
@@ -223,7 +223,7 @@ extension SKTrack: Expandable {
 
 /// A Spotify track that has been added to a Spotify playlist.
 ///
-/// - SeeAlso: The Web API [Playlist Track](https://developer.spotify.com/web-api/object-model/#playlist-track-object) object.
+/// - SeeAlso: The Web API [Playlist Track](https://developer.spotify.com/documentation/web-api/reference/object-model/#playlist-track-object) object.
 public struct SKPlaylistTrack: Track, JSONDecodable {
     
     /// The date and time the track was added.
@@ -234,7 +234,7 @@ public struct SKPlaylistTrack: Track, JSONDecodable {
     /// - Note: Some very old playlists may return `nil` in this field.
     public let userAdded: SKUser?
     
-    /// Whether this track is a [local file](https://developer.spotify.com/web-api/local-files-spotify-playlists/) or not.
+    /// Whether this track is a [local file](https://developer.spotify.com/documentation/general/guides/local-files-spotify-playlists/) or not.
     public let isLocal: Bool
     
     /// The nested track.
@@ -274,7 +274,7 @@ public struct SKPlaylistTrack: Track, JSONDecodable {
 
 /// A Spotify track that has been saved to the current authenticated user's music library.
 ///
-/// - SeeAlso: The Web API [Saved Track](https://developer.spotify.com/web-api/object-model/#saved-track-object) object.
+/// - SeeAlso: The Web API [Saved Track](https://developer.spotify.com/documentation/web-api/reference/object-model/#saved-track-object) object.
 public struct SKSavedTrack: Track, JSONDecodable {
     
     /// The date and time the track was saved.

@@ -3,7 +3,7 @@
 //  SpotifyKit
 //
 //  Created by Alexander Havermale on 11/6/17.
-//  Copyright © 2017 Alex Havermale.
+//  Copyright © 2018 Alex Havermale.
 //
 //  Licensed under the Apache License, Version 2.0 (the "License");
 //  you may not use this file except in compliance with the License.
@@ -22,7 +22,7 @@ import Foundation
 
 /// A recently played Spotify track.
 ///
-/// - SeeAlso: The Web API [Play History](https://developer.spotify.com/web-api/object-model/#play-history-object) object.
+/// - SeeAlso: The Web API [Play History](https://developer.spotify.com/documentation/web-api/reference/object-model/#play-history-object) object.
 public struct SKRecentTrack: Track, Decodable {
     
     /// The date and time the track was last played, with millisecond precision.

@@ -3,7 +3,7 @@
 //  SpotifyKit
 //
 //  Created by Alexander Havermale on 8/20/17.
-//  Copyright © 2017 Alex Havermale.
+//  Copyright © 2018 Alex Havermale.
 //
 //  Licensed under the Apache License, Version 2.0 (the "License");
 //  you may not use this file except in compliance with the License.
@@ -60,7 +60,7 @@ public struct SKDevice: JSONDecodable {
     /// A Boolean value indicating if this device is the currently active device.
     public let isActive: Bool
     
-    /// A Boolean value indicating whether controlling this device via the [Spotify Web API](https://developer.spotify.com/web-api/) is restricted. If `true`, then no Web API commands will be accepted by this device.
+    /// A Boolean value indicating whether controlling this device via the [Spotify Web API](https://developer.spotify.com/documentation/web-api/) is restricted. If `true`, then no Web API commands will be accepted by this device.
     public let isRestricted: Bool
     
     /// The name of the device.

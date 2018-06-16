@@ -3,7 +3,7 @@
 //  SpotifyKit
 //
 //  Created by Alexander Havermale on 7/31/17.
-//  Copyright © 2017 Alex Havermale.
+//  Copyright © 2018 Alex Havermale.
 //
 //  Licensed under the Apache License, Version 2.0 (the "License");
 //  you may not use this file except in compliance with the License.
@@ -96,10 +96,10 @@ public struct SKPlaybackContext: Decodable {
     /// The type of context, such as an album, artist, or playlist. See `ContextType` for more details.
     public let type: ContextType
     
-    /// Known external URLs for this context. See ["external URL object"](https://developer.spotify.com/web-api/object-model/#external-url-object) for more details.
+    /// Known external URLs for this context. See ["external URL object"](https://developer.spotify.com/documentation/web-api/reference/object-model/#external-url-object) for more details.
     public let externalURLs: [String: URL]
     
-    /// The [Spotify URI](https://developer.spotify.com/web-api/user-guide/#spotify-uris-and-ids) for the context.
+    /// The [Spotify URI](https://developer.spotify.com/documentation/web-api/#spotify-uris-and-ids) for the context.
     public let uri: String
     
     /// A link to the Web API endpoint providing full details of the context.
@@ -117,7 +117,7 @@ public struct SKPlaybackContext: Decodable {
 
 /// An aggregated collection of values defining the current state of a Spotify player.
 ///
-/// - SeeAlso: The Web API [Currently Playing](https://developer.spotify.com/web-api/get-information-about-the-users-current-playback/) object.
+/// - SeeAlso: The Web API [Currently Playing](https://developer.spotify.com/documentation/web-api/reference/player/get-information-about-the-users-current-playback/) object.
 public struct SKPlaybackState: JSONDecodable {
     
     /// The device that is currently active.

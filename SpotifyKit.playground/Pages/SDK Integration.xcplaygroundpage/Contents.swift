@@ -8,7 +8,7 @@
 /// A Spotify client ID to use for the Playground's audio streaming controller.
 let clientID = "<#Your App's Client ID#>"
 /*:
- While its primary purpose is providing a Swift wrapper for the [Web API](https://developer.spotify.com/web-api/), **SpotifyKit** also aims to assist in integrating the [Spotify iOS SDK](https://github.com/spotify/ios-sdk) into your project as well. With a little magic and some Swift extensions, it streamlines the inclusion of Spotify's authentication and audio playback frameworks, and adds convenience methods to existing iOS SDK types for compatibility and interoperatbility.
+ While its primary purpose is providing a Swift wrapper for the [Web API](https://developer.spotify.com/documentation/web-api/), **SpotifyKit** also aims to assist in integrating the [Spotify iOS SDK](https://github.com/spotify/ios-sdk) into your project as well. With a little magic and some Swift extensions, it streamlines the inclusion of Spotify's authentication and audio playback frameworks, and adds convenience methods to existing iOS SDK types for compatibility and interoperatbility.
  
  ## Module Availability
  As you've seen throughout these playground pages, importing `SpotifyKit` in your code allows access to all the symbols declared in the `SpotifyAuthentication` and `SpotifyAudioPlayback` frameworks:

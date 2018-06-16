@@ -3,7 +3,7 @@
 //  SpotifyKit
 //
 //  Created by Alexander Havermale on 7/24/17.
-//  Copyright © 2017 Alex Havermale.
+//  Copyright © 2018 Alex Havermale.
 //
 //  Licensed under the Apache License, Version 2.0 (the "License");
 //  you may not use this file except in compliance with the License.
@@ -22,7 +22,7 @@ import Foundation
 
 /// The "audio features" representing a specific track's audio attributes.
 ///
-/// - SeeAlso: The Web API [Audio Features](https://developer.spotify.com/web-api/object-model/#audio-features-object) object.
+/// - SeeAlso: The Web API [Audio Features](https://developer.spotify.com/documentation/web-api/reference/object-model/#audio-features-object) object.
 public struct SKAudioFeatures: JSONDecodable {
     
     /// An enum representing the expected `type` value for an audio features object.

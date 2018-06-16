@@ -3,7 +3,7 @@
 //  SpotifyKit
 //
 //  Created by Alexander Havermale on 7/22/17.
-//  Copyright © 2017 Alex Havermale.
+//  Copyright © 2018 Alex Havermale.
 //
 //  Licensed under the Apache License, Version 2.0 (the "License");
 //  you may not use this file except in compliance with the License.
@@ -22,7 +22,7 @@ import Foundation
 
 /// A structure representing an image used by a Spotify item, such as a playlist's cover image.
 ///
-/// - SeeAlso: The Web API [Image](https://developer.spotify.com/web-api/user-guide/#image-object) object.
+/// - SeeAlso: The Web API [Image](https://developer.spotify.com/documentation/web-api/reference/object-model/#image-object) object.
 public struct SKImage: JSONDecodable {
     
     /// The source URL of the image.

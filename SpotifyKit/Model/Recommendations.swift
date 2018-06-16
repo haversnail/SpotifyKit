@@ -3,7 +3,7 @@
 //  SpotifyKit
 //
 //  Created by Alexander Havermale on 7/30/17.
-//  Copyright © 2017 Alex Havermale.
+//  Copyright © 2018 Alex Havermale.
 //
 //  Licensed under the Apache License, Version 2.0 (the "License");
 //  you may not use this file except in compliance with the License.
@@ -24,7 +24,7 @@ import Foundation
 
 /// A structure representing a list of recommended tracks generated from a list of Spotify seed items.
 ///
-/// - SeeAlso: The Web API [Recommendations](https://developer.spotify.com/web-api/user-guide/#recommendations-object) object.
+/// - SeeAlso: The Web API [Recommendations](https://developer.spotify.com/documentation/web-api/reference/object-model/#recommendations-object) object.
 public struct SKRecommendations: JSONDecodable {
     
     /// The seeds used to generate the list of recommended tracks.
@@ -38,7 +38,7 @@ public struct SKRecommendations: JSONDecodable {
 
 /// A structure representing a Spotify media item used to generate a list of recommended tracks.
 ///
-/// - SeeAlso: The Web API [Recommendations Seed](https://developer.spotify.com/web-api/user-guide/#recommendations-seed-object) object.
+/// - SeeAlso: The Web API [Recommendations Seed](https://developer.spotify.com/documentation/web-api/reference/object-model/#recommendations-seed-object) object.
 public struct SKSeed: JSONDecodable {
     
     public enum SeedType: String, Codable {

@@ -3,7 +3,7 @@
 //  SpotifyKit
 //
 //  Created by Alexander Havermale on 7/23/17.
-//  Copyright © 2017 Alex Havermale.
+//  Copyright © 2018 Alex Havermale.
 //
 //  Licensed under the Apache License, Version 2.0 (the "License");
 //  you may not use this file except in compliance with the License.
@@ -22,7 +22,7 @@ import Foundation
 
 /// A structure representing a Spotify item's followers, such as an artist or playlist.
 ///
-/// - SeeAlso: The Web API [Followers](https://developer.spotify.com/web-api/user-guide/#followers-object) object.
+/// - SeeAlso: The Web API [Followers](https://developer.spotify.com/documentation/web-api/reference/object-model/#followers-object) object.
 public struct SKFollowers: JSONDecodable {
     
     /// A link to the Web API endpoint providing full details of the followers; `nil` if not available.

@@ -3,7 +3,7 @@
 //  SpotifyKit
 //
 //  Created by Alexander Havermale on 7/25/17.
-//  Copyright © 2017 Alex Havermale.
+//  Copyright © 2018 Alex Havermale.
 //
 //  Licensed under the Apache License, Version 2.0 (the "License");
 //  you may not use this file except in compliance with the License.
@@ -22,7 +22,7 @@ import Foundation
 
 /// A Spotify playlist.
 ///
-/// - SeeAlso: The Web API [Simplified](https://developer.spotify.com/web-api/user-guide/#playlist-object-simplified) and [Full](https://developer.spotify.com/web-api/user-guide/#playlist-object-full) Playlist objects.
+/// - SeeAlso: The Web API [Simplified](https://developer.spotify.com/documentation/web-api/reference/object-model/#playlist-object-simplified) and [Full](https://developer.spotify.com/documentation/web-api/reference/object-model/#playlist-object-full) Playlist objects.
 public struct SKPlaylist: JSONDecodable {
     
     /// An enum representing the expected `type` value for a playlist object.
@@ -39,10 +39,10 @@ public struct SKPlaylist: JSONDecodable {
     /// A link to the Web API endpoint providing full details of the playlist.
     public let url: URL
     
-    /// The [Spotify ID](https://developer.spotify.com/web-api/user-guide/#spotify-uris-and-ids) for the playlist.
+    /// The [Spotify ID](https://developer.spotify.com/documentation/web-api/#spotify-uris-and-ids) for the playlist.
     public let id: String
     
-    /// Images for the playlist. The array may be empty or contain up to three images. The images are returned by size in descending order. See [Working with Playlists](https://developer.spotify.com/web-api/working-with-playlists/).
+    /// Images for the playlist. The array may be empty or contain up to three images. The images are returned by size in descending order. See [Working with Playlists](https://developer.spotify.com/documentation/general/guides/working-with-playlists/).
     /// - Note: If returned, the source URL for the image (`url`) is temporary and will expire in less than a day.
     public let images: [SKImage]
     
@@ -52,7 +52,7 @@ public struct SKPlaylist: JSONDecodable {
     /// The user who owns the playlist.
     public let owner: SKUser
     
-    /// The playlist's public/private status: `true` the playlist is public, `false` the playlist is private, `nil` the playlist status is not relevant. For more about public/private status, see [Working with Playlists](https://developer.spotify.com/web-api/working-with-playlists/).
+    /// The playlist's public/private status: `true` the playlist is public, `false` the playlist is private, `nil` the playlist status is not relevant. For more about public/private status, see [Working with Playlists](https://developer.spotify.com/documentation/general/guides/working-with-playlists/).
     public let isPublic: Bool?
     
     /// The version identifier for the current playlist. Can be supplied in other requests to target a specific playlist version.
@@ -64,7 +64,7 @@ public struct SKPlaylist: JSONDecodable {
     /// The total number of tracks in the playlist.
     public let totalTracks: Int
     
-    /// The [Spotify URI](https://developer.spotify.com/web-api/user-guide/#spotify-uris-and-ids) for the playlist.
+    /// The [Spotify URI](https://developer.spotify.com/documentation/web-api/#spotify-uris-and-ids) for the playlist.
     public let uri: String
     
     /// The resource object type: `"playlist"`.

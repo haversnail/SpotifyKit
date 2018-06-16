@@ -3,7 +3,7 @@
 //  SpotifyKit
 //
 //  Created by Alexander Havermale on 7/26/17.
-//  Copyright © 2017 Alex Havermale.
+//  Copyright © 2018 Alex Havermale.
 //
 //  Licensed under the Apache License, Version 2.0 (the "License");
 //  you may not use this file except in compliance with the License.
@@ -22,7 +22,7 @@ import Foundation
 
 /// A Spotify category representing the genres and moods available in the Spotify catalog.
 ///
-/// - SeeAlso: The Web API [Category](https://developer.spotify.com/web-api/object-model/#category-object) object.
+/// - SeeAlso: The Web API [Category](https://developer.spotify.com/documentation/web-api/reference/object-model/#category-object) object.
 public struct SKCategory: JSONDecodable {
 
     /// A link to the Web API endpoint returning full details of the category.
@@ -31,7 +31,7 @@ public struct SKCategory: JSONDecodable {
     /// The category icon, in various sizes.
     public let icons: [SKImage]
     
-    /// The [Spotify category ID](https://developer.spotify.com/web-api/user-guide/#spotify-uris-and-ids) of the category.
+    /// The [Spotify category ID](https://developer.spotify.com/documentation/web-api/#spotify-uris-and-ids) of the category.
     public let id: String
     
     /// The name of the category.

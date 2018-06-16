@@ -3,7 +3,7 @@
 //  SpotifyKitTests
 //
 //  Created by Alexander Havermale on 7/22/17.
-//  Copyright © 2017 Alex Havermale.
+//  Copyright © 2018 Alex Havermale.
 //
 //  Licensed under the Apache License, Version 2.0 (the "License");
 //  you may not use this file except in compliance with the License.

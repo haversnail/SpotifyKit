@@ -3,7 +3,7 @@
 //  SpotifyKit
 //
 //  Created by Alexander Havermale on 9/17/17.
-//  Copyright © 2017 Alex Havermale.
+//  Copyright © 2018 Alex Havermale.
 //
 //  Licensed under the Apache License, Version 2.0 (the "License");
 //  you may not use this file except in compliance with the License.
@@ -50,7 +50,7 @@ public struct SKCatalog {
     
     /// Creates and returns the request used to get an album.
     ///
-    /// - Parameter id: The [Spotify ID](https://developer.spotify.com/web-api/user-guide/#spotify-uris-and-ids) for the album.
+    /// - Parameter id: The [Spotify ID](https://developer.spotify.com/documentation/web-api/#spotify-uris-and-ids) for the album.
     /// - Returns: An `SKRequest` instance with which to perform the API request.
     public func makeAlbumRequest(id: String) -> SKRequest {
         
@@ -62,7 +62,7 @@ public struct SKCatalog {
     /// Gets Spotify catalog information for a single album.
     ///
     /// - Parameters:
-    ///   - id: The [Spotify ID](https://developer.spotify.com/web-api/user-guide/#spotify-uris-and-ids) for the album.
+    ///   - id: The [Spotify ID](https://developer.spotify.com/documentation/web-api/#spotify-uris-and-ids) for the album.
     ///   - handler: The callback handler for the request. The parameters for this handler are:
     ///       - `album`: The requested full album, if available.
     ///       - `error`: An error identifying if and why the request failed, or `nil` if the request was successful.
@@ -74,7 +74,7 @@ public struct SKCatalog {
     
     /// Creates and returns the request used to get several albums.
     ///
-    /// - Parameter ids: A list of the [Spotify IDs](https://developer.spotify.com/web-api/user-guide/#spotify-uris-and-ids) for the albums. Maximum: 20 IDs.
+    /// - Parameter ids: A list of the [Spotify IDs](https://developer.spotify.com/documentation/web-api/#spotify-uris-and-ids) for the albums. Maximum: 20 IDs.
     /// - Returns: An `SKRequest` instance with which to perform the API request.
     public func makeAlbumsRequest(ids: [String]) -> SKRequest {
         
@@ -87,7 +87,7 @@ public struct SKCatalog {
     /// Gets Spotify catalog information for multiple albums identified by their Spotify IDs.
     ///
     /// - Parameters:
-    ///   - ids: A list of the [Spotify IDs](https://developer.spotify.com/web-api/user-guide/#spotify-uris-and-ids) for the albums. Maximum: 20 IDs.
+    ///   - ids: A list of the [Spotify IDs](https://developer.spotify.com/documentation/web-api/#spotify-uris-and-ids) for the albums. Maximum: 20 IDs.
     ///   - handler: The callback handler for the request. The parameters for this handler are:
     ///       - `albums`: The requested list of full albums. If a particular album cannot be found for a given ID, the resulting array will contain `nil` at the corresponding index.
     ///       - `error`: An error identifying if and why the request failed, or `nil` if the request was successful.
@@ -101,7 +101,7 @@ public struct SKCatalog {
     
     /// Creates and returns the request used to get an artist.
     ///
-    /// - Parameter id: The [Spotify ID](https://developer.spotify.com/web-api/user-guide/#spotify-uris-and-ids) for the artist.
+    /// - Parameter id: The [Spotify ID](https://developer.spotify.com/documentation/web-api/#spotify-uris-and-ids) for the artist.
     /// - Returns: An `SKRequest` instance with which to perform the API request.
     public func makeArtistRequest(id: String) -> SKRequest {
         return SKRequest(method: .GET, endpoint: Constants.Endpoints.artist(id: id))!
@@ -110,7 +110,7 @@ public struct SKCatalog {
     /// Gets Spotify catalog information for a single artist identified by their unique Spotify ID.
     ///
     /// - Parameters:
-    ///   - id: The [Spotify ID](https://developer.spotify.com/web-api/user-guide/#spotify-uris-and-ids) for the artist.
+    ///   - id: The [Spotify ID](https://developer.spotify.com/documentation/web-api/#spotify-uris-and-ids) for the artist.
     ///   - handler: The callback handler for the request. The parameters for this handler are:
     ///       - `artist`: The requested full artist, if available.
     ///       - `error`: An error identifying if and why the request failed, or `nil` if the request was successful.
@@ -122,7 +122,7 @@ public struct SKCatalog {
     
     /// Creates and returns the request used to get several artists.
     ///
-    /// - Parameter ids: A list of the [Spotify IDs](https://developer.spotify.com/web-api/user-guide/#spotify-uris-and-ids) for the artists. Maximum: 50 IDs.
+    /// - Parameter ids: A list of the [Spotify IDs](https://developer.spotify.com/documentation/web-api/#spotify-uris-and-ids) for the artists. Maximum: 50 IDs.
     /// - Returns: An `SKRequest` instance with which to perform the API request.
     public func makeArtistsRequest(ids: [String]) -> SKRequest {
         
@@ -134,7 +134,7 @@ public struct SKCatalog {
     /// Gets Spotify catalog information for several artists based on their Spotify IDs.
     ///
     /// - Parameters:
-    ///   - ids: A list of the [Spotify IDs](https://developer.spotify.com/web-api/user-guide/#spotify-uris-and-ids) for the artists. Maximum: 50 IDs.
+    ///   - ids: A list of the [Spotify IDs](https://developer.spotify.com/documentation/web-api/#spotify-uris-and-ids) for the artists. Maximum: 50 IDs.
     ///   - handler: The callback handler for the request. The parameters for this handler are:
     ///       - `albums`: The requested list of full artists. If a particular artist cannot be found for a given ID, the resulting array will contain `nil` at the corresponding index.
     ///       - `error`: An error identifying if and why the request failed, or `nil` if the request was successful.
@@ -148,7 +148,7 @@ public struct SKCatalog {
     
     /// Creates and returns the request used to get a track.
     ///
-    /// - Parameter id: The [Spotify ID](https://developer.spotify.com/web-api/user-guide/#spotify-uris-and-ids) for the track.
+    /// - Parameter id: The [Spotify ID](https://developer.spotify.com/documentation/web-api/#spotify-uris-and-ids) for the track.
     /// - Returns: An `SKRequest` instance with which to perform the API request.
     public func makeTrackRequest(id: String) -> SKRequest {
         
@@ -160,7 +160,7 @@ public struct SKCatalog {
     /// Gets Spotify catalog information for a single track identified by its unique Spotify ID.
     ///
     /// - Parameters:
-    ///   - id: The [Spotify ID](https://developer.spotify.com/web-api/user-guide/#spotify-uris-and-ids) for the track.
+    ///   - id: The [Spotify ID](https://developer.spotify.com/documentation/web-api/#spotify-uris-and-ids) for the track.
     ///   - handler: The callback handler for the request. The parameters for this handler are:
     ///       - `track`: The requested full track, if available.
     ///       - `error`: An error identifying if and why the request failed, or `nil` if the request was successful.
@@ -172,7 +172,7 @@ public struct SKCatalog {
     
     /// Creates and returns the request used to get several tracks.
     ///
-    /// - Parameter ids: A list of the [Spotify IDs](https://developer.spotify.com/web-api/user-guide/#spotify-uris-and-ids) for the tracks. Maximum: 50 IDs.
+    /// - Parameter ids: A list of the [Spotify IDs](https://developer.spotify.com/documentation/web-api/#spotify-uris-and-ids) for the tracks. Maximum: 50 IDs.
     /// - Returns: An `SKRequest` instance with which to perform the API request.
     public func makeTracksRequest(ids: [String]) -> SKRequest {
         
@@ -185,7 +185,7 @@ public struct SKCatalog {
     /// Gets Spotify catalog information for multiple tracks based on their Spotify IDs.
     ///
     /// - Parameters:
-    ///   - ids: A list of the [Spotify IDs](https://developer.spotify.com/web-api/user-guide/#spotify-uris-and-ids) for the tracks. Maximum: 50 IDs.
+    ///   - ids: A list of the [Spotify IDs](https://developer.spotify.com/documentation/web-api/#spotify-uris-and-ids) for the tracks. Maximum: 50 IDs.
     ///   - handler: The callback handler for the request. The parameters for this handler are:
     ///       - `tracks`: The requested list of full tracks. If a particular track cannot be found for a given ID, the resulting array will contain `nil` at the corresponding index.
     ///       - `error`: An error identifying if and why the request failed, or `nil` if the request was successful.
@@ -293,7 +293,7 @@ public struct SKCatalog {
     ///
     /// - Note: If a catalog locale has not been specified (i.e., `locale` is set to `nil`), or if the specified language is not available, all strings will be returned in the Spotify default language (American English).
     ///
-    /// - Parameter id: The [Spotify category ID](https://developer.spotify.com/web-api/user-guide/#spotify-uris-and-ids) for the category.
+    /// - Parameter id: The [Spotify category ID](https://developer.spotify.com/documentation/web-api/#spotify-uris-and-ids) for the category.
     /// - Returns: An `SKRequest` instance with which to perform the API request.
     public func makeCategoryRequest(id: String) -> SKRequest {
         
@@ -308,7 +308,7 @@ public struct SKCatalog {
     /// - Note: If a catalog locale has not been specified (i.e., `locale` is set to `nil`), or if the specified language is not available, all strings will be returned in the Spotify default language (American English).
     ///
     /// - Parameters:
-    ///   - id: id: The [Spotify category ID](https://developer.spotify.com/web-api/user-guide/#spotify-uris-and-ids) for the category.
+    ///   - id: id: The [Spotify category ID](https://developer.spotify.com/documentation/web-api/#spotify-uris-and-ids) for the category.
     ///   - handler: The callback handler for the request. The parameters for this handler are:
     ///       - `category`: The requested category, if available.
     ///       - `error`: An error identifying if and why the request failed, or `nil` if the request was successful.
@@ -743,7 +743,7 @@ extension SKUser {
     
     /// Creates and returns the request used to get a user.
     ///
-    /// - Parameter id: The user's [Spotify user ID](https://developer.spotify.com/web-api/user-guide/#spotify-uris-and-ids).
+    /// - Parameter id: The user's [Spotify user ID](https://developer.spotify.com/documentation/web-api/#spotify-uris-and-ids).
     /// - Returns: An `SKRequest` instance with which to perform the API request.
     public static func makeUserRequest(id: String) -> SKRequest {
         return SKRequest(method: .GET, endpoint: Constants.Endpoints.user(id: id))!
@@ -754,7 +754,7 @@ extension SKUser {
     /// - Note: This method uses the `SPTAuth` default instance session to authenticate the underlying request. If this session does not contain a valid access token, the request will result in an error.
     ///
     /// - Parameters:
-    ///   - id: The user's [Spotify user ID](https://developer.spotify.com/web-api/user-guide/#spotify-uris-and-ids).
+    ///   - id: The user's [Spotify user ID](https://developer.spotify.com/documentation/web-api/#spotify-uris-and-ids).
     ///   - handler: The callback handler for the request. The parameters for this handler are:
     ///       - `user`: The requested user, if available.
     ///       - `error`: An error identifying if and why the request failed, or `nil` if the request was successful.
@@ -817,7 +817,7 @@ extension SKCurrentUser {
     /// See [Using Scopes](https://developer.spotify.com/spotify-web-api/using-scopes/) for more details.
     ///
     /// - Parameters:
-    ///   - id: The user's [Spotify user ID](https://developer.spotify.com/web-api/user-guide/#spotify-uris-and-ids).
+    ///   - id: The user's [Spotify user ID](https://developer.spotify.com/documentation/web-api/#spotify-uris-and-ids).
     ///   - handler: The callback handler for the request. The parameters for this handler are:
     ///       - `user`: The current authenticated user, if available.
     ///       - `error`: An error identifying if and why the request failed, or `nil` if the request was successful.
@@ -866,9 +866,9 @@ extension SKPlaylist {
     /// Creates and returns the request used to create a new playlist.
     ///
     /// - Parameters:
-    ///   - userID: The [Spotify ID](https://developer.spotify.com/web-api/user-guide/#spotify-uris-and-ids) for the current authenticated user.
+    ///   - userID: The [Spotify ID](https://developer.spotify.com/documentation/web-api/#spotify-uris-and-ids) for the current authenticated user.
     ///
-    ///     **Note**: the access token provided to this request must have been issued on behalf of this user, who must have authorized either the `playlist-modify-public` or `playlist-modify-private` scope. See [Using Scopes](https://developer.spotify.com/web-api/using-scopes/) for more details.
+    ///     **Note**: the access token provided to this request must have been issued on behalf of this user, who must have authorized either the `playlist-modify-public` or `playlist-modify-private` scope. See [Authorization Scopes](https://developer.spotify.com/documentation/general/guides/scopes/) for more details.
     ///
     ///   - name: The name for the new playlist. This name does not need to be unique; a user may have several playlists with the same name.
     ///   - description: An optional description of the playlist.
@@ -899,7 +899,7 @@ extension SKPlaylist {
     ///
     /// - Note: This method uses the `SPTAuth` default instance session to provide the user ID for, and the access token to authenticate, the underlying request. If this session does not contain a valid access token, the request will result in an error; if this session does not contain a valid username, then this method will do nothing.
     ///
-    /// The access token must have been issued on behalf of the current user, who must have authorized either the `playlist-modify-public` or `playlist-modify-private` scope. See [Using Scopes](https://developer.spotify.com/web-api/using-scopes/) for more details.
+    /// The access token must have been issued on behalf of the current user, who must have authorized either the `playlist-modify-public` or `playlist-modify-private` scope. See [Authorization Scopes](https://developer.spotify.com/documentation/general/guides/scopes/) for more details.
     ///
     /// - Parameters:
     ///   - name: The name for the new playlist. This name does not need to be unique; a user may have several playlists with the same name.
@@ -959,7 +959,7 @@ extension SKPlaylist {
     ///
     /// - Note: This method uses the `SPTAuth` default instance session to authenticate the underlying request. If this session does not contain a valid access token, the request will result in an error. The access token must have been issued on behalf of the current user.
     ///
-    /// Changing the details for a public playlist requires authorization of the `playlist-modify-public` scope; likewise, changing the details for a private playlist requires authorization of the `playlist-modify-private` scope. See [Using Scopes](https://developer.spotify.com/web-api/using-scopes/) for more details.
+    /// Changing the details for a public playlist requires authorization of the `playlist-modify-public` scope; likewise, changing the details for a private playlist requires authorization of the `playlist-modify-private` scope. See [Authorization Scopes](https://developer.spotify.com/documentation/general/guides/scopes/) for more details.
     ///
     /// If all parameters have been set to nil, then this method will do nothing.
     ///
@@ -997,7 +997,7 @@ extension SKPlaylist {
     ///
     /// - Note: This method uses the `SPTAuth` default instance session to authenticate the underlying request. If this session does not contain a valid access token, the request will result in an error.
     ///
-    /// The access token must have been issued on behalf of the user who owns the playlist, and must have the `ugc-image-upload` scope authorized. In addition, the token must also contain the `playlist-modify-public` and/or `playlist-modify-private` scopes, depending the access level of playlist. See [Using Scopes](https://developer.spotify.com/web-api/using-scopes/) for more details.
+    /// The access token must have been issued on behalf of the user who owns the playlist, and must have the `ugc-image-upload` scope authorized. In addition, the token must also contain the `playlist-modify-public` and/or `playlist-modify-private` scopes, depending the access level of playlist. See [Authorization Scopes](https://developer.spotify.com/documentation/general/guides/scopes/) for more details.
     ///
     /// - Parameters:
     ///   - data: The image data to upload. The payload must contain Base-64 encoded JPEG image data. The maximum encoded payload size is 256 KB.
@@ -1038,7 +1038,7 @@ extension SKPlaylist {
     ///
     /// - Note: This method uses the `SPTAuth` default instance session to authenticate the underlying request. If this session does not contain a valid access token, the request will result in an error.
     ///
-    /// The access token must have been issued on behalf of the user who owns the playlist, and must have the `ugc-image-upload` scope authorized. In addition, the token must also contain the `playlist-modify-public` and/or `playlist-modify-private` scopes, depending the access level of playlist. See [Using Scopes](https://developer.spotify.com/web-api/using-scopes/) for more details.
+    /// The access token must have been issued on behalf of the user who owns the playlist, and must have the `ugc-image-upload` scope authorized. In addition, the token must also contain the `playlist-modify-public` and/or `playlist-modify-private` scopes, depending the access level of playlist. See [Authorization Scopes](https://developer.spotify.com/documentation/general/guides/scopes/) for more details.
     ///
     /// - Parameters:
     ///   - image: The image data to upload. The maximum encoded payload size is 256 KB.
@@ -1115,7 +1115,7 @@ extension SKPlaylist {
     ///
     /// - Note: This method uses the `SPTAuth` default instance session to authenticate the underlying request. If this session does not contain a valid access token, the request will result in an error. The access token must have been issued on behalf of the current user.
     ///
-    /// Adding tracks to a public playlist requires authorization of the `playlist-modify-public` scope; likewise, adding tracks to a private playlist (including collaborative playlists) requires authorization of the `playlist-modify-private` scope. See [Using Scopes](https://developer.spotify.com/web-api/using-scopes/) for more details.
+    /// Adding tracks to a public playlist requires authorization of the `playlist-modify-public` scope; likewise, adding tracks to a private playlist (including collaborative playlists) requires authorization of the `playlist-modify-private` scope. See [Authorization Scopes](https://developer.spotify.com/documentation/general/guides/scopes/) for more details.
     ///
     /// - Parameters:
     ///   - tracks: A list of tracks to add.
@@ -1133,7 +1133,7 @@ extension SKPlaylist {
     ///
     /// - Note: This method uses the `SPTAuth` default instance session to authenticate the underlying request. If this session does not contain a valid access token, the request will result in an error. The access token must have been issued on behalf of the current user.
     ///
-    /// Adding tracks to a public playlist requires authorization of the `playlist-modify-public` scope; likewise, adding tracks to a private playlist (including collaborative playlists) requires authorization of the `playlist-modify-private` scope. See [Using Scopes](https://developer.spotify.com/web-api/using-scopes/) for more details.
+    /// Adding tracks to a public playlist requires authorization of the `playlist-modify-public` scope; likewise, adding tracks to a private playlist (including collaborative playlists) requires authorization of the `playlist-modify-private` scope. See [Authorization Scopes](https://developer.spotify.com/documentation/general/guides/scopes/) for more details.
     ///
     /// - Parameters:
     ///   - track: The track to add.
@@ -1189,7 +1189,7 @@ extension SKPlaylist {
     ///
     /// - Note: This method uses the `SPTAuth` default instance session to authenticate the underlying request. If this session does not contain a valid access token, the request will result in an error. The access token must have been issued on behalf of the current user.
     ///
-    /// Removing tracks from a public playlist requires authorization of the `playlist-modify-public` scope; likewise, removing tracks from a private playlist requires authorization of the `playlist-modify-private` scope. See [Using Scopes](https://developer.spotify.com/web-api/using-scopes/) for more details.
+    /// Removing tracks from a public playlist requires authorization of the `playlist-modify-public` scope; likewise, removing tracks from a private playlist requires authorization of the `playlist-modify-private` scope. See [Authorization Scopes](https://developer.spotify.com/documentation/general/guides/scopes/) for more details.
     ///
     /// - Parameters:
     ///   - positions: An array of integers representing the indices of the tracks to remove. The values provided must be valid indices within the list of tracks. A maximum of 100 values can be sent at once.
@@ -1211,7 +1211,7 @@ extension SKPlaylist {
     ///
     /// - Note: This method uses the `SPTAuth` default instance session to authenticate the underlying request. If this session does not contain a valid access token, the request will result in an error. The access token must have been issued on behalf of the current user.
     ///
-    /// Removing tracks from a public playlist requires authorization of the `playlist-modify-public` scope; likewise, removing tracks from a private playlist requires authorization of the `playlist-modify-private` scope. See [Using Scopes](https://developer.spotify.com/web-api/using-scopes/) for more details.
+    /// Removing tracks from a public playlist requires authorization of the `playlist-modify-public` scope; likewise, removing tracks from a private playlist requires authorization of the `playlist-modify-private` scope. See [Authorization Scopes](https://developer.spotify.com/documentation/general/guides/scopes/) for more details.
     ///
     /// - Parameters:
     ///   - position: An integer representing the index of the track to remove. The value provided must be a valid index within the list of tracks.
@@ -1316,7 +1316,7 @@ extension SKPlaylist {
     /// }
     /// ````
     ///
-    /// For a better visualization on how reordering Spotify tracks works, see the [API Endpoint Reference](https://developer.spotify.com/web-api/reorder-playlists-tracks/).
+    /// For a better visualization on how reordering Spotify tracks works, see the [API Endpoint Reference](https://developer.spotify.com/documentation/web-api/reference/playlists/reorder-playlists-tracks/).
     ///
     /// - Note: This method uses the `SPTAuth` default instance session to authenticate the underlying request. If this session does not contain a valid access token, the request will result in an error. The access token must have been issued on behalf of the current user.
     ///
@@ -1379,7 +1379,7 @@ extension SKPlaylist {
     /// }
     /// ````
     ///
-    /// For a better visualization on how reordering Spotify tracks works, see the [API Endpoint Reference](https://developer.spotify.com/web-api/reorder-playlists-tracks/).
+    /// For a better visualization on how reordering Spotify tracks works, see the [API Endpoint Reference](https://developer.spotify.com/documentation/web-api/reference/playlists/reorder-playlists-tracks/).
     ///
     /// - Note: This method uses the `SPTAuth` default instance session to authenticate the underlying request. If this session does not contain a valid access token, the request will result in an error. The access token must have been issued on behalf of the current user.
     ///
@@ -1433,7 +1433,7 @@ extension SKPlaylist {
     /// }
     /// ````
     ///
-    /// For a better visualization on how reordering Spotify tracks works, see the [API Endpoint Reference](https://developer.spotify.com/web-api/reorder-playlists-tracks/).
+    /// For a better visualization on how reordering Spotify tracks works, see the [API Endpoint Reference](https://developer.spotify.com/documentation/web-api/reference/playlists/reorder-playlists-tracks/).
     ///
     /// - Note: This method uses the `SPTAuth` default instance session to authenticate the underlying request. If this session does not contain a valid access token, the request will result in an error. The access token must have been issued on behalf of the current user.
     ///
@@ -1472,7 +1472,7 @@ extension SKPlaylist {
     ///
     /// - Note: This method uses the `SPTAuth` default instance session to authenticate the underlying request. If this session does not contain a valid access token, the request will result in an error. The access token must have been issued on behalf of the current user.
     ///
-    /// Replacing tracks in a public playlist requires authorization of the `playlist-modify-public` scope; likewise, replacing tracks in a private playlist requires authorization of the `playlist-modify-private` scope. See [Using Scopes](https://developer.spotify.com/web-api/using-scopes/) for more details.
+    /// Replacing tracks in a public playlist requires authorization of the `playlist-modify-public` scope; likewise, replacing tracks in a private playlist requires authorization of the `playlist-modify-private` scope. See [Authorization Scopes](https://developer.spotify.com/documentation/general/guides/scopes/) for more details.
     ///
     /// - Parameters:
     ///   - tracks: The list of tracks with which to replace the contents of the playlist. To clear all tracks from the playlist, set this parameter to an empty array.
@@ -1491,12 +1491,12 @@ extension SKPlaylist {
 
 /// A type representing a Spotify item that can be followed or unfollowed by the current authenticated user.
 ///
-/// Types that conform to this protocol provide a set of request factories and convenience methods to either follow, unfollow, or check to see if the current authenticated user is already following the item. These types must also contain a valid [Spotify ID](https://developer.spotify.com/web-api/user-guide/#spotify-uris-and-ids).
+/// Types that conform to this protocol provide a set of request factories and convenience methods to either follow, unfollow, or check to see if the current authenticated user is already following the item. These types must also contain a valid [Spotify ID](https://developer.spotify.com/documentation/web-api/#spotify-uris-and-ids).
 ///
 /// - Note: Although a Spotify playlist is technically a "followable" catalog item, the method declarations and implementations for following playlists differ from those defined here. Thus, the `SKPlaylist` type does not conform to this protocol, but instead provides its own comparable methods and request factories.
 public protocol Followable {
     
-    /// The [Spotify ID](https://developer.spotify.com/web-api/user-guide/#spotify-uris-and-ids) for the item. **Required.**
+    /// The [Spotify ID](https://developer.spotify.com/documentation/web-api/#spotify-uris-and-ids) for the item. **Required.**
     var id: String { get }
     
     /// Creates and returns the request used to add the current authenticated user as a follower of the item.
@@ -1551,7 +1551,7 @@ public protocol Followable {
 /// While these requirements would be easier kept in the public `Followable` protocol, doing so would unnecessarily expose properties and methods that are only relevant to the Web API, polluting the type's public namespace.
 internal protocol _Followable {
     
-    /// The string representation of this type, used by API requests to specify which [Spotify object](https://developer.spotify.com/web-api/object-model/) the type represents.
+    /// The string representation of this type, used by API requests to specify which [Spotify object](https://developer.spotify.com/documentation/web-api/reference/object-model/) the type represents.
     static var type: String { get }
 }
 
@@ -1726,7 +1726,7 @@ extension SKPlaylist {
     ///
     /// - Note: This method uses the `SPTAuth` default instance session to authenticate the underlying request. If this session does not contain a valid access token, the request will result in an error. The access token must have been issued on behalf of the current user.
     ///
-    /// Following a playlist publicly requires authorization of the `playlist-modify-public` scope; likewise, following a playlist privately requires authorization of the `playlist-modify-private` scope. See [Using Scopes](https://developer.spotify.com/web-api/using-scopes/) for more details.
+    /// Following a playlist publicly requires authorization of the `playlist-modify-public` scope; likewise, following a playlist privately requires authorization of the `playlist-modify-private` scope. See [Authorization Scopes](https://developer.spotify.com/documentation/general/guides/scopes/) for more details.
     ///
     /// - Parameters:
     ///   - public: A Boolean value indicating whether the playlist should be included in the user's public playlists. The default value is `true`.
@@ -1751,7 +1751,7 @@ extension SKPlaylist {
     ///
     /// - Note: This method uses the `SPTAuth` default instance session to authenticate the underlying request. If this session does not contain a valid access token, the request will result in an error. The access token must have been issued on behalf of the current user.
     ///
-    /// Unfollowing a publicly-followed playlist requires authorization of the `playlist-modify-public` scope; likewise, unfollowing a privately-followed playlist requires authorization of the `playlist-modify-private` scope. See [Using Scopes](https://developer.spotify.com/web-api/using-scopes/) for more details.
+    /// Unfollowing a publicly-followed playlist requires authorization of the `playlist-modify-public` scope; likewise, unfollowing a privately-followed playlist requires authorization of the `playlist-modify-private` scope. See [Authorization Scopes](https://developer.spotify.com/documentation/general/guides/scopes/) for more details.
     ///
     /// - Parameter handler: The callback handler for the request, providing an error identifying if and why the request failed, or `nil` if the request was successful.
     public func unfollow(completion handler: @escaping SKErrorHandler) {
@@ -1778,7 +1778,7 @@ extension SKPlaylist {
     ///
     /// Following a playlist can be done publicly or privately. Checking if a user publicly follows a playlist doesn't require any scopes; if the user is publicly following the playlist, the resulting Boolean value will be `true`.
     ///
-    /// However, checking if the user is privately following a playlist is only possible for the current authenticated user when that user has granted access to the `playlist-read-private` scope. See [Using Scopes](https://developer.spotify.com/web-api/using-scopes/) for more details.
+    /// However, checking if the user is privately following a playlist is only possible for the current authenticated user when that user has granted access to the `playlist-read-private` scope. See [Authorization Scopes](https://developer.spotify.com/documentation/general/guides/scopes/) for more details.
     ///
     /// - Parameters:
     ///   - users: The users against which to perform the check. Maximum: 5 users.
@@ -1795,7 +1795,7 @@ extension SKPlaylist {
     ///
     /// Following a playlist can be done publicly or privately. Checking if a user publicly follows a playlist doesn't require any scopes; if the user is publicly following the playlist, the resulting Boolean value will be `true`.
     ///
-    /// However, checking if the user is privately following a playlist is only possible for the current authenticated user when that user has granted access to the `playlist-read-private` scope. See [Using Scopes](https://developer.spotify.com/web-api/using-scopes/) for more details.
+    /// However, checking if the user is privately following a playlist is only possible for the current authenticated user when that user has granted access to the `playlist-read-private` scope. See [Authorization Scopes](https://developer.spotify.com/documentation/general/guides/scopes/) for more details.
     ///
     /// - Parameters:
     ///   - user: The user against which to perform the check.
@@ -1851,10 +1851,10 @@ extension SKCurrentUser {
 
 /// A type representing a Spotify item that can be saved to the current authenticated user's Spotify music library.
 ///
-/// Types that conform to this protocol provide a set of request factories and convenience methods to either save, remove, or check to see if the user has already saved the item. These types must also contain a valid [Spotify ID](https://developer.spotify.com/web-api/user-guide/#spotify-uris-and-ids).
+/// Types that conform to this protocol provide a set of request factories and convenience methods to either save, remove, or check to see if the user has already saved the item. These types must also contain a valid [Spotify ID](https://developer.spotify.com/documentation/web-api/#spotify-uris-and-ids).
 public protocol Savable {
     
-    /// The [Spotify ID](https://developer.spotify.com/web-api/user-guide/#spotify-uris-and-ids) for the item. **Required.**
+    /// The [Spotify ID](https://developer.spotify.com/documentation/web-api/#spotify-uris-and-ids) for the item. **Required.**
     var id: String { get }
     
     /// Creates and returns the request used to save the item to the current authenticated user's Spotify music library.
@@ -2226,17 +2226,17 @@ extension SKCurrentUser {
 
 // MARK: - Expandable Type Requests
 
-/// A type that is represented in the [Spotify Web API](https://developer.spotify.com/web-api/) by both "simplified" and "full" versions.
+/// A type that is represented in the [Spotify Web API](https://developer.spotify.com/documentation/web-api/) by both "simplified" and "full" versions.
 ///
 /// Types that conform to this protocol provide a set of convenience methods to retrieve the full version of a simplified SpotifyKit type, and are required to have a URL providing the API endpoint to the full details of the item.
 ///
-/// These types also implement an `isSimplified` property, a Boolean value indicating whether an instance of this type represents a "simplified" version of the "full" [Spotify object](https://developer.spotify.com/web-api/object-model/).
+/// These types also implement an `isSimplified` property, a Boolean value indicating whether an instance of this type represents a "simplified" version of the "full" [Spotify object](https://developer.spotify.com/documentation/web-api/reference/object-model/).
 public protocol Expandable {
     
-    /// A link to the [Web API endpoint](https://developer.spotify.com/web-api/endpoint-reference/) providing full details of the item. **Required.**
+    /// A link to the [Web API endpoint](https://developer.spotify.com/documentation/web-api/reference/) providing full details of the item. **Required.**
     var url: URL { get }
     
-    /// A boolean value indicating whether this instance represents a "simplified" version of the "full" [Spotify object](https://developer.spotify.com/web-api/object-model/) (i.e., all values unique to the full object are `nil`).
+    /// A boolean value indicating whether this instance represents a "simplified" version of the "full" [Spotify object](https://developer.spotify.com/documentation/web-api/reference/object-model/) (i.e., all values unique to the full object are `nil`).
     var isSimplified: Bool { get }
     
     /// Creates and returns the request used to retrieve the detailed version of the given item.

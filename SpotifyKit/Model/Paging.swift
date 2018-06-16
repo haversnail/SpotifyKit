@@ -3,7 +3,7 @@
 //  SpotifyKit
 //
 //  Created by Alexander Havermale on 7/22/17.
-//  Copyright © 2017 Alex Havermale.
+//  Copyright © 2018 Alex Havermale.
 //
 //  Licensed under the Apache License, Version 2.0 (the "License");
 //  you may not use this file except in compliance with the License.
@@ -86,9 +86,9 @@ public protocol CursorProtocol {
     var oldest: CursorType? { get } // earliest
 }
 
-/// A collection that provides paginated results from a [Spotify Web API](https://developer.spotify.com/web-api/) request.
+/// A collection that provides paginated results from a [Spotify Web API](https://developer.spotify.com/documentation/web-api/) request.
 ///
-/// Paging collections are either *offset-based* or *cursor-based* depending on the [type of paging object](https://developer.spotify.com/web-api/object-model/#paging-object) returned by the API. The `PagingCollection` protocol serves as a base for common collection requirements.
+/// Paging collections are either *offset-based* or *cursor-based* depending on the [type of paging object](https://developer.spotify.com/documentation/web-api/reference/object-model/#paging-object) returned by the API. The `PagingCollection` protocol serves as a base for common collection requirements.
 ///
 /// Paging collections inherit from the `RandomAccessCollection` protocol, adopting all the functionality and efficiency of a bidirectional, random-access collection such as `Array`. In addition to the paging and API-specific requirements, types that conform to this protocol must also implement the requirements of the [Collection](apple-reference-documentation://hsvGnEkSD0) and [BidirectionalCollection](apple-reference-documentation://hswH9Lot32) protocols—and in order to meet the complexity guarantees of a random-access collection, either the index must conform to the [Strideable](apple-reference-documentation://hs7JNqlCdc) protocol, or the `index(_:offsetBy:)` and `distance(from:to:)` methods must be implemented with O(1) efficiency.
 public protocol PagingCollection: RandomAccessCollection {
@@ -113,7 +113,7 @@ public protocol PagingCollection: RandomAccessCollection {
 
 /// A collection that supports offset-based pagination.
 ///
-/// Offset-based paging collections use an `offset` index to paginate items in a larger list of results. Offset-based pagination is the default mechanism for returning paginated results from the [Spotify Web API](https://developer.spotify.com/web-api/).
+/// Offset-based paging collections use an `offset` index to paginate items in a larger list of results. Offset-based pagination is the default mechanism for returning paginated results from the [Spotify Web API](https://developer.spotify.com/documentation/web-api/).
 public protocol OffsetPagingCollection: PagingCollection {
     
     /// The index offset of the items returned in the page, as set in the request or by default.
@@ -142,7 +142,7 @@ extension PagingCollection where Self: JSONDecodable {
     
     /// Creates a SpotifyKit type from the specified JSON data.
     ///
-    /// - Parameter jsonData: The data containing the JSON-encoded [Spotify object](https://developer.spotify.com/web-api/object-model/).
+    /// - Parameter jsonData: The data containing the JSON-encoded [Spotify object](https://developer.spotify.com/documentation/web-api/reference/object-model/).
     public init(from jsonData: Data) throws {
         
         let decoder = JSONDecoder()
@@ -197,9 +197,9 @@ extension PagingCollection where Self: JSONDecodable {
 
 // MARK: - Collection Types
 
-/// A generic collection that provides offset-based paginated results from a [Spotify Web API](https://developer.spotify.com/web-api/) request.
+/// A generic collection that provides offset-based paginated results from a [Spotify Web API](https://developer.spotify.com/documentation/web-api/) request.
 ///
-/// - SeeAlso: The Web API [Paging](https://developer.spotify.com/web-api/object-model/#paging-object) object.
+/// - SeeAlso: The Web API [Paging](https://developer.spotify.com/documentation/web-api/reference/object-model/#paging-object) object.
 public struct Page<Element: Decodable>: OffsetPagingCollection, JSONDecodable {
     
     /// The array of items.
@@ -253,9 +253,9 @@ public struct Page<Element: Decodable>: OffsetPagingCollection, JSONDecodable {
     }
 }
 
-/// A generic collection that provides cursor-based paginated results from a [Spotify Web API](https://developer.spotify.com/web-api/) request.
+/// A generic collection that provides cursor-based paginated results from a [Spotify Web API](https://developer.spotify.com/documentation/web-api/) request.
 ///
-/// - SeeAlso: The Web API [Cursor-Based Paging](https://developer.spotify.com/web-api/object-model/#cursor-based-paging-object) object.
+/// - SeeAlso: The Web API [Cursor-Based Paging](https://developer.spotify.com/documentation/web-api/reference/object-model/#cursor-based-paging-object) object.
 public struct CursorPage<Element: CursorPageable & Decodable>: CursorPagingCollection, JSONDecodable {
     
     /// The array of items.

@@ -3,7 +3,7 @@
  ***
  
  # Pagination
- As you'll notice, many [Spotify Web API](https://developer.spotify.com/web-api/) endpoints return paginated results. The API uses two different mechanisms to accomplish this: "[paging objects](https://developer.spotify.com/web-api/object-model/#paging-object)" and "[cursor-based paging objects](https://developer.spotify.com/web-api/object-model/#cursor-based-paging-object)." These objects are represented in **SpotifyKit** by two distinct types: `Page` and `CursorPage`, respectively. Both types share conformance to a base protocol, `PagingCollection`, which inherits all the benefits and complexity guarantees of a [`RandomAccessCollection`](apple-reference-documentation://hs6VFJWl1b), making pages as versatile and efficient as any other collection type:
+ As you'll notice, many [Spotify Web API](https://developer.spotify.com/documentation/web-api/) endpoints return paginated results. The API uses two different mechanisms to accomplish this: "[paging objects](https://developer.spotify.com/documentation/web-api/reference/object-model/#paging-object)" and "[cursor-based paging objects](https://developer.spotify.com/documentation/web-api/reference/object-model/#cursor-based-paging-object)." These objects are represented in **SpotifyKit** by two distinct types: `Page` and `CursorPage`, respectively. Both types share conformance to a base protocol, `PagingCollection`, which inherits all the benefits and complexity guarantees of a [`RandomAccessCollection`](apple-reference-documentation://hs6VFJWl1b), making pages as versatile and efficient as any other collection type:
  */
 
 import SpotifyKit

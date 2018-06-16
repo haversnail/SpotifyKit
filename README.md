@@ -1,11 +1,11 @@
 ![Logo](Logo/SpotifyKit.png)
 An intuitive and complete Swift wrapper for the [Spotify Web API][Web API].
 
-[![Swift](https://img.shields.io/badge/Swift-4.0-orange.svg "Swift version")][Swift]
+[![Swift](https://img.shields.io/badge/Swift-4.1-orange.svg "Swift version")][Swift]
 [![Carthage](https://img.shields.io/badge/Carthage-compatible-4BC51D.svg "Carthage compatible")][Carthage]
 [![iOS SDK](https://img.shields.io/badge/iOS%20SDK-beta--25-blue.svg "Spotify iOS SDK release")][iOS SDK]
 ![Platforms](https://img.shields.io/badge/platform-iOS-lightgrey.svg "Platforms")
-[![Docs](docs/badge.svg "Documentation coverage")][Docs]
+[![Docs](docs/documentation/badge.svg "Documentation coverage")][Docs]
 [![Build](https://travis-ci.org/haversnail/SpotifyKit.svg?branch=master "latest build on master branch")][Travis CI]
 
 ## Getting Started
@@ -86,9 +86,13 @@ This creates module maps for the newly checked-out frameworks, which should elim
 
 - 🛠 Check out the **Xcode Playground** for a detailed walkthrough of the SpotifyKit framework.
 
+![Playground](Screenshots/Playground-Screenshot.png)
+
 ### Documentation
 
 - 📖 Read the full SpotifyKit **documentation** [here][Docs], courtesy of [Jazzy](https://github.com/realm/jazzy).
+
+![Docs](Screenshots/Docs-Screenshot.png)
 
 ## Roadmap
 
@@ -97,33 +101,24 @@ This creates module maps for the newly checked-out frameworks, which should elim
 
 #### Pending future release:
 
-- [ ] Add [`Equatable`](https://developer.apple.com/documentation/swift/equatable) conformance to all SpotifyKit value types *(waiting on [conditional conformances](https://github.com/apple/swift-evolution/blob/master/proposals/0143-conditional-conformances.md), and for [synthesizing `Equatable` conformance](https://github.com/apple/swift-evolution/blob/master/proposals/0185-synthesize-equatable-hashable.md) (Swift 4.1) to ship with Xcode)*.
+- [ ] Add  [`Equatable`](https://developer.apple.com/documentation/swift/equatable) conformance to all SpotifyKit value types *(waiting on complete implementation of [synthesizing Equatable and Hashable conformance](https://github.com/apple/swift-evolution/blob/master/proposals/0185-synthesize-equatable-hashable.md) in Swift 4.2 to ship with Xcode)*.
 
-    - This would allow for things like:
-
-    ```swift
-    extension Page: Equatable where Element: Equatable {
-        // Conforming Page to Equatable where its Elements are.
-    }
-    ```
-
-    or:
+    - This would allow for something like:
 
     ```swift
-    extension Array: JSONCodable where Element: JSONCodable {
-        // Conforming Arrays to JSONCodable where its Elements are.
+    public struct Page<Element>: OffsetPagingCollection {
+        // ...
     }
-    ```
 
-- [ ] Embed the `Cursors` type within `CursorPage` *(waiting on Swift 4.1 to ship with Xcode)*.
+    // Implementation can be synthesized at build time in Swift 4.2:
+    extension Page: Equatable where Element: Equatable {}
+    ```
 
 - [ ] Add Audio Analysis type and related request methods.
 
-- [ ] Update repository to reflect the new [Spotify Developer website](https://beta.developer.spotify.com/)’s hyperlinks.
+- [ ] Consider removing iOS SDK dependencies and migrating to an alternative authentication mechanism (cf. [*SpotifyLogin*](https://github.com/spotify/SpotifyLogin)) for those wanting commercial use.
 
-- [ ] Consider migrating authentication mechanism to the new [**SpotifyLogin**](https://github.com/spotify/SpotifyLogin) Swift framework.
-
-- [ ] Consider a more FRP-based approach for SpotifyKit, allowing requests and their results to be chained.
+- [ ] As pointed out by @slashmo, consider abstracting away the networking component into a separate framework/dependency altogether.
 
 ## Contributing
 

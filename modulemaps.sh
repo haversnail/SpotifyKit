@@ -4,7 +4,7 @@
 #  SpotifyKit
 #
 #  Created by Alexander Havermale on 7/20/17.
-#  Copyright © 2017 Alex Havermale. All rights reserved.
+#  Copyright © 2018 Alex Havermale. All rights reserved.
 
 # Define Modules:
 dmod() {

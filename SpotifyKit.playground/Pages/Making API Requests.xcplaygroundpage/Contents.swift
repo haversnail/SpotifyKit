@@ -3,11 +3,11 @@
  ***
  
  # Making API Requests
- As the foundation of the framework, the `SKRequest` class is responsible for performing each URL request to the [Spotify Web API](https://developer.spotify.com/web-api/). It is modeled after the **Social** framework’s [`SLRequest`](apple-reference-documentation://hsp4_7YsJD) class, and aims to mimic its structure and functionality in order to provide a comparable service for interacting with the Web API.
+ As the foundation of the framework, the `SKRequest` class is responsible for performing each URL request to the [Spotify Web API](https://developer.spotify.com/documentation/web-api/). It is modeled after the **Social** framework’s [`SLRequest`](apple-reference-documentation://hsp4_7YsJD) class, and aims to mimic its structure and functionality in order to provide a comparable service for interacting with the Web API.
  
  It is designed to streamline both the preparation and the execution of the URL request by providing easy-to-use mechanisms for adding an access token, URL query parameters and multipart body data, and for performing the request with API-specific responses in mind.
  
- As you'll see in [Request Factories](Request%20Factories), nearly all of the available API requests have been created for you by factory methods; however, should you wish to create the requests yourself—for example, to add a [beta request](https://developer.spotify.com/web-api/working-with-connect/) that isn't already provided by the framework—then the following walkthrough will help you get started.
+ As you'll see in [Request Factories](Request%20Factories), nearly all of the available API requests have been created for you by factory methods; however, should you wish to create the requests yourself—for example, to add a [beta request](https://developer.spotify.com/documentation/web-api/guides/using-connect-web-api/) that isn't already provided by the framework—then the following walkthrough will help you get started.
  
  ## Creating an `SKRequest` instance
  You create a new request instance by providing the HTTP request method such as `GET`, `PUT`, `POST`, etc., and the URL for the API endpoint:

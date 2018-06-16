@@ -3,7 +3,7 @@
 //  SpotifyKitTests
 //
 //  Created by Alexander Havermale on 8/10/17.
-//  Copyright © 2017 Alex Havermale.
+//  Copyright © 2018 Alex Havermale.
 //
 //  Licensed under the Apache License, Version 2.0 (the "License");
 //  you may not use this file except in compliance with the License.
@@ -37,7 +37,7 @@ class RequestTests: XCTestCase {
         // FIXME: 2. Request an access token.
         /// - Note: Be sure to request all scopes when retrieving a new token, as some tests will perform API requests that require access to private user data.
         ///
-        /// You can request a token through the Web API Console [here](https://developer.spotify.com/web-api/console/get-current-user/token?scope=user-read-private&scope=user-read-birthdate&scope=user-read-email&scope=playlist-read-private&scope=playlist-read-collaborative&scope=playlist-modify-public&scope=playlist-modify-private&scope=user-library-read&scope=user-library-modify&scope=user-follow-read&scope=user-follow-modify&scope=user-top-read&scope=user-read-playback-state&scope=user-read-recently-played&scope=user-read-currently-playing&scope=user-modify-playback-state&scope=ugc-image-upload).
+        /// You can request a token through the Web API Console [here](https://accounts.spotify.com/authorize?response_type=token&redirect_uri=https%3A%2F%2Fhaversnail.github.io%2FSpotifyKit%2Ftoken%2F&client_id=6dfb2743f2744068ba258276d673ef54&scope=user-read-private+user-read-email+user-read-birthdate+playlist-read-private+user-library-modify+playlist-read-collaborative+playlist-modify-private+user-follow-modify+user-read-currently-playing+user-read-recently-played+user-library-read+user-top-read+playlist-modify-public+user-follow-read+user-read-playback-state+user-modify-playback-state+ugc-image-upload+streaming).
         let accessToken = "<#Your Access Token here#>"
         
         SPTAuth.defaultInstance().session = SPTSession(userName: username,

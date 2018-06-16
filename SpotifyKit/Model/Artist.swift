@@ -3,7 +3,7 @@
 //  SpotifyKit
 //
 //  Created by Alexander Havermale on 7/22/17.
-//  Copyright © 2017 Alex Havermale.
+//  Copyright © 2018 Alex Havermale.
 //
 //  Licensed under the Apache License, Version 2.0 (the "License");
 //  you may not use this file except in compliance with the License.
@@ -22,7 +22,7 @@ import Foundation
 
 /// A Spotify artist.
 ///
-/// - SeeAlso: The Web API [Simplified](https://developer.spotify.com/web-api/user-guide/#artist-object-simplified) and [Full](https://developer.spotify.com/web-api/user-guide/#artist-object-full) Artist objects.
+/// - SeeAlso: The Web API [Simplified](https://developer.spotify.com/documentation/web-api/reference/object-model/#artist-object-simplified) and [Full](https://developer.spotify.com/documentation/web-api/reference/object-model/#artist-object-full) Artist objects.
 public struct SKArtist: JSONDecodable {
     
     // MARK: - Supporting Types
@@ -32,19 +32,19 @@ public struct SKArtist: JSONDecodable {
     
     // MARK: - Simplified Artist Properties
     
-    /// Known external URLs for this artist. See ["external URL object"](https://developer.spotify.com/web-api/object-model/#external-url-object) for more details.
+    /// Known external URLs for this artist. See ["external URL object"](https://developer.spotify.com/documentation/web-api/reference/object-model/#external-url-object) for more details.
     public let externalURLs: [String: URL]
     
     /// A link to the Web API endpoint providing full details of the artist.
     public let url: URL
     
-    /// The [Spotify ID](https://developer.spotify.com/web-api/user-guide/#spotify-uris-and-ids) for the artist.
+    /// The [Spotify ID](https://developer.spotify.com/documentation/web-api/#spotify-uris-and-ids) for the artist.
     public let id: String
     
     /// The name of the artist.
     public let name: String
     
-    /// The [Spotify URI](https://developer.spotify.com/web-api/user-guide/#spotify-uris-and-ids) for the album.
+    /// The [Spotify URI](https://developer.spotify.com/documentation/web-api/#spotify-uris-and-ids) for the album.
     public let uri: String
     
     /// The resource object type: `"artist"`.

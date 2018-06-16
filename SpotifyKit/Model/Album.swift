@@ -3,7 +3,7 @@
 //  SpotifyKit
 //
 //  Created by Alexander Havermale on 7/22/17.
-//  Copyright © 2017 Alex Havermale.
+//  Copyright © 2018 Alex Havermale.
 //
 //  Licensed under the Apache License, Version 2.0 (the "License");
 //  you may not use this file except in compliance with the License.
@@ -44,7 +44,7 @@ extension SKAlbumType: URLEncodable {}
 
 /// A struct representing the copyright on a Spotify media item, such as an album.
 ///
-/// - SeeAlso: The Web API [Copyright](https://developer.spotify.com/web-api/object-model/#copyright-object) object.
+/// - SeeAlso: The Web API [Copyright](https://developer.spotify.com/documentation/web-api/reference/object-model/#copyright-object) object.
 public struct SKCopyright: Decodable {
     
     /// The types of copyrights available.
@@ -81,7 +81,7 @@ public enum SKDatePrecision: String, Codable {
 
 /// A type representing a Spotify album.
 ///
-/// The `Album` protocol serves as the base protocol to which all Spotify album types conform. Its requirements include properties for both "simplified" and "full" versions of a Spotify album. See the Spotify Web API [Object Model](https://developer.spotify.com/web-api/object-model/#album-object-full) for more details.
+/// The `Album` protocol serves as the base protocol to which all Spotify album types conform. Its requirements include properties for both "simplified" and "full" versions of a Spotify album. See the Spotify Web API [Object Model](https://developer.spotify.com/documentation/web-api/reference/object-model/#album-object-full) for more details.
 public protocol Album {
     
     /// The type of album. See `SKAlbumType` for possible values.
@@ -96,10 +96,10 @@ public protocol Album {
     /// This property may be `nil` if the API request already specified a specific market from which to retrieve the album.
     var availableMarkets: [String]? { get }
     
-    /// Known external URLs for this album. See ["external URL object"](https://developer.spotify.com/web-api/object-model/#external-url-object) for more details.
+    /// Known external URLs for this album. See ["external URL object"](https://developer.spotify.com/documentation/web-api/reference/object-model/#external-url-object) for more details.
     var externalURLs: [String: URL] { get }
     
-    /// The [Spotify ID](https://developer.spotify.com/web-api/user-guide/#spotify-uris-and-ids) for the album.
+    /// The [Spotify ID](https://developer.spotify.com/documentation/web-api/#spotify-uris-and-ids) for the album.
     var id: String { get }
     
     /// The cover art for the album in various sizes, widest first.
@@ -108,7 +108,7 @@ public protocol Album {
     /// The name of the album. In case of an album takedown, the value may be an empty string.
     var name: String { get }
     
-    /// The [Spotify URI](https://developer.spotify.com/web-api/user-guide/#spotify-uris-and-ids) for the album.
+    /// The [Spotify URI](https://developer.spotify.com/documentation/web-api/#spotify-uris-and-ids) for the album.
     var uri: String { get }
     
     /// A link to the Web API endpoint providing full details of the album.
@@ -143,7 +143,7 @@ public protocol Album {
 
 /// A Spotify album.
 ///
-/// - SeeAlso: The Web API [Simplified](https://developer.spotify.com/web-api/user-guide/#album-object-simplified) and [Full](https://developer.spotify.com/web-api/user-guide/#album-object-full) Album objects.
+/// - SeeAlso: The Web API [Simplified](https://developer.spotify.com/documentation/web-api/reference/object-model/#album-object-simplified) and [Full](https://developer.spotify.com/documentation/web-api/reference/object-model/#album-object-full) Album objects.
 public struct SKAlbum: Album, JSONDecodable {
     
     /// An enum representing the expected `type` value for an album object.
@@ -264,7 +264,7 @@ extension SKAlbum: Expandable {
 
 /// A Spotify album that has been saved to the current authenticated user's music library.
 ///
-/// - SeeAlso: The Web API [Saved Album](https://developer.spotify.com/web-api/object-model/#saved-album-object) object.
+/// - SeeAlso: The Web API [Saved Album](https://developer.spotify.com/documentation/web-api/reference/object-model/#saved-album-object) object.
 public struct SKSavedAlbum: Album, JSONDecodable {
     
     /// The date and time the album was saved.

@@ -3,7 +3,7 @@
 //  SpotifyKit
 //
 //  Created by Alexander Havermale on 7/30/17.
-//  Copyright © 2017 Alex Havermale.
+//  Copyright © 2018 Alex Havermale.
 //
 //  Licensed under the Apache License, Version 2.0 (the "License");
 //  you may not use this file except in compliance with the License.
@@ -24,7 +24,7 @@ import Foundation
 
 /// An error returned by the Spotify Web API.
 ///
-/// - SeeAlso: The Web API [Error](https://developer.spotify.com/web-api/user-guide/#error-object) object.
+/// - SeeAlso: The Web API [Error](https://developer.spotify.com/documentation/web-api/reference/object-model/#error-object) object.
 public struct SKError: Error, JSONDecodable {
     
     /// The HTTP response status returned by the Web API.
@@ -68,7 +68,7 @@ extension SKError: LocalizedError {
 
 /// An authentication error returned by the Spotify Web API.
 ///
-/// - SeeAlso: The Web API [Authentication Error](https://developer.spotify.com/web-api/user-guide/#authentication-error-object) object.
+/// - SeeAlso: The Web API [Authentication Error](https://developer.spotify.com/documentation/web-api/reference/object-model/#authentication-error-object) object.
 public struct SKAuthenticationError: Error, JSONDecodable {
     
     /// A high-level description of the error, as specified in [RFC 6749 Section 5.2](https://tools.ietf.org/html/rfc6749#section-5.2).

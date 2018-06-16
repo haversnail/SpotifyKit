@@ -3,7 +3,7 @@
 //  SpotifyKit
 //
 //  Created by Alexander Havermale on 7/23/17.
-//  Copyright © 2017 Alex Havermale.
+//  Copyright © 2018 Alex Havermale.
 //
 //  Licensed under the Apache License, Version 2.0 (the "License");
 //  you may not use this file except in compliance with the License.
@@ -30,19 +30,14 @@ public protocol JSONDecodable: Decodable {
     
     /// Creates a SpotifyKit type from the specified JSON data.
     ///
-    /// - Parameter jsonData: The data containing the JSON-encoded [Spotify object](https://developer.spotify.com/web-api/object-model/).
+    /// - Parameter jsonData: The data containing the JSON-encoded [Spotify object](https://developer.spotify.com/documentation/web-api/reference/object-model/).
     ///
-    /// - Note: The default implementation of this method decodes date values using the ISO 8601 timestamp format [specified by the Web API](https://developer.spotify.com/web-api/user-guide/#timestamps). If your need another date decoding strategy, you must provide your own custom implementation.
+    /// - Note: The default implementation of this method decodes date values using the ISO 8601 timestamp format [specified by the Web API](https://developer.spotify.com/documentation/web-api/#timestamps). If your need another date decoding strategy, you must provide your own custom implementation.
     init(from jsonData: Data) throws
 }
 
 extension JSONDecodable {
     
-    /// Creates a SpotifyKit type from the specified JSON data.
-    ///
-    /// - Parameter jsonData: The data containing the JSON-encoded [Spotify object](https://developer.spotify.com/web-api/object-model/).
-    ///
-    /// - Note: The default implementation of this method decodes date values using the ISO 8601 timestamp format [specified by the Web API](https://developer.spotify.com/web-api/user-guide/#timestamps). If your need another date decoding strategy, you must provide your own custom implementation.
     public init(from jsonData: Data) throws {
         let decoder = JSONDecoder()
         decoder.dateDecodingStrategy = .iso8601
@@ -53,7 +48,7 @@ extension JSONDecodable {
 /// A type that can encode itself to a JSON representation.
 public protocol JSONEncodable: Encodable {
     
-    /// Encodes the given type to a JSON representation suitable for the [Spotify Web API](https://developer.spotify.com/web-api/).
+    /// Encodes the given type to a JSON representation suitable for the [Spotify Web API](https://developer.spotify.com/documentation/web-api/).
     ///
     /// - Returns: A `Data` value containing the payload.
     /// - Throws: Any errors encountered during encoding. See [EncodingError](apple-reference-documentation://hsJCtRo9pa) for more details.
@@ -61,11 +56,7 @@ public protocol JSONEncodable: Encodable {
 }
 
 extension JSONEncodable {
-    
-    /// Encodes the given type to a JSON representation suitable for the [Spotify Web API](https://developer.spotify.com/web-api/).
-    ///
-    /// - Returns: A `Data` value containing the payload.
-    /// - Throws: Any errors encountered during encoding. See [EncodingError](apple-reference-documentation://hsJCtRo9pa) for more details.
+
     public func data() throws -> Data {
         let encoder = JSONEncoder()
         
@@ -180,6 +171,10 @@ extension RawRepresentable where RawValue == String, Self: Decodable {
     
     // MARK: Custom Decoding
     
+    /// Creates a new instance by decoding from the given decoder.
+    ///
+    /// - Parameter decoder: The decoder to read data from.
+    /// - Throws: This initializer throws an error if reading from the decoder fails, or if the data read is corrupted or otherwise invalid.
     public init(from decoder: Decoder) throws {
         let decoded = try decoder.singleValueContainer().decode(RawValue.self)
 
