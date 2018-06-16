@@ -1,0 +1,154 @@
+/*
+ *  style.css
+ *  SpotifyKit
+ *
+ *  Created by Alexander Havermale on 6/10/18.
+ *  Copyright © 2018 Alex Havermale.
+ *
+ *  Licensed under the Apache License, Version 2.0 (the "License");
+ *  you may not use this file except in compliance with the License.
+ *  You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *  Unless required by applicable law or agreed to in writing, software
+ *  distributed under the License is distributed on an "AS IS" BASIS,
+ *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  See the License for the specific language governing permissions and
+ *  limitations under the License.
+ */
+
+body {
+    background: #000;
+    color: #fff;
+    font-family: -apple-system, system-ui, "Segoe UI", Helvetica, Arial, sans-serif;
+    font-size: 18px;
+    line-height: 24px;
+    letter-spacing: normal;
+    -webkit-font-smoothing: antialiased;
+    box-sizing: border-box;
+}
+
+a {
+    color: #fff;
+}
+
+a:hover {
+    color: #1DB954;
+    text-decoration: none;
+}
+
+a:focus {
+    color: #2bde6a;
+}
+
+code {
+    color: #fafbfc;
+}
+
+/* Headings */
+
+h1, h2, h3, h4, h5, h6 {
+    font-family: "Fira Sans", -apple-system, system-ui, Helvetica, Arial, sans-serif;
+}
+
+h1 {
+    font-size: 48px;
+}
+
+.heading-thick {
+    font-weight: 900;
+}
+
+.heading-light {
+    font-weight: 300;
+}
+
+.heading-thin {
+    font-weight: 200;
+}
+
+.heading-green {
+    color: #1DB954;
+}
+
+/* Subheadings */
+
+.subheading {
+    text-transform: uppercase;
+    font-weight: 900;
+    font-size: 14px;
+    letter-spacing: 2px;
+}
+
+/* Elements */
+
+#repo-href::before {
+    content: '\2190\0020'; /* ← &larr; */
+}
+
+#docs-href::after {
+    content: '\0020\2192'; /* → &rarr; */
+}
+
+#repo-href::after {
+    content: 'Return to GitHub';
+}
+
+#docs-href::before {
+    content: 'Read the Docs';
+}
+
+.token-display {
+    margin: 30px 0;
+    padding: 10px;
+    background-color: #272727;
+    border: solid 1px #616467;
+    text-align: center;
+    word-break: break-all;
+    hyphens: none;
+}
+
+.timer-display {
+    font-weight: 900;
+    font-size: 42px;
+    line-height: 24px;
+}
+
+/* Bootstrap Overrides */
+
+.btn-lg {
+    height: 60px;
+    padding: 0 30px;
+    border-radius: 30px;
+}
+
+.btn-success {
+    color: #fff;
+    background-color: #1DB954;
+    border-color: transparent;
+}
+
+.btn-success:hover,
+.btn-success:not(:disabled):not(.disabled):active,
+.btn-success:not(:disabled):not(.disabled):active:focus {
+    background-color: #2bde6a;
+    border-color: transparent;
+}
+
+/* Breakpoint-Specific Styling */
+
+@media (max-width: 575.98px) {
+    .btn {
+        width: 100%;
+        margin: 0 15px;
+    }
+
+    #repo-href::after {
+        content: "GitHub";
+    }
+
+    #docs-href::before {
+        content: "Docs";
+    }
+}

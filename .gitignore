@@ -16,3 +16,6 @@ Pods/
 # Jazzy
 build/
 undocumented.json
+
+#JetBrains IDE
+.idea/

@@ -1,0 +1,106 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Stylesheets -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-WskhaSGFgHYWDcbwN70/dfYBj47jz9qbsMId/iRN3ewGhXQFZCSftd1LZCfmhktB" crossorigin="anonymous">
+    <link href="https://code.cdn.mozilla.net/fonts/fira.css" rel="stylesheet">
+    <link href="style.css" rel="stylesheet">
+
+    <!-- Title & Description -->
+    <title>SpotifyKit | Web API Access Token</title>
+    <meta name="description" content="A simple client designed to get you up and running with a Web API access token.">
+
+    <!-- JavaScript -->
+    <script src="app.js" defer></script>
+</head>
+
+<body>
+    <div class="container">
+
+        <!-- Header Links -->
+
+        <div class="row justify-content-between subheading">
+            <div class="col">
+                <p align="left">
+                    <a id="repo-href" href="https://github.com/haversnail/SpotifyKit"></a>
+                </p>
+            </div>
+            <div class="col">
+                <p align="right">
+                    <a id="docs-href" href="https://haversnail.github.io/SpotifyKit"></a>
+                </p>
+            </div>
+        </div>
+
+        <div class="row justify-content-center">
+            <img src="logo.svg" width="104" height="114" style="margin-bottom: 10px" />
+        </div>
+
+        <!-- Main Display -->
+
+        <div id="main-display" style="display: none;">
+
+            <!-- Title Content -->
+
+            <div class="row justify-content-center">
+                <h1>
+                    <span class="heading-thick">Spotify</span><span class="heading-thin">Kit</span>
+                </h1>
+            </div>
+
+            <div class="row justify-content-center">
+                <h2><span class="heading-green">Web API</span> Access Token</h2>
+            </div>
+
+            <!-- Token Display -->
+
+            <div class="row justify-content-center">
+                <div class="token-display" id="token-display"></div>
+            </div>
+
+            <!-- Copy Button -->
+
+            <div class="row justify-content-center">
+                <button class="btn btn-lg btn-success subheading" id="copy-btn">Copy to Clipboard</button>
+            </div>
+
+            <!-- Countdown -->
+
+            <div class="row justify-content-center">
+                <div class="subheading" style="margin-top: 30px">expires in</div>
+            </div>
+            <div class="row justify-content-center">
+                <h1 class="timer-display" id="timer-display"></h1>
+            </div>
+
+        </div>
+
+        <!-- Error Display -->
+
+        <div id="error-display" style="display: none">
+            <div class="row justify-content-center" style="margin-top: 30px">
+                <h2 class="heading-thick"><span class="heading-green">Oops!</span> No token found!</h2>
+            </div>
+            <div class="row justify-content-center" style="margin-top: 30px">
+                <div class="col-8" align="center">
+                    <h5 class="heading-light">
+                        To get a valid access token for testing the <span class="heading-thick">SpotifyKit</span> framework, please refer to the links provided in the Playground instructions or the unit testing bundle.
+                    </h5>
+                    <br />
+                    <h5 class="heading-light">
+                        If you think this might be an error, feel free to create an issue <a class="heading-thick" href="https://github.com/haversnail/SpotifyKit/issues/new">here</a>. Thanks!
+                    </h5>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+</body>
+
+</html>
