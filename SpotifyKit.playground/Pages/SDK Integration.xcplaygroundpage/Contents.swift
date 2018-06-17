@@ -72,7 +72,7 @@ SKCatalog.local.getTrack(withID: "1aJtyIMev4kW8IMUxOjn1Y") { (track, error) in
 
 /*:
  ## The Road Ahead
- As Spotify continues to expand upon their developer resources and platform SDKs, **SpotifyKit** will also aim to stay relevant with what's available. In the meantime, you should check out their [beta website](https://beta.developer.spotify.com/) for developers—if **SpotifyKit** doesn't suit your app's specific needs, perhaps there you'll find something that can!
+ As Spotify continues to expand upon their developer resources and platform SDKs, **SpotifyKit** will also aim to stay relevant with what's available. In the meantime, check out their [developer site](https://developer.spotify.com/)—if **SpotifyKit** doesn't suit your app's specific needs, perhaps there you'll find something that can!
  
  You can check out the detailed roadmap for **SpotifyKit** in the [README](README.md).
  */

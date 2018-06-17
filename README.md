@@ -1,5 +1,5 @@
 ![Logo](Logo/SpotifyKit.png)
-An intuitive and complete Swift wrapper for the [Spotify Web API][Web API].
+An intuitive and comprehensive Swift framework for the [Spotify Web API][Web API].
 
 [![Swift](https://img.shields.io/badge/Swift-4.1-orange.svg "Swift version")][Swift]
 [![Carthage](https://img.shields.io/badge/Carthage-compatible-4BC51D.svg "Carthage compatible")][Carthage]
@@ -29,7 +29,7 @@ An intuitive and complete Swift wrapper for the [Spotify Web API][Web API].
 
 If you use [Carthage][Carthage] to manage your project's dependencies, add the following line to your `Cartfile`:
 ```bash
-github "haversnail/SpotifyKit" ~> 1.0
+github "haversnail/SpotifyKit" ~> 1.1
 ```
 and run `carthage update` to check out and build SpotifyKit and its dependencies.
 
@@ -84,13 +84,13 @@ This creates module maps for the newly checked-out frameworks, which should elim
 
 ### Examples
 
-- 🛠 Check out the **Xcode Playground** for a detailed walkthrough of the SpotifyKit framework.
+- 🛠 Check out the Xcode Playground for a detailed walkthrough of the SpotifyKit framework.
 
 ![Playground](Screenshots/Playground-Screenshot.png)
 
 ### Documentation
 
-- 📖 Read the full SpotifyKit **documentation** [here][Docs], courtesy of [Jazzy](https://github.com/realm/jazzy).
+- 📖 Read the full SpotifyKit documentation [here][Docs], courtesy of [Jazzy](https://github.com/realm/jazzy).
 
 ![Docs](Screenshots/Docs-Screenshot.png)
 
@@ -114,6 +114,8 @@ This creates module maps for the newly checked-out frameworks, which should elim
     extension Page: Equatable where Element: Equatable {}
     ```
 
+- [ ] Remove the `all` property from `SKSearchResultType` and instead conform it to the new `CaseIterable` protocol in Swift 4.2.
+
 - [ ] Add Audio Analysis type and related request methods.
 
 - [ ] Consider removing iOS SDK dependencies and migrating to an alternative authentication mechanism (cf. [*SpotifyLogin*](https://github.com/spotify/SpotifyLogin)) for those wanting commercial use.
@@ -132,7 +134,7 @@ This creates module maps for the newly checked-out frameworks, which should elim
 
 ⚖️ See [LICENSE](LICENSE.txt) for more details.
 
-[Docs]: https://haversnail.github.io/SpotifyKit/
+[Docs]: https://haversnail.github.io/SpotifyKit/documentation/
 [Web API]: https://developer.spotify.com/documentation/web-api/
 [iOS SDK]: https://github.com/spotify/ios-sdk
 [Swift]: https://swift.org

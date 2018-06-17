@@ -7,6 +7,23 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ## [Unreleased]
 - *Any untagged changes will be listed here.*
 
+## [1.1.0] - 2018-06-17
+### Added
+- A standalone web-based mechanism for retrieving temporary access tokens from the [Spotify Web API][Web API] when using the SpotifyKit playground or running the framework's unit tests, hosted on SpotifyKit's [GitHub Pages][Token].
+
+### Changed
+- Updated the framework to use Swift 4.1. Specifically:
+    - Refactored the `JSONDecodable`, `JSONEncodable`, and `URLEncodable` extensions using [conditional conformances](https://github.com/apple/swift-evolution/blob/master/proposals/0143-conditional-conformances.md).
+    - Replaced any deprecated symbols with their Swift 4.1 equivalent (e.g., `flatMap` → `compactMap`).
+- Renamed the cursor properties `latest`/`earliest` to `newest`/`oldest` to improve clarity.
+- Modified the design of the [documentation][Docs] pages and refactored the `/docs` directory.
+- Updated all the [developer.spotify.com](https://developer.spotify.com) hyperlinks to reflect the new site.
+- Updated the README with better visuals and an improved roadmap.
+- Updated the build environment for Xcode 9.4.
+
+### Fixed
+- Embeds the `Cursors` type within the `CursorPage` struct as originally designed (now that [SR-5086](https://bugs.swift.org/browse/SR-5086) has been resolved in Swift 4.1), enabling the compilation of page cursors as concrete types.
+
 ## [1.0.1] - 2017-12-30
 ### Added
 - Incorporated [Travis CI](https://travis-ci.org/haversnail/SpotifyKit) into the project.
@@ -61,10 +78,12 @@ This is the first public release of the SpotifyKit framework. As such, the follo
 
 - Does not include request methods for any [Web API Connect](https://developer.spotify.com/documentation/web-api/guides/using-connect-web-api/) endpoints that control playback; this is already handled by the `SpotifyAudioPlayback` framework.
 
-[Unreleased]: https://github.com/haversnail/SpotifyKit/compare/v1.0.1...HEAD
+[Unreleased]: https://github.com/haversnail/SpotifyKit/compare/v1.1.0...HEAD
+[1.1.0]: https://github.com/haversnail/SpotifyKit/compare/v1.0.1...v1.1.0
 [1.0.1]: https://github.com/haversnail/SpotifyKit/compare/v1.0.0...v1.0.1
 
-[Docs]: https://haversnail.github.io/SpotifyKit/
+[Docs]: https://haversnail.github.io/SpotifyKit/documentation/
+[Token]: https://haversnail.github.io/SpotifyKit/token/
 [iOS SDK]: https://github.com/spotify/ios-sdk
 [Web API]: https://developer.spotify.com/documentation/web-api/
 [Object Model]: https://developer.spotify.com/documentation/web-api/reference/object-model/

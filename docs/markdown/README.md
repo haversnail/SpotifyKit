@@ -1,5 +1,5 @@
 ![Logo](https://github.com/haversnail/SpotifyKit/raw/master/Logo/SpotifyKit.png)
-<p align="center">An intuitive and complete Swift wrapper for the <a href="https://developer.spotify.com/documentation/web-api/">Spotify Web API</a>.</p>
+<p align="center">An intuitive and comprehensive Swift framework for the <a href="https://developer.spotify.com/documentation/web-api/">Spotify Web API</a>.</p>
 
 <p align="center">
     <a href="https://swift.org"><img src="https://img.shields.io/badge/Swift-4.1-orange.svg" alt="Swift version" /></a>
