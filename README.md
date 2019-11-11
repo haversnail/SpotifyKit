@@ -1,12 +1,16 @@
 ![Logo](Logo/SpotifyKit.png)
 An intuitive and comprehensive Swift framework for the [Spotify Web API][Web API].
 
+[![No Maintenance Intended](http://unmaintained.tech/badge.svg)](http://unmaintained.tech/)
 [![Swift](https://img.shields.io/badge/Swift-4.1-orange.svg "Swift version")][Swift]
 [![Carthage](https://img.shields.io/badge/Carthage-compatible-4BC51D.svg "Carthage compatible")][Carthage]
 [![iOS SDK](https://img.shields.io/badge/iOS%20SDK-beta--25-blue.svg "Spotify iOS SDK release")][iOS SDK]
 ![Platforms](https://img.shields.io/badge/platform-iOS-lightgrey.svg "Platforms")
 [![Docs](docs/documentation/badge.svg "Documentation coverage")][Docs]
 [![Build](https://travis-ci.org/haversnail/SpotifyKit.svg?branch=master "latest build on master branch")][Travis CI]
+
+## :no_entry: DEPRECATED
+> Unfortunately this framework was built around Spotify's legacy iOS streaming SDK, which has since been replaced by their new metadata-focused [SDK](https://github.com/spotify/ios-sdk). As a result, this repository will be archived and will no longer be maintained.
 
 ## Getting Started
 
